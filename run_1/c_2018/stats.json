@@ -1,0 +1,34 @@
+{
+  "cause": "routage detaille incomplet",
+  "connexions_echouees": 12,
+  "echecs": [
+    "U4.3 : pas de place pour un via de plan a moins de 6 mm (ni via / pastille traversante du plan joignable) [28 cellule(s) de depart admissibles sur 28]",
+    "R96_VOLT2.1 : pas de place pour un via de plan a moins de 6 mm (ni via / pastille traversante du plan joignable) [90 cellule(s) de depart admissibles sur 90]",
+    "R28.1 : pas de place pour un via de plan a moins de 6 mm (ni via / pastille traversante du plan joignable) [99 cellule(s) de depart admissibles sur 99]",
+    "R24.2 : pas de place pour un via de plan a moins de 6 mm (ni via / pastille traversante du plan joignable) [88 cellule(s) de depart admissibles sur 88]",
+    "U10.4 : pas de chemin libre (congestion)",
+    "R106_ALIM2.1 : pas de chemin libre (congestion)",
+    "D16_ALIM2.2 : pas de chemin libre (congestion)",
+    "U22_ALIM2.3 : pas de chemin libre (congestion)",
+    "R63_ALIM2.1 : pas de chemin libre (congestion)",
+    "M1.4 : pas de chemin libre (congestion)",
+    "U22_ALIM2.4 : pas de chemin libre (congestion)",
+    "U23_ALIM2.5 : pas de chemin libre (congestion)"
+  ],
+  "graine": 2018,
+  "recuit": {
+    "acceptation_initiale": 0.9420731707317073,
+    "cout": 14128.10211473125,
+    "cout_depart": 56187.24871985431,
+    "hpwl": 5864.455367840001,
+    "hpwl_depart": 22520.535941820017,
+    "mouvements": 58600250,
+    "paliers": 1888,
+    "rechauffes": 3,
+    "t0": 311.43826725106663,
+    "temps_s": 583.933418777
+  },
+  "temps_s": 2794.238385323,
+  "tours_boucle": 4,
+  "valide": false
+}
