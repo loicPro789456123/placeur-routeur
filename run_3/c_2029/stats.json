@@ -1,0 +1,31 @@
+{
+  "cause": "echecs apres finition",
+  "conjoint": {
+    "acceptes": 23,
+    "cout": 410421.8731749679,
+    "cout_depart": 410608.8525904278,
+    "essais": 712
+  },
+  "connexions_echouees": 3,
+  "echecs": [
+    "U10.2 : pas de chemin libre (congestion)",
+    "U10.8 : broche inaccessible (isolement des pastilles voisines, bord ou emprise du bloc)",
+    "U10.3 : pas de chemin libre (congestion)"
+  ],
+  "graine": 2029,
+  "recuit": {
+    "acceptation_initiale": 0.9507539300609561,
+    "cout": 13792.740600624993,
+    "cout_depart": 58958.18765354013,
+    "hpwl": 5492.560828420002,
+    "hpwl_depart": 22162.716779380007,
+    "mouvements": 58600250,
+    "paliers": 1888,
+    "rechauffes": 3,
+    "t0": 322.60852998170094,
+    "temps_s": 473.998931986
+  },
+  "temps_s": 3318.691133242,
+  "tours_boucle": 4,
+  "valide": false
+}

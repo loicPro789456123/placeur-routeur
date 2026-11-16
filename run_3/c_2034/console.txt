@@ -1,0 +1,566 @@
+geometrie reelle des pastilles (Altium) : 1032 pastilles, 5 pastilles libres de trous M3 (pastilles_reelles.json)
+configuration de carte config_carte.json : 1 convertisseur(s), 1 piece(s) sans piste dessous
+bloc hacheur LIBERE : 314 pieces mobiles au total, cuivre manuel ignore ; 19 pieces sous termes du convertisseur
+graine 2034 : placement aleatoire legal (HPWL 24123 mm, 0 s)
+39 groupes fonctionnels (dont 2 canaux complets)
+reference v3 : HPWL 4866 mm ; congestion RUDY max 2.79 p95 1.06 mm/mm2, depassement 13 mm
+  exploration palier 1 : T 288.168 (T0 288.168) ; acceptation 94 % ; cout 36493.9 ; meilleur 36493.9 ; 31400 mouvements ; 0 s
+  exploration palier 10 : T 263.247 (T0 288.168) ; acceptation 94 % ; cout 33052.6 ; meilleur 31670.0 ; 314000 mouvements ; 2 s
+  exploration palier 20 : T 238.075 (T0 288.168) ; acceptation 93 % ; cout 28513.0 ; meilleur 28284.5 ; 628000 mouvements ; 4 s
+  exploration palier 30 : T 215.311 (T0 288.168) ; acceptation 93 % ; cout 29549.9 ; meilleur 28018.8 ; 942000 mouvements ; 7 s
+  exploration : rechauffe 1 (T 1013.556)
+  exploration palier 40 : T 983.452 (T0 288.168) ; acceptation 98 % ; cout 41813.2 ; meilleur 28018.8 ; 1256000 mouvements ; 9 s
+  exploration palier 50 : T 889.417 (T0 288.168) ; acceptation 98 % ; cout 38453.9 ; meilleur 28018.8 ; 1570000 mouvements ; 11 s
+  exploration : rechauffe 2 (T 4402.612)
+  exploration palier 60 : T 4062.487 (T0 288.168) ; acceptation 99 % ; cout 57963.3 ; meilleur 28018.8 ; 1884000 mouvements ; 13 s
+  exploration : rechauffe 3 (T 19123.755)
+  exploration palier 70 : T 18555.760 (T0 288.168) ; acceptation 100 % ; cout 53306.8 ; meilleur 28018.8 ; 2198000 mouvements ; 15 s
+  exploration palier 80 : T 16781.497 (T0 288.168) ; acceptation 100 % ; cout 47945.8 ; meilleur 28018.8 ; 2512000 mouvements ; 18 s
+  exploration palier 90 : T 15176.885 (T0 288.168) ; acceptation 100 % ; cout 51654.0 ; meilleur 28018.8 ; 2826000 mouvements ; 20 s
+  exploration palier 100 : T 13725.703 (T0 288.168) ; acceptation 100 % ; cout 53657.6 ; meilleur 28018.8 ; 3140000 mouvements ; 22 s
+  exploration palier 110 : T 12413.280 (T0 288.168) ; acceptation 100 % ; cout 51859.6 ; meilleur 28018.8 ; 3454000 mouvements ; 24 s
+  exploration palier 120 : T 11226.348 (T0 288.168) ; acceptation 100 % ; cout 55334.7 ; meilleur 28018.8 ; 3768000 mouvements ; 26 s
+  exploration palier 130 : T 10152.908 (T0 288.168) ; acceptation 100 % ; cout 43609.9 ; meilleur 28018.8 ; 4082000 mouvements ; 28 s
+  exploration palier 140 : T 9182.108 (T0 288.168) ; acceptation 100 % ; cout 48733.9 ; meilleur 28018.8 ; 4396000 mouvements ; 30 s
+  exploration palier 150 : T 8304.134 (T0 288.168) ; acceptation 100 % ; cout 53851.3 ; meilleur 28018.8 ; 4710000 mouvements ; 33 s
+  exploration palier 160 : T 7510.110 (T0 288.168) ; acceptation 100 % ; cout 46929.7 ; meilleur 28018.8 ; 5024000 mouvements ; 35 s
+  exploration palier 170 : T 6792.008 (T0 288.168) ; acceptation 100 % ; cout 47908.1 ; meilleur 28018.8 ; 5338000 mouvements ; 37 s
+  exploration palier 180 : T 6142.571 (T0 288.168) ; acceptation 100 % ; cout 48405.7 ; meilleur 28018.8 ; 5652000 mouvements ; 39 s
+  exploration palier 190 : T 5555.231 (T0 288.168) ; acceptation 100 % ; cout 51786.1 ; meilleur 28018.8 ; 5966000 mouvements ; 41 s
+  exploration palier 200 : T 5024.051 (T0 288.168) ; acceptation 99 % ; cout 54799.8 ; meilleur 28018.8 ; 6280000 mouvements ; 43 s
+  exploration palier 210 : T 4543.662 (T0 288.168) ; acceptation 99 % ; cout 51851.7 ; meilleur 28018.8 ; 6594000 mouvements ; 46 s
+  exploration palier 220 : T 4109.206 (T0 288.168) ; acceptation 99 % ; cout 44329.7 ; meilleur 28018.8 ; 6908000 mouvements ; 48 s
+  exploration palier 230 : T 3716.293 (T0 288.168) ; acceptation 99 % ; cout 49106.1 ; meilleur 28018.8 ; 7222000 mouvements ; 50 s
+  exploration palier 240 : T 3360.948 (T0 288.168) ; acceptation 99 % ; cout 43855.4 ; meilleur 28018.8 ; 7536000 mouvements ; 52 s
+  exploration palier 250 : T 3039.581 (T0 288.168) ; acceptation 99 % ; cout 42554.9 ; meilleur 28018.8 ; 7850000 mouvements ; 54 s
+  exploration palier 260 : T 2748.943 (T0 288.168) ; acceptation 99 % ; cout 48613.5 ; meilleur 28018.8 ; 8164000 mouvements ; 56 s
+  exploration palier 270 : T 2486.095 (T0 288.168) ; acceptation 99 % ; cout 42362.8 ; meilleur 28018.8 ; 8478000 mouvements ; 59 s
+  exploration palier 280 : T 2248.380 (T0 288.168) ; acceptation 99 % ; cout 41652.8 ; meilleur 28018.8 ; 8792000 mouvements ; 61 s
+  exploration palier 290 : T 2033.394 (T0 288.168) ; acceptation 99 % ; cout 44360.0 ; meilleur 28018.8 ; 9106000 mouvements ; 63 s
+  exploration palier 300 : T 1838.965 (T0 288.168) ; acceptation 99 % ; cout 46332.7 ; meilleur 28018.8 ; 9420000 mouvements ; 65 s
+  exploration palier 310 : T 1663.127 (T0 288.168) ; acceptation 99 % ; cout 39592.3 ; meilleur 28018.8 ; 9734000 mouvements ; 67 s
+  exploration palier 320 : T 1504.102 (T0 288.168) ; acceptation 99 % ; cout 46548.8 ; meilleur 28018.8 ; 10048000 mouvements ; 69 s
+  exploration palier 330 : T 1360.283 (T0 288.168) ; acceptation 98 % ; cout 51393.2 ; meilleur 28018.8 ; 10362000 mouvements ; 71 s
+  exploration palier 340 : T 1230.216 (T0 288.168) ; acceptation 99 % ; cout 44028.8 ; meilleur 28018.8 ; 10676000 mouvements ; 73 s
+  exploration palier 350 : T 1112.585 (T0 288.168) ; acceptation 99 % ; cout 44889.7 ; meilleur 28018.8 ; 10990000 mouvements ; 75 s
+  exploration palier 360 : T 1006.202 (T0 288.168) ; acceptation 98 % ; cout 40182.1 ; meilleur 28018.8 ; 11304000 mouvements ; 78 s
+  exploration palier 370 : T 909.991 (T0 288.168) ; acceptation 98 % ; cout 40016.1 ; meilleur 28018.8 ; 11618000 mouvements ; 80 s
+  exploration palier 380 : T 822.980 (T0 288.168) ; acceptation 98 % ; cout 38900.5 ; meilleur 28018.8 ; 11932000 mouvements ; 82 s
+  exploration palier 390 : T 744.288 (T0 288.168) ; acceptation 98 % ; cout 45590.0 ; meilleur 28018.8 ; 12246000 mouvements ; 84 s
+  exploration palier 400 : T 673.121 (T0 288.168) ; acceptation 97 % ; cout 37357.7 ; meilleur 28018.8 ; 12560000 mouvements ; 86 s
+  exploration palier 410 : T 608.758 (T0 288.168) ; acceptation 97 % ; cout 38742.4 ; meilleur 28018.8 ; 12874000 mouvements ; 88 s
+  exploration palier 420 : T 550.550 (T0 288.168) ; acceptation 97 % ; cout 37479.9 ; meilleur 28018.8 ; 13188000 mouvements ; 90 s
+  exploration palier 430 : T 497.908 (T0 288.168) ; acceptation 97 % ; cout 37875.8 ; meilleur 28018.8 ; 13502000 mouvements ; 92 s
+  exploration palier 440 : T 450.299 (T0 288.168) ; acceptation 96 % ; cout 34847.8 ; meilleur 28018.8 ; 13816000 mouvements ; 95 s
+  exploration palier 450 : T 407.242 (T0 288.168) ; acceptation 95 % ; cout 34592.6 ; meilleur 28018.8 ; 14130000 mouvements ; 97 s
+  exploration palier 460 : T 368.302 (T0 288.168) ; acceptation 95 % ; cout 33476.3 ; meilleur 28018.8 ; 14444000 mouvements ; 99 s
+  exploration palier 470 : T 333.086 (T0 288.168) ; acceptation 95 % ; cout 35951.3 ; meilleur 28018.8 ; 14758000 mouvements ; 101 s
+  exploration palier 480 : T 301.237 (T0 288.168) ; acceptation 94 % ; cout 32996.2 ; meilleur 28018.8 ; 15072000 mouvements ; 103 s
+  exploration palier 490 : T 272.433 (T0 288.168) ; acceptation 94 % ; cout 30783.9 ; meilleur 28018.8 ; 15386000 mouvements ; 105 s
+  exploration palier 500 : T 246.384 (T0 288.168) ; acceptation 94 % ; cout 32609.5 ; meilleur 28018.8 ; 15700000 mouvements ; 108 s
+  exploration palier 510 : T 222.825 (T0 288.168) ; acceptation 93 % ; cout 33088.3 ; meilleur 28018.8 ; 16014000 mouvements ; 110 s
+  exploration palier 520 : T 201.519 (T0 288.168) ; acceptation 93 % ; cout 29670.4 ; meilleur 28018.8 ; 16328000 mouvements ; 112 s
+  exploration palier 530 : T 182.250 (T0 288.168) ; acceptation 93 % ; cout 27040.6 ; meilleur 26615.0 ; 16642000 mouvements ; 114 s
+  exploration palier 540 : T 164.824 (T0 288.168) ; acceptation 92 % ; cout 27781.4 ; meilleur 25527.2 ; 16956000 mouvements ; 116 s
+  exploration palier 550 : T 149.064 (T0 288.168) ; acceptation 93 % ; cout 26188.1 ; meilleur 25329.4 ; 17270000 mouvements ; 118 s
+  exploration palier 560 : T 134.811 (T0 288.168) ; acceptation 92 % ; cout 24262.3 ; meilleur 23120.4 ; 17584000 mouvements ; 120 s
+  exploration palier 570 : T 121.920 (T0 288.168) ; acceptation 93 % ; cout 23138.7 ; meilleur 22234.3 ; 17898000 mouvements ; 122 s
+  exploration palier 580 : T 110.263 (T0 288.168) ; acceptation 93 % ; cout 21658.6 ; meilleur 21516.5 ; 18212000 mouvements ; 124 s
+  exploration palier 590 : T 99.719 (T0 288.168) ; acceptation 93 % ; cout 21852.4 ; meilleur 20587.0 ; 18526000 mouvements ; 126 s
+  exploration palier 600 : T 90.184 (T0 288.168) ; acceptation 93 % ; cout 21185.0 ; meilleur 19044.7 ; 18840000 mouvements ; 128 s
+  exploration palier 610 : T 81.561 (T0 288.168) ; acceptation 93 % ; cout 20036.4 ; meilleur 18462.0 ; 19154000 mouvements ; 129 s
+  exploration palier 620 : T 73.763 (T0 288.168) ; acceptation 93 % ; cout 18721.1 ; meilleur 17836.2 ; 19468000 mouvements ; 131 s
+  exploration palier 630 : T 66.710 (T0 288.168) ; acceptation 94 % ; cout 16586.4 ; meilleur 16586.4 ; 19782000 mouvements ; 133 s
+  exploration palier 640 : T 60.331 (T0 288.168) ; acceptation 93 % ; cout 16359.4 ; meilleur 16359.4 ; 20096000 mouvements ; 134 s
+  exploration palier 650 : T 54.562 (T0 288.168) ; acceptation 93 % ; cout 15823.6 ; meilleur 15417.9 ; 20410000 mouvements ; 136 s
+  exploration palier 660 : T 49.345 (T0 288.168) ; acceptation 92 % ; cout 15072.3 ; meilleur 14922.2 ; 20724000 mouvements ; 137 s
+  exploration palier 670 : T 44.627 (T0 288.168) ; acceptation 93 % ; cout 14522.3 ; meilleur 14317.7 ; 21038000 mouvements ; 139 s
+  exploration palier 680 : T 40.360 (T0 288.168) ; acceptation 92 % ; cout 13918.0 ; meilleur 13879.2 ; 21352000 mouvements ; 141 s
+  exploration palier 690 : T 36.501 (T0 288.168) ; acceptation 93 % ; cout 13991.9 ; meilleur 13362.6 ; 21666000 mouvements ; 142 s
+  exploration palier 700 : T 33.010 (T0 288.168) ; acceptation 91 % ; cout 13872.2 ; meilleur 13362.6 ; 21980000 mouvements ; 144 s
+  exploration palier 710 : T 29.854 (T0 288.168) ; acceptation 91 % ; cout 13451.4 ; meilleur 13051.9 ; 22294000 mouvements ; 145 s
+  exploration palier 720 : T 26.999 (T0 288.168) ; acceptation 91 % ; cout 12944.2 ; meilleur 12916.8 ; 22608000 mouvements ; 147 s
+  exploration palier 730 : T 24.418 (T0 288.168) ; acceptation 91 % ; cout 12588.6 ; meilleur 12588.6 ; 22922000 mouvements ; 148 s
+  exploration palier 740 : T 22.083 (T0 288.168) ; acceptation 91 % ; cout 12531.6 ; meilleur 12260.2 ; 23236000 mouvements ; 150 s
+  exploration palier 750 : T 19.972 (T0 288.168) ; acceptation 91 % ; cout 11735.9 ; meilleur 11699.2 ; 23550000 mouvements ; 151 s
+  exploration palier 760 : T 18.062 (T0 288.168) ; acceptation 90 % ; cout 11495.4 ; meilleur 11495.4 ; 23864000 mouvements ; 153 s
+  exploration palier 770 : T 16.335 (T0 288.168) ; acceptation 90 % ; cout 11613.6 ; meilleur 11483.0 ; 24178000 mouvements ; 154 s
+  exploration palier 780 : T 14.773 (T0 288.168) ; acceptation 89 % ; cout 11604.3 ; meilleur 11370.6 ; 24492000 mouvements ; 156 s
+  exploration palier 790 : T 13.360 (T0 288.168) ; acceptation 89 % ; cout 10951.1 ; meilleur 10847.1 ; 24806000 mouvements ; 157 s
+  exploration palier 800 : T 12.083 (T0 288.168) ; acceptation 89 % ; cout 11108.1 ; meilleur 10736.0 ; 25120000 mouvements ; 159 s
+  exploration palier 810 : T 10.928 (T0 288.168) ; acceptation 88 % ; cout 11111.5 ; meilleur 10736.0 ; 25434000 mouvements ; 161 s
+  exploration palier 820 : T 9.883 (T0 288.168) ; acceptation 88 % ; cout 10512.2 ; meilleur 10490.1 ; 25748000 mouvements ; 162 s
+  exploration palier 830 : T 8.938 (T0 288.168) ; acceptation 88 % ; cout 10397.0 ; meilleur 10302.5 ; 26062000 mouvements ; 164 s
+  exploration palier 840 : T 8.083 (T0 288.168) ; acceptation 87 % ; cout 10385.1 ; meilleur 10149.8 ; 26376000 mouvements ; 166 s
+  exploration palier 850 : T 7.310 (T0 288.168) ; acceptation 87 % ; cout 9992.3 ; meilleur 9880.4 ; 26690000 mouvements ; 167 s
+  exploration palier 860 : T 6.611 (T0 288.168) ; acceptation 86 % ; cout 9960.5 ; meilleur 9880.4 ; 27004000 mouvements ; 169 s
+  exploration palier 870 : T 5.979 (T0 288.168) ; acceptation 85 % ; cout 9723.3 ; meilleur 9689.9 ; 27318000 mouvements ; 170 s
+  exploration palier 880 : T 5.407 (T0 288.168) ; acceptation 84 % ; cout 9583.6 ; meilleur 9580.9 ; 27632000 mouvements ; 172 s
+  exploration palier 890 : T 4.890 (T0 288.168) ; acceptation 84 % ; cout 9465.0 ; meilleur 9417.3 ; 27946000 mouvements ; 174 s
+  exploration palier 900 : T 4.423 (T0 288.168) ; acceptation 82 % ; cout 9209.9 ; meilleur 9209.9 ; 28260000 mouvements ; 175 s
+  exploration palier 910 : T 4.000 (T0 288.168) ; acceptation 81 % ; cout 9044.4 ; meilleur 9044.4 ; 28574000 mouvements ; 177 s
+  exploration palier 920 : T 3.617 (T0 288.168) ; acceptation 80 % ; cout 9094.7 ; meilleur 9043.4 ; 28888000 mouvements ; 179 s
+  exploration palier 930 : T 3.271 (T0 288.168) ; acceptation 80 % ; cout 8937.7 ; meilleur 8937.7 ; 29202000 mouvements ; 181 s
+  exploration palier 940 : T 2.959 (T0 288.168) ; acceptation 79 % ; cout 8846.9 ; meilleur 8795.3 ; 29516000 mouvements ; 182 s
+  exploration palier 950 : T 2.676 (T0 288.168) ; acceptation 77 % ; cout 8685.2 ; meilleur 8617.7 ; 29830000 mouvements ; 184 s
+  exploration palier 960 : T 2.420 (T0 288.168) ; acceptation 76 % ; cout 8535.9 ; meilleur 8535.9 ; 30144000 mouvements ; 186 s
+  exploration palier 970 : T 2.189 (T0 288.168) ; acceptation 75 % ; cout 8455.5 ; meilleur 8424.8 ; 30458000 mouvements ; 188 s
+  exploration palier 980 : T 1.979 (T0 288.168) ; acceptation 73 % ; cout 8352.5 ; meilleur 8334.0 ; 30772000 mouvements ; 189 s
+  exploration palier 990 : T 1.790 (T0 288.168) ; acceptation 73 % ; cout 8178.5 ; meilleur 8147.5 ; 31086000 mouvements ; 191 s
+  exploration palier 1000 : T 1.619 (T0 288.168) ; acceptation 70 % ; cout 8104.4 ; meilleur 8104.4 ; 31400000 mouvements ; 193 s
+  exploration palier 1010 : T 1.464 (T0 288.168) ; acceptation 70 % ; cout 8009.0 ; meilleur 8009.0 ; 31714000 mouvements ; 195 s
+  exploration palier 1020 : T 1.324 (T0 288.168) ; acceptation 69 % ; cout 7936.8 ; meilleur 7936.8 ; 32028000 mouvements ; 196 s
+  exploration palier 1030 : T 1.197 (T0 288.168) ; acceptation 67 % ; cout 7822.5 ; meilleur 7822.5 ; 32342000 mouvements ; 198 s
+  exploration palier 1040 : T 1.083 (T0 288.168) ; acceptation 66 % ; cout 7779.7 ; meilleur 7777.9 ; 32656000 mouvements ; 200 s
+  exploration palier 1050 : T 0.979 (T0 288.168) ; acceptation 64 % ; cout 7726.1 ; meilleur 7719.9 ; 32970000 mouvements ; 201 s
+  exploration palier 1060 : T 0.886 (T0 288.168) ; acceptation 63 % ; cout 7697.9 ; meilleur 7674.1 ; 33284000 mouvements ; 203 s
+  exploration palier 1070 : T 0.801 (T0 288.168) ; acceptation 62 % ; cout 7632.7 ; meilleur 7618.1 ; 33598000 mouvements ; 205 s
+  exploration palier 1080 : T 0.724 (T0 288.168) ; acceptation 60 % ; cout 7579.2 ; meilleur 7569.9 ; 33912000 mouvements ; 207 s
+  exploration palier 1090 : T 0.655 (T0 288.168) ; acceptation 58 % ; cout 7522.1 ; meilleur 7522.1 ; 34226000 mouvements ; 208 s
+  exploration palier 1100 : T 0.593 (T0 288.168) ; acceptation 56 % ; cout 7496.5 ; meilleur 7486.2 ; 34540000 mouvements ; 210 s
+  exploration palier 1110 : T 0.536 (T0 288.168) ; acceptation 55 % ; cout 7480.1 ; meilleur 7471.7 ; 34854000 mouvements ; 212 s
+  exploration palier 1120 : T 0.485 (T0 288.168) ; acceptation 54 % ; cout 7441.8 ; meilleur 7441.8 ; 35168000 mouvements ; 213 s
+  exploration palier 1130 : T 0.438 (T0 288.168) ; acceptation 51 % ; cout 7437.1 ; meilleur 7414.2 ; 35482000 mouvements ; 215 s
+  exploration palier 1140 : T 0.396 (T0 288.168) ; acceptation 51 % ; cout 7377.1 ; meilleur 7377.1 ; 35796000 mouvements ; 217 s
+  exploration palier 1150 : T 0.358 (T0 288.168) ; acceptation 49 % ; cout 7382.9 ; meilleur 7362.7 ; 36110000 mouvements ; 219 s
+  exploration palier 1160 : T 0.324 (T0 288.168) ; acceptation 47 % ; cout 7358.2 ; meilleur 7342.9 ; 36424000 mouvements ; 220 s
+  exploration palier 1170 : T 0.293 (T0 288.168) ; acceptation 45 % ; cout 7336.2 ; meilleur 7336.2 ; 36738000 mouvements ; 222 s
+  exploration palier 1180 : T 0.265 (T0 288.168) ; acceptation 43 % ; cout 7325.4 ; meilleur 7325.4 ; 37052000 mouvements ; 224 s
+  exploration palier 1190 : T 0.240 (T0 288.168) ; acceptation 43 % ; cout 7325.5 ; meilleur 7319.1 ; 37366000 mouvements ; 225 s
+  exploration palier 1200 : T 0.217 (T0 288.168) ; acceptation 41 % ; cout 7297.6 ; meilleur 7297.6 ; 37680000 mouvements ; 227 s
+  exploration palier 1210 : T 0.196 (T0 288.168) ; acceptation 41 % ; cout 7298.7 ; meilleur 7294.9 ; 37994000 mouvements ; 229 s
+  exploration palier 1220 : T 0.177 (T0 288.168) ; acceptation 39 % ; cout 7286.6 ; meilleur 7286.6 ; 38308000 mouvements ; 231 s
+  exploration palier 1230 : T 0.160 (T0 288.168) ; acceptation 37 % ; cout 7285.3 ; meilleur 7282.0 ; 38622000 mouvements ; 232 s
+  exploration palier 1240 : T 0.145 (T0 288.168) ; acceptation 36 % ; cout 7273.2 ; meilleur 7269.5 ; 38936000 mouvements ; 234 s
+  exploration palier 1250 : T 0.131 (T0 288.168) ; acceptation 35 % ; cout 7266.9 ; meilleur 7261.8 ; 39250000 mouvements ; 236 s
+  exploration palier 1260 : T 0.119 (T0 288.168) ; acceptation 34 % ; cout 7259.8 ; meilleur 7259.8 ; 39564000 mouvements ; 237 s
+  exploration palier 1270 : T 0.107 (T0 288.168) ; acceptation 33 % ; cout 7255.9 ; meilleur 7255.9 ; 39878000 mouvements ; 239 s
+  exploration palier 1280 : T 0.097 (T0 288.168) ; acceptation 31 % ; cout 7254.7 ; meilleur 7251.1 ; 40192000 mouvements ; 241 s
+  exploration palier 1290 : T 0.088 (T0 288.168) ; acceptation 31 % ; cout 7249.8 ; meilleur 7249.8 ; 40506000 mouvements ; 243 s
+  exploration palier 1300 : T 0.079 (T0 288.168) ; acceptation 30 % ; cout 7247.2 ; meilleur 7247.2 ; 40820000 mouvements ; 245 s
+  exploration palier 1310 : T 0.072 (T0 288.168) ; acceptation 29 % ; cout 7244.3 ; meilleur 7243.7 ; 41134000 mouvements ; 247 s
+  exploration palier 1320 : T 0.065 (T0 288.168) ; acceptation 28 % ; cout 7244.7 ; meilleur 7243.6 ; 41448000 mouvements ; 248 s
+  exploration palier 1330 : T 0.059 (T0 288.168) ; acceptation 28 % ; cout 7242.5 ; meilleur 7241.8 ; 41762000 mouvements ; 250 s
+  exploration palier 1340 : T 0.053 (T0 288.168) ; acceptation 27 % ; cout 7241.2 ; meilleur 7241.2 ; 42076000 mouvements ; 252 s
+  exploration palier 1350 : T 0.048 (T0 288.168) ; acceptation 27 % ; cout 7239.1 ; meilleur 7239.1 ; 42390000 mouvements ; 254 s
+  exploration palier 1360 : T 0.043 (T0 288.168) ; acceptation 27 % ; cout 7237.8 ; meilleur 7237.7 ; 42704000 mouvements ; 256 s
+  exploration palier 1370 : T 0.039 (T0 288.168) ; acceptation 25 % ; cout 7237.4 ; meilleur 7237.4 ; 43018000 mouvements ; 258 s
+  exploration palier 1380 : T 0.036 (T0 288.168) ; acceptation 26 % ; cout 7237.2 ; meilleur 7237.1 ; 43332000 mouvements ; 259 s
+  exploration palier 1390 : T 0.032 (T0 288.168) ; acceptation 25 % ; cout 7236.9 ; meilleur 7236.3 ; 43646000 mouvements ; 261 s
+  exploration palier 1400 : T 0.029 (T0 288.168) ; acceptation 25 % ; cout 7233.3 ; meilleur 7233.3 ; 43960000 mouvements ; 263 s
+  exploration palier 1410 : T 0.026 (T0 288.168) ; acceptation 25 % ; cout 7233.6 ; meilleur 7233.1 ; 44274000 mouvements ; 265 s
+  exploration palier 1420 : T 0.024 (T0 288.168) ; acceptation 25 % ; cout 7233.3 ; meilleur 7233.1 ; 44588000 mouvements ; 266 s
+  exploration palier 1430 : T 0.021 (T0 288.168) ; acceptation 25 % ; cout 7232.9 ; meilleur 7232.9 ; 44902000 mouvements ; 268 s
+  exploration palier 1440 : T 0.019 (T0 288.168) ; acceptation 24 % ; cout 7233.2 ; meilleur 7232.9 ; 45216000 mouvements ; 270 s
+  exploration palier 1450 : T 0.018 (T0 288.168) ; acceptation 25 % ; cout 7232.9 ; meilleur 7232.7 ; 45530000 mouvements ; 272 s
+  exploration palier 1460 : T 0.016 (T0 288.168) ; acceptation 25 % ; cout 7233.0 ; meilleur 7232.7 ; 45844000 mouvements ; 274 s
+  exploration palier 1470 : T 0.014 (T0 288.168) ; acceptation 24 % ; cout 7233.0 ; meilleur 7232.7 ; 46158000 mouvements ; 275 s
+  exploration palier 1480 : T 0.013 (T0 288.168) ; acceptation 24 % ; cout 7232.6 ; meilleur 7232.6 ; 46472000 mouvements ; 277 s
+  exploration palier 1490 : T 0.012 (T0 288.168) ; acceptation 25 % ; cout 7232.7 ; meilleur 7232.6 ; 46786000 mouvements ; 279 s
+  exploration palier 1500 : T 0.011 (T0 288.168) ; acceptation 24 % ; cout 7232.6 ; meilleur 7232.6 ; 47100000 mouvements ; 281 s
+  exploration palier 1510 : T 0.010 (T0 288.168) ; acceptation 24 % ; cout 7232.6 ; meilleur 7232.6 ; 47414000 mouvements ; 282 s
+  exploration palier 1520 : T 0.009 (T0 288.168) ; acceptation 23 % ; cout 7232.6 ; meilleur 7232.5 ; 47728000 mouvements ; 284 s
+  exploration palier 1530 : T 0.008 (T0 288.168) ; acceptation 24 % ; cout 7232.5 ; meilleur 7232.5 ; 48042000 mouvements ; 286 s
+  exploration palier 1540 : T 0.007 (T0 288.168) ; acceptation 24 % ; cout 7232.5 ; meilleur 7232.5 ; 48356000 mouvements ; 288 s
+  exploration palier 1550 : T 0.006 (T0 288.168) ; acceptation 24 % ; cout 7232.4 ; meilleur 7232.4 ; 48670000 mouvements ; 290 s
+  exploration palier 1560 : T 0.006 (T0 288.168) ; acceptation 24 % ; cout 7232.4 ; meilleur 7232.4 ; 48984000 mouvements ; 292 s
+  exploration palier 1570 : T 0.005 (T0 288.168) ; acceptation 24 % ; cout 7232.4 ; meilleur 7232.4 ; 49298000 mouvements ; 293 s
+  exploration palier 1580 : T 0.005 (T0 288.168) ; acceptation 24 % ; cout 7232.4 ; meilleur 7232.4 ; 49612000 mouvements ; 295 s
+  exploration palier 1590 : T 0.004 (T0 288.168) ; acceptation 23 % ; cout 7232.4 ; meilleur 7232.4 ; 49926000 mouvements ; 297 s
+  exploration palier 1600 : T 0.004 (T0 288.168) ; acceptation 24 % ; cout 7232.4 ; meilleur 7232.4 ; 50240000 mouvements ; 299 s
+  exploration palier 1610 : T 0.004 (T0 288.168) ; acceptation 23 % ; cout 7232.4 ; meilleur 7232.4 ; 50554000 mouvements ; 301 s
+  exploration palier 1620 : T 0.003 (T0 288.168) ; acceptation 24 % ; cout 7232.4 ; meilleur 7232.4 ; 50868000 mouvements ; 303 s
+  exploration palier 1630 : T 0.003 (T0 288.168) ; acceptation 23 % ; cout 7231.2 ; meilleur 7231.2 ; 51182000 mouvements ; 304 s
+  exploration palier 1640 : T 0.003 (T0 288.168) ; acceptation 24 % ; cout 7231.2 ; meilleur 7231.2 ; 51496000 mouvements ; 306 s
+  exploration palier 1650 : T 0.002 (T0 288.168) ; acceptation 23 % ; cout 7231.2 ; meilleur 7231.2 ; 51810000 mouvements ; 308 s
+  exploration palier 1660 : T 0.002 (T0 288.168) ; acceptation 23 % ; cout 7231.0 ; meilleur 7231.0 ; 52124000 mouvements ; 310 s
+  exploration palier 1670 : T 0.002 (T0 288.168) ; acceptation 23 % ; cout 7231.0 ; meilleur 7231.0 ; 52438000 mouvements ; 312 s
+  exploration palier 1680 : T 0.002 (T0 288.168) ; acceptation 23 % ; cout 7231.0 ; meilleur 7231.0 ; 52752000 mouvements ; 313 s
+  exploration palier 1690 : T 0.002 (T0 288.168) ; acceptation 22 % ; cout 7231.0 ; meilleur 7231.0 ; 53066000 mouvements ; 315 s
+  exploration palier 1700 : T 0.001 (T0 288.168) ; acceptation 23 % ; cout 7231.0 ; meilleur 7231.0 ; 53380000 mouvements ; 317 s
+  exploration palier 1710 : T 0.001 (T0 288.168) ; acceptation 23 % ; cout 7231.0 ; meilleur 7231.0 ; 53694000 mouvements ; 319 s
+  exploration palier 1720 : T 0.001 (T0 288.168) ; acceptation 24 % ; cout 7231.0 ; meilleur 7231.0 ; 54008000 mouvements ; 321 s
+  exploration palier 1730 : T 0.001 (T0 288.168) ; acceptation 23 % ; cout 7231.0 ; meilleur 7231.0 ; 54322000 mouvements ; 323 s
+  exploration palier 1740 : T 0.001 (T0 288.168) ; acceptation 24 % ; cout 7231.0 ; meilleur 7231.0 ; 54636000 mouvements ; 324 s
+  exploration palier 1750 : T 0.001 (T0 288.168) ; acceptation 23 % ; cout 7231.0 ; meilleur 7231.0 ; 54950000 mouvements ; 326 s
+  exploration palier 1760 : T 0.001 (T0 288.168) ; acceptation 24 % ; cout 7231.0 ; meilleur 7231.0 ; 55264000 mouvements ; 328 s
+  exploration palier 1770 : T 0.001 (T0 288.168) ; acceptation 24 % ; cout 7231.0 ; meilleur 7231.0 ; 55578000 mouvements ; 330 s
+  exploration palier 1780 : T 0.001 (T0 288.168) ; acceptation 24 % ; cout 7231.0 ; meilleur 7231.0 ; 55892000 mouvements ; 332 s
+  exploration palier 1790 : T 0.001 (T0 288.168) ; acceptation 24 % ; cout 7231.0 ; meilleur 7231.0 ; 56206000 mouvements ; 333 s
+  exploration palier 1800 : T 0.001 (T0 288.168) ; acceptation 23 % ; cout 7231.0 ; meilleur 7231.0 ; 56520000 mouvements ; 335 s
+  exploration palier 1810 : T 0.000 (T0 288.168) ; acceptation 24 % ; cout 7231.0 ; meilleur 7231.0 ; 56834000 mouvements ; 337 s
+  exploration palier 1820 : T 0.000 (T0 288.168) ; acceptation 23 % ; cout 7231.0 ; meilleur 7231.0 ; 57148000 mouvements ; 339 s
+  exploration palier 1830 : T 0.000 (T0 288.168) ; acceptation 23 % ; cout 7231.0 ; meilleur 7231.0 ; 57462000 mouvements ; 341 s
+  exploration palier 1840 : T 0.000 (T0 288.168) ; acceptation 23 % ; cout 7231.0 ; meilleur 7231.0 ; 57776000 mouvements ; 343 s
+  exploration palier 1850 : T 0.000 (T0 288.168) ; acceptation 23 % ; cout 7231.0 ; meilleur 7231.0 ; 58090000 mouvements ; 344 s
+  fin d'exploration : cout 7231.0 ; HPWL 4886 mm ; congestion RUDY max 2.49 p95 1.22 mm/mm2, depassement 10 mm
+  fin d'exploration : convertisseur cout 1082, boucle Some((0.2466599170511472, 28.173909911108886)), noeud SW 19.7 mm
+  routeur global palier 1 : T 22.095 (T0 22.095) ; acceptation 45 % ; cout 15955.1 ; meilleur 15433.3 ; 7850 mouvements ; 2 s
+  routeur global palier 10 : T 5.118 (T0 22.095) ; acceptation 24 % ; cout 14919.4 ; meilleur 14662.0 ; 78500 mouvements ; 27 s
+  routeur global palier 20 : T 1.008 (T0 22.095) ; acceptation 17 % ; cout 13942.9 ; meilleur 13605.7 ; 157000 mouvements ; 60 s
+recuit global : cout 56386.3 -> 13159.4 ; T0 288.17 ; acceptation initiale mesuree 94 % ; 1888 paliers, 3 rechauffes, 58600250 mouvements, 439 s ; HPWL 5490 mm
+convertisseur : boucle chaude 0.7 mm2 (bloc manuel v3 : 3.6) ; demi-perimetre noeud de commutation 20.3 mm (v3 : 13.8) ; cout dedie 1126 (v3 : 950)
+  negociation 1 : 74 reseaux en conflit (470 noeuds), 0 connexions impossibles
+  negociation 2 : 65 reseaux en conflit (466 noeuds), 0 connexions impossibles
+  negociation 3 : 60 reseaux en conflit (358 noeuds), 0 connexions impossibles
+  negociation 4 : 55 reseaux en conflit (302 noeuds), 0 connexions impossibles
+  negociation 5 : 54 reseaux en conflit (276 noeuds), 0 connexions impossibles
+  negociation 6 : 50 reseaux en conflit (216 noeuds), 0 connexions impossibles
+  negociation 7 : 49 reseaux en conflit (189 noeuds), 0 connexions impossibles
+  negociation 8 : 46 reseaux en conflit (179 noeuds), 0 connexions impossibles
+  negociation 9 : 43 reseaux en conflit (166 noeuds), 0 connexions impossibles
+  negociation 10 : 42 reseaux en conflit (164 noeuds), 0 connexions impossibles
+  negociation 11 : 41 reseaux en conflit (168 noeuds), 0 connexions impossibles
+  negociation 12 : 39 reseaux en conflit (158 noeuds), 0 connexions impossibles
+  negociation 13 : 39 reseaux en conflit (144 noeuds), 0 connexions impossibles
+  negociation 14 : 34 reseaux en conflit (120 noeuds), 0 connexions impossibles
+  negociation 15 : 32 reseaux en conflit (117 noeuds), 0 connexions impossibles
+  negociation 16 : 31 reseaux en conflit (113 noeuds), 0 connexions impossibles
+  negociation 17 : 30 reseaux en conflit (102 noeuds), 0 connexions impossibles
+  negociation 18 : 29 reseaux en conflit (90 noeuds), 0 connexions impossibles
+  negociation 19 : 25 reseaux en conflit (91 noeuds), 0 connexions impossibles
+  negociation 20 : 25 reseaux en conflit (89 noeuds), 0 connexions impossibles
+  negociation 21 : 25 reseaux en conflit (83 noeuds), 0 connexions impossibles
+  negociation 22 : 24 reseaux en conflit (83 noeuds), 0 connexions impossibles
+  negociation 23 : 22 reseaux en conflit (76 noeuds), 0 connexions impossibles
+  negociation 24 : 21 reseaux en conflit (78 noeuds), 0 connexions impossibles
+  negociation 25 : 21 reseaux en conflit (76 noeuds), 0 connexions impossibles
+  negociation 26 : 18 reseaux en conflit (73 noeuds), 0 connexions impossibles
+  negociation 27 : 15 reseaux en conflit (74 noeuds), 0 connexions impossibles
+  negociation 28 : 13 reseaux en conflit (71 noeuds), 0 connexions impossibles
+  negociation 29 : 10 reseaux en conflit (66 noeuds), 0 connexions impossibles
+  negociation 30 : 10 reseaux en conflit (65 noeuds), 0 connexions impossibles
+  negociation 31 : 10 reseaux en conflit (63 noeuds), 0 connexions impossibles
+  negociation 32 : 10 reseaux en conflit (63 noeuds), 0 connexions impossibles
+  negociation 33 : 10 reseaux en conflit (64 noeuds), 0 connexions impossibles
+  negociation 34 : 10 reseaux en conflit (63 noeuds), 0 connexions impossibles
+  negociation 35 : 10 reseaux en conflit (63 noeuds), 0 connexions impossibles
+  negociation 36 : 10 reseaux en conflit (64 noeuds), 0 connexions impossibles
+  negociation 37 : 10 reseaux en conflit (62 noeuds), 0 connexions impossibles
+  negociation 38 : 10 reseaux en conflit (61 noeuds), 0 connexions impossibles
+  negociation 39 : 10 reseaux en conflit (61 noeuds), 0 connexions impossibles
+  negociation 40 : 10 reseaux en conflit (62 noeuds), 0 connexions impossibles
+  passe stricte : 29 connexions en echec (141 s depuis le debut)
+  tour d'arrachage 1 : 23 connexions en echec
+  tour d'arrachage 2 : 22 connexions en echec
+  tour d'arrachage 3 : 17 connexions en echec
+  tour d'arrachage 4 : 11 connexions en echec
+  fin de l'arrachage (198 s)
+  reparation ciblee, tour 1 : 8 connexions en echec
+  reparation ciblee, tour 2 : 6 connexions en echec
+  reparation ciblee, tour 3 : 6 connexions en echec
+routage detaille : 6 connexions en echec (680 s)
+  negociation 1 : 69 reseaux en conflit (403 noeuds), 0 connexions impossibles
+  negociation 2 : 61 reseaux en conflit (375 noeuds), 0 connexions impossibles
+  negociation 3 : 57 reseaux en conflit (264 noeuds), 0 connexions impossibles
+  negociation 4 : 51 reseaux en conflit (240 noeuds), 0 connexions impossibles
+  negociation 5 : 47 reseaux en conflit (212 noeuds), 0 connexions impossibles
+  negociation 6 : 44 reseaux en conflit (183 noeuds), 0 connexions impossibles
+  negociation 7 : 43 reseaux en conflit (168 noeuds), 0 connexions impossibles
+  negociation 8 : 39 reseaux en conflit (177 noeuds), 0 connexions impossibles
+  negociation 9 : 35 reseaux en conflit (132 noeuds), 0 connexions impossibles
+  negociation 10 : 32 reseaux en conflit (101 noeuds), 0 connexions impossibles
+  negociation 11 : 31 reseaux en conflit (103 noeuds), 0 connexions impossibles
+  negociation 12 : 30 reseaux en conflit (104 noeuds), 0 connexions impossibles
+  negociation 13 : 28 reseaux en conflit (95 noeuds), 0 connexions impossibles
+  negociation 14 : 23 reseaux en conflit (88 noeuds), 0 connexions impossibles
+  negociation 15 : 21 reseaux en conflit (74 noeuds), 0 connexions impossibles
+  negociation 16 : 18 reseaux en conflit (71 noeuds), 0 connexions impossibles
+  negociation 17 : 17 reseaux en conflit (68 noeuds), 0 connexions impossibles
+  negociation 18 : 16 reseaux en conflit (63 noeuds), 0 connexions impossibles
+  negociation 19 : 15 reseaux en conflit (58 noeuds), 0 connexions impossibles
+  negociation 20 : 13 reseaux en conflit (57 noeuds), 0 connexions impossibles
+  negociation 21 : 10 reseaux en conflit (57 noeuds), 0 connexions impossibles
+  negociation 22 : 10 reseaux en conflit (58 noeuds), 0 connexions impossibles
+  negociation 23 : 9 reseaux en conflit (58 noeuds), 0 connexions impossibles
+  negociation 24 : 8 reseaux en conflit (55 noeuds), 0 connexions impossibles
+  negociation 25 : 8 reseaux en conflit (54 noeuds), 0 connexions impossibles
+  negociation 26 : 8 reseaux en conflit (53 noeuds), 0 connexions impossibles
+  negociation 27 : 8 reseaux en conflit (52 noeuds), 0 connexions impossibles
+  negociation 28 : 8 reseaux en conflit (51 noeuds), 0 connexions impossibles
+  negociation 29 : 8 reseaux en conflit (49 noeuds), 0 connexions impossibles
+  negociation 30 : 8 reseaux en conflit (48 noeuds), 0 connexions impossibles
+  negociation 31 : 8 reseaux en conflit (48 noeuds), 0 connexions impossibles
+  negociation 32 : 8 reseaux en conflit (50 noeuds), 0 connexions impossibles
+  negociation 33 : 8 reseaux en conflit (49 noeuds), 0 connexions impossibles
+  negociation 34 : 8 reseaux en conflit (46 noeuds), 0 connexions impossibles
+  negociation 35 : 8 reseaux en conflit (48 noeuds), 0 connexions impossibles
+  negociation 36 : 8 reseaux en conflit (48 noeuds), 0 connexions impossibles
+  negociation 37 : 8 reseaux en conflit (51 noeuds), 0 connexions impossibles
+  negociation 38 : 8 reseaux en conflit (49 noeuds), 0 connexions impossibles
+  negociation 39 : 8 reseaux en conflit (51 noeuds), 0 connexions impossibles
+  negociation 40 : 8 reseaux en conflit (48 noeuds), 0 connexions impossibles
+  passe stricte : 32 connexions en echec (111 s depuis le debut)
+  tour d'arrachage 1 : 13 connexions en echec
+  tour d'arrachage 2 : 21 connexions en echec
+  tour d'arrachage 3 : 21 connexions en echec
+  tour d'arrachage 4 : 8 connexions en echec
+  fin de l'arrachage (163 s)
+  reparation ciblee, tour 1 : 6 connexions en echec
+  reparation ciblee, tour 2 : 6 connexions en echec
+boucle 1 : 6 zones, 45 pieces deplacables ; echecs 6 -> 6 (rejete, poids x2) (912 s)
+  negociation 1 : 74 reseaux en conflit (422 noeuds), 0 connexions impossibles
+  negociation 2 : 64 reseaux en conflit (366 noeuds), 0 connexions impossibles
+  negociation 3 : 57 reseaux en conflit (291 noeuds), 0 connexions impossibles
+  negociation 4 : 53 reseaux en conflit (253 noeuds), 0 connexions impossibles
+  negociation 5 : 51 reseaux en conflit (274 noeuds), 0 connexions impossibles
+  negociation 6 : 49 reseaux en conflit (237 noeuds), 0 connexions impossibles
+  negociation 7 : 46 reseaux en conflit (178 noeuds), 0 connexions impossibles
+  negociation 8 : 44 reseaux en conflit (157 noeuds), 0 connexions impossibles
+  negociation 9 : 40 reseaux en conflit (140 noeuds), 0 connexions impossibles
+  negociation 10 : 40 reseaux en conflit (121 noeuds), 0 connexions impossibles
+  negociation 11 : 34 reseaux en conflit (110 noeuds), 0 connexions impossibles
+  negociation 12 : 29 reseaux en conflit (91 noeuds), 0 connexions impossibles
+  negociation 13 : 26 reseaux en conflit (85 noeuds), 0 connexions impossibles
+  negociation 14 : 19 reseaux en conflit (71 noeuds), 0 connexions impossibles
+  negociation 15 : 19 reseaux en conflit (71 noeuds), 0 connexions impossibles
+  negociation 16 : 18 reseaux en conflit (70 noeuds), 0 connexions impossibles
+  negociation 17 : 17 reseaux en conflit (66 noeuds), 0 connexions impossibles
+  negociation 18 : 14 reseaux en conflit (63 noeuds), 0 connexions impossibles
+  negociation 19 : 14 reseaux en conflit (63 noeuds), 0 connexions impossibles
+  negociation 20 : 14 reseaux en conflit (61 noeuds), 0 connexions impossibles
+  negociation 21 : 14 reseaux en conflit (62 noeuds), 0 connexions impossibles
+  negociation 22 : 14 reseaux en conflit (65 noeuds), 0 connexions impossibles
+  negociation 23 : 13 reseaux en conflit (60 noeuds), 0 connexions impossibles
+  negociation 24 : 13 reseaux en conflit (60 noeuds), 0 connexions impossibles
+  negociation 25 : 10 reseaux en conflit (57 noeuds), 0 connexions impossibles
+  negociation 26 : 10 reseaux en conflit (55 noeuds), 0 connexions impossibles
+  negociation 27 : 10 reseaux en conflit (54 noeuds), 0 connexions impossibles
+  negociation 28 : 10 reseaux en conflit (53 noeuds), 0 connexions impossibles
+  negociation 29 : 10 reseaux en conflit (53 noeuds), 0 connexions impossibles
+  negociation 30 : 10 reseaux en conflit (53 noeuds), 0 connexions impossibles
+  negociation 31 : 10 reseaux en conflit (50 noeuds), 0 connexions impossibles
+  negociation 32 : 9 reseaux en conflit (51 noeuds), 0 connexions impossibles
+  negociation 33 : 8 reseaux en conflit (50 noeuds), 0 connexions impossibles
+  negociation 34 : 8 reseaux en conflit (51 noeuds), 0 connexions impossibles
+  negociation 35 : 8 reseaux en conflit (50 noeuds), 0 connexions impossibles
+  negociation 36 : 8 reseaux en conflit (51 noeuds), 0 connexions impossibles
+  negociation 37 : 8 reseaux en conflit (53 noeuds), 0 connexions impossibles
+  negociation 38 : 8 reseaux en conflit (51 noeuds), 0 connexions impossibles
+  negociation 39 : 8 reseaux en conflit (51 noeuds), 0 connexions impossibles
+  negociation 40 : 8 reseaux en conflit (51 noeuds), 0 connexions impossibles
+  passe stricte : 24 connexions en echec (114 s depuis le debut)
+  tour d'arrachage 1 : 17 connexions en echec
+  tour d'arrachage 2 : 26 connexions en echec
+  tour d'arrachage 3 : 14 connexions en echec
+  tour d'arrachage 4 : 14 connexions en echec
+  fin de l'arrachage (178 s)
+  reparation ciblee, tour 1 : 4 connexions en echec
+  reparation ciblee, tour 2 : 4 connexions en echec
+boucle 2 : 6 zones, 45 pieces deplacables ; echecs 6 -> 4 (retenu) (1181 s)
+  negociation 1 : 66 reseaux en conflit (400 noeuds), 0 connexions impossibles
+  negociation 2 : 59 reseaux en conflit (427 noeuds), 0 connexions impossibles
+  negociation 3 : 52 reseaux en conflit (320 noeuds), 0 connexions impossibles
+  negociation 4 : 48 reseaux en conflit (303 noeuds), 0 connexions impossibles
+  negociation 5 : 44 reseaux en conflit (258 noeuds), 0 connexions impossibles
+  negociation 6 : 43 reseaux en conflit (246 noeuds), 0 connexions impossibles
+  negociation 7 : 38 reseaux en conflit (208 noeuds), 0 connexions impossibles
+  negociation 8 : 37 reseaux en conflit (170 noeuds), 0 connexions impossibles
+  negociation 9 : 34 reseaux en conflit (148 noeuds), 0 connexions impossibles
+  negociation 10 : 32 reseaux en conflit (123 noeuds), 0 connexions impossibles
+  negociation 11 : 25 reseaux en conflit (106 noeuds), 0 connexions impossibles
+  negociation 12 : 22 reseaux en conflit (94 noeuds), 0 connexions impossibles
+  negociation 13 : 22 reseaux en conflit (105 noeuds), 0 connexions impossibles
+  negociation 14 : 20 reseaux en conflit (88 noeuds), 0 connexions impossibles
+  negociation 15 : 17 reseaux en conflit (80 noeuds), 0 connexions impossibles
+  negociation 16 : 15 reseaux en conflit (72 noeuds), 0 connexions impossibles
+  negociation 17 : 13 reseaux en conflit (68 noeuds), 0 connexions impossibles
+  negociation 18 : 12 reseaux en conflit (64 noeuds), 0 connexions impossibles
+  negociation 19 : 12 reseaux en conflit (65 noeuds), 0 connexions impossibles
+  negociation 20 : 12 reseaux en conflit (62 noeuds), 0 connexions impossibles
+  negociation 21 : 12 reseaux en conflit (60 noeuds), 0 connexions impossibles
+  negociation 22 : 12 reseaux en conflit (62 noeuds), 0 connexions impossibles
+  negociation 23 : 12 reseaux en conflit (61 noeuds), 0 connexions impossibles
+  negociation 24 : 12 reseaux en conflit (59 noeuds), 0 connexions impossibles
+  negociation 25 : 11 reseaux en conflit (57 noeuds), 0 connexions impossibles
+  negociation 26 : 9 reseaux en conflit (54 noeuds), 0 connexions impossibles
+  negociation 27 : 9 reseaux en conflit (54 noeuds), 0 connexions impossibles
+  negociation 28 : 9 reseaux en conflit (56 noeuds), 0 connexions impossibles
+  negociation 29 : 9 reseaux en conflit (54 noeuds), 0 connexions impossibles
+  negociation 30 : 9 reseaux en conflit (53 noeuds), 0 connexions impossibles
+  negociation 31 : 9 reseaux en conflit (51 noeuds), 0 connexions impossibles
+  negociation 32 : 9 reseaux en conflit (53 noeuds), 0 connexions impossibles
+  negociation 33 : 9 reseaux en conflit (52 noeuds), 0 connexions impossibles
+  negociation 34 : 9 reseaux en conflit (52 noeuds), 0 connexions impossibles
+  negociation 35 : 9 reseaux en conflit (51 noeuds), 0 connexions impossibles
+  negociation 36 : 9 reseaux en conflit (50 noeuds), 0 connexions impossibles
+  negociation 37 : 9 reseaux en conflit (51 noeuds), 0 connexions impossibles
+  negociation 38 : 9 reseaux en conflit (51 noeuds), 0 connexions impossibles
+  negociation 39 : 9 reseaux en conflit (51 noeuds), 0 connexions impossibles
+  negociation 40 : 9 reseaux en conflit (50 noeuds), 0 connexions impossibles
+  passe stricte : 18 connexions en echec (88 s depuis le debut)
+  tour d'arrachage 1 : 13 connexions en echec
+  tour d'arrachage 2 : 28 connexions en echec
+  tour d'arrachage 3 : 18 connexions en echec
+  tour d'arrachage 4 : 19 connexions en echec
+  retour au meilleur etat des tours d'arrachage : 13 connexions en echec
+  fin de l'arrachage (270 s)
+  reparation ciblee, tour 1 : 9 connexions en echec
+  reparation ciblee, tour 2 : 7 connexions en echec
+  reparation ciblee, tour 3 : 7 connexions en echec
+boucle 3 : 10 zones, 61 pieces deplacables ; echecs 4 -> 7 (rejete, poids x2) (1639 s)
+  negociation 1 : 69 reseaux en conflit (416 noeuds), 0 connexions impossibles
+  negociation 2 : 59 reseaux en conflit (330 noeuds), 0 connexions impossibles
+  negociation 3 : 53 reseaux en conflit (288 noeuds), 0 connexions impossibles
+  negociation 4 : 46 reseaux en conflit (222 noeuds), 0 connexions impossibles
+  negociation 5 : 44 reseaux en conflit (206 noeuds), 0 connexions impossibles
+  negociation 6 : 44 reseaux en conflit (198 noeuds), 0 connexions impossibles
+  negociation 7 : 40 reseaux en conflit (189 noeuds), 0 connexions impossibles
+  negociation 8 : 38 reseaux en conflit (163 noeuds), 0 connexions impossibles
+  negociation 9 : 38 reseaux en conflit (144 noeuds), 0 connexions impossibles
+  negociation 10 : 34 reseaux en conflit (122 noeuds), 0 connexions impossibles
+  negociation 11 : 30 reseaux en conflit (103 noeuds), 0 connexions impossibles
+  negociation 12 : 27 reseaux en conflit (99 noeuds), 0 connexions impossibles
+  negociation 13 : 26 reseaux en conflit (93 noeuds), 0 connexions impossibles
+  negociation 14 : 24 reseaux en conflit (86 noeuds), 0 connexions impossibles
+  negociation 15 : 24 reseaux en conflit (82 noeuds), 0 connexions impossibles
+  negociation 16 : 22 reseaux en conflit (76 noeuds), 0 connexions impossibles
+  negociation 17 : 20 reseaux en conflit (73 noeuds), 0 connexions impossibles
+  negociation 18 : 19 reseaux en conflit (73 noeuds), 0 connexions impossibles
+  negociation 19 : 19 reseaux en conflit (71 noeuds), 0 connexions impossibles
+  negociation 20 : 16 reseaux en conflit (62 noeuds), 0 connexions impossibles
+  negociation 21 : 14 reseaux en conflit (63 noeuds), 0 connexions impossibles
+  negociation 22 : 13 reseaux en conflit (63 noeuds), 0 connexions impossibles
+  negociation 23 : 13 reseaux en conflit (60 noeuds), 0 connexions impossibles
+  negociation 24 : 11 reseaux en conflit (58 noeuds), 0 connexions impossibles
+  negociation 25 : 11 reseaux en conflit (56 noeuds), 0 connexions impossibles
+  negociation 26 : 10 reseaux en conflit (56 noeuds), 0 connexions impossibles
+  negociation 27 : 10 reseaux en conflit (56 noeuds), 0 connexions impossibles
+  negociation 28 : 10 reseaux en conflit (55 noeuds), 0 connexions impossibles
+  negociation 29 : 10 reseaux en conflit (56 noeuds), 0 connexions impossibles
+  negociation 30 : 10 reseaux en conflit (58 noeuds), 0 connexions impossibles
+  negociation 31 : 10 reseaux en conflit (56 noeuds), 0 connexions impossibles
+  negociation 32 : 10 reseaux en conflit (57 noeuds), 0 connexions impossibles
+  negociation 33 : 10 reseaux en conflit (58 noeuds), 0 connexions impossibles
+  negociation 34 : 10 reseaux en conflit (58 noeuds), 0 connexions impossibles
+  negociation 35 : 10 reseaux en conflit (57 noeuds), 0 connexions impossibles
+  negociation 36 : 10 reseaux en conflit (57 noeuds), 0 connexions impossibles
+  negociation 37 : 10 reseaux en conflit (57 noeuds), 0 connexions impossibles
+  negociation 38 : 10 reseaux en conflit (56 noeuds), 0 connexions impossibles
+  negociation 39 : 10 reseaux en conflit (55 noeuds), 0 connexions impossibles
+  negociation 40 : 10 reseaux en conflit (55 noeuds), 0 connexions impossibles
+  passe stricte : 16 connexions en echec (83 s depuis le debut)
+  tour d'arrachage 1 : 25 connexions en echec
+  tour d'arrachage 2 : 12 connexions en echec
+  tour d'arrachage 3 : 18 connexions en echec
+  tour d'arrachage 4 : 12 connexions en echec
+  fin de l'arrachage (154 s)
+  reparation ciblee, tour 1 : 6 connexions en echec
+  reparation ciblee, tour 2 : 6 connexions en echec
+boucle 4 : 10 zones, 61 pieces deplacables ; echecs 4 -> 6 (rejete, poids x2) (1891 s)
+  chaine 14241 : 302 s, essais 1241, acceptes 72, illegaux 778, refuses (routage) 246 ; cout 209581.0 (meilleur 209581.0, depart 409758.5)
+  zones rerouties : 4 acceptees sur 65
+phase conjointe : cout 409758.5 -> 209115.8 ; essais 2606 acceptes 189 illegaux 1486 refuses 501
+  espacement : 150 reseaux ameliores sur 256 ; score 7325.5 -> 6962.8 ; longueur 5920.9 -> 5856.5 mm ; segments 3081 -> 2753
+  fin de l'espacement (7 s)
+  vias doubles poses (CANAL_2A / ENTREE_12V) : 23
+  troncons courts en angle aigu supprimes : 0
+  elargissement final : 60 troncons rendus plus larges (29.0 mm)
+  pistes coupees aux jonctions (via ou extremite sur l'axe) : 51
+  recouvrements residuels : 0 noeuds
+  reparation ciblee, tour 1 : 1 connexions en echec
+  reparation ciblee, tour 2 : 1 connexions en echec
+finition ciblee : 1 connexions en echec
+finition : 1 connexions en echec, nouveau routage complet (80 iterations, 8 tours)
+  negociation 1 : 67 reseaux en conflit (333 noeuds), 0 connexions impossibles
+  negociation 2 : 62 reseaux en conflit (341 noeuds), 0 connexions impossibles
+  negociation 3 : 56 reseaux en conflit (320 noeuds), 0 connexions impossibles
+  negociation 4 : 57 reseaux en conflit (267 noeuds), 0 connexions impossibles
+  negociation 5 : 55 reseaux en conflit (249 noeuds), 0 connexions impossibles
+  negociation 6 : 51 reseaux en conflit (193 noeuds), 0 connexions impossibles
+  negociation 7 : 45 reseaux en conflit (166 noeuds), 0 connexions impossibles
+  negociation 8 : 40 reseaux en conflit (147 noeuds), 0 connexions impossibles
+  negociation 9 : 38 reseaux en conflit (141 noeuds), 0 connexions impossibles
+  negociation 10 : 36 reseaux en conflit (111 noeuds), 0 connexions impossibles
+  negociation 11 : 33 reseaux en conflit (93 noeuds), 0 connexions impossibles
+  negociation 12 : 29 reseaux en conflit (83 noeuds), 0 connexions impossibles
+  negociation 13 : 26 reseaux en conflit (78 noeuds), 0 connexions impossibles
+  negociation 14 : 22 reseaux en conflit (75 noeuds), 0 connexions impossibles
+  negociation 15 : 20 reseaux en conflit (65 noeuds), 0 connexions impossibles
+  negociation 16 : 20 reseaux en conflit (62 noeuds), 0 connexions impossibles
+  negociation 17 : 19 reseaux en conflit (61 noeuds), 0 connexions impossibles
+  negociation 18 : 19 reseaux en conflit (57 noeuds), 0 connexions impossibles
+  negociation 19 : 18 reseaux en conflit (57 noeuds), 0 connexions impossibles
+  negociation 20 : 18 reseaux en conflit (54 noeuds), 0 connexions impossibles
+  negociation 21 : 18 reseaux en conflit (55 noeuds), 0 connexions impossibles
+  negociation 22 : 17 reseaux en conflit (50 noeuds), 0 connexions impossibles
+  negociation 23 : 17 reseaux en conflit (50 noeuds), 0 connexions impossibles
+  negociation 24 : 17 reseaux en conflit (51 noeuds), 0 connexions impossibles
+  negociation 25 : 16 reseaux en conflit (51 noeuds), 0 connexions impossibles
+  negociation 26 : 15 reseaux en conflit (52 noeuds), 0 connexions impossibles
+  negociation 27 : 15 reseaux en conflit (52 noeuds), 0 connexions impossibles
+  negociation 28 : 15 reseaux en conflit (50 noeuds), 0 connexions impossibles
+  negociation 29 : 15 reseaux en conflit (49 noeuds), 0 connexions impossibles
+  negociation 30 : 15 reseaux en conflit (52 noeuds), 0 connexions impossibles
+  negociation 31 : 15 reseaux en conflit (51 noeuds), 0 connexions impossibles
+  negociation 32 : 15 reseaux en conflit (50 noeuds), 0 connexions impossibles
+  negociation 33 : 15 reseaux en conflit (50 noeuds), 0 connexions impossibles
+  negociation 34 : 15 reseaux en conflit (46 noeuds), 0 connexions impossibles
+  negociation 35 : 15 reseaux en conflit (51 noeuds), 0 connexions impossibles
+  negociation 36 : 15 reseaux en conflit (48 noeuds), 0 connexions impossibles
+  negociation 37 : 15 reseaux en conflit (47 noeuds), 0 connexions impossibles
+  negociation 38 : 15 reseaux en conflit (47 noeuds), 0 connexions impossibles
+  negociation 39 : 15 reseaux en conflit (46 noeuds), 0 connexions impossibles
+  negociation 40 : 15 reseaux en conflit (47 noeuds), 0 connexions impossibles
+  negociation 41 : 15 reseaux en conflit (45 noeuds), 0 connexions impossibles
+  negociation 42 : 15 reseaux en conflit (45 noeuds), 0 connexions impossibles
+  negociation 43 : 15 reseaux en conflit (44 noeuds), 0 connexions impossibles
+  negociation 44 : 15 reseaux en conflit (45 noeuds), 0 connexions impossibles
+  negociation 45 : 15 reseaux en conflit (43 noeuds), 0 connexions impossibles
+  negociation 46 : 15 reseaux en conflit (43 noeuds), 0 connexions impossibles
+  negociation 47 : 15 reseaux en conflit (44 noeuds), 0 connexions impossibles
+  negociation 48 : 15 reseaux en conflit (43 noeuds), 0 connexions impossibles
+  negociation 49 : 15 reseaux en conflit (44 noeuds), 0 connexions impossibles
+  negociation 50 : 15 reseaux en conflit (45 noeuds), 0 connexions impossibles
+  negociation 51 : 15 reseaux en conflit (46 noeuds), 0 connexions impossibles
+  negociation 52 : 15 reseaux en conflit (44 noeuds), 0 connexions impossibles
+  negociation 53 : 15 reseaux en conflit (42 noeuds), 0 connexions impossibles
+  negociation 54 : 15 reseaux en conflit (44 noeuds), 0 connexions impossibles
+  negociation 55 : 15 reseaux en conflit (42 noeuds), 0 connexions impossibles
+  negociation 56 : 15 reseaux en conflit (42 noeuds), 0 connexions impossibles
+  negociation 57 : 15 reseaux en conflit (43 noeuds), 0 connexions impossibles
+  negociation 58 : 15 reseaux en conflit (42 noeuds), 0 connexions impossibles
+  negociation 59 : 15 reseaux en conflit (42 noeuds), 0 connexions impossibles
+  negociation 60 : 15 reseaux en conflit (42 noeuds), 0 connexions impossibles
+  negociation 61 : 15 reseaux en conflit (45 noeuds), 0 connexions impossibles
+  negociation 62 : 15 reseaux en conflit (43 noeuds), 0 connexions impossibles
+  negociation 63 : 15 reseaux en conflit (44 noeuds), 0 connexions impossibles
+  negociation 64 : 15 reseaux en conflit (43 noeuds), 0 connexions impossibles
+  negociation 65 : 15 reseaux en conflit (46 noeuds), 0 connexions impossibles
+  negociation 66 : 15 reseaux en conflit (44 noeuds), 0 connexions impossibles
+  negociation 67 : 15 reseaux en conflit (44 noeuds), 0 connexions impossibles
+  negociation 68 : 15 reseaux en conflit (44 noeuds), 0 connexions impossibles
+  negociation 69 : 15 reseaux en conflit (44 noeuds), 0 connexions impossibles
+  negociation 70 : 15 reseaux en conflit (47 noeuds), 0 connexions impossibles
+  negociation 71 : 15 reseaux en conflit (48 noeuds), 0 connexions impossibles
+  negociation 72 : 15 reseaux en conflit (45 noeuds), 0 connexions impossibles
+  negociation 73 : 15 reseaux en conflit (46 noeuds), 0 connexions impossibles
+  negociation 74 : 15 reseaux en conflit (43 noeuds), 0 connexions impossibles
+  negociation 75 : 15 reseaux en conflit (44 noeuds), 0 connexions impossibles
+  negociation 76 : 15 reseaux en conflit (45 noeuds), 0 connexions impossibles
+  negociation 77 : 15 reseaux en conflit (41 noeuds), 0 connexions impossibles
+  negociation 78 : 15 reseaux en conflit (41 noeuds), 0 connexions impossibles
+  negociation 79 : 15 reseaux en conflit (40 noeuds), 0 connexions impossibles
+  negociation 80 : 15 reseaux en conflit (42 noeuds), 0 connexions impossibles
+  passe stricte : 13 connexions en echec (138 s depuis le debut)
+  tour d'arrachage 1 : 34 connexions en echec
+  tour d'arrachage 2 : 9 connexions en echec
+  tour d'arrachage 3 : 15 connexions en echec
+  tour d'arrachage 4 : 8 connexions en echec
+  tour d'arrachage 5 : 8 connexions en echec
+  tour d'arrachage 6 : 8 connexions en echec
+  tour d'arrachage 7 : 8 connexions en echec
+  tour d'arrachage 8 : 8 connexions en echec
+  fin de l'arrachage (257 s)
+  reparation ciblee, tour 1 : 4 connexions en echec
+  reparation ciblee, tour 2 : 3 connexions en echec
+  reparation ciblee, tour 3 : 3 connexions en echec
+  espacement : 151 reseaux ameliores sur 257 ; score 7660.3 -> 7067.0 ; longueur 6106.8 -> 5941.0 mm ; segments 3235 -> 2793
+  fin de l'espacement (9 s)
+  vias doubles poses (CANAL_2A / ENTREE_12V) : 31
+  troncons courts en angle aigu supprimes : 0
+  elargissement final : 40 troncons rendus plus larges (29.4 mm)
+  pistes coupees aux jonctions (via ou extremite sur l'axe) : 64
+  recouvrements residuels : 0 noeuds
+finition : 1 -> 3 connexions en echec
+campagne 2034 terminee : {"cause":"echecs apres finition","conjoint":{"acceptes":189,"cout":209115.82674773288,"cout_depart":409758.49770667485,"essais":2606},"connexions_echouees":1,"echecs":["D13_ALIM2.1 : pas de chemin libre (congestion)"],"graine":2034,"recuit":{"acceptation_initiale":0.941834451901566,"cout":13159.376843878968,"cout_depart":56386.297796349114,"hpwl":5490.287256640004,"hpwl_depart":24122.69327852,"mouvements":58600250,"paliers":1888,"rechauffes":3,"t0":288.1680981585644,"temps_s":438.796034787},"temps_s":2803.766193209,"tours_boucle":4,"valide":false} (2804 s)
