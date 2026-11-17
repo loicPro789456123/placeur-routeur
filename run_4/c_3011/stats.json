@@ -1,0 +1,46 @@
+{
+  "cause": "echecs apres finition",
+  "conjoint": {
+    "acceptes": 95,
+    "cout": 509861.5061025107,
+    "cout_depart": 810035.840480713,
+    "essais": 1235
+  },
+  "connexions_echouees": 8,
+  "echecs": [
+    "M5_ALIM2.2 : pas de place pour un via de plan a moins de 6 mm (ni via / pastille traversante du plan joignable) [35 cellule(s) de depart admissibles sur 35]",
+    "U4.3 : pas de place pour un via de plan a moins de 6 mm (ni via / pastille traversante du plan joignable) [32 cellule(s) de depart admissibles sur 32]",
+    "C8.1 : pas de place pour un via de plan a moins de 6 mm (ni via / pastille traversante du plan joignable) [121 cellule(s) de depart admissibles sur 121]",
+    "U23_ALIM2.1 : pas de chemin libre (congestion)",
+    "C48_ALIM2.2 : pas de chemin libre (congestion)",
+    "M7_ALIM2.2 : pas de chemin libre (congestion)",
+    "D8_ALIM2.1 : pas de chemin libre (congestion)",
+    "U10.3 : pas de chemin libre (congestion)"
+  ],
+  "graine": 3011,
+  "recuit": {
+    "acceptation_initiale": 0.9453734671125975,
+    "cout": 14564.802506954315,
+    "cout_depart": 45437.09274828076,
+    "hpwl": 5954.748794060002,
+    "hpwl_depart": 22230.195892580017,
+    "mouvements": 43402650,
+    "paliers": 1404,
+    "rechauffes": 0,
+    "t0": 369.03434589233717,
+    "temps_s": 438.401369886
+  },
+  "temps_phases_s": {
+    "boucle 1": 689.5,
+    "boucle 2": 1078.5,
+    "boucle 3": 774.5,
+    "boucle 4": 500.9,
+    "conjointe": 601.2,
+    "finition": 40.0,
+    "recuit": 438.4,
+    "routage detaille": 551.9
+  },
+  "temps_s": 4674.911588686,
+  "tours_boucle": 4,
+  "valide": false
+}

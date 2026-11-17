@@ -1,0 +1,10 @@
+{
+ "commentaire": "Parametres de la campagne lancee sur GitHub Actions. Modifier ce fichier puis pousser lance une campagne (une graine par machine).",
+ "graine_base": 3001,
+ "nombre": 20,
+ "bloc": "libre",
+ "budget_s": 600,
+ "boucle": 4,
+ "mouvements": 100000000,
+ "version": "mesure de reference (protocole 7.7 du contrat) : graines 3001 a 3020, niveau normal"
+}

@@ -1,0 +1,35 @@
+{
+  "cause": "",
+  "conjoint": {
+    "acceptes": 161,
+    "cout": 8750.11647958428,
+    "cout_depart": 9078.59641954343,
+    "essais": 1509
+  },
+  "connexions_echouees": 0,
+  "echecs": [],
+  "graine": 3007,
+  "recuit": {
+    "acceptation_initiale": 0.9380516770983791,
+    "cout": 12082.29520810753,
+    "cout_depart": 105549.6000135978,
+    "hpwl": 5402.809395020003,
+    "hpwl_depart": 21710.36609150002,
+    "mouvements": 43402650,
+    "paliers": 1404,
+    "rechauffes": 0,
+    "t0": 301.16783313953545,
+    "temps_s": 350.287118065
+  },
+  "temps_phases_s": {
+    "boucle 1": 155.9,
+    "boucle 2": 135.5,
+    "conjointe": 600.4,
+    "finition": 10.4,
+    "recuit": 350.3,
+    "routage detaille": 106.8
+  },
+  "temps_s": 1359.363590848,
+  "tours_boucle": 2,
+  "valide": true
+}

@@ -1,0 +1,40 @@
+{
+  "cause": "routage detaille incomplet",
+  "connexions_echouees": 18,
+  "echecs": [
+    "U10.8 : pas de chemin libre (congestion)",
+    "R73_ALIM1.2 : pas de chemin libre (congestion)",
+    "M5_ALIM1.3 : pas de chemin libre (congestion)",
+    "R99_ALIM1.1 : pas de chemin libre (congestion)",
+    "D18_ALIM1.1 : pas de chemin libre (congestion)",
+    "D15_ALIM1.1 : pas de chemin libre (congestion)",
+    "R73_ALIM2.2 : pas de chemin libre (congestion)",
+    "R99_ALIM2.1 : pas de chemin libre (congestion)",
+    "M5_ALIM2.3 : pas de chemin libre (congestion)",
+    "D18_ALIM2.1 : pas de chemin libre (congestion)",
+    "M1.4 : pas de chemin libre (congestion)",
+    "U10.9 : pas de chemin libre (congestion)",
+    "U22_ALIM1.1 : pas de chemin libre (congestion)",
+    "M3_ALIM1.3 : pas de chemin libre (congestion)",
+    "U11_ALIM1.3 : pas de chemin libre (congestion)",
+    "Q4_ALIM2.2 : pas de chemin libre (congestion)",
+    "D16_ALIM2.1 : pas de chemin libre (congestion)",
+    "Q6_ALIM2.1 : pas de chemin libre (congestion)"
+  ],
+  "graine": 3014,
+  "recuit": {
+    "acceptation_initiale": 0.9549920760697306,
+    "cout": 16581.89351681973,
+    "cout_depart": 72237.87729143183,
+    "hpwl": 6623.699104620005,
+    "hpwl_depart": 22904.578460499997,
+    "mouvements": 43402650,
+    "paliers": 1404,
+    "rechauffes": 0,
+    "t0": 353.101353305069,
+    "temps_s": 372.125234014
+  },
+  "temps_s": 4619.461989456,
+  "tours_boucle": 4,
+  "valide": false
+}

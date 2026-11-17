@@ -1,0 +1,41 @@
+{
+  "cause": "echecs apres finition",
+  "conjoint": {
+    "acceptes": 154,
+    "cout": 309204.45335089025,
+    "cout_depart": 409930.98266471387,
+    "essais": 1385
+  },
+  "connexions_echouees": 3,
+  "echecs": [
+    "U23_ALIM2.4 : pas de chemin libre (congestion)",
+    "M1.4 : pas de chemin libre (congestion)",
+    "U10.3 : pas de chemin libre (congestion)"
+  ],
+  "graine": 3004,
+  "recuit": {
+    "acceptation_initiale": 0.9420009666505558,
+    "cout": 14057.842924378625,
+    "cout_depart": 48683.97374403234,
+    "hpwl": 5610.320514160002,
+    "hpwl_depart": 22220.714557720014,
+    "mouvements": 43402650,
+    "paliers": 1404,
+    "rechauffes": 0,
+    "t0": 224.95655742695357,
+    "temps_s": 359.818914191
+  },
+  "temps_phases_s": {
+    "boucle 1": 352.2,
+    "boucle 2": 518.7,
+    "boucle 3": 274.1,
+    "boucle 4": 306.2,
+    "conjointe": 600.7,
+    "finition": 24.6,
+    "recuit": 359.8,
+    "routage detaille": 162.9
+  },
+  "temps_s": 2599.278044504,
+  "tours_boucle": 4,
+  "valide": false
+}
