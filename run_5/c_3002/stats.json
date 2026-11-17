@@ -1,0 +1,29 @@
+{
+  "cause": "echecs apres finition",
+  "conjoint": {
+    "acceptes": 119,
+    "cout": 209945.76697424366,
+    "cout_depart": 410478.6015663336,
+    "essais": 1945
+  },
+  "connexions_echouees": 1,
+  "echecs": [
+    "U23_ALIM1.3 : pas de chemin libre (congestion)"
+  ],
+  "graine": 3002,
+  "recuit": {
+    "acceptation_initiale": 0.9513833359987206,
+    "cout": 13015.42299715685,
+    "cout_depart": 48113.68613202343,
+    "hpwl": 5750.953877800003,
+    "hpwl_depart": 22808.39544992,
+    "mouvements": 58600250,
+    "paliers": 1888,
+    "rechauffes": 3,
+    "t0": 335.3341138119239,
+    "temps_s": 564.127060333
+  },
+  "temps_s": 4061.641329582,
+  "tours_boucle": 4,
+  "valide": false
+}

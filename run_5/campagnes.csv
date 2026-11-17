@@ -1,0 +1,23 @@
+source,graine,valide,cout,longueur_mm,vias,retreci_mm,chute_8v_c1_mv,chute_8v_c2_mv,ecart_moyen_mm,ecart_min_mm,coudes,resistance_puissance_mohm,ouvertes_strict,ouvertes_altium,violations,verif_placement,vias_couture,boucle_chaude_mm2,boucle_chaude_perimetre_mm,sw_longueur_mm,sw_surface_mm2,courts_demi_perimetre_mm,compensation_sw_min_mm,duree_s,cause
+rev3 (sorties),,0,10596.00,5381.4,473,242.9,69.2,51.8,0.509,0.199,1084,1273.4,0,0,1,0,510,3.55,26.64,8.32,15.08,41.72,8.71,1,
+rev4 (sorties/conjoint),,0,10328.52,5393.0,470,137.6,70.9,52.9,0.547,0.199,1099,1264.3,0,0,1,0,507,3.55,26.64,8.32,15.08,42.23,8.71,1,
+campagne,3001,0,,,,,,,,,,,,,,,,,,,,,,2440,echecs apres finition (1 connexions en echec)
+campagne,3002,0,,,,,,,,,,,,,,,,,,,,,,4070,echecs apres finition (1 connexions en echec)
+campagne,3003,0,,,,,,,,,,,,,,,,,,,,,,3520,echecs apres finition (2 connexions en echec)
+campagne,3004,0,,,,,,,,,,,,,,,,,,,,,,2820,echecs apres finition (3 connexions en echec)
+campagne,3005,0,,,,,,,,,,,,,,,,,,,,,,2060,echecs apres finition (1 connexions en echec)
+campagne,3006,0,,,,,,,,,,,,,,,,,,,,,,3930,echecs apres finition (3 connexions en echec)
+campagne,3007,0,,,,,,,,,,,,,,,,,,,,,,2810,echecs apres finition (1 connexions en echec)
+campagne,3008,0,,,,,,,,,,,,,,,,,,,,,,3420,echecs apres finition (2 connexions en echec)
+campagne,3009,1,10465.21,5679.5,528,290.2,71.7,0.9,0.507,0.223,1294,1063.8,0,0,0,0,489,0.31,29.96,28.60,29.53,35.03,4.21,1460,
+campagne,3010,0,,,,,,,,,,,,,,,,,,,,,,3150,echecs apres finition (1 connexions en echec)
+campagne,3011,0,,,,,,,,,,,,,,,,,,,,,,1740,echecs apres finition (1 connexions en echec)
+campagne,3012,0,,,,,,,,,,,,,,,,,,,,,,3170,echecs apres finition (3 connexions en echec)
+campagne,3013,0,,,,,,,,,,,,,,,,,,,,,,2440,echecs apres finition (1 connexions en echec)
+campagne,3014,0,,,,,,,,,,,,,,,,,,,,,,5280,echecs apres finition (4 connexions en echec)
+campagne,3015,1,10430.82,5543.2,533,325.2,114.2,133.7,0.509,0.223,1219,1074.9,0,0,0,0,469,0.13,28.77,37.32,50.67,31.29,5.29,1630,
+campagne,3016,0,,,,,,,,,,,,,,,,,,,,,,1980,echecs apres finition (1 connexions en echec)
+campagne,3017,0,,,,,,,,,,,,,,,,,,,,,,2570,echecs apres finition (1 connexions en echec)
+campagne,3018,0,,,,,,,,,,,,,,,,,,,,,,4080,echecs apres finition (2 connexions en echec)
+campagne,3019,1,11722.81,6039.7,531,335.4,139.4,123.7,0.500,0.223,1249,1330.3,0,0,0,0,471,0.65,28.23,115.75,144.82,28.55,4.21,2020,
+campagne,3020,0,10735.83,5451.6,511,350.7,50.0,66.8,0.512,0.223,1285,1199.8,2,2,0,0,525,0.92,27.95,35.66,42.39,35.67,4.12,1900,controle independant non nul

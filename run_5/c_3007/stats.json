@@ -1,0 +1,29 @@
+{
+  "cause": "echecs apres finition",
+  "conjoint": {
+    "acceptes": 95,
+    "cout": 310585.83614730154,
+    "cout_depart": 411327.0598535769,
+    "essais": 1760
+  },
+  "connexions_echouees": 1,
+  "echecs": [
+    "M1.4 : pas de chemin libre (congestion)"
+  ],
+  "graine": 3007,
+  "recuit": {
+    "acceptation_initiale": 0.9430577223088924,
+    "cout": 14034.717797232834,
+    "cout_depart": 50191.54702524138,
+    "hpwl": 5622.0194900000015,
+    "hpwl_depart": 21710.36609150002,
+    "mouvements": 58600250,
+    "paliers": 1888,
+    "rechauffes": 3,
+    "t0": 301.0962015300758,
+    "temps_s": 492.885696501
+  },
+  "temps_s": 2801.869695572,
+  "tours_boucle": 4,
+  "valide": false
+}
