@@ -1,0 +1,44 @@
+geometrie reelle des pastilles (Altium) : 1032 pastilles, 5 pastilles libres de trous M3 (pastilles_reelles.json)
+cuivre existant du bloc : 73 objets (cuivre_bloc_hacheur.json)
+  cuivre du bloc non relie a une pastille (obstacle, pas cible) : NetC22_2 : Seg { x1: 73.91773887999999, y1: 84.79426271999999, x2: 74.16799999999999, y2: 84.54400159999999, w: 0.29999939999999997, couche: 0 }
+  cuivre du bloc non relie a une pastille (obstacle, pas cible) : NetC22_2 : Seg { x1: 73.19373728, y1: 84.79426271999999, x2: 73.91773887999999, y2: 84.79426271999999, w: 0.29999939999999997, couche: 0 }
+359 pieces (303 mobiles, 11 bloc), 259 reseaux ; pas global 0.5 mm
+v3 mesure : Mesure { longueur: 7510.5, longueur_ponderee: 9174.5, longueur_echap: 132.5, vias_signal: 574, vias_plan: 119, debordement: 1055, echecs: 0, taches_en_echec: 0, reseaux_en_echec: 0, objectif_routage: 15968.0 } hpwl 4866.7 (1.06 s)
+detaille depart depart_iteration2.json : 0 connexions en echec, 5381.2 mm
+depart depart_iteration2.json mesure : Mesure { longueur: 7732.5, longueur_ponderee: 9553.5, longueur_echap: 125.0, vias_signal: 577, vias_plan: 119, debordement: 1109, echecs: 0, taches_en_echec: 0, reseaux_en_echec: 0, objectif_routage: 16615.5 } hpwl 5257.4
+routage detaille (depart depart_iteration2.json) : {"canal_2a_sous_1_5mm_mm":0.0,"connexions_echouees":0,"connexions_en_largeur_reduite":150,"connexions_reussies":682,"longueur_mm":5381.2,"longueur_reduite_mm":252.1,"reseaux_a_router":255,"reseaux_complets_selon_routeur":255,"resistance_reseaux_puissance_mohm":1273.38,"segments":2580,"temps_s":188.1,"vias":478,"vias_doubles":2}
+Routeur global commun : pas 0.5 mm, 3 couches (TopLayer, MidLayer2, BottomLayer), capacite 1, 12 iterations PathFinder.
+
+| Mesure (meme routeur global) | Placement v3 | Placement retenu |
+|---|---:|---:|
+| Longueur routee des reseaux de signal (mm) | 7510.5 | 7732.5 |
+| Vias de signal | 574 | 577 |
+| Debordement de capacite (cellules en exces) | 1055 | 1109 |
+| Connexions impossibles | 0 | 0 |
+| Objectif de routage | 15968.0 | 16615.5 |
+| Decouplages a plus de 4 mm | 0 | 0 |
+| HPWL hors GND/+8V (reference, mm) | 4866.7 | 5257.4 |
+
+Recuit global : 0.0 s ; 12 chaines x 0 mouvements.
+
+### Boucle placement <-> routage detaille
+
+| Tour | Zones de pression | Pieces mobiles concernees | Echecs avant | Meilleur candidat | Retenu |
+|---|---:|---:|---:|---:|---|
+
+### Routage detaille (meme routeur)
+
+| Mesure | Placement v3 | Placement retenu |
+|---|---:|---:|
+| Connexions reussies | 682 | 682 |
+| Connexions en echec | 0 | 0 |
+| Reseaux complets (selon le routeur) | 255 | 255 |
+| Reseaux a router | 255 | 255 |
+| Longueur de piste (mm) | 5388.7 | 5381.2 |
+| Vias | 470 | 478 |
+| dont vias doubles | 1 | 2 |
+| Longueur retrecie (mm) | 344.2 | 252.1 |
+| Resistance des reseaux de puissance (mOhm) | 1358.52 | 1273.38 |
+| Temps (s) | 104.4 | 188.1 |
+
+termine en 191.3 s ; sorties dans sorties

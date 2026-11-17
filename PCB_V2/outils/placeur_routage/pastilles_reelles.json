@@ -1,0 +1,9017 @@
+{
+ "_doc": "Geometrie reelle des pastilles (verite Altium, altium_rev3/pastilles.json) -> pastilles_reelles.json.\n\n  python -I export_pastilles_reelles.py [placement.json]\n\nPour chaque piece de donnees_placeur.json et chaque pastille (meme ordre), on retrouve la pastille Altium de meme\npiece et de meme nom la plus proche de la position calculee avec le placement donne (defaut :\ndepart_iteration2.json, placement pose dans Altium rev3), et on en tire :\n  forme : \"rect\" (TopShape 2), \"rond\" (TopShape 1, X = Y), \"oblong\" (TopShape 1, X != Y : extremites rondes) ;\n  hw, hh : demi-dimensions du CUIVRE (TopXSize / TopYSize, pas les Bounds qui incluent 4 mil de masque),\n           dans le repere local de la piece (comme les autres donnees locales) ;\n  th : traversante (Layer = MultiLayer), trou : diametre de percage.\nLes pastilles libres (trous M3, MH1..MH5, sans piece) sont listees dans \"libres\" (mm).\nUn controle signale l'ecart de position maximal entre le modele et Altium.\n",
+ "placement": "depart_iteration2.json",
+ "pieces": {
+  "C32_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.8000999999999999,
+    "hh": 0.8000999999999999,
+    "th": true,
+    "trou": 0.8000999999999999,
+    "reseau_altium": "NetC32_ALIM2_1"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.8000999999999999,
+    "hh": 0.8000999999999999,
+    "th": true,
+    "trou": 0.8000999999999999,
+    "reseau_altium": "Vramp_ALIM2"
+   }
+  ],
+  "C32_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.8000999999999999,
+    "hh": 0.8000999999999999,
+    "th": true,
+    "trou": 0.8000999999999999,
+    "reseau_altium": "NetC32_ALIM1_1"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.8000999999999999,
+    "hh": 0.8000999999999999,
+    "th": true,
+    "trou": 0.8000999999999999,
+    "reseau_altium": "Vramp_ALIM1"
+   }
+  ],
+  "TRIG_AL_OUT1": [
+   {
+    "forme": "rond",
+    "hw": 1.20000014,
+    "hh": 1.20000014,
+    "th": true,
+    "trou": 1.69999914,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rond",
+    "hw": 1.20000014,
+    "hh": 1.20000014,
+    "th": true,
+    "trou": 1.69999914,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rond",
+    "hw": 1.20000014,
+    "hh": 1.20000014,
+    "th": true,
+    "trou": 1.69999914,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rond",
+    "hw": 1.20000014,
+    "hh": 1.20000014,
+    "th": true,
+    "trou": 1.69999914,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rond",
+    "hw": 1.00000054,
+    "hh": 1.00000054,
+    "th": true,
+    "trou": 1.49999954,
+    "reseau_altium": "NetR12_1"
+   }
+  ],
+  "TRIG_AL_IN1": [
+   {
+    "forme": "rond",
+    "hw": 1.00000054,
+    "hh": 1.00000054,
+    "th": true,
+    "trou": 1.49999954,
+    "reseau_altium": "NetR3_2"
+   },
+   {
+    "forme": "rond",
+    "hw": 1.20000014,
+    "hh": 1.20000014,
+    "th": true,
+    "trou": 1.69999914,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rond",
+    "hw": 1.20000014,
+    "hh": 1.20000014,
+    "th": true,
+    "trou": 1.69999914,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rond",
+    "hw": 1.20000014,
+    "hh": 1.20000014,
+    "th": true,
+    "trou": 1.69999914,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rond",
+    "hw": 1.20000014,
+    "hh": 1.20000014,
+    "th": true,
+    "trou": 1.69999914,
+    "reseau_altium": "GND"
+   }
+  ],
+  "SENSE2": [
+   {
+    "forme": "rond",
+    "hw": 1.20000014,
+    "hh": 1.20000014,
+    "th": true,
+    "trou": 1.69999914,
+    "reseau_altium": "NetR104_ALIM2_1"
+   },
+   {
+    "forme": "rond",
+    "hw": 1.20000014,
+    "hh": 1.20000014,
+    "th": true,
+    "trou": 1.69999914,
+    "reseau_altium": "NetR104_ALIM2_1"
+   },
+   {
+    "forme": "rond",
+    "hw": 1.20000014,
+    "hh": 1.20000014,
+    "th": true,
+    "trou": 1.69999914,
+    "reseau_altium": "NetR104_ALIM2_1"
+   },
+   {
+    "forme": "rond",
+    "hw": 1.20000014,
+    "hh": 1.20000014,
+    "th": true,
+    "trou": 1.69999914,
+    "reseau_altium": "NetR104_ALIM2_1"
+   },
+   {
+    "forme": "rond",
+    "hw": 1.00000054,
+    "hh": 1.00000054,
+    "th": true,
+    "trou": 1.49999954,
+    "reseau_altium": "NetR101_ALIM2_1"
+   }
+  ],
+  "SENSE1": [
+   {
+    "forme": "rond",
+    "hw": 1.00000054,
+    "hh": 1.00000054,
+    "th": true,
+    "trou": 1.49999954,
+    "reseau_altium": "NetR101_ALIM1_1"
+   },
+   {
+    "forme": "rond",
+    "hw": 1.20000014,
+    "hh": 1.20000014,
+    "th": true,
+    "trou": 1.69999914,
+    "reseau_altium": "NetR104_ALIM1_1"
+   },
+   {
+    "forme": "rond",
+    "hw": 1.20000014,
+    "hh": 1.20000014,
+    "th": true,
+    "trou": 1.69999914,
+    "reseau_altium": "NetR104_ALIM1_1"
+   },
+   {
+    "forme": "rond",
+    "hw": 1.20000014,
+    "hh": 1.20000014,
+    "th": true,
+    "trou": 1.69999914,
+    "reseau_altium": "NetR104_ALIM1_1"
+   },
+   {
+    "forme": "rond",
+    "hw": 1.20000014,
+    "hh": 1.20000014,
+    "th": true,
+    "trou": 1.69999914,
+    "reseau_altium": "NetR104_ALIM1_1"
+   }
+  ],
+  "OUT2": [
+   {
+    "forme": "rond",
+    "hw": 1.20000014,
+    "hh": 1.20000014,
+    "th": true,
+    "trou": 1.69999914,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rond",
+    "hw": 1.20000014,
+    "hh": 1.20000014,
+    "th": true,
+    "trou": 1.69999914,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rond",
+    "hw": 1.20000014,
+    "hh": 1.20000014,
+    "th": true,
+    "trou": 1.69999914,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rond",
+    "hw": 1.20000014,
+    "hh": 1.20000014,
+    "th": true,
+    "trou": 1.69999914,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rond",
+    "hw": 1.00000054,
+    "hh": 1.00000054,
+    "th": true,
+    "trou": 1.49999954,
+    "reseau_altium": "OUT_CH2"
+   }
+  ],
+  "OUT1": [
+   {
+    "forme": "rond",
+    "hw": 1.00000054,
+    "hh": 1.00000054,
+    "th": true,
+    "trou": 1.49999954,
+    "reseau_altium": "OUT_CH1"
+   },
+   {
+    "forme": "rond",
+    "hw": 1.20000014,
+    "hh": 1.20000014,
+    "th": true,
+    "trou": 1.69999914,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rond",
+    "hw": 1.20000014,
+    "hh": 1.20000014,
+    "th": true,
+    "trou": 1.69999914,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rond",
+    "hw": 1.20000014,
+    "hh": 1.20000014,
+    "th": true,
+    "trou": 1.69999914,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rond",
+    "hw": 1.20000014,
+    "hh": 1.20000014,
+    "th": true,
+    "trou": 1.69999914,
+    "reseau_altium": "GND"
+   }
+  ],
+  "R106_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.8249996199999999,
+    "hh": 1.84000013,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD16_ALIM2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.8249996199999999,
+    "hh": 1.84000013,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR62_ALIM2_1"
+   }
+  ],
+  "R106_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.8249996199999999,
+    "hh": 1.84000013,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD16_ALIM1_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.8249996199999999,
+    "hh": 1.84000013,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR62_ALIM1_1"
+   }
+  ],
+  "R105_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR104_ALIM2_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   }
+  ],
+  "R105_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR104_ALIM1_1"
+   }
+  ],
+  "R104_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR104_ALIM2_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "Vcons_ALIM2"
+   }
+  ],
+  "R104_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR104_ALIM1_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "Vcons_ALIM1"
+   }
+  ],
+  "R103_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "Vcons_ALIM2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "Vramp_ALIM2"
+   }
+  ],
+  "R103_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "Vramp_ALIM1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "Vcons_ALIM1"
+   }
+  ],
+  "R102_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR101_ALIM2_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "Vsense_ALIM2"
+   }
+  ],
+  "R102_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "Vsense_ALIM1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR101_ALIM1_1"
+   }
+  ],
+  "R101_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR101_ALIM2_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR100_ALIM2_1"
+   }
+  ],
+  "R101_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR101_ALIM1_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR100_ALIM1_1"
+   }
+  ],
+  "R100_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR100_ALIM2_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "OUT_CH2"
+   }
+  ],
+  "R100_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR100_ALIM1_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "OUT_CH1"
+   }
+  ],
+  "R99_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD15_ALIM2_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC48_ALIM2_1"
+   }
+  ],
+  "R99_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD15_ALIM1_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC48_ALIM1_1"
+   }
+  ],
+  "P1": [
+   {
+    "forme": "oblong",
+    "hw": 1.90000001,
+    "hh": 0.89999947,
+    "th": true,
+    "trou": 1.00000054,
+    "reseau_altium": "+12V"
+   },
+   {
+    "forme": "oblong",
+    "hw": 1.54999944,
+    "hh": 0.89999947,
+    "th": true,
+    "trou": 1.00000054,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.89999947,
+    "hh": 1.65000051,
+    "th": true,
+    "trou": 1.00000054,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.89999947,
+    "hh": 1.65000051,
+    "th": true,
+    "trou": 1.00000054,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7999996699999999,
+    "hh": 0.7999996699999999,
+    "th": true,
+    "trou": 1.5999993399999999,
+    "reseau_altium": ""
+   }
+  ],
+  "C50_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "Vsense_ALIM2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "OUT_CH2"
+   }
+  ],
+  "C50_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "Vsense_ALIM1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "OUT_CH1"
+   }
+  ],
+  "C49_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC27_ALIM2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC48_ALIM2_1"
+   }
+  ],
+  "C49_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC27_ALIM1_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC48_ALIM1_1"
+   }
+  ],
+  "C48_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC48_ALIM2_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC27_ALIM2_2"
+   }
+  ],
+  "C48_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC48_ALIM1_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC27_ALIM1_2"
+   }
+  ],
+  "R98_VOLT2": [
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetDS3_VOLT2_5"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   }
+  ],
+  "R98_VOLT1": [
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetDS3_VOLT1_5"
+   }
+  ],
+  "U24_ALIM2": [
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC32_ALIM2_1"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "Vramp_ALIM2"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+10V"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "-5V"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR76_ALIM2_1"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR72_ALIM2_2"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR72_ALIM2_1"
+   }
+  ],
+  "U23_ALIM2": [
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "Vcons_ALIM2"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC27_ALIM2_2"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC27_ALIM2_1"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+10V"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "-5V"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR70_ALIM2_2"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC25_ALIM2_1"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC25_ALIM2_2"
+   }
+  ],
+  "U22_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.50000027,
+    "hh": 0.27499945,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+10V"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.50000027,
+    "hh": 0.27499945,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetM3_ALIM2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.50000027,
+    "hh": 0.27499945,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD16_ALIM2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.50000027,
+    "hh": 0.27499945,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.50000027,
+    "hh": 0.27499945,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetM3_ALIM2_1"
+   }
+  ],
+  "U21_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD4_ALIM2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR48_ALIM2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   }
+  ],
+  "U20_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD7_ALIM2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR42_ALIM2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   }
+  ],
+  "U19_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD12_ALIM2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR47_ALIM2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   }
+  ],
+  "U18_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD6_ALIM2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR51_ALIM2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   }
+  ],
+  "U17_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD13_ALIM2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR50_ALIM2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   }
+  ],
+  "U16_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD5_ALIM2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR49_ALIM2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   }
+  ],
+  "U15_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD11_ALIM2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR46_ALIM2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   }
+  ],
+  "U14_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD10_ALIM2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR45_ALIM2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   }
+  ],
+  "U13_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD9_ALIM2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR44_ALIM2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   }
+  ],
+  "U12_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD8_ALIM2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR43_ALIM2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   }
+  ],
+  "U11_ALIM2": [
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "Vmesure_ALIM2"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "Vmesure_ALIM2"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetM3_ALIM2_3"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+10V"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR42_ALIM2_1"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR42_ALIM2_1"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC24_ALIM2_2"
+   }
+  ],
+  "R87_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetQ6_ALIM2_3"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "-5V"
+   }
+  ],
+  "R86_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD19_ALIM2_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR85_ALIM2_2"
+   }
+  ],
+  "R85_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 1.00000054,
+    "hh": 0.7999996699999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR85_ALIM2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.7999996699999999,
+    "hh": 1.00000054,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC32_ALIM2_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.7999996699999999,
+    "hh": 1.00000054,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR85_ALIM2_2"
+   }
+  ],
+  "R84_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD21_ALIM2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+10V"
+   }
+  ],
+  "R83_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC27_ALIM2_2"
+   }
+  ],
+  "R82_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "Vsense_ALIM2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC27_ALIM2_2"
+   }
+  ],
+  "R81_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR76_ALIM2_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   }
+  ],
+  "R80_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 1.00000054,
+    "hh": 0.7999996699999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR79_ALIM2_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.7999996699999999,
+    "hh": 1.00000054,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+2.5Vref"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.7999996699999999,
+    "hh": 1.00000054,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   }
+  ],
+  "R79_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC26_ALIM2_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR79_ALIM2_1"
+   }
+  ],
+  "R78_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC26_ALIM2_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR77_ALIM2_2"
+   }
+  ],
+  "R77_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 1.00000054,
+    "hh": 0.7999996699999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR77_ALIM2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.7999996699999999,
+    "hh": 1.00000054,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.7999996699999999,
+    "hh": 1.00000054,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+2.5Vref"
+   }
+  ],
+  "R76_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR76_ALIM2_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "Vramp_ALIM2"
+   }
+  ],
+  "R75_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR72_ALIM2_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD19_ALIM2_1"
+   }
+  ],
+  "R74_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC26_ALIM2_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR72_ALIM2_2"
+   }
+  ],
+  "R73_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+10V"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD15_ALIM2_1"
+   }
+  ],
+  "R72_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR72_ALIM2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR72_ALIM2_1"
+   }
+  ],
+  "R71_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetM4_ALIM2_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD15_ALIM2_1"
+   }
+  ],
+  "R70_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 1.00000054,
+    "hh": 0.7999996699999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR70_ALIM2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.7999996699999999,
+    "hh": 1.00000054,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+2.5Vref"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.7999996699999999,
+    "hh": 1.00000054,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+6.5Vref"
+   }
+  ],
+  "R69_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+2.5Vref"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetM3_ALIM2_3"
+   }
+  ],
+  "R68_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetQ5_ALIM2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   }
+  ],
+  "R67_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+8V"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetM3_ALIM2_2"
+   }
+  ],
+  "R66_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "Vmesure_ALIM2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC25_ALIM2_1"
+   }
+  ],
+  "R65_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetQ4_ALIM2_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetQ5_ALIM2_2"
+   }
+  ],
+  "R64_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+10V"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD14_ALIM2_1"
+   }
+  ],
+  "R63_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetQ4_ALIM2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD16_ALIM2_2"
+   }
+  ],
+  "R62_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.8249996199999999,
+    "hh": 1.84000013,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR62_ALIM2_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.8249996199999999,
+    "hh": 1.84000013,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+8V"
+   }
+  ],
+  "R61_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR48_ALIM2_2"
+   }
+  ],
+  "R60_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR51_ALIM2_2"
+   }
+  ],
+  "R59_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR50_ALIM2_2"
+   }
+  ],
+  "R58_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR49_ALIM2_2"
+   }
+  ],
+  "R57_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR47_ALIM2_2"
+   }
+  ],
+  "R56_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR46_ALIM2_2"
+   }
+  ],
+  "R55_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR45_ALIM2_2"
+   }
+  ],
+  "R54_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR44_ALIM2_2"
+   }
+  ],
+  "R53_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR43_ALIM2_2"
+   }
+  ],
+  "R52_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR42_ALIM2_2"
+   }
+  ],
+  "R51_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR51_ALIM2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR42_ALIM2_1"
+   }
+  ],
+  "R50_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR50_ALIM2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR42_ALIM2_1"
+   }
+  ],
+  "R49_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR49_ALIM2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR42_ALIM2_1"
+   }
+  ],
+  "R48_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR48_ALIM2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR42_ALIM2_1"
+   }
+  ],
+  "R47_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR47_ALIM2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR42_ALIM2_1"
+   }
+  ],
+  "R46_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR46_ALIM2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR42_ALIM2_1"
+   }
+  ],
+  "R45_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR45_ALIM2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR42_ALIM2_1"
+   }
+  ],
+  "R44_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR44_ALIM2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR42_ALIM2_1"
+   }
+  ],
+  "R43_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR43_ALIM2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR42_ALIM2_1"
+   }
+  ],
+  "R42_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR42_ALIM2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR42_ALIM2_1"
+   }
+  ],
+  "R41_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "Vmesure_ALIM2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC24_ALIM2_2"
+   }
+  ],
+  "R40_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD6_ALIM2_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+8V"
+   }
+  ],
+  "R39_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD13_ALIM2_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+8V"
+   }
+  ],
+  "R38_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD5_ALIM2_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+8V"
+   }
+  ],
+  "R37_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD4_ALIM2_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+8V"
+   }
+  ],
+  "R36_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD12_ALIM2_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+8V"
+   }
+  ],
+  "R35_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD11_ALIM2_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+8V"
+   }
+  ],
+  "R34_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD10_ALIM2_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+8V"
+   }
+  ],
+  "R33_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD9_ALIM2_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+8V"
+   }
+  ],
+  "R32_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD8_ALIM2_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+8V"
+   }
+  ],
+  "R31_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD7_ALIM2_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+8V"
+   }
+  ],
+  "Q6_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.52500022,
+    "th": true,
+    "trou": 0.8000009399999999,
+    "reseau_altium": "OUT_CH2"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.52500022,
+    "hh": 0.52500022,
+    "th": true,
+    "trou": 0.8000009399999999,
+    "reseau_altium": "NetD21_ALIM2_1"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.52500022,
+    "hh": 0.52500022,
+    "th": true,
+    "trou": 0.8000009399999999,
+    "reseau_altium": "NetQ6_ALIM2_3"
+   }
+  ],
+  "Q5_ALIM2": [
+   {
+    "forme": "rond",
+    "hw": 0.52500022,
+    "hh": 0.52500022,
+    "th": true,
+    "trou": 0.8000009399999999,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.52500022,
+    "hh": 0.52500022,
+    "th": true,
+    "trou": 0.8000009399999999,
+    "reseau_altium": "NetQ5_ALIM2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.52500022,
+    "th": true,
+    "trou": 0.8000009399999999,
+    "reseau_altium": "NetD15_ALIM2_1"
+   }
+  ],
+  "Q4_ALIM2": [
+   {
+    "forme": "rond",
+    "hw": 0.52500022,
+    "hh": 0.52500022,
+    "th": true,
+    "trou": 0.8000009399999999,
+    "reseau_altium": "+8V"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.52500022,
+    "hh": 0.52500022,
+    "th": true,
+    "trou": 0.8000009399999999,
+    "reseau_altium": "NetQ4_ALIM2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.52500022,
+    "th": true,
+    "trou": 0.8000009399999999,
+    "reseau_altium": "NetQ4_ALIM2_1"
+   }
+  ],
+  "M7_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.40000046999999994,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "ALIM_OFF"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.40000046999999994,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC27_ALIM2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.40000046999999994,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+10V"
+   }
+  ],
+  "M6_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.40000046999999994,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "ALIM_OFF"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.40000046999999994,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC32_ALIM2_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.40000046999999994,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "Vramp_ALIM2"
+   }
+  ],
+  "M5_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.40000046999999994,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD15_ALIM2_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.40000046999999994,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.40000046999999994,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "ALIM_OFF"
+   }
+  ],
+  "M4_ALIM2": [
+   {
+    "forme": "rond",
+    "hw": 0.84999957,
+    "hh": 0.84999957,
+    "th": true,
+    "trou": 1.10000034,
+    "reseau_altium": "OUT_CH2"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.84999957,
+    "hh": 0.84999957,
+    "th": true,
+    "trou": 1.10000034,
+    "reseau_altium": "NetD16_ALIM2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.84999957,
+    "hh": 0.84999957,
+    "th": true,
+    "trou": 1.10000034,
+    "reseau_altium": "NetM4_ALIM2_1"
+   },
+   {
+    "forme": "rond",
+    "hw": 2.50000008,
+    "hh": 2.50000008,
+    "th": true,
+    "trou": 3.20000122,
+    "reseau_altium": ""
+   }
+  ],
+  "M3_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.40000046999999994,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetM3_ALIM2_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.40000046999999994,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetM3_ALIM2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.40000046999999994,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetM3_ALIM2_3"
+   }
+  ],
+  "D23_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.47500032000000003,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD22_ALIM2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.47500032000000003,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "-5V"
+   }
+  ],
+  "D22_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.47500032000000003,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD22_ALIM2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.47500032000000003,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD21_ALIM2_1"
+   }
+  ],
+  "D21_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.47500032000000003,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD21_ALIM2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.47500032000000003,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD21_ALIM2_1"
+   }
+  ],
+  "D20_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.40000046999999994,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD19_ALIM2_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.40000046999999994,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": ""
+   },
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.40000046999999994,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "-2.5Vref"
+   }
+  ],
+  "D19_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.40000046999999994,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+2.5Vref"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.40000046999999994,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": ""
+   },
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.40000046999999994,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD19_ALIM2_1"
+   }
+  ],
+  "D18_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.40000046999999994,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC27_ALIM2_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.40000046999999994,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": ""
+   },
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.40000046999999994,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD15_ALIM2_1"
+   }
+  ],
+  "D17_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.47500032000000003,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "OUT_CH2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.47500032000000003,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   }
+  ],
+  "D16_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.47500032000000003,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD16_ALIM2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.47500032000000003,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "OUT_CH2"
+   }
+  ],
+  "D15_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.40000046999999994,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD15_ALIM2_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.40000046999999994,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": ""
+   },
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.40000046999999994,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC25_ALIM2_2"
+   }
+  ],
+  "D14_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.60000007,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC25_ALIM2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.60000007,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD14_ALIM2_1"
+   }
+  ],
+  "D13_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.60000007,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD13_ALIM2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.60000007,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD13_ALIM2_1"
+   }
+  ],
+  "D12_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.60000007,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD12_ALIM2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.60000007,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD12_ALIM2_1"
+   }
+  ],
+  "D11_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.60000007,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD11_ALIM2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.60000007,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD11_ALIM2_1"
+   }
+  ],
+  "D10_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.60000007,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD10_ALIM2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.60000007,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD10_ALIM2_1"
+   }
+  ],
+  "D9_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.60000007,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD9_ALIM2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.60000007,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD9_ALIM2_1"
+   }
+  ],
+  "D8_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.60000007,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD8_ALIM2_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.60000007,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD8_ALIM2_2"
+   }
+  ],
+  "D7_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.60000007,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD7_ALIM2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.60000007,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD7_ALIM2_1"
+   }
+  ],
+  "D6_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.60000007,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD6_ALIM2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.60000007,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD6_ALIM2_1"
+   }
+  ],
+  "D5_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.60000007,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD5_ALIM2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.60000007,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD5_ALIM2_1"
+   }
+  ],
+  "D4_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.60000007,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD4_ALIM2_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.60000007,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD4_ALIM2_2"
+   }
+  ],
+  "C31_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+8V"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   }
+  ],
+  "C30_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 1.34999984,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "OUT_CH2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 1.34999984,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   }
+  ],
+  "C29_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "OUT_CH2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   }
+  ],
+  "C28_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC26_ALIM2_1"
+   }
+  ],
+  "C27_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC27_ALIM2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC27_ALIM2_1"
+   }
+  ],
+  "C26_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC26_ALIM2_1"
+   }
+  ],
+  "C25_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC25_ALIM2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC25_ALIM2_1"
+   }
+  ],
+  "C24_ALIM2": [
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC24_ALIM2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   }
+  ],
+  "U7": [
+   {
+    "forme": "rond",
+    "hw": 1.60000061,
+    "hh": 1.60000061,
+    "th": true,
+    "trou": 3.20000122,
+    "reseau_altium": ""
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7999983999999999,
+    "hh": 0.7999983999999999,
+    "th": true,
+    "trou": 0.9999979999999999,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.7999983999999999,
+    "hh": 0.7999983999999999,
+    "th": true,
+    "trou": 0.9999979999999999,
+    "reseau_altium": "+8V"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7999983999999999,
+    "hh": 0.7999983999999999,
+    "th": true,
+    "trou": 0.9999979999999999,
+    "reseau_altium": "+5V"
+   }
+  ],
+  "U25_VOLT2": [
+   {
+    "forme": "rect",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "+5V"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "SEG1_D_VOLT2"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "SEG1_C_VOLT2"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "SEG1_B_VOLT2"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "SEG1_A_VOLT2"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "SEG1_F_VOLT2"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "SEG1_G_VOLT2"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "SEG1_E_VOLT2"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "SEG2_D_VOLT2"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "SEG2_C_VOLT2"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "SEG2_B_VOLT2"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "SEG2_A_VOLT2"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "SEG2_F_VOLT2"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "SEG2_E_VOLT2"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "SEG3_D_VOLT2"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "SEG3_B_VOLT2"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "SEG3_F_VOLT2"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "SEG3_E_VOLT2"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": ""
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": ""
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "SEG3_G_VOLT2"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "SEG3_A_VOLT2"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "SEG3_C_VOLT2"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "SEG2_G_VOLT2"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "-5V"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "NetC45_VOLT2_2"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "NetR93_VOLT2_2"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "NetC44_VOLT2_2"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "IN_HI_VOLT2"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "NetC46_VOLT2_1"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "NetC46_VOLT2_2"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "NetR95_VOLT2_1"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": ""
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "NetC47_VOLT2_1"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "NetR97_VOLT2_1"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "NetC47_VOLT2_2"
+   }
+  ],
+  "U25_VOLT1": [
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "NetC47_VOLT1_2"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "NetR97_VOLT1_1"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "NetC47_VOLT1_1"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": ""
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "NetR95_VOLT1_1"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "NetC46_VOLT1_2"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "NetC46_VOLT1_1"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "IN_HI_VOLT1"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "NetC44_VOLT1_2"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "NetR93_VOLT1_2"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "NetC45_VOLT1_2"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "-5V"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "SEG2_G_VOLT1"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "SEG3_C_VOLT1"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "SEG3_A_VOLT1"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "SEG3_G_VOLT1"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": ""
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": ""
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "SEG3_E_VOLT1"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "SEG3_F_VOLT1"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "SEG3_B_VOLT1"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "SEG3_D_VOLT1"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "SEG2_E_VOLT1"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "SEG2_F_VOLT1"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "SEG2_A_VOLT1"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "SEG2_B_VOLT1"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "SEG2_C_VOLT1"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "SEG2_D_VOLT1"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "SEG1_E_VOLT1"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "SEG1_G_VOLT1"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "SEG1_F_VOLT1"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "SEG1_A_VOLT1"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "SEG1_B_VOLT1"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "SEG1_C_VOLT1"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "SEG1_D_VOLT1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.7874,
+    "hh": 0.7874,
+    "th": true,
+    "trou": 0.8635999999999999,
+    "reseau_altium": "+5V"
+   }
+  ],
+  "U24_ALIM1": [
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC32_ALIM1_1"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "Vramp_ALIM1"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+10V"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "-5V"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR76_ALIM1_1"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR72_ALIM1_2"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR72_ALIM1_1"
+   }
+  ],
+  "U23_ALIM1": [
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "Vcons_ALIM1"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC27_ALIM1_2"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC27_ALIM1_1"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+10V"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "-5V"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR70_ALIM1_2"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC25_ALIM1_1"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC25_ALIM1_2"
+   }
+  ],
+  "U22_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.50000027,
+    "hh": 0.27499945,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.50000027,
+    "hh": 0.27499945,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD16_ALIM1_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.50000027,
+    "hh": 0.27499945,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+10V"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.50000027,
+    "hh": 0.27499945,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetM3_ALIM1_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.50000027,
+    "hh": 0.27499945,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetM3_ALIM1_1"
+   }
+  ],
+  "U21_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR48_ALIM1_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD4_ALIM1_2"
+   }
+  ],
+  "U20_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR42_ALIM1_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD7_ALIM1_2"
+   }
+  ],
+  "U19_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR47_ALIM1_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD12_ALIM1_2"
+   }
+  ],
+  "U18_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR51_ALIM1_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD6_ALIM1_2"
+   }
+  ],
+  "U17_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR50_ALIM1_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD13_ALIM1_2"
+   }
+  ],
+  "U16_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR49_ALIM1_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD5_ALIM1_2"
+   }
+  ],
+  "U15_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR46_ALIM1_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD11_ALIM1_2"
+   }
+  ],
+  "U14_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR45_ALIM1_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD10_ALIM1_2"
+   }
+  ],
+  "U13_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR44_ALIM1_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD9_ALIM1_2"
+   }
+  ],
+  "U12_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR43_ALIM1_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD8_ALIM1_2"
+   }
+  ],
+  "U11_ALIM1": [
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC24_ALIM1_2"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR42_ALIM1_1"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR42_ALIM1_1"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+10V"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetM3_ALIM1_3"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "Vmesure_ALIM1"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "Vmesure_ALIM1"
+   }
+  ],
+  "U10": [
+   {
+    "forme": "rect",
+    "hw": 0.8249996199999999,
+    "hh": 1.20000014,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.29999939999999997,
+    "hh": 0.11999976,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC16_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.29999939999999997,
+    "hh": 0.11999976,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetM2_4"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.29999939999999997,
+    "hh": 0.11999976,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC19_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.29999939999999997,
+    "hh": 0.11999976,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetM1_4"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.29999939999999997,
+    "hh": 0.11999976,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC19_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.29999939999999997,
+    "hh": 0.11999976,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC21_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.29999939999999997,
+    "hh": 0.11999976,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC22_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.29999939999999997,
+    "hh": 0.11999976,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR25_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.29999939999999997,
+    "hh": 0.11999976,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC18_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.29999939999999997,
+    "hh": 0.11999976,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+12V"
+   }
+  ],
+  "U9": [
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+5V"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "-5V"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": ""
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": ""
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC13_1"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC13_2"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": ""
+   }
+  ],
+  "U8": [
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC12_1"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR23_2"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": ""
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": ""
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+10V"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+10V"
+   }
+  ],
+  "U6": [
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "-2.5Vref"
+   }
+  ],
+  "U5": [
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+6.5Vref"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR19_1"
+   }
+  ],
+  "U4": [
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR16_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR16_2"
+   }
+  ],
+  "U3": [
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR14_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR18_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   }
+  ],
+  "U2": [
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+8V"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+2.5Vref"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+2.5Vref"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR16_2"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR14_1"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+5Vref"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+5Vref"
+   }
+  ],
+  "U1": [
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+5V"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+5V"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+5V"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+5V"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+5V"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+5V"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC5_2"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetQ7_2"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": ""
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetSW_TRIG_AL1_5"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC4_2"
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": ""
+   },
+   {
+    "forme": "oblong",
+    "hw": 0.77499972,
+    "hh": 0.29999939999999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": ""
+   }
+  ],
+  "SW_TRIG_AL1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 1.25000004,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD1_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 1.25000004,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+5V"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 1.25000004,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD2_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 1.25000004,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC2_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 1.25000004,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetSW_TRIG_AL1_5"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 1.25000004,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetQ1_3"
+   }
+  ],
+  "SET_AL1": [
+   {
+    "forme": "rect",
+    "hw": 0.77499972,
+    "hh": 0.64999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC5_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.77499972,
+    "hh": 0.64999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC5_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.77499972,
+    "hh": 0.64999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.77499972,
+    "hh": 0.64999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   }
+  ],
+  "RESET_AL1": [
+   {
+    "forme": "rect",
+    "hw": 0.77499972,
+    "hh": 0.64999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC4_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.77499972,
+    "hh": 0.64999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC4_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.77499972,
+    "hh": 0.64999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.77499972,
+    "hh": 0.64999997,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   }
+  ],
+  "R97_VOLT2": [
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR97_VOLT2_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC47_VOLT2_2"
+   }
+  ],
+  "R97_VOLT1": [
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR97_VOLT1_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC47_VOLT1_2"
+   }
+  ],
+  "R96_VOLT2": [
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR95_VOLT2_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   }
+  ],
+  "R96_VOLT1": [
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR95_VOLT1_1"
+   }
+  ],
+  "R95_VOLT2": [
+   {
+    "forme": "rect",
+    "hw": 0.7999996699999999,
+    "hh": 1.00000054,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR94_VOLT2_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.7999996699999999,
+    "hh": 1.00000054,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR95_VOLT2_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 1.00000054,
+    "hh": 0.7999996699999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR95_VOLT2_1"
+   }
+  ],
+  "R95_VOLT1": [
+   {
+    "forme": "rect",
+    "hw": 1.00000054,
+    "hh": 0.7999996699999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR95_VOLT1_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.7999996699999999,
+    "hh": 1.00000054,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR95_VOLT1_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.7999996699999999,
+    "hh": 1.00000054,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR94_VOLT1_1"
+   }
+  ],
+  "R94_VOLT2": [
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR94_VOLT2_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+2.5Vref"
+   }
+  ],
+  "R94_VOLT1": [
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+2.5Vref"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR94_VOLT1_1"
+   }
+  ],
+  "R93_VOLT2": [
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC44_VOLT2_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR93_VOLT2_2"
+   }
+  ],
+  "R93_VOLT1": [
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC44_VOLT1_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR93_VOLT1_2"
+   }
+  ],
+  "R92_VOLT2": [
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR90_VOLT2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   }
+  ],
+  "R92_VOLT1": [
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR90_VOLT1_2"
+   }
+  ],
+  "R91_VOLT2": [
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR90_VOLT2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "IN_HI_VOLT2"
+   }
+  ],
+  "R91_VOLT1": [
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR90_VOLT1_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "IN_HI_VOLT1"
+   }
+  ],
+  "R90_VOLT2": [
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "OUT_CH2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR90_VOLT2_2"
+   }
+  ],
+  "R90_VOLT1": [
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "OUT_CH1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR90_VOLT1_2"
+   }
+  ],
+  "R89": [
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+10V"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "ALIM_OFF"
+   }
+  ],
+  "R88": [
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+5V"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetQ7_1"
+   }
+  ],
+  "R87_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "-5V"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetQ6_ALIM1_3"
+   }
+  ],
+  "R86_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR85_ALIM1_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD19_ALIM1_1"
+   }
+  ],
+  "R85_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 1.00000054,
+    "hh": 0.7999996699999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR85_ALIM1_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.7999996699999999,
+    "hh": 1.00000054,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC32_ALIM1_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.7999996699999999,
+    "hh": 1.00000054,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR85_ALIM1_2"
+   }
+  ],
+  "R84_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD21_ALIM1_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+10V"
+   }
+  ],
+  "R83_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC27_ALIM1_2"
+   }
+  ],
+  "R82_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC27_ALIM1_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "Vsense_ALIM1"
+   }
+  ],
+  "R81_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR76_ALIM1_1"
+   }
+  ],
+  "R80_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.7999996699999999,
+    "hh": 1.00000054,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 1.00000054,
+    "hh": 0.7999996699999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR79_ALIM1_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.7999996699999999,
+    "hh": 1.00000054,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+2.5Vref"
+   }
+  ],
+  "R79_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC26_ALIM1_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR79_ALIM1_1"
+   }
+  ],
+  "R78_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR77_ALIM1_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC26_ALIM1_1"
+   }
+  ],
+  "R77_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.7999996699999999,
+    "hh": 1.00000054,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+2.5Vref"
+   },
+   {
+    "forme": "rect",
+    "hw": 1.00000054,
+    "hh": 0.7999996699999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR77_ALIM1_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.7999996699999999,
+    "hh": 1.00000054,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   }
+  ],
+  "R76_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR76_ALIM1_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "Vramp_ALIM1"
+   }
+  ],
+  "R75_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR72_ALIM1_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD19_ALIM1_1"
+   }
+  ],
+  "R74_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC26_ALIM1_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR72_ALIM1_2"
+   }
+  ],
+  "R73_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD15_ALIM1_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+10V"
+   }
+  ],
+  "R72_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR72_ALIM1_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR72_ALIM1_1"
+   }
+  ],
+  "R71_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD15_ALIM1_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetM4_ALIM1_1"
+   }
+  ],
+  "R70_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 1.00000054,
+    "hh": 0.7999996699999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR70_ALIM1_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.7999996699999999,
+    "hh": 1.00000054,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+2.5Vref"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.7999996699999999,
+    "hh": 1.00000054,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+6.5Vref"
+   }
+  ],
+  "R69_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetM3_ALIM1_3"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+2.5Vref"
+   }
+  ],
+  "R68_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetQ5_ALIM1_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   }
+  ],
+  "R67_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+8V"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetM3_ALIM1_2"
+   }
+  ],
+  "R66_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "Vmesure_ALIM1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC25_ALIM1_1"
+   }
+  ],
+  "R65_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetQ4_ALIM1_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetQ5_ALIM1_2"
+   }
+  ],
+  "R64_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+10V"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD14_ALIM1_1"
+   }
+  ],
+  "R63_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetQ4_ALIM1_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD16_ALIM1_2"
+   }
+  ],
+  "R62_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.8249996199999999,
+    "hh": 1.84000013,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR62_ALIM1_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.8249996199999999,
+    "hh": 1.84000013,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+8V"
+   }
+  ],
+  "R61_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR48_ALIM1_2"
+   }
+  ],
+  "R60_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR51_ALIM1_2"
+   }
+  ],
+  "R59_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR50_ALIM1_2"
+   }
+  ],
+  "R58_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR49_ALIM1_2"
+   }
+  ],
+  "R57_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR47_ALIM1_2"
+   }
+  ],
+  "R56_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR46_ALIM1_2"
+   }
+  ],
+  "R55_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR45_ALIM1_2"
+   }
+  ],
+  "R54_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR44_ALIM1_2"
+   }
+  ],
+  "R53_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR43_ALIM1_2"
+   }
+  ],
+  "R52_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR42_ALIM1_2"
+   }
+  ],
+  "R51_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR42_ALIM1_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR51_ALIM1_2"
+   }
+  ],
+  "R50_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR42_ALIM1_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR50_ALIM1_2"
+   }
+  ],
+  "R49_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR42_ALIM1_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR49_ALIM1_2"
+   }
+  ],
+  "R48_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR42_ALIM1_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR48_ALIM1_2"
+   }
+  ],
+  "R47_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR42_ALIM1_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR47_ALIM1_2"
+   }
+  ],
+  "R46_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR42_ALIM1_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR46_ALIM1_2"
+   }
+  ],
+  "R45_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR42_ALIM1_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR45_ALIM1_2"
+   }
+  ],
+  "R44_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR42_ALIM1_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR44_ALIM1_2"
+   }
+  ],
+  "R43_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR42_ALIM1_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR43_ALIM1_2"
+   }
+  ],
+  "R42_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR42_ALIM1_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR42_ALIM1_2"
+   }
+  ],
+  "R41_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC24_ALIM1_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "Vmesure_ALIM1"
+   }
+  ],
+  "R40_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+8V"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD6_ALIM1_1"
+   }
+  ],
+  "R39_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+8V"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD13_ALIM1_1"
+   }
+  ],
+  "R38_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+8V"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD5_ALIM1_1"
+   }
+  ],
+  "R37_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+8V"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD4_ALIM1_1"
+   }
+  ],
+  "R36_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+8V"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD12_ALIM1_1"
+   }
+  ],
+  "R35_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+8V"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD11_ALIM1_1"
+   }
+  ],
+  "R34_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+8V"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD10_ALIM1_1"
+   }
+  ],
+  "R33_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+8V"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD9_ALIM1_1"
+   }
+  ],
+  "R32_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+8V"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD8_ALIM1_1"
+   }
+  ],
+  "R31_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+8V"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.8249996199999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD7_ALIM1_1"
+   }
+  ],
+  "R30": [
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC21_1"
+   }
+  ],
+  "R29": [
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC21_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC22_1"
+   }
+  ],
+  "R28": [
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetM2_4"
+   }
+  ],
+  "R27": [
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC21_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+8V"
+   }
+  ],
+  "R26": [
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC21_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+8V"
+   }
+  ],
+  "R25": [
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR25_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC16_2"
+   }
+  ],
+  "R24": [
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR23_2"
+   }
+  ],
+  "R23": [
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+10V"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR23_2"
+   }
+  ],
+  "R22": [
+   {
+    "forme": "rect",
+    "hw": 0.8249996199999999,
+    "hh": 1.84000013,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+12V"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.8249996199999999,
+    "hh": 1.84000013,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC12_1"
+   }
+  ],
+  "R21": [
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR19_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   }
+  ],
+  "R20": [
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR18_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   }
+  ],
+  "R19": [
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+6.5Vref"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR19_1"
+   }
+  ],
+  "R18": [
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR18_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR14_1"
+   }
+  ],
+  "R17": [
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "-5V"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "-2.5Vref"
+   }
+  ],
+  "R16": [
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR16_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+10V"
+   }
+  ],
+  "R15": [
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+10V"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+6.5Vref"
+   }
+  ],
+  "R14": [
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+8V"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR14_1"
+   }
+  ],
+  "R13": [
+   {
+    "forme": "rect",
+    "hw": 0.8249996199999999,
+    "hh": 1.84000013,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR12_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.8249996199999999,
+    "hh": 1.84000013,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   }
+  ],
+  "R12": [
+   {
+    "forme": "rect",
+    "hw": 0.8249996199999999,
+    "hh": 1.84000013,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetQ3_3"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.8249996199999999,
+    "hh": 1.84000013,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR12_1"
+   }
+  ],
+  "R11": [
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetQ3_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetQ7_2"
+   }
+  ],
+  "R10": [
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+5V"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC5_2"
+   }
+  ],
+  "R9": [
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+5V"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC4_2"
+   }
+  ],
+  "R8": [
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD3_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetQ2_3"
+   }
+  ],
+  "R7": [
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetQ7_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetQ2_1"
+   }
+  ],
+  "R6": [
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD2_2"
+   }
+  ],
+  "R5": [
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD1_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   }
+  ],
+  "R4": [
+   {
+    "forme": "rect",
+    "hw": 0.8249996199999999,
+    "hh": 1.84000013,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR3_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.8249996199999999,
+    "hh": 1.84000013,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   }
+  ],
+  "R3": [
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC2_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetR3_2"
+   }
+  ],
+  "R2": [
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC2_1"
+   }
+  ],
+  "R1": [
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetQ1_3"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.5750001199999999,
+    "hh": 0.67499992,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+5V"
+   }
+  ],
+  "Q7": [
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.40000046999999994,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "ALIM_OFF"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.40000046999999994,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetQ7_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.40000046999999994,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetQ7_2"
+   }
+  ],
+  "Q6_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.52500022,
+    "th": true,
+    "trou": 0.8000009399999999,
+    "reseau_altium": "OUT_CH1"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.52500022,
+    "hh": 0.52500022,
+    "th": true,
+    "trou": 0.8000009399999999,
+    "reseau_altium": "NetD21_ALIM1_1"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.52500022,
+    "hh": 0.52500022,
+    "th": true,
+    "trou": 0.8000009399999999,
+    "reseau_altium": "NetQ6_ALIM1_3"
+   }
+  ],
+  "Q5_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.52500022,
+    "th": true,
+    "trou": 0.8000009399999999,
+    "reseau_altium": "NetD15_ALIM1_1"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.52500022,
+    "hh": 0.52500022,
+    "th": true,
+    "trou": 0.8000009399999999,
+    "reseau_altium": "NetQ5_ALIM1_2"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.52500022,
+    "hh": 0.52500022,
+    "th": true,
+    "trou": 0.8000009399999999,
+    "reseau_altium": "GND"
+   }
+  ],
+  "Q4_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.52500022,
+    "hh": 0.52500022,
+    "th": true,
+    "trou": 0.8000009399999999,
+    "reseau_altium": "NetQ4_ALIM1_1"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.52500022,
+    "hh": 0.52500022,
+    "th": true,
+    "trou": 0.8000009399999999,
+    "reseau_altium": "NetQ4_ALIM1_2"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.52500022,
+    "hh": 0.52500022,
+    "th": true,
+    "trou": 0.8000009399999999,
+    "reseau_altium": "+8V"
+   }
+  ],
+  "Q3": [
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.40000046999999994,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+5V"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.40000046999999994,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetQ3_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.40000046999999994,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetQ3_3"
+   }
+  ],
+  "Q2": [
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.40000046999999994,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+5V"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.40000046999999994,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetQ2_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.40000046999999994,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetQ2_3"
+   }
+  ],
+  "Q1": [
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.40000046999999994,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.40000046999999994,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.40000046999999994,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetQ1_3"
+   }
+  ],
+  "M7_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.40000046999999994,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "ALIM_OFF"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.40000046999999994,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC27_ALIM1_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.40000046999999994,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+10V"
+   }
+  ],
+  "M6_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.40000046999999994,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "ALIM_OFF"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.40000046999999994,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC32_ALIM1_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.40000046999999994,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "Vramp_ALIM1"
+   }
+  ],
+  "M5_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.40000046999999994,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "ALIM_OFF"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.40000046999999994,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD15_ALIM1_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.40000046999999994,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   }
+  ],
+  "M4_ALIM1": [
+   {
+    "forme": "rond",
+    "hw": 2.50000008,
+    "hh": 2.50000008,
+    "th": true,
+    "trou": 3.20000122,
+    "reseau_altium": ""
+   },
+   {
+    "forme": "rect",
+    "hw": 0.84999957,
+    "hh": 0.84999957,
+    "th": true,
+    "trou": 1.10000034,
+    "reseau_altium": "NetM4_ALIM1_1"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.84999957,
+    "hh": 0.84999957,
+    "th": true,
+    "trou": 1.10000034,
+    "reseau_altium": "NetD16_ALIM1_2"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.84999957,
+    "hh": 0.84999957,
+    "th": true,
+    "trou": 1.10000034,
+    "reseau_altium": "OUT_CH1"
+   }
+  ],
+  "M3_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.40000046999999994,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetM3_ALIM1_3"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.40000046999999994,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetM3_ALIM1_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.40000046999999994,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetM3_ALIM1_1"
+   }
+  ],
+  "M2": [
+   {
+    "forme": "rect",
+    "hw": 0.31499937,
+    "hh": 0.24999949999999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.31499937,
+    "hh": 0.24999949999999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.31499937,
+    "hh": 0.24999949999999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.31499937,
+    "hh": 0.24999949999999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetM2_4"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.31499937,
+    "hh": 0.24999949999999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC19_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.31499937,
+    "hh": 0.24999949999999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC19_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.31499937,
+    "hh": 0.24999949999999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC19_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.31499937,
+    "hh": 0.24999949999999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC19_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.94999937,
+    "hh": 1.22500009,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC19_1"
+   }
+  ],
+  "M1": [
+   {
+    "forme": "rect",
+    "hw": 0.31499937,
+    "hh": 0.24999949999999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC19_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.31499937,
+    "hh": 0.24999949999999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC19_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.31499937,
+    "hh": 0.24999949999999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC19_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.31499937,
+    "hh": 0.24999949999999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetM1_4"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.31499937,
+    "hh": 0.24999949999999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+12V"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.31499937,
+    "hh": 0.24999949999999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+12V"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.31499937,
+    "hh": 0.24999949999999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+12V"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.31499937,
+    "hh": 0.24999949999999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+12V"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.94999937,
+    "hh": 1.22500009,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+12V"
+   }
+  ],
+  "L1": [
+   {
+    "forme": "rect",
+    "hw": 1.44999964,
+    "hh": 2.69999968,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+8V"
+   },
+   {
+    "forme": "rect",
+    "hw": 1.44999964,
+    "hh": 2.69999968,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC19_1"
+   }
+  ],
+  "DS3_VOLT2": [
+   {
+    "forme": "rect",
+    "hw": 0.8509,
+    "hh": 0.8509,
+    "th": true,
+    "trou": 1.0007599999999999,
+    "reseau_altium": "SEG3_E_VOLT2"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.8509,
+    "hh": 0.8509,
+    "th": true,
+    "trou": 1.0007599999999999,
+    "reseau_altium": "SEG3_D_VOLT2"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.8509,
+    "hh": 0.8509,
+    "th": true,
+    "trou": 1.0007599999999999,
+    "reseau_altium": "+5V"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.8509,
+    "hh": 0.8509,
+    "th": true,
+    "trou": 1.0007599999999999,
+    "reseau_altium": "SEG3_C_VOLT2"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.8509,
+    "hh": 0.8509,
+    "th": true,
+    "trou": 1.0007599999999999,
+    "reseau_altium": "NetDS3_VOLT2_5"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.8509,
+    "hh": 0.8509,
+    "th": true,
+    "trou": 1.0007599999999999,
+    "reseau_altium": "SEG3_B_VOLT2"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.8509,
+    "hh": 0.8509,
+    "th": true,
+    "trou": 1.0007599999999999,
+    "reseau_altium": "SEG3_A_VOLT2"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.8509,
+    "hh": 0.8509,
+    "th": true,
+    "trou": 1.0007599999999999,
+    "reseau_altium": "+5V"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.8509,
+    "hh": 0.8509,
+    "th": true,
+    "trou": 1.0007599999999999,
+    "reseau_altium": "SEG3_F_VOLT2"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.8509,
+    "hh": 0.8509,
+    "th": true,
+    "trou": 1.0007599999999999,
+    "reseau_altium": "SEG3_G_VOLT2"
+   }
+  ],
+  "DS3_VOLT1": [
+   {
+    "forme": "rond",
+    "hw": 0.8509,
+    "hh": 0.8509,
+    "th": true,
+    "trou": 1.0007599999999999,
+    "reseau_altium": "SEG3_G_VOLT1"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.8509,
+    "hh": 0.8509,
+    "th": true,
+    "trou": 1.0007599999999999,
+    "reseau_altium": "SEG3_F_VOLT1"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.8509,
+    "hh": 0.8509,
+    "th": true,
+    "trou": 1.0007599999999999,
+    "reseau_altium": "SEG3_A_VOLT1"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.8509,
+    "hh": 0.8509,
+    "th": true,
+    "trou": 1.0007599999999999,
+    "reseau_altium": "SEG3_B_VOLT1"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.8509,
+    "hh": 0.8509,
+    "th": true,
+    "trou": 1.0007599999999999,
+    "reseau_altium": "NetDS3_VOLT1_5"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.8509,
+    "hh": 0.8509,
+    "th": true,
+    "trou": 1.0007599999999999,
+    "reseau_altium": "SEG3_C_VOLT1"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.8509,
+    "hh": 0.8509,
+    "th": true,
+    "trou": 1.0007599999999999,
+    "reseau_altium": "SEG3_D_VOLT1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.8509,
+    "hh": 0.8509,
+    "th": true,
+    "trou": 1.0007599999999999,
+    "reseau_altium": "SEG3_E_VOLT1"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.8509,
+    "hh": 0.8509,
+    "th": true,
+    "trou": 1.0007599999999999,
+    "reseau_altium": "+5V"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.8509,
+    "hh": 0.8509,
+    "th": true,
+    "trou": 1.0007599999999999,
+    "reseau_altium": "+5V"
+   }
+  ],
+  "DS2_VOLT2": [
+   {
+    "forme": "rect",
+    "hw": 0.8509,
+    "hh": 0.8509,
+    "th": true,
+    "trou": 1.0007599999999999,
+    "reseau_altium": "SEG2_E_VOLT2"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.8509,
+    "hh": 0.8509,
+    "th": true,
+    "trou": 1.0007599999999999,
+    "reseau_altium": "SEG2_D_VOLT2"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.8509,
+    "hh": 0.8509,
+    "th": true,
+    "trou": 1.0007599999999999,
+    "reseau_altium": "+5V"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.8509,
+    "hh": 0.8509,
+    "th": true,
+    "trou": 1.0007599999999999,
+    "reseau_altium": "SEG2_C_VOLT2"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.8509,
+    "hh": 0.8509,
+    "th": true,
+    "trou": 1.0007599999999999,
+    "reseau_altium": ""
+   },
+   {
+    "forme": "rond",
+    "hw": 0.8509,
+    "hh": 0.8509,
+    "th": true,
+    "trou": 1.0007599999999999,
+    "reseau_altium": "SEG2_B_VOLT2"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.8509,
+    "hh": 0.8509,
+    "th": true,
+    "trou": 1.0007599999999999,
+    "reseau_altium": "SEG2_A_VOLT2"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.8509,
+    "hh": 0.8509,
+    "th": true,
+    "trou": 1.0007599999999999,
+    "reseau_altium": "+5V"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.8509,
+    "hh": 0.8509,
+    "th": true,
+    "trou": 1.0007599999999999,
+    "reseau_altium": "SEG2_F_VOLT2"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.8509,
+    "hh": 0.8509,
+    "th": true,
+    "trou": 1.0007599999999999,
+    "reseau_altium": "SEG2_G_VOLT2"
+   }
+  ],
+  "DS2_VOLT1": [
+   {
+    "forme": "rond",
+    "hw": 0.8509,
+    "hh": 0.8509,
+    "th": true,
+    "trou": 1.0007599999999999,
+    "reseau_altium": "SEG2_G_VOLT1"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.8509,
+    "hh": 0.8509,
+    "th": true,
+    "trou": 1.0007599999999999,
+    "reseau_altium": "SEG2_F_VOLT1"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.8509,
+    "hh": 0.8509,
+    "th": true,
+    "trou": 1.0007599999999999,
+    "reseau_altium": "SEG2_A_VOLT1"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.8509,
+    "hh": 0.8509,
+    "th": true,
+    "trou": 1.0007599999999999,
+    "reseau_altium": "SEG2_B_VOLT1"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.8509,
+    "hh": 0.8509,
+    "th": true,
+    "trou": 1.0007599999999999,
+    "reseau_altium": ""
+   },
+   {
+    "forme": "rond",
+    "hw": 0.8509,
+    "hh": 0.8509,
+    "th": true,
+    "trou": 1.0007599999999999,
+    "reseau_altium": "SEG2_C_VOLT1"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.8509,
+    "hh": 0.8509,
+    "th": true,
+    "trou": 1.0007599999999999,
+    "reseau_altium": "SEG2_D_VOLT1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.8509,
+    "hh": 0.8509,
+    "th": true,
+    "trou": 1.0007599999999999,
+    "reseau_altium": "SEG2_E_VOLT1"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.8509,
+    "hh": 0.8509,
+    "th": true,
+    "trou": 1.0007599999999999,
+    "reseau_altium": "+5V"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.8509,
+    "hh": 0.8509,
+    "th": true,
+    "trou": 1.0007599999999999,
+    "reseau_altium": "+5V"
+   }
+  ],
+  "DS1_VOLT2": [
+   {
+    "forme": "rect",
+    "hw": 0.8509,
+    "hh": 0.8509,
+    "th": true,
+    "trou": 1.0007599999999999,
+    "reseau_altium": "SEG1_E_VOLT2"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.8509,
+    "hh": 0.8509,
+    "th": true,
+    "trou": 1.0007599999999999,
+    "reseau_altium": "SEG1_D_VOLT2"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.8509,
+    "hh": 0.8509,
+    "th": true,
+    "trou": 1.0007599999999999,
+    "reseau_altium": "+5V"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.8509,
+    "hh": 0.8509,
+    "th": true,
+    "trou": 1.0007599999999999,
+    "reseau_altium": "SEG1_C_VOLT2"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.8509,
+    "hh": 0.8509,
+    "th": true,
+    "trou": 1.0007599999999999,
+    "reseau_altium": ""
+   },
+   {
+    "forme": "rond",
+    "hw": 0.8509,
+    "hh": 0.8509,
+    "th": true,
+    "trou": 1.0007599999999999,
+    "reseau_altium": "SEG1_B_VOLT2"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.8509,
+    "hh": 0.8509,
+    "th": true,
+    "trou": 1.0007599999999999,
+    "reseau_altium": "SEG1_A_VOLT2"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.8509,
+    "hh": 0.8509,
+    "th": true,
+    "trou": 1.0007599999999999,
+    "reseau_altium": "+5V"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.8509,
+    "hh": 0.8509,
+    "th": true,
+    "trou": 1.0007599999999999,
+    "reseau_altium": "SEG1_F_VOLT2"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.8509,
+    "hh": 0.8509,
+    "th": true,
+    "trou": 1.0007599999999999,
+    "reseau_altium": "SEG1_G_VOLT2"
+   }
+  ],
+  "DS1_VOLT1": [
+   {
+    "forme": "rond",
+    "hw": 0.8509,
+    "hh": 0.8509,
+    "th": true,
+    "trou": 1.0007599999999999,
+    "reseau_altium": "SEG1_G_VOLT1"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.8509,
+    "hh": 0.8509,
+    "th": true,
+    "trou": 1.0007599999999999,
+    "reseau_altium": "SEG1_F_VOLT1"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.8509,
+    "hh": 0.8509,
+    "th": true,
+    "trou": 1.0007599999999999,
+    "reseau_altium": "SEG1_A_VOLT1"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.8509,
+    "hh": 0.8509,
+    "th": true,
+    "trou": 1.0007599999999999,
+    "reseau_altium": "SEG1_B_VOLT1"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.8509,
+    "hh": 0.8509,
+    "th": true,
+    "trou": 1.0007599999999999,
+    "reseau_altium": ""
+   },
+   {
+    "forme": "rond",
+    "hw": 0.8509,
+    "hh": 0.8509,
+    "th": true,
+    "trou": 1.0007599999999999,
+    "reseau_altium": "SEG1_C_VOLT1"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.8509,
+    "hh": 0.8509,
+    "th": true,
+    "trou": 1.0007599999999999,
+    "reseau_altium": "SEG1_D_VOLT1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.8509,
+    "hh": 0.8509,
+    "th": true,
+    "trou": 1.0007599999999999,
+    "reseau_altium": "SEG1_E_VOLT1"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.8509,
+    "hh": 0.8509,
+    "th": true,
+    "trou": 1.0007599999999999,
+    "reseau_altium": "+5V"
+   },
+   {
+    "forme": "rond",
+    "hw": 0.8509,
+    "hh": 0.8509,
+    "th": true,
+    "trou": 1.0007599999999999,
+    "reseau_altium": "+5V"
+   }
+  ],
+  "D23_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.47500032000000003,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD22_ALIM1_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.47500032000000003,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "-5V"
+   }
+  ],
+  "D22_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.47500032000000003,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD21_ALIM1_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.47500032000000003,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD22_ALIM1_2"
+   }
+  ],
+  "D21_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.47500032000000003,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD21_ALIM1_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.47500032000000003,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD21_ALIM1_2"
+   }
+  ],
+  "D20_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.40000046999999994,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD19_ALIM1_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.40000046999999994,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": ""
+   },
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.40000046999999994,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "-2.5Vref"
+   }
+  ],
+  "D19_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.40000046999999994,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+2.5Vref"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.40000046999999994,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": ""
+   },
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.40000046999999994,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD19_ALIM1_1"
+   }
+  ],
+  "D18_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.40000046999999994,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD15_ALIM1_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.40000046999999994,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": ""
+   },
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.40000046999999994,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC27_ALIM1_1"
+   }
+  ],
+  "D17_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.47500032000000003,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.47500032000000003,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "OUT_CH1"
+   }
+  ],
+  "D16_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.47500032000000003,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "OUT_CH1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.47500032000000003,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD16_ALIM1_2"
+   }
+  ],
+  "D15_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.40000046999999994,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC25_ALIM1_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.40000046999999994,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": ""
+   },
+   {
+    "forme": "rect",
+    "hw": 0.45000037000000004,
+    "hh": 0.40000046999999994,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD15_ALIM1_1"
+   }
+  ],
+  "D14_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.60000007,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD14_ALIM1_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.60000007,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC25_ALIM1_2"
+   }
+  ],
+  "D13_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.60000007,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD13_ALIM1_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.60000007,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD13_ALIM1_2"
+   }
+  ],
+  "D12_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.60000007,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD12_ALIM1_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.60000007,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD12_ALIM1_2"
+   }
+  ],
+  "D11_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.60000007,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD11_ALIM1_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.60000007,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD11_ALIM1_2"
+   }
+  ],
+  "D10_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.60000007,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD10_ALIM1_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.60000007,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD10_ALIM1_2"
+   }
+  ],
+  "D9_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.60000007,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD9_ALIM1_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.60000007,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD9_ALIM1_2"
+   }
+  ],
+  "D8_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.60000007,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD8_ALIM1_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.60000007,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD8_ALIM1_2"
+   }
+  ],
+  "D7_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.60000007,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD7_ALIM1_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.60000007,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD7_ALIM1_1"
+   }
+  ],
+  "D6_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.60000007,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD6_ALIM1_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.60000007,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD6_ALIM1_2"
+   }
+  ],
+  "D5_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.60000007,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD5_ALIM1_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.60000007,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD5_ALIM1_2"
+   }
+  ],
+  "D4_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.60000007,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD4_ALIM1_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.60000007,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD4_ALIM1_2"
+   }
+  ],
+  "D3": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.60000007,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD3_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.60000007,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   }
+  ],
+  "D2": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.60000007,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD2_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.60000007,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD2_2"
+   }
+  ],
+  "D1": [
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.60000007,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD1_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.60000007,
+    "hh": 0.60000007,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetD1_2"
+   }
+  ],
+  "C47_VOLT2": [
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC47_VOLT2_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC47_VOLT2_2"
+   }
+  ],
+  "C47_VOLT1": [
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC47_VOLT1_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC47_VOLT1_2"
+   }
+  ],
+  "C46_VOLT2": [
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC46_VOLT2_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC46_VOLT2_2"
+   }
+  ],
+  "C46_VOLT1": [
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC46_VOLT1_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC46_VOLT1_2"
+   }
+  ],
+  "C45_VOLT2": [
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.89999947,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC45_VOLT2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.89999947,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC44_VOLT2_1"
+   }
+  ],
+  "C45_VOLT1": [
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.89999947,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC45_VOLT1_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.89999947,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC44_VOLT1_1"
+   }
+  ],
+  "C44_VOLT2": [
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC44_VOLT2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC44_VOLT2_1"
+   }
+  ],
+  "C44_VOLT1": [
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC44_VOLT1_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC44_VOLT1_2"
+   }
+  ],
+  "C43_VOLT2": [
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "IN_HI_VOLT2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   }
+  ],
+  "C43_VOLT1": [
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "IN_HI_VOLT1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   }
+  ],
+  "C31_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+8V"
+   }
+  ],
+  "C30_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 1.34999984,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 1.34999984,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "OUT_CH1"
+   }
+  ],
+  "C29_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "OUT_CH1"
+   }
+  ],
+  "C28_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC26_ALIM1_1"
+   }
+  ],
+  "C27_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC27_ALIM1_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC27_ALIM1_2"
+   }
+  ],
+  "C26_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC26_ALIM1_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   }
+  ],
+  "C25_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC25_ALIM1_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC25_ALIM1_2"
+   }
+  ],
+  "C24_ALIM1": [
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC24_ALIM1_2"
+   }
+  ],
+  "C23": [
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC22_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC21_1"
+   }
+  ],
+  "C22": [
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC22_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC22_2"
+   }
+  ],
+  "C21": [
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC21_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC21_1"
+   }
+  ],
+  "C20": [
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 1.34999984,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 1.34999984,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+8V"
+   }
+  ],
+  "C19": [
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC19_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC19_2"
+   }
+  ],
+  "C18": [
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC18_2"
+   }
+  ],
+  "C17": [
+   {
+    "forme": "rect",
+    "hw": 2.09999961,
+    "hh": 1.10000034,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 2.09999961,
+    "hh": 1.10000034,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+12V"
+   }
+  ],
+  "C16": [
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC16_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   }
+  ],
+  "C15": [
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+12V"
+   }
+  ],
+  "C14": [
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 1.34999984,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 1.34999984,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+10V"
+   }
+  ],
+  "C13": [
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 1.34999984,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC13_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 1.34999984,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC13_2"
+   }
+  ],
+  "C12": [
+   {
+    "forme": "rect",
+    "hw": 1.60000061,
+    "hh": 0.7999996699999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC12_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 1.60000061,
+    "hh": 0.7999996699999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   }
+  ],
+  "C11": [
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 1.34999984,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 1.34999984,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "-5V"
+   }
+  ],
+  "C10": [
+   {
+    "forme": "rect",
+    "hw": 1.60000061,
+    "hh": 0.7999996699999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 1.60000061,
+    "hh": 0.7999996699999999,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+5V"
+   }
+  ],
+  "C9": [
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+8V"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   }
+  ],
+  "C8": [
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+8V"
+   }
+  ],
+  "C7": [
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 1.34999984,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 1.34999984,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+12V"
+   }
+  ],
+  "C6": [
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+5V"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   }
+  ],
+  "C5": [
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC5_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   }
+  ],
+  "C4": [
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC4_2"
+   }
+  ],
+  "C3": [
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC2_1"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   }
+  ],
+  "C2": [
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC2_2"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "NetC2_1"
+   }
+  ],
+  "C1": [
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "GND"
+   },
+   {
+    "forme": "rect",
+    "hw": 0.64999997,
+    "hh": 0.69999987,
+    "th": false,
+    "trou": 0.0,
+    "reseau_altium": "+5V"
+   }
+  ]
+ },
+ "libres": [
+  {
+   "nom": "MH5",
+   "x": 82.0000011,
+   "y": 49.500002599999995,
+   "d": 6.35,
+   "trou": 3.20000122
+  },
+  {
+   "nom": "MH4",
+   "x": 109.49999944000001,
+   "y": 92.4999928,
+   "d": 6.35,
+   "trou": 3.20000122
+  },
+  {
+   "nom": "MH3",
+   "x": 54.50000022,
+   "y": 92.4999928,
+   "d": 6.35,
+   "trou": 3.20000122
+  },
+  {
+   "nom": "MH2",
+   "x": 160.00000004,
+   "y": 3.9999996199999996,
+   "d": 6.35,
+   "trou": 3.20000122
+  },
+  {
+   "nom": "MH1",
+   "x": 3.9999996199999996,
+   "y": 3.9999996199999996,
+   "d": 6.35,
+   "trou": 3.20000122
+  }
+ ]
+}

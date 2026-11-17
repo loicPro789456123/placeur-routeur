@@ -1,0 +1,149 @@
+# Campagnes du placeur-routeur depuis zero, en parallele : une graine par machine, puis une synthese.
+# Lancement : automatique quand PCB_V2/outils/placeur_routage/ci_campagne.json change (graines, bloc libre/fige, budget) ;
+#             manuel : onglet Actions > Placeur-routeur > Run workflow.
+# Resultats : resume de l'execution (onglet Actions), artefact "synthese-placeur" (tout),
+#             et branche ci-resultats-placeur (dossier run_<numero> : csv, confiance, meilleur etat, statistiques par graine).
+name: Placeur-routeur
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'PCB_V2/outils/placeur_routage/ci_campagne.json'
+      - '.github/workflows/placeur.yml'
+
+# Pas d'annulation : plusieurs campagnes (versions differentes du code) peuvent tourner en meme temps.
+concurrency:
+  group: placeur-${{ github.run_id }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+env:
+  P: PCB_V2/outils/placeur_routage
+
+jobs:
+  compilation:
+    name: Compilation et tests
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    outputs:
+      graines: ${{ steps.g.outputs.graines }}
+      options: ${{ steps.g.outputs.options }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: PCB_V2/outils
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            ${{ env.P }}/target
+          key: cargo-${{ runner.os }}-${{ hashFiles('PCB_V2/outils/placeur_routage/Cargo.lock') }}
+      - name: Tests unitaires
+        working-directory: ${{ env.P }}
+        run: cargo test --release
+      - name: Compilation
+        working-directory: ${{ env.P }}
+        run: cargo build --release
+      - uses: actions/upload-artifact@v4
+        with:
+          name: executable
+          path: ${{ env.P }}/target/release/placeur_routage
+          retention-days: 3
+      - id: g
+        name: Liste des graines
+        working-directory: ${{ env.P }}
+        run: python3 ci_graines.py >> "$GITHUB_OUTPUT"
+
+  campagne:
+    name: graine ${{ matrix.graine }}
+    needs: compilation
+    runs-on: ubuntu-24.04
+    timeout-minutes: 300
+    strategy:
+      fail-fast: false
+      matrix:
+        graine: ${{ fromJSON(needs.compilation.outputs.graines) }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: PCB_V2/outils
+      - uses: actions/download-artifact@v4
+        with:
+          name: executable
+          path: ${{ env.P }}/target/release
+      - run: pip install --quiet numpy matplotlib
+      - name: Campagne
+        working-directory: ${{ env.P }}
+        run: |
+          chmod +x target/release/placeur_routage
+          echo "machine : $(nproc) coeurs,$(grep -m1 'model name' /proc/cpuinfo | cut -d: -f2)"
+          python3 campagnes.py --dossier ci --graine-base ${{ matrix.graine }} --n-min 1 --n-max 1 \
+            --workers 1 --threads $(nproc) ${{ needs.compilation.outputs.options }}
+          tail -n 5 sorties/ci/journal.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: graine-${{ matrix.graine }}
+          path: ${{ env.P }}/sorties/ci
+          retention-days: 14
+
+  synthese:
+    name: Synthese
+    needs: [compilation, campagne]
+    if: always() && needs.compilation.result == 'success'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: PCB_V2/outils
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: graine-*
+          path: artefacts
+      - run: pip install --quiet numpy matplotlib
+      - name: Fusion
+        working-directory: ${{ env.P }}
+        run: |
+          python3 ci_fusion.py "$GITHUB_WORKSPACE/artefacts" --dossier ci_fusion ${{ contains(needs.compilation.outputs.options, '--bloc-fige') && '--bloc-fige' || '' }}
+          cat sorties/ci_fusion/resume.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: synthese-placeur
+          path: ${{ env.P }}/sorties/ci_fusion
+          retention-days: 30
+      - name: Resultats sur la branche ci-resultats-placeur
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          S="$GITHUB_WORKSPACE/$P/sorties/ci_fusion"
+          D="run_${{ github.run_number }}"
+          git init -q res && cd res
+          git remote add origin "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          if git fetch -q --depth 1 origin ci-resultats-placeur; then git checkout -q -b ci-resultats-placeur FETCH_HEAD; else git checkout -q --orphan ci-resultats-placeur; fi
+          mkdir -p "$D"
+          cp "$S"/campagnes.csv "$S"/confiance.md "$S"/resume.md "$D"/
+          cp "$GITHUB_WORKSPACE/$P/ci_campagne.json" "$D"/
+          echo "${{ github.sha }}" > "$D/commit.txt"
+          if [ -d "$S/meilleur" ]; then cp -r "$S/meilleur" "$D"/; fi
+          for c in "$S"/c_*; do
+            mkdir -p "$D/$(basename "$c")"
+            for f in stats.json console.txt; do
+              if [ -f "$c/$f" ]; then cp "$c/$f" "$D/$(basename "$c")/"; fi
+            done
+            # graines entierement routees : on garde placement, routage et vias de couture (pour les poser dans Altium)
+            if grep -q '"valide": true' "$c/stats.json" 2>/dev/null; then
+              for f in placements_routage.json routage_detaille.json vias_couture.json; do
+                if [ -f "$c/$f" ]; then cp "$c/$f" "$D/$(basename "$c")/"; fi
+              done
+            fi
+          done
+          git add -A
+          git -c user.name="github-actions" -c user.email="github-actions@users.noreply.github.com" commit -q -m "Resultats placeur-routeur, execution ${{ github.run_number }}"
+          git push -q origin ci-resultats-placeur

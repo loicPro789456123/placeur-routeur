@@ -1,0 +1,16 @@
+[package]
+name = "placeur_routage"
+version = "0.1.0"
+edition = "2021"
+description = "Placeur de composants dont le cout vient d'un routage global reel, plus routage detaille final"
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+rayon = "1"
+
+[profile.release]
+opt-level = 3
+lto = "thin"
+codegen-units = 1
+debug = false

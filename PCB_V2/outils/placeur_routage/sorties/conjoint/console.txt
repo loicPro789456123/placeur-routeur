@@ -1,0 +1,88 @@
+geometrie reelle des pastilles (Altium) : 1032 pastilles, 5 pastilles libres de trous M3 (pastilles_reelles.json)
+cuivre existant du bloc : 74 objets (cuivre_bloc_hacheur.json)
+  cuivre du bloc non relie a une pastille (obstacle, pas cible) : NetC22_2 : Seg { x1: 73.91773887999999, y1: 84.79426271999999, x2: 74.16799999999999, y2: 84.54400159999999, w: 0.29999939999999997, couche: 0 }
+  cuivre du bloc non relie a une pastille (obstacle, pas cible) : NetC22_2 : Seg { x1: 73.19373728, y1: 84.79426271999999, x2: 73.91773887999999, y2: 84.79426271999999, w: 0.29999939999999997, couche: 0 }
+etat de depart : placement depart_iteration2.json + routage depart_routage_rev3.json charge tel quel (3052 objets)
+etat de depart : 0 connexions en echec (0 s)
+  chaine 106 : 301 s, essais 422, acceptes 26, illegaux 270, refuses (routage) 84 ; cout 7382.8 (meilleur 7368.0, depart 7391.3)
+  chaine 104 : 300 s, essais 393, acceptes 19, illegaux 247, refuses (routage) 84 ; cout 7349.4 (meilleur 7344.6, depart 7391.3)
+  chaine 108 : 301 s, essais 442, acceptes 18, illegaux 298, refuses (routage) 79 ; cout 7361.4 (meilleur 7357.2, depart 7391.3)
+  chaine 105 : 300 s, essais 463, acceptes 33, illegaux 307, refuses (routage) 80 ; cout 7353.7 (meilleur 7352.8, depart 7391.3)
+  chaine 101 : 300 s, essais 381, acceptes 15, illegaux 241, refuses (routage) 77 ; cout 7368.7 (meilleur 7364.0, depart 7391.3)
+  chaine 107 : 304 s, essais 409, acceptes 28, illegaux 265, refuses (routage) 76 ; cout 7364.6 (meilleur 7364.6, depart 7391.3)
+  chaine 103 : 305 s, essais 361, acceptes 13, illegaux 231, refuses (routage) 73 ; cout 7358.2 (meilleur 7358.2, depart 7391.3)
+  chaine 102 : 301 s, essais 409, acceptes 18, illegaux 269, refuses (routage) 76 ; cout 7357.1 (meilleur 7355.2, depart 7391.3)
+  chaine 104 : 601 s, essais 903, acceptes 41, illegaux 596, refuses (routage) 166 ; cout 7301.1 (meilleur 7298.1, depart 7391.3)
+  chaine 101 : 601 s, essais 750, acceptes 32, illegaux 479, refuses (routage) 154 ; cout 7387.0 (meilleur 7364.0, depart 7391.3)
+  chaine 106 : 602 s, essais 937, acceptes 51, illegaux 604, refuses (routage) 179 ; cout 7363.0 (meilleur 7363.0, depart 7391.3)
+  chaine 103 : 606 s, essais 675, acceptes 28, illegaux 419, refuses (routage) 150 ; cout 7329.7 (meilleur 7329.5, depart 7391.3)
+  chaine 102 : 607 s, essais 760, acceptes 35, illegaux 495, refuses (routage) 155 ; cout 7343.4 (meilleur 7342.2, depart 7391.3)
+  chaine 108 : 602 s, essais 807, acceptes 35, illegaux 520, refuses (routage) 152 ; cout 7348.0 (meilleur 7347.6, depart 7391.3)
+  chaine 105 : 607 s, essais 865, acceptes 50, illegaux 563, refuses (routage) 162 ; cout 7347.1 (meilleur 7347.1, depart 7391.3)
+  chaine 107 : 610 s, essais 801, acceptes 51, illegaux 508, refuses (routage) 154 ; cout 7348.6 (meilleur 7347.0, depart 7391.3)
+  chaine 106 : 903 s, essais 1497, acceptes 73, illegaux 961, refuses (routage) 292 ; cout 7354.2 (meilleur 7354.2, depart 7391.3)
+  chaine 101 : 904 s, essais 1150, acceptes 52, illegaux 723, refuses (routage) 261 ; cout 7335.9 (meilleur 7331.7, depart 7391.3)
+  chaine 104 : 908 s, essais 1417, acceptes 61, illegaux 921, refuses (routage) 274 ; cout 7256.2 (meilleur 7252.7, depart 7391.3)
+  chaine 108 : 908 s, essais 1092, acceptes 52, illegaux 699, refuses (routage) 224 ; cout 7316.9 (meilleur 7316.9, depart 7391.3)
+  chaine 105 : 908 s, essais 1230, acceptes 64, illegaux 800, refuses (routage) 236 ; cout 7338.6 (meilleur 7337.7, depart 7391.3)
+  chaine 103 : 911 s, essais 960, acceptes 38, illegaux 591, refuses (routage) 227 ; cout 7330.5 (meilleur 7328.4, depart 7391.3)
+  chaine 107 : 911 s, essais 1347, acceptes 83, illegaux 855, refuses (routage) 263 ; cout 7313.3 (meilleur 7311.7, depart 7391.3)
+  chaine 102 : 911 s, essais 1152, acceptes 57, illegaux 733, refuses (routage) 245 ; cout 7256.0 (meilleur 7256.0, depart 7391.3)
+  chaine 106 : 1204 s, essais 1910, acceptes 87, illegaux 1204, refuses (routage) 397 ; cout 7339.0 (meilleur 7339.0, depart 7391.3)
+  chaine 101 : 1205 s, essais 1513, acceptes 66, illegaux 939, refuses (routage) 357 ; cout 7322.1 (meilleur 7322.1, depart 7391.3)
+  chaine 105 : 1208 s, essais 1887, acceptes 101, illegaux 1192, refuses (routage) 376 ; cout 7285.7 (meilleur 7285.7, depart 7391.3)
+  chaine 104 : 1210 s, essais 1967, acceptes 83, illegaux 1276, refuses (routage) 389 ; cout 7233.8 (meilleur 7233.8, depart 7391.3)
+  chaine 108 : 1212 s, essais 1482, acceptes 68, illegaux 934, refuses (routage) 314 ; cout 7301.8 (meilleur 7301.8, depart 7391.3)
+  chaine 107 : 1211 s, essais 1742, acceptes 114, illegaux 1083, refuses (routage) 360 ; cout 7236.8 (meilleur 7236.8, depart 7391.3)
+  chaine 102 : 1212 s, essais 1693, acceptes 79, illegaux 1044, refuses (routage) 364 ; cout 7228.7 (meilleur 7228.7, depart 7391.3)
+  chaine 103 : 1215 s, essais 1285, acceptes 46, illegaux 790, refuses (routage) 300 ; cout 7327.1 (meilleur 7325.5, depart 7391.3)
+  chaine 106 : 1505 s, essais 2474, acceptes 108, illegaux 1539, refuses (routage) 523 ; cout 7304.6 (meilleur 7303.9, depart 7391.3)
+  chaine 101 : 1508 s, essais 1827, acceptes 74, illegaux 1113, refuses (routage) 460 ; cout 7318.5 (meilleur 7318.5, depart 7391.3)
+  chaine 105 : 1509 s, essais 2638, acceptes 129, illegaux 1622, refuses (routage) 551 ; cout 7264.3 (meilleur 7264.3, depart 7391.3)
+  chaine 108 : 1513 s, essais 1806, acceptes 84, illegaux 1119, refuses (routage) 391 ; cout 7281.7 (meilleur 7281.2, depart 7391.3)
+  chaine 104 : 1512 s, essais 2363, acceptes 99, illegaux 1502, refuses (routage) 492 ; cout 7218.6 (meilleur 7218.6, depart 7391.3)
+  chaine 107 : 1513 s, essais 2106, acceptes 132, illegaux 1278, refuses (routage) 463 ; cout 7222.0 (meilleur 7221.7, depart 7391.3)
+  chaine 102 : 1514 s, essais 2286, acceptes 101, illegaux 1390, refuses (routage) 505 ; cout 7219.9 (meilleur 7219.5, depart 7391.3)
+  chaine 103 : 1517 s, essais 1542, acceptes 54, illegaux 924, refuses (routage) 381 ; cout 7323.7 (meilleur 7323.4, depart 7391.3)
+  chaine 106 : 1805 s, essais 2957, acceptes 130, illegaux 1802, refuses (routage) 641 ; cout 7285.0 (meilleur 7285.0, depart 7391.3)
+  chaine 101 : 1808 s, essais 2137, acceptes 85, illegaux 1264, refuses (routage) 579 ; cout 7311.5 (meilleur 7311.5, depart 7391.3)
+  chaine 107 : 1815 s, essais 2526, acceptes 142, illegaux 1512, refuses (routage) 574 ; cout 7204.2 (meilleur 7203.9, depart 7391.3)
+  chaine 105 : 1813 s, essais 3270, acceptes 161, illegaux 1954, refuses (routage) 699 ; cout 7248.0 (meilleur 7247.8, depart 7391.3)
+  chaine 104 : 1816 s, essais 2787, acceptes 111, illegaux 1726, refuses (routage) 626 ; cout 7211.0 (meilleur 7211.0, depart 7391.3)
+  chaine 108 : 1815 s, essais 2087, acceptes 101, illegaux 1273, refuses (routage) 475 ; cout 7261.1 (meilleur 7261.1, depart 7391.3)
+  chaine 102 : 1818 s, essais 2871, acceptes 117, illegaux 1718, refuses (routage) 652 ; cout 7207.8 (meilleur 7207.8, depart 7391.3)
+  chaine 103 : 1818 s, essais 1829, acceptes 64, illegaux 1076, refuses (routage) 464 ; cout 7280.0 (meilleur 7279.9, depart 7391.3)
+  chaine 106 : 2106 s, essais 3349, acceptes 147, illegaux 1990, refuses (routage) 756 ; cout 7247.4 (meilleur 7247.4, depart 7391.3)
+  chaine 105 : 2113 s, essais 3840, acceptes 191, illegaux 2225, refuses (routage) 851 ; cout 7196.7 (meilleur 7196.7, depart 7391.3)
+  chaine 101 : 2109 s, essais 2474, acceptes 99, illegaux 1430, refuses (routage) 697 ; cout 7291.4 (meilleur 7291.4, depart 7391.3)
+  chaine 107 : 2115 s, essais 2958, acceptes 161, illegaux 1734, refuses (routage) 693 ; cout 7190.1 (meilleur 7190.1, depart 7391.3)
+  chaine 103 : 2118 s, essais 2092, acceptes 76, illegaux 1204, refuses (routage) 554 ; cout 7264.3 (meilleur 7264.3, depart 7391.3)
+  chaine 102 : 2119 s, essais 3399, acceptes 140, illegaux 1966, refuses (routage) 802 ; cout 7172.6 (meilleur 7172.6, depart 7391.3)
+  chaine 108 : 2120 s, essais 2391, acceptes 119, illegaux 1410, refuses (routage) 571 ; cout 7223.4 (meilleur 7223.4, depart 7391.3)
+  chaine 104 : 2121 s, essais 3135, acceptes 128, illegaux 1894, refuses (routage) 748 ; cout 7189.7 (meilleur 7189.7, depart 7391.3)
+  chaine 106 : 2409 s, essais 3931, acceptes 190, illegaux 2258, refuses (routage) 916 ; cout 7184.0 (meilleur 7183.9, depart 7391.3)
+  chaine 101 : 2414 s, essais 2825, acceptes 115, illegaux 1575, refuses (routage) 842 ; cout 7278.5 (meilleur 7278.5, depart 7391.3)
+  chaine 107 : 2415 s, essais 3375, acceptes 171, illegaux 1928, refuses (routage) 828 ; cout 7177.2 (meilleur 7177.2, depart 7391.3)
+  chaine 105 : 2416 s, essais 4375, acceptes 214, illegaux 2451, refuses (routage) 1019 ; cout 7182.3 (meilleur 7182.1, depart 7391.3)
+  chaine 104 : 2422 s, essais 3522, acceptes 140, illegaux 2065, refuses (routage) 880 ; cout 7186.4 (meilleur 7186.2, depart 7391.3)
+  chaine 102 : 2422 s, essais 3878, acceptes 161, illegaux 2176, refuses (routage) 965 ; cout 7138.7 (meilleur 7138.6, depart 7391.3)
+  chaine 103 : 2420 s, essais 2315, acceptes 84, illegaux 1307, refuses (routage) 633 ; cout 7231.3 (meilleur 7231.3, depart 7391.3)
+  chaine 108 : 2423 s, essais 2695, acceptes 135, illegaux 1552, refuses (routage) 663 ; cout 7214.0 (meilleur 7214.0, depart 7391.3)
+chaine graine 101 : cout 7391.3 -> 7276.9 ; essais 3140 acceptes 123 illegaux 1719 refuses par le routage 957
+chaine graine 102 : cout 7391.3 -> 7131.7 ; essais 4385 acceptes 175 illegaux 2414 refuses par le routage 1121
+chaine graine 103 : cout 7391.3 -> 7187.3 ; essais 2541 acceptes 96 illegaux 1410 refuses par le routage 712
+chaine graine 104 : cout 7391.3 -> 7178.1 ; essais 3886 acceptes 157 illegaux 2225 refuses par le routage 1003
+chaine graine 105 : cout 7391.3 -> 7161.7 ; essais 4780 acceptes 224 illegaux 2612 refuses par le routage 1156
+chaine graine 106 : cout 7391.3 -> 7164.9 ; essais 4367 acceptes 208 illegaux 2432 refuses par le routage 1066
+chaine graine 107 : cout 7391.3 -> 7156.1 ; essais 3685 acceptes 179 illegaux 2075 refuses par le routage 933
+chaine graine 108 : cout 7391.3 -> 7177.9 ; essais 2944 acceptes 149 illegaux 1658 refuses par le routage 753
+meilleur etat (graine 102) : cout 7131.7 (depart 7391.3) ; 80 pieces deplacees ; 0 connexions en echec
+  espacement : 111 reseaux ameliores sur 254 ; score 6141.8 -> 5980.7 ; longueur 5305.9 -> 5306.2 mm ; segments 2335 -> 2221
+  fin de l'espacement (93 s)
+  vias doubles poses (CANAL_2A / ENTREE_12V) : 2
+  troncons courts en angle aigu supprimes : 1
+  elargissement final : 19 troncons rendus plus larges (9.6 mm)
+  pistes coupees aux jonctions (via ou extremite sur l'axe) : 31
+  recouvrements residuels : 0 noeuds
+conjoint : {"connexions_echouees":0,"connexions_reussies":494,"cout_depart":7391.330319379351,"cout_final_avant_finition":7131.725226306114,"pieces_deplacees":80,"reseaux_a_router":255,"reseaux_complets_selon_routeur":255,"temps_s":2799.0610405} ; sorties dans sorties/conjoint (2799 s)
+FIN

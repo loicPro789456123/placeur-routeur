@@ -1,0 +1,562 @@
+[
+  {
+    "deplacement_mm": 0.635,
+    "face_changee": false,
+    "piece": "R105_ALIM2",
+    "rotation_apres": 180,
+    "rotation_avant": 180
+  },
+  {
+    "deplacement_mm": 0.254,
+    "face_changee": false,
+    "piece": "R105_ALIM1",
+    "rotation_apres": 180,
+    "rotation_avant": 0
+  },
+  {
+    "deplacement_mm": 0.284,
+    "face_changee": false,
+    "piece": "R102_ALIM1",
+    "rotation_apres": 180,
+    "rotation_avant": 180
+  },
+  {
+    "deplacement_mm": 0.284,
+    "face_changee": false,
+    "piece": "R98_VOLT2",
+    "rotation_apres": 270,
+    "rotation_avant": 270
+  },
+  {
+    "deplacement_mm": 0.773,
+    "face_changee": false,
+    "piece": "R98_VOLT1",
+    "rotation_apres": 180,
+    "rotation_avant": 180
+  },
+  {
+    "deplacement_mm": 0.18,
+    "face_changee": false,
+    "piece": "U21_ALIM2",
+    "rotation_apres": 180,
+    "rotation_avant": 180
+  },
+  {
+    "deplacement_mm": 0.0,
+    "face_changee": false,
+    "piece": "R81_ALIM2",
+    "rotation_apres": 270,
+    "rotation_avant": 90
+  },
+  {
+    "deplacement_mm": 1.003,
+    "face_changee": false,
+    "piece": "R77_ALIM2",
+    "rotation_apres": 0,
+    "rotation_avant": 90
+  },
+  {
+    "deplacement_mm": 0.803,
+    "face_changee": false,
+    "piece": "R74_ALIM2",
+    "rotation_apres": 0,
+    "rotation_avant": 0
+  },
+  {
+    "deplacement_mm": 1.136,
+    "face_changee": false,
+    "piece": "R69_ALIM2",
+    "rotation_apres": 0,
+    "rotation_avant": 0
+  },
+  {
+    "deplacement_mm": 0.254,
+    "face_changee": false,
+    "piece": "R67_ALIM2",
+    "rotation_apres": 180,
+    "rotation_avant": 0
+  },
+  {
+    "deplacement_mm": 0.648,
+    "face_changee": false,
+    "piece": "R62_ALIM2",
+    "rotation_apres": 180,
+    "rotation_avant": 180
+  },
+  {
+    "deplacement_mm": 0.18,
+    "face_changee": false,
+    "piece": "R61_ALIM2",
+    "rotation_apres": 180,
+    "rotation_avant": 180
+  },
+  {
+    "deplacement_mm": 0.0,
+    "face_changee": false,
+    "piece": "R58_ALIM2",
+    "rotation_apres": 270,
+    "rotation_avant": 270
+  },
+  {
+    "deplacement_mm": 0.889,
+    "face_changee": false,
+    "piece": "R57_ALIM2",
+    "rotation_apres": 90,
+    "rotation_avant": 90
+  },
+  {
+    "deplacement_mm": 0.381,
+    "face_changee": false,
+    "piece": "R56_ALIM2",
+    "rotation_apres": 270,
+    "rotation_avant": 270
+  },
+  {
+    "deplacement_mm": 0.127,
+    "face_changee": false,
+    "piece": "R55_ALIM2",
+    "rotation_apres": 270,
+    "rotation_avant": 270
+  },
+  {
+    "deplacement_mm": 4.193,
+    "face_changee": false,
+    "piece": "R54_ALIM2",
+    "rotation_apres": 90,
+    "rotation_avant": 180
+  },
+  {
+    "deplacement_mm": 1.626,
+    "face_changee": false,
+    "piece": "R52_ALIM2",
+    "rotation_apres": 90,
+    "rotation_avant": 90
+  },
+  {
+    "deplacement_mm": 4.066,
+    "face_changee": false,
+    "piece": "R44_ALIM2",
+    "rotation_apres": 180,
+    "rotation_avant": 270
+  },
+  {
+    "deplacement_mm": 0.0,
+    "face_changee": false,
+    "piece": "R39_ALIM2",
+    "rotation_apres": 0,
+    "rotation_avant": 180
+  },
+  {
+    "deplacement_mm": 0.635,
+    "face_changee": false,
+    "piece": "R37_ALIM2",
+    "rotation_apres": 90,
+    "rotation_avant": 90
+  },
+  {
+    "deplacement_mm": 0.889,
+    "face_changee": false,
+    "piece": "R35_ALIM2",
+    "rotation_apres": 90,
+    "rotation_avant": 90
+  },
+  {
+    "deplacement_mm": 0.284,
+    "face_changee": false,
+    "piece": "R34_ALIM2",
+    "rotation_apres": 0,
+    "rotation_avant": 0
+  },
+  {
+    "deplacement_mm": 0.402,
+    "face_changee": false,
+    "piece": "R32_ALIM2",
+    "rotation_apres": 90,
+    "rotation_avant": 90
+  },
+  {
+    "deplacement_mm": 1.15,
+    "face_changee": false,
+    "piece": "Q5_ALIM2",
+    "rotation_apres": 90,
+    "rotation_avant": 90
+  },
+  {
+    "deplacement_mm": 0.0,
+    "face_changee": false,
+    "piece": "D19_ALIM2",
+    "rotation_apres": 180,
+    "rotation_avant": 270
+  },
+  {
+    "deplacement_mm": 2.854,
+    "face_changee": false,
+    "piece": "D17_ALIM2",
+    "rotation_apres": 180,
+    "rotation_avant": 180
+  },
+  {
+    "deplacement_mm": 0.014,
+    "face_changee": false,
+    "piece": "D16_ALIM2",
+    "rotation_apres": 0,
+    "rotation_avant": 180
+  },
+  {
+    "deplacement_mm": 3.137,
+    "face_changee": false,
+    "piece": "C30_ALIM2",
+    "rotation_apres": 180,
+    "rotation_avant": 180
+  },
+  {
+    "deplacement_mm": 0.381,
+    "face_changee": false,
+    "piece": "C28_ALIM2",
+    "rotation_apres": 180,
+    "rotation_avant": 180
+  },
+  {
+    "deplacement_mm": 0.127,
+    "face_changee": false,
+    "piece": "C26_ALIM2",
+    "rotation_apres": 180,
+    "rotation_avant": 0
+  },
+  {
+    "deplacement_mm": 1.42,
+    "face_changee": false,
+    "piece": "U20_ALIM1",
+    "rotation_apres": 180,
+    "rotation_avant": 180
+  },
+  {
+    "deplacement_mm": 0.021,
+    "face_changee": false,
+    "piece": "U17_ALIM1",
+    "rotation_apres": 0,
+    "rotation_avant": 180
+  },
+  {
+    "deplacement_mm": 0.741,
+    "face_changee": false,
+    "piece": "U16_ALIM1",
+    "rotation_apres": 0,
+    "rotation_avant": 0
+  },
+  {
+    "deplacement_mm": 0.508,
+    "face_changee": false,
+    "piece": "U14_ALIM1",
+    "rotation_apres": 0,
+    "rotation_avant": 0
+  },
+  {
+    "deplacement_mm": 0.138,
+    "face_changee": true,
+    "piece": "U6",
+    "rotation_apres": 270,
+    "rotation_avant": 0
+  },
+  {
+    "deplacement_mm": 0.925,
+    "face_changee": false,
+    "piece": "R96_VOLT1",
+    "rotation_apres": 180,
+    "rotation_avant": 90
+  },
+  {
+    "deplacement_mm": 1.626,
+    "face_changee": false,
+    "piece": "R92_VOLT2",
+    "rotation_apres": 180,
+    "rotation_avant": 270
+  },
+  {
+    "deplacement_mm": 1.905,
+    "face_changee": false,
+    "piece": "R90_VOLT1",
+    "rotation_apres": 0,
+    "rotation_avant": 0
+  },
+  {
+    "deplacement_mm": 1.276,
+    "face_changee": false,
+    "piece": "R81_ALIM1",
+    "rotation_apres": 180,
+    "rotation_avant": 180
+  },
+  {
+    "deplacement_mm": 0.813,
+    "face_changee": false,
+    "piece": "R80_ALIM1",
+    "rotation_apres": 90,
+    "rotation_avant": 90
+  },
+  {
+    "deplacement_mm": 0.741,
+    "face_changee": false,
+    "piece": "R77_ALIM1",
+    "rotation_apres": 270,
+    "rotation_avant": 270
+  },
+  {
+    "deplacement_mm": 0.0,
+    "face_changee": false,
+    "piece": "R68_ALIM1",
+    "rotation_apres": 180,
+    "rotation_avant": 180
+  },
+  {
+    "deplacement_mm": 0.648,
+    "face_changee": false,
+    "piece": "R66_ALIM1",
+    "rotation_apres": 270,
+    "rotation_avant": 270
+  },
+  {
+    "deplacement_mm": 0.254,
+    "face_changee": false,
+    "piece": "R62_ALIM1",
+    "rotation_apres": 180,
+    "rotation_avant": 180
+  },
+  {
+    "deplacement_mm": 0.684,
+    "face_changee": false,
+    "piece": "R61_ALIM1",
+    "rotation_apres": 180,
+    "rotation_avant": 180
+  },
+  {
+    "deplacement_mm": 0.0,
+    "face_changee": false,
+    "piece": "R60_ALIM1",
+    "rotation_apres": 0,
+    "rotation_avant": 180
+  },
+  {
+    "deplacement_mm": 1.571,
+    "face_changee": false,
+    "piece": "R58_ALIM1",
+    "rotation_apres": 270,
+    "rotation_avant": 270
+  },
+  {
+    "deplacement_mm": 1.085,
+    "face_changee": false,
+    "piece": "R57_ALIM1",
+    "rotation_apres": 270,
+    "rotation_avant": 0
+  },
+  {
+    "deplacement_mm": 0.127,
+    "face_changee": false,
+    "piece": "R55_ALIM1",
+    "rotation_apres": 0,
+    "rotation_avant": 0
+  },
+  {
+    "deplacement_mm": 0.718,
+    "face_changee": false,
+    "piece": "R54_ALIM1",
+    "rotation_apres": 270,
+    "rotation_avant": 90
+  },
+  {
+    "deplacement_mm": 0.127,
+    "face_changee": false,
+    "piece": "R48_ALIM1",
+    "rotation_apres": 180,
+    "rotation_avant": 180
+  },
+  {
+    "deplacement_mm": 1.535,
+    "face_changee": true,
+    "piece": "R38_ALIM1",
+    "rotation_apres": 90,
+    "rotation_avant": 0
+  },
+  {
+    "deplacement_mm": 0.284,
+    "face_changee": false,
+    "piece": "R37_ALIM1",
+    "rotation_apres": 90,
+    "rotation_avant": 90
+  },
+  {
+    "deplacement_mm": 0.0,
+    "face_changee": false,
+    "piece": "R36_ALIM1",
+    "rotation_apres": 180,
+    "rotation_avant": 180
+  },
+  {
+    "deplacement_mm": 0.635,
+    "face_changee": false,
+    "piece": "R35_ALIM1",
+    "rotation_apres": 90,
+    "rotation_avant": 90
+  },
+  {
+    "deplacement_mm": 0.803,
+    "face_changee": false,
+    "piece": "R32_ALIM1",
+    "rotation_apres": 270,
+    "rotation_avant": 270
+  },
+  {
+    "deplacement_mm": 0.254,
+    "face_changee": false,
+    "piece": "R31_ALIM1",
+    "rotation_apres": 0,
+    "rotation_avant": 0
+  },
+  {
+    "deplacement_mm": 0.359,
+    "face_changee": false,
+    "piece": "R28",
+    "rotation_apres": 270,
+    "rotation_avant": 270
+  },
+  {
+    "deplacement_mm": 1.55,
+    "face_changee": false,
+    "piece": "R24",
+    "rotation_apres": 270,
+    "rotation_avant": 180
+  },
+  {
+    "deplacement_mm": 0.402,
+    "face_changee": false,
+    "piece": "R14",
+    "rotation_apres": 0,
+    "rotation_avant": 0
+  },
+  {
+    "deplacement_mm": 1.448,
+    "face_changee": false,
+    "piece": "R13",
+    "rotation_apres": 270,
+    "rotation_avant": 270
+  },
+  {
+    "deplacement_mm": 0.813,
+    "face_changee": false,
+    "piece": "R6",
+    "rotation_apres": 180,
+    "rotation_avant": 0
+  },
+  {
+    "deplacement_mm": 0.18,
+    "face_changee": false,
+    "piece": "R5",
+    "rotation_apres": 0,
+    "rotation_avant": 0
+  },
+  {
+    "deplacement_mm": 0.458,
+    "face_changee": false,
+    "piece": "R4",
+    "rotation_apres": 180,
+    "rotation_avant": 180
+  },
+  {
+    "deplacement_mm": 1.704,
+    "face_changee": false,
+    "piece": "R3",
+    "rotation_apres": 270,
+    "rotation_avant": 270
+  },
+  {
+    "deplacement_mm": 0.284,
+    "face_changee": false,
+    "piece": "Q4_ALIM1",
+    "rotation_apres": 270,
+    "rotation_avant": 270
+  },
+  {
+    "deplacement_mm": 0.635,
+    "face_changee": false,
+    "piece": "Q2",
+    "rotation_apres": 180,
+    "rotation_avant": 180
+  },
+  {
+    "deplacement_mm": 0.995,
+    "face_changee": false,
+    "piece": "D17_ALIM1",
+    "rotation_apres": 270,
+    "rotation_avant": 0
+  },
+  {
+    "deplacement_mm": 0.568,
+    "face_changee": false,
+    "piece": "C31_ALIM1",
+    "rotation_apres": 180,
+    "rotation_avant": 180
+  },
+  {
+    "deplacement_mm": 1.078,
+    "face_changee": false,
+    "piece": "C30_ALIM1",
+    "rotation_apres": 90,
+    "rotation_avant": 90
+  },
+  {
+    "deplacement_mm": 0.127,
+    "face_changee": false,
+    "piece": "C29_ALIM1",
+    "rotation_apres": 0,
+    "rotation_avant": 0
+  },
+  {
+    "deplacement_mm": 0.18,
+    "face_changee": false,
+    "piece": "C28_ALIM1",
+    "rotation_apres": 90,
+    "rotation_avant": 90
+  },
+  {
+    "deplacement_mm": 2.25,
+    "face_changee": true,
+    "piece": "C26_ALIM1",
+    "rotation_apres": 180,
+    "rotation_avant": 90
+  },
+  {
+    "deplacement_mm": 0.773,
+    "face_changee": false,
+    "piece": "C24_ALIM1",
+    "rotation_apres": 0,
+    "rotation_avant": 270
+  },
+  {
+    "deplacement_mm": 0.889,
+    "face_changee": false,
+    "piece": "C12",
+    "rotation_apres": 270,
+    "rotation_avant": 270
+  },
+  {
+    "deplacement_mm": 0.284,
+    "face_changee": false,
+    "piece": "C9",
+    "rotation_apres": 0,
+    "rotation_avant": 0
+  },
+  {
+    "deplacement_mm": 1.606,
+    "face_changee": false,
+    "piece": "C3",
+    "rotation_apres": 180,
+    "rotation_avant": 180
+  },
+  {
+    "deplacement_mm": 1.143,
+    "face_changee": false,
+    "piece": "C1",
+    "rotation_apres": 0,
+    "rotation_avant": 180
+  }
+]

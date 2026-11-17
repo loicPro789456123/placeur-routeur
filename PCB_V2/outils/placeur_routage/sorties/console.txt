@@ -1,0 +1,147 @@
+geometrie reelle des pastilles (Altium) : 1032 pastilles, 5 pastilles libres de trous M3 (pastilles_reelles.json)
+cuivre existant du bloc : 73 objets (cuivre_bloc_hacheur.json)
+  cuivre du bloc non relie a une pastille (obstacle, pas cible) : NetC22_2 : Seg { x1: 73.91773887999999, y1: 84.79426271999999, x2: 74.16799999999999, y2: 84.54400159999999, w: 0.29999939999999997, couche: 0 }
+  cuivre du bloc non relie a une pastille (obstacle, pas cible) : NetC22_2 : Seg { x1: 73.19373728, y1: 84.79426271999999, x2: 73.91773887999999, y2: 84.79426271999999, w: 0.29999939999999997, couche: 0 }
+359 pieces (303 mobiles, 11 bloc), 259 reseaux ; pas global 0.5 mm
+v3 mesure : Mesure { longueur: 7510.5, longueur_ponderee: 9174.5, longueur_echap: 132.5, vias_signal: 574, vias_plan: 119, debordement: 1055, echecs: 0, taches_en_echec: 0, reseaux_en_echec: 0, objectif_routage: 15968.0 } hpwl 4866.7 (1.06 s)
+  negociation 1 : 46 reseaux en conflit (199 noeuds), 0 connexions impossibles
+  negociation 1 : 58 reseaux en conflit (217 noeuds), 0 connexions impossibles
+  negociation 2 : 42 reseaux en conflit (197 noeuds), 0 connexions impossibles
+  negociation 2 : 51 reseaux en conflit (186 noeuds), 0 connexions impossibles
+  negociation 3 : 38 reseaux en conflit (140 noeuds), 0 connexions impossibles
+  negociation 3 : 47 reseaux en conflit (136 noeuds), 0 connexions impossibles
+  negociation 4 : 35 reseaux en conflit (125 noeuds), 0 connexions impossibles
+  negociation 4 : 40 reseaux en conflit (123 noeuds), 0 connexions impossibles
+  negociation 5 : 32 reseaux en conflit (93 noeuds), 0 connexions impossibles
+  negociation 5 : 35 reseaux en conflit (76 noeuds), 0 connexions impossibles
+  negociation 6 : 26 reseaux en conflit (59 noeuds), 0 connexions impossibles
+  negociation 6 : 27 reseaux en conflit (72 noeuds), 0 connexions impossibles
+  negociation 7 : 24 reseaux en conflit (59 noeuds), 0 connexions impossibles
+  negociation 7 : 25 reseaux en conflit (65 noeuds), 0 connexions impossibles
+  negociation 8 : 25 reseaux en conflit (62 noeuds), 0 connexions impossibles
+  negociation 8 : 22 reseaux en conflit (52 noeuds), 0 connexions impossibles
+  negociation 9 : 22 reseaux en conflit (53 noeuds), 0 connexions impossibles
+  negociation 9 : 22 reseaux en conflit (50 noeuds), 0 connexions impossibles
+  negociation 10 : 21 reseaux en conflit (47 noeuds), 0 connexions impossibles
+  negociation 10 : 19 reseaux en conflit (46 noeuds), 0 connexions impossibles
+  negociation 11 : 20 reseaux en conflit (47 noeuds), 0 connexions impossibles
+  negociation 12 : 17 reseaux en conflit (42 noeuds), 0 connexions impossibles
+  negociation 11 : 16 reseaux en conflit (42 noeuds), 0 connexions impossibles
+  negociation 13 : 14 reseaux en conflit (36 noeuds), 0 connexions impossibles
+  negociation 12 : 15 reseaux en conflit (42 noeuds), 0 connexions impossibles
+  negociation 14 : 11 reseaux en conflit (33 noeuds), 0 connexions impossibles
+  negociation 13 : 14 reseaux en conflit (38 noeuds), 0 connexions impossibles
+  negociation 15 : 9 reseaux en conflit (29 noeuds), 0 connexions impossibles
+  negociation 14 : 11 reseaux en conflit (27 noeuds), 0 connexions impossibles
+  negociation 16 : 9 reseaux en conflit (29 noeuds), 0 connexions impossibles
+  negociation 15 : 8 reseaux en conflit (24 noeuds), 0 connexions impossibles
+  negociation 17 : 9 reseaux en conflit (28 noeuds), 0 connexions impossibles
+  negociation 16 : 7 reseaux en conflit (21 noeuds), 0 connexions impossibles
+  negociation 17 : 8 reseaux en conflit (27 noeuds), 0 connexions impossibles
+  negociation 18 : 8 reseaux en conflit (26 noeuds), 0 connexions impossibles
+  negociation 18 : 7 reseaux en conflit (24 noeuds), 0 connexions impossibles
+  negociation 19 : 7 reseaux en conflit (21 noeuds), 0 connexions impossibles
+  negociation 19 : 7 reseaux en conflit (24 noeuds), 0 connexions impossibles
+  negociation 20 : 5 reseaux en conflit (19 noeuds), 0 connexions impossibles
+  negociation 20 : 6 reseaux en conflit (22 noeuds), 0 connexions impossibles
+  negociation 21 : 5 reseaux en conflit (19 noeuds), 0 connexions impossibles
+  negociation 22 : 5 reseaux en conflit (19 noeuds), 0 connexions impossibles
+  negociation 23 : 5 reseaux en conflit (19 noeuds), 0 connexions impossibles
+  negociation 21 : 6 reseaux en conflit (22 noeuds), 0 connexions impossibles
+  negociation 24 : 5 reseaux en conflit (19 noeuds), 0 connexions impossibles
+  negociation 25 : 5 reseaux en conflit (19 noeuds), 0 connexions impossibles
+  negociation 26 : 5 reseaux en conflit (19 noeuds), 0 connexions impossibles
+  negociation 27 : 5 reseaux en conflit (19 noeuds), 0 connexions impossibles
+  negociation 22 : 5 reseaux en conflit (21 noeuds), 0 connexions impossibles
+  negociation 28 : 5 reseaux en conflit (19 noeuds), 0 connexions impossibles
+  negociation 29 : 5 reseaux en conflit (19 noeuds), 0 connexions impossibles
+  negociation 23 : 6 reseaux en conflit (22 noeuds), 0 connexions impossibles
+  negociation 30 : 5 reseaux en conflit (19 noeuds), 0 connexions impossibles
+  negociation 31 : 5 reseaux en conflit (19 noeuds), 0 connexions impossibles
+  negociation 32 : 5 reseaux en conflit (19 noeuds), 0 connexions impossibles
+  negociation 24 : 6 reseaux en conflit (21 noeuds), 0 connexions impossibles
+  negociation 33 : 5 reseaux en conflit (19 noeuds), 0 connexions impossibles
+  negociation 34 : 5 reseaux en conflit (19 noeuds), 0 connexions impossibles
+  negociation 35 : 5 reseaux en conflit (18 noeuds), 0 connexions impossibles
+  negociation 25 : 5 reseaux en conflit (21 noeuds), 0 connexions impossibles
+  negociation 36 : 5 reseaux en conflit (18 noeuds), 0 connexions impossibles
+  negociation 37 : 5 reseaux en conflit (18 noeuds), 0 connexions impossibles
+  negociation 26 : 5 reseaux en conflit (20 noeuds), 0 connexions impossibles
+  negociation 38 : 5 reseaux en conflit (18 noeuds), 0 connexions impossibles
+  negociation 39 : 5 reseaux en conflit (18 noeuds), 0 connexions impossibles
+  negociation 40 : 5 reseaux en conflit (18 noeuds), 0 connexions impossibles
+  negociation 27 : 5 reseaux en conflit (20 noeuds), 0 connexions impossibles
+  passe stricte : 6 connexions en echec (71 s depuis le debut)
+  negociation 28 : 5 reseaux en conflit (20 noeuds), 0 connexions impossibles
+  negociation 29 : 5 reseaux en conflit (20 noeuds), 0 connexions impossibles
+  negociation 30 : 5 reseaux en conflit (20 noeuds), 0 connexions impossibles
+  negociation 31 : 5 reseaux en conflit (20 noeuds), 0 connexions impossibles
+  negociation 32 : 5 reseaux en conflit (20 noeuds), 0 connexions impossibles
+  negociation 33 : 5 reseaux en conflit (20 noeuds), 0 connexions impossibles
+  negociation 34 : 5 reseaux en conflit (20 noeuds), 0 connexions impossibles
+  negociation 35 : 5 reseaux en conflit (20 noeuds), 0 connexions impossibles
+  negociation 36 : 5 reseaux en conflit (19 noeuds), 0 connexions impossibles
+  negociation 37 : 5 reseaux en conflit (19 noeuds), 0 connexions impossibles
+  negociation 38 : 5 reseaux en conflit (19 noeuds), 0 connexions impossibles
+  negociation 39 : 5 reseaux en conflit (19 noeuds), 0 connexions impossibles
+  negociation 40 : 5 reseaux en conflit (19 noeuds), 0 connexions impossibles
+  passe stricte : 3 connexions en echec (78 s depuis le debut)
+  tour d'arrachage 1 : 2 connexions en echec
+  tour d'arrachage 2 : 1 connexions en echec
+  tour d'arrachage 3 : 0 connexions en echec
+  fin de l'arrachage (94 s)
+  espacement : 145 reseaux ameliores sur 254 ; score 6740.6 -> 6258.6 ; longueur 5415.8 -> 5319.6 mm ; segments 2731 -> 2480
+  fin de l'espacement (104 s)
+  vias doubles poses (CANAL_2A / ENTREE_12V) : 1
+  troncons courts en angle aigu supprimes : 0
+  elargissement final : 35 troncons rendus plus larges (14.7 mm)
+  pistes coupees aux jonctions (via ou extremite sur l'axe) : 71
+  recouvrements residuels : 0 noeuds
+  tour d'arrachage 1 : 23 connexions en echec
+  tour d'arrachage 2 : 0 connexions en echec
+  fin de l'arrachage (181 s)
+  espacement : 148 reseaux ameliores sur 254 ; score 6596.3 -> 6228.8 ; longueur 5357.0 -> 5307.0 mm ; segments 2556 -> 2385
+  fin de l'espacement (188 s)
+  vias doubles poses (CANAL_2A / ENTREE_12V) : 2
+  troncons courts en angle aigu supprimes : 0
+  elargissement final : 26 troncons rendus plus larges (13.2 mm)
+  pistes coupees aux jonctions (via ou extremite sur l'axe) : 41
+  recouvrements residuels : 0 noeuds
+detaille depart depart_iteration2.json : 0 connexions en echec, 5381.2 mm
+depart depart_iteration2.json mesure : Mesure { longueur: 7732.5, longueur_ponderee: 9553.5, longueur_echap: 125.0, vias_signal: 577, vias_plan: 119, debordement: 1109, echecs: 0, taches_en_echec: 0, reseaux_en_echec: 0, objectif_routage: 16615.5 } hpwl 5257.4
+routage detaille (depart depart_iteration2.json) : {"canal_2a_sous_1_5mm_mm":0.0,"connexions_echouees":0,"connexions_en_largeur_reduite":150,"connexions_reussies":682,"longueur_mm":5381.2,"longueur_reduite_mm":252.1,"reseaux_a_router":255,"reseaux_complets_selon_routeur":255,"resistance_reseaux_puissance_mohm":1273.38,"segments":2580,"temps_s":188.1,"vias":478,"vias_doubles":2}
+Routeur global commun : pas 0.5 mm, 3 couches (TopLayer, MidLayer2, BottomLayer), capacite 1, 12 iterations PathFinder.
+
+| Mesure (meme routeur global) | Placement v3 | Placement retenu |
+|---|---:|---:|
+| Longueur routee des reseaux de signal (mm) | 7510.5 | 7732.5 |
+| Vias de signal | 574 | 577 |
+| Debordement de capacite (cellules en exces) | 1055 | 1109 |
+| Connexions impossibles | 0 | 0 |
+| Objectif de routage | 15968.0 | 16615.5 |
+| Decouplages a plus de 4 mm | 0 | 0 |
+| HPWL hors GND/+8V (reference, mm) | 4866.7 | 5257.4 |
+
+Recuit global : 0.0 s ; 12 chaines x 0 mouvements.
+
+### Boucle placement <-> routage detaille
+
+| Tour | Zones de pression | Pieces mobiles concernees | Echecs avant | Meilleur candidat | Retenu |
+|---|---:|---:|---:|---:|---|
+
+### Routage detaille (meme routeur)
+
+| Mesure | Placement v3 | Placement retenu |
+|---|---:|---:|
+| Connexions reussies | 682 | 682 |
+| Connexions en echec | 0 | 0 |
+| Reseaux complets (selon le routeur) | 255 | 255 |
+| Reseaux a router | 255 | 255 |
+| Longueur de piste (mm) | 5388.7 | 5381.2 |
+| Vias | 470 | 478 |
+| dont vias doubles | 1 | 2 |
+| Longueur retrecie (mm) | 344.2 | 252.1 |
+| Resistance des reseaux de puissance (mOhm) | 1358.52 | 1273.38 |
+| Temps (s) | 104.4 | 188.1 |
+
+termine en 191.3 s ; sorties dans sorties

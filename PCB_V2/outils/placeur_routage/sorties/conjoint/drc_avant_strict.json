@@ -1,0 +1,29 @@
+{
+ "mode_connexion": "strict",
+ "source_pastilles": "Altium (altium_rev3/pastilles.json)",
+ "violations_routage": 0,
+ "violations_par_type": {},
+ "derogations": {},
+ "pire_ecart_mm": {},
+ "exemples": {},
+ "angles_aigus": 1,
+ "coudes_90": 9,
+ "coudes": 1084,
+ "marge_isolement_min_mm": 0.019486119944820468,
+ "marge_isolement_min_paire": "R86_ALIM2.2(NetR85_ALIM2_2) / trk(NetM3_ALIM2_3) : ecart 0.2195 mm, regle 0.200 mm",
+ "liaisons_ouvertes": 0,
+ "detail_liaisons_ouvertes": [],
+ "reseaux_internes_bloc_non_juges": [
+  "NetC18_2",
+  "NetC19_2",
+  "NetC19_1",
+  "NetM1_4"
+ ],
+ "reseaux_a_router": 255,
+ "reseaux_complets": 255,
+ "taux_completion": 1.0,
+ "ecart_moyen_mm": 0.5091597666618057,
+ "ecart_min_mm": 0.1990013800000081,
+ "resistance_puissance_mohm": 1273.3700908129686,
+ "longueur_pistes_mm": 5381.411924726574
+}
