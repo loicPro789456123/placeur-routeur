@@ -1,0 +1,39 @@
+{
+  "cause": "echecs apres finition",
+  "conjoint": {
+    "acceptes": 223,
+    "cout": 8879.1262570203,
+    "cout_depart": 109271.6516725512,
+    "essais": 1868
+  },
+  "connexions_echouees": 1,
+  "echecs": [
+    "M5_ALIM2.2 : pas de place pour un via de plan a moins de 6 mm (ni via / pastille traversante du plan joignable) [30 cellule(s) de depart admissibles sur 30]"
+  ],
+  "graine": 4033,
+  "recuit": {
+    "acceptation_initiale": 0.9274102687912442,
+    "cout": 12643.204955520287,
+    "cout_depart": 63127.24709205527,
+    "hpwl": 5542.04813102,
+    "hpwl_depart": 23530.70909546001,
+    "mouvements": 42209450,
+    "paliers": 1366,
+    "rechauffes": 0,
+    "t0": 203.902051558171,
+    "temps_s": 376.65105476
+  },
+  "temps_phases_s": {
+    "boucle 1": 142.6,
+    "boucle 2": 173.7,
+    "boucle 3": 162.4,
+    "boucle 4": 220.9,
+    "conjointe": 600.3,
+    "finition": 6.7,
+    "recuit": 376.7,
+    "routage detaille": 121.6
+  },
+  "temps_s": 1804.779166168,
+  "tours_boucle": 4,
+  "valide": false
+}

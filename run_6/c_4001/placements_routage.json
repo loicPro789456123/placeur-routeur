@@ -1,0 +1,2458 @@
+[
+  {
+    "designator": "C32_ALIM2",
+    "rotation": 90,
+    "rotation_si_convention_miroir_x": 270,
+    "side": "bottom",
+    "x": 3485.0,
+    "y": 2330.0
+  },
+  {
+    "designator": "C32_ALIM1",
+    "rotation": 270,
+    "rotation_si_convention_miroir_x": 90,
+    "side": "bottom",
+    "x": 2100.0,
+    "y": 3400.0
+  },
+  {
+    "designator": "R106_ALIM2",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 5425.0,
+    "y": 2975.0
+  },
+  {
+    "designator": "R106_ALIM1",
+    "rotation": 90,
+    "rotation_si_convention_miroir_x": 270,
+    "side": "bottom",
+    "x": 2020.0,
+    "y": 2255.0
+  },
+  {
+    "designator": "R105_ALIM2",
+    "rotation": 270,
+    "side": "top",
+    "x": 5995.0,
+    "y": 1450.0
+  },
+  {
+    "designator": "R105_ALIM1",
+    "rotation": 90,
+    "rotation_si_convention_miroir_x": 270,
+    "side": "bottom",
+    "x": 345.0,
+    "y": 755.0
+  },
+  {
+    "designator": "R104_ALIM2",
+    "rotation": 90,
+    "rotation_si_convention_miroir_x": 270,
+    "side": "bottom",
+    "x": 5990.0,
+    "y": 1400.0
+  },
+  {
+    "designator": "R104_ALIM1",
+    "rotation": 0,
+    "side": "top",
+    "x": 300.0,
+    "y": 800.0
+  },
+  {
+    "designator": "R103_ALIM2",
+    "rotation": 90,
+    "rotation_si_convention_miroir_x": 270,
+    "side": "bottom",
+    "x": 3510.0,
+    "y": 2155.0
+  },
+  {
+    "designator": "R103_ALIM1",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 2100.0,
+    "y": 2515.0
+  },
+  {
+    "designator": "R102_ALIM2",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 5785.0,
+    "y": 840.0
+  },
+  {
+    "designator": "R102_ALIM1",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 785.0,
+    "y": 1150.0
+  },
+  {
+    "designator": "R101_ALIM2",
+    "rotation": 270,
+    "rotation_si_convention_miroir_x": 90,
+    "side": "bottom",
+    "x": 5950.0,
+    "y": 795.0
+  },
+  {
+    "designator": "R101_ALIM1",
+    "rotation": 270,
+    "side": "top",
+    "x": 775.0,
+    "y": 970.0
+  },
+  {
+    "designator": "R100_ALIM2",
+    "rotation": 90,
+    "rotation_si_convention_miroir_x": 270,
+    "side": "bottom",
+    "x": 6140.0,
+    "y": 765.0
+  },
+  {
+    "designator": "R100_ALIM1",
+    "rotation": 90,
+    "rotation_si_convention_miroir_x": 270,
+    "side": "bottom",
+    "x": 780.0,
+    "y": 975.0
+  },
+  {
+    "designator": "R99_ALIM2",
+    "rotation": 90,
+    "rotation_si_convention_miroir_x": 270,
+    "side": "bottom",
+    "x": 4240.0,
+    "y": 2060.0
+  },
+  {
+    "designator": "R99_ALIM1",
+    "rotation": 90,
+    "rotation_si_convention_miroir_x": 270,
+    "side": "bottom",
+    "x": 2310.0,
+    "y": 1620.0
+  },
+  {
+    "designator": "P1",
+    "rotation": 180,
+    "side": "top",
+    "x": 3228.35,
+    "y": 3818.9
+  },
+  {
+    "designator": "C50_ALIM2",
+    "rotation": 0,
+    "side": "top",
+    "x": 5840.0,
+    "y": 815.0
+  },
+  {
+    "designator": "C50_ALIM1",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 975.0,
+    "y": 1160.0
+  },
+  {
+    "designator": "C49_ALIM2",
+    "rotation": 90,
+    "rotation_si_convention_miroir_x": 270,
+    "side": "bottom",
+    "x": 4235.0,
+    "y": 1725.0
+  },
+  {
+    "designator": "C49_ALIM1",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 2035.0,
+    "y": 1720.0
+  },
+  {
+    "designator": "C48_ALIM2",
+    "rotation": 270,
+    "rotation_si_convention_miroir_x": 90,
+    "side": "bottom",
+    "x": 4255.0,
+    "y": 1565.0
+  },
+  {
+    "designator": "C48_ALIM1",
+    "rotation": 270,
+    "rotation_si_convention_miroir_x": 90,
+    "side": "bottom",
+    "x": 2175.0,
+    "y": 1690.0
+  },
+  {
+    "designator": "R98_VOLT2",
+    "rotation": 270,
+    "rotation_si_convention_miroir_x": 90,
+    "side": "bottom",
+    "x": 5570.0,
+    "y": 410.0
+  },
+  {
+    "designator": "R98_VOLT1",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 2185.0,
+    "y": 380.0
+  },
+  {
+    "designator": "U24_ALIM2",
+    "rotation": 180,
+    "side": "top",
+    "x": 3550.0,
+    "y": 2520.0
+  },
+  {
+    "designator": "U23_ALIM2",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 4050.0,
+    "y": 1475.0
+  },
+  {
+    "designator": "U22_ALIM2",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 4425.0,
+    "y": 2750.0
+  },
+  {
+    "designator": "U21_ALIM2",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 3705.0,
+    "y": 890.0
+  },
+  {
+    "designator": "U20_ALIM2",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 4505.0,
+    "y": 995.0
+  },
+  {
+    "designator": "U19_ALIM2",
+    "rotation": 0,
+    "side": "top",
+    "x": 5560.0,
+    "y": 1005.0
+  },
+  {
+    "designator": "U18_ALIM2",
+    "rotation": 90,
+    "side": "top",
+    "x": 4395.0,
+    "y": 1015.0
+  },
+  {
+    "designator": "U17_ALIM2",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 5800.0,
+    "y": 1375.0
+  },
+  {
+    "designator": "U16_ALIM2",
+    "rotation": 0,
+    "side": "top",
+    "x": 4115.0,
+    "y": 1005.0
+  },
+  {
+    "designator": "U15_ALIM2",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 5040.0,
+    "y": 1420.0
+  },
+  {
+    "designator": "U14_ALIM2",
+    "rotation": 0,
+    "side": "top",
+    "x": 5105.0,
+    "y": 1010.0
+  },
+  {
+    "designator": "U13_ALIM2",
+    "rotation": 180,
+    "side": "top",
+    "x": 4675.0,
+    "y": 1020.0
+  },
+  {
+    "designator": "U12_ALIM2",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 4745.0,
+    "y": 1425.0
+  },
+  {
+    "designator": "U11_ALIM2",
+    "rotation": 270,
+    "side": "top",
+    "x": 4225.0,
+    "y": 2085.0
+  },
+  {
+    "designator": "R87_ALIM2",
+    "rotation": 90,
+    "rotation_si_convention_miroir_x": 270,
+    "side": "bottom",
+    "x": 4465.0,
+    "y": 2415.0
+  },
+  {
+    "designator": "R86_ALIM2",
+    "rotation": 0,
+    "side": "top",
+    "x": 3385.0,
+    "y": 2710.0
+  },
+  {
+    "designator": "R85_ALIM2",
+    "rotation": 0,
+    "side": "top",
+    "x": 3425.0,
+    "y": 3035.0
+  },
+  {
+    "designator": "R84_ALIM2",
+    "rotation": 0,
+    "side": "top",
+    "x": 4425.0,
+    "y": 2410.0
+  },
+  {
+    "designator": "R83_ALIM2",
+    "rotation": 90,
+    "side": "top",
+    "x": 6005.0,
+    "y": 1660.0
+  },
+  {
+    "designator": "R82_ALIM2",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 5695.0,
+    "y": 1100.0
+  },
+  {
+    "designator": "R81_ALIM2",
+    "rotation": 90,
+    "rotation_si_convention_miroir_x": 270,
+    "side": "bottom",
+    "x": 3740.0,
+    "y": 3060.0
+  },
+  {
+    "designator": "R80_ALIM2",
+    "rotation": 90,
+    "side": "top",
+    "x": 4060.0,
+    "y": 2370.0
+  },
+  {
+    "designator": "R79_ALIM2",
+    "rotation": 90,
+    "rotation_si_convention_miroir_x": 270,
+    "side": "bottom",
+    "x": 3875.0,
+    "y": 2375.0
+  },
+  {
+    "designator": "R78_ALIM2",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 3905.0,
+    "y": 2675.0
+  },
+  {
+    "designator": "R77_ALIM2",
+    "rotation": 0,
+    "side": "top",
+    "x": 3830.0,
+    "y": 2290.0
+  },
+  {
+    "designator": "R76_ALIM2",
+    "rotation": 270,
+    "rotation_si_convention_miroir_x": 90,
+    "side": "bottom",
+    "x": 3725.0,
+    "y": 2570.0
+  },
+  {
+    "designator": "R75_ALIM2",
+    "rotation": 0,
+    "side": "top",
+    "x": 3450.0,
+    "y": 2205.0
+  },
+  {
+    "designator": "R74_ALIM2",
+    "rotation": 90,
+    "side": "top",
+    "x": 3765.0,
+    "y": 2510.0
+  },
+  {
+    "designator": "R73_ALIM2",
+    "rotation": 90,
+    "rotation_si_convention_miroir_x": 270,
+    "side": "bottom",
+    "x": 4390.0,
+    "y": 3015.0
+  },
+  {
+    "designator": "R72_ALIM2",
+    "rotation": 90,
+    "rotation_si_convention_miroir_x": 270,
+    "side": "bottom",
+    "x": 3715.0,
+    "y": 2325.0
+  },
+  {
+    "designator": "R71_ALIM2",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 4400.0,
+    "y": 1985.0
+  },
+  {
+    "designator": "R70_ALIM2",
+    "rotation": 270,
+    "side": "top",
+    "x": 3495.0,
+    "y": 1805.0
+  },
+  {
+    "designator": "R69_ALIM2",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 4115.0,
+    "y": 2250.0
+  },
+  {
+    "designator": "R68_ALIM2",
+    "rotation": 270,
+    "rotation_si_convention_miroir_x": 90,
+    "side": "bottom",
+    "x": 5255.0,
+    "y": 2275.0
+  },
+  {
+    "designator": "R67_ALIM2",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 4230.0,
+    "y": 2730.0
+  },
+  {
+    "designator": "R66_ALIM2",
+    "rotation": 90,
+    "rotation_si_convention_miroir_x": 270,
+    "side": "bottom",
+    "x": 4005.0,
+    "y": 1705.0
+  },
+  {
+    "designator": "R65_ALIM2",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 5420.0,
+    "y": 2320.0
+  },
+  {
+    "designator": "R64_ALIM2",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 5365.0,
+    "y": 1375.0
+  },
+  {
+    "designator": "R63_ALIM2",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 5455.0,
+    "y": 2160.0
+  },
+  {
+    "designator": "R62_ALIM2",
+    "rotation": 90,
+    "rotation_si_convention_miroir_x": 270,
+    "side": "bottom",
+    "x": 5560.0,
+    "y": 3230.0
+  },
+  {
+    "designator": "R61_ALIM2",
+    "rotation": 270,
+    "rotation_si_convention_miroir_x": 90,
+    "side": "bottom",
+    "x": 3810.0,
+    "y": 705.0
+  },
+  {
+    "designator": "R60_ALIM2",
+    "rotation": 270,
+    "rotation_si_convention_miroir_x": 90,
+    "side": "bottom",
+    "x": 4515.0,
+    "y": 650.0
+  },
+  {
+    "designator": "R59_ALIM2",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 5690.0,
+    "y": 1540.0
+  },
+  {
+    "designator": "R58_ALIM2",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 4165.0,
+    "y": 960.0
+  },
+  {
+    "designator": "R57_ALIM2",
+    "rotation": 0,
+    "side": "top",
+    "x": 5355.0,
+    "y": 1025.0
+  },
+  {
+    "designator": "R56_ALIM2",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 4940.0,
+    "y": 1595.0
+  },
+  {
+    "designator": "R55_ALIM2",
+    "rotation": 270,
+    "rotation_si_convention_miroir_x": 90,
+    "side": "bottom",
+    "x": 5035.0,
+    "y": 635.0
+  },
+  {
+    "designator": "R54_ALIM2",
+    "rotation": 270,
+    "rotation_si_convention_miroir_x": 90,
+    "side": "bottom",
+    "x": 4645.0,
+    "y": 485.0
+  },
+  {
+    "designator": "R53_ALIM2",
+    "rotation": 270,
+    "rotation_si_convention_miroir_x": 90,
+    "side": "bottom",
+    "x": 4600.0,
+    "y": 1425.0
+  },
+  {
+    "designator": "R52_ALIM2",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 4410.0,
+    "y": 1140.0
+  },
+  {
+    "designator": "R51_ALIM2",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 4820.0,
+    "y": 935.0
+  },
+  {
+    "designator": "R50_ALIM2",
+    "rotation": 90,
+    "rotation_si_convention_miroir_x": 270,
+    "side": "bottom",
+    "x": 5200.0,
+    "y": 1545.0
+  },
+  {
+    "designator": "R49_ALIM2",
+    "rotation": 270,
+    "rotation_si_convention_miroir_x": 90,
+    "side": "bottom",
+    "x": 3990.0,
+    "y": 980.0
+  },
+  {
+    "designator": "R48_ALIM2",
+    "rotation": 270,
+    "side": "top",
+    "x": 3820.0,
+    "y": 860.0
+  },
+  {
+    "designator": "R47_ALIM2",
+    "rotation": 90,
+    "rotation_si_convention_miroir_x": 270,
+    "side": "bottom",
+    "x": 5260.0,
+    "y": 990.0
+  },
+  {
+    "designator": "R46_ALIM2",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 5360.0,
+    "y": 1535.0
+  },
+  {
+    "designator": "R45_ALIM2",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 5205.0,
+    "y": 535.0
+  },
+  {
+    "designator": "R44_ALIM2",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 4695.0,
+    "y": 1075.0
+  },
+  {
+    "designator": "R43_ALIM2",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 4525.0,
+    "y": 1585.0
+  },
+  {
+    "designator": "R42_ALIM2",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 4320.0,
+    "y": 1385.0
+  },
+  {
+    "designator": "R41_ALIM2",
+    "rotation": 90,
+    "side": "top",
+    "x": 4030.0,
+    "y": 2015.0
+  },
+  {
+    "designator": "R40_ALIM2",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 4205.0,
+    "y": 1100.0
+  },
+  {
+    "designator": "R39_ALIM2",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 5610.0,
+    "y": 1410.0
+  },
+  {
+    "designator": "R38_ALIM2",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 4000.0,
+    "y": 1150.0
+  },
+  {
+    "designator": "R37_ALIM2",
+    "rotation": 270,
+    "rotation_si_convention_miroir_x": 90,
+    "side": "bottom",
+    "x": 3840.0,
+    "y": 1090.0
+  },
+  {
+    "designator": "R36_ALIM2",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 5095.0,
+    "y": 1120.0
+  },
+  {
+    "designator": "R35_ALIM2",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 5295.0,
+    "y": 1150.0
+  },
+  {
+    "designator": "R34_ALIM2",
+    "rotation": 90,
+    "rotation_si_convention_miroir_x": 270,
+    "side": "bottom",
+    "x": 4895.0,
+    "y": 1430.0
+  },
+  {
+    "designator": "R33_ALIM2",
+    "rotation": 90,
+    "rotation_si_convention_miroir_x": 270,
+    "side": "bottom",
+    "x": 3700.0,
+    "y": 1430.0
+  },
+  {
+    "designator": "R32_ALIM2",
+    "rotation": 270,
+    "rotation_si_convention_miroir_x": 90,
+    "side": "bottom",
+    "x": 4480.0,
+    "y": 1425.0
+  },
+  {
+    "designator": "R31_ALIM2",
+    "rotation": 90,
+    "rotation_si_convention_miroir_x": 270,
+    "side": "bottom",
+    "x": 4365.0,
+    "y": 1545.0
+  },
+  {
+    "designator": "Q6_ALIM2",
+    "rotation": 90,
+    "side": "top",
+    "x": 4455.0,
+    "y": 2210.0
+  },
+  {
+    "designator": "Q5_ALIM2",
+    "rotation": 0,
+    "side": "top",
+    "x": 4420.0,
+    "y": 3205.0
+  },
+  {
+    "designator": "Q4_ALIM2",
+    "rotation": 180,
+    "side": "top",
+    "x": 5945.0,
+    "y": 1885.0
+  },
+  {
+    "designator": "M7_ALIM2",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 3720.0,
+    "y": 2005.0
+  },
+  {
+    "designator": "M6_ALIM2",
+    "rotation": 180,
+    "side": "top",
+    "x": 3275.0,
+    "y": 2470.0
+  },
+  {
+    "designator": "M5_ALIM2",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 3855.0,
+    "y": 2165.0
+  },
+  {
+    "designator": "M4_ALIM2",
+    "rotation": 0,
+    "side": "top",
+    "x": 5433.07,
+    "y": 2039.37
+  },
+  {
+    "designator": "M3_ALIM2",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 4325.0,
+    "y": 2580.0
+  },
+  {
+    "designator": "D23_ALIM2",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 4195.0,
+    "y": 2410.0
+  },
+  {
+    "designator": "D22_ALIM2",
+    "rotation": 90,
+    "side": "top",
+    "x": 4225.0,
+    "y": 2375.0
+  },
+  {
+    "designator": "D21_ALIM2",
+    "rotation": 90,
+    "rotation_si_convention_miroir_x": 270,
+    "side": "bottom",
+    "x": 4355.0,
+    "y": 2300.0
+  },
+  {
+    "designator": "D20_ALIM2",
+    "rotation": 90,
+    "side": "top",
+    "x": 3055.0,
+    "y": 2530.0
+  },
+  {
+    "designator": "D19_ALIM2",
+    "rotation": 0,
+    "side": "top",
+    "x": 3530.0,
+    "y": 2040.0
+  },
+  {
+    "designator": "D18_ALIM2",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 4100.0,
+    "y": 2105.0
+  },
+  {
+    "designator": "D17_ALIM2",
+    "rotation": 270,
+    "side": "top",
+    "x": 6140.0,
+    "y": 1855.0
+  },
+  {
+    "designator": "D16_ALIM2",
+    "rotation": 90,
+    "rotation_si_convention_miroir_x": 270,
+    "side": "bottom",
+    "x": 5400.0,
+    "y": 1700.0
+  },
+  {
+    "designator": "D15_ALIM2",
+    "rotation": 270,
+    "side": "top",
+    "x": 4440.0,
+    "y": 1995.0
+  },
+  {
+    "designator": "C31_ALIM2",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 3095.0,
+    "y": 2860.0
+  },
+  {
+    "designator": "C30_ALIM2",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 6170.0,
+    "y": 1650.0
+  },
+  {
+    "designator": "C29_ALIM2",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 6200.0,
+    "y": 1490.0
+  },
+  {
+    "designator": "C28_ALIM2",
+    "rotation": 0,
+    "side": "top",
+    "x": 3870.0,
+    "y": 2665.0
+  },
+  {
+    "designator": "C27_ALIM2",
+    "rotation": 90,
+    "rotation_si_convention_miroir_x": 270,
+    "side": "bottom",
+    "x": 3870.0,
+    "y": 1720.0
+  },
+  {
+    "designator": "C26_ALIM2",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 3865.0,
+    "y": 2575.0
+  },
+  {
+    "designator": "C25_ALIM2",
+    "rotation": 270,
+    "rotation_si_convention_miroir_x": 90,
+    "side": "bottom",
+    "x": 4120.0,
+    "y": 1690.0
+  },
+  {
+    "designator": "C24_ALIM2",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 4090.0,
+    "y": 1975.0
+  },
+  {
+    "designator": "U7",
+    "rotation": 90,
+    "side": "top",
+    "x": 3235.0,
+    "y": 2930.0
+  },
+  {
+    "designator": "U25_VOLT2",
+    "rotation": 90,
+    "side": "top",
+    "x": 4700.79,
+    "y": 1566.93
+  },
+  {
+    "designator": "U25_VOLT1",
+    "rotation": 90,
+    "side": "top",
+    "x": 1755.91,
+    "y": 1566.93
+  },
+  {
+    "designator": "U24_ALIM1",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 2435.0,
+    "y": 2660.0
+  },
+  {
+    "designator": "U23_ALIM1",
+    "rotation": 180,
+    "side": "top",
+    "x": 2495.0,
+    "y": 2380.0
+  },
+  {
+    "designator": "U22_ALIM1",
+    "rotation": 180,
+    "side": "top",
+    "x": 2360.0,
+    "y": 2005.0
+  },
+  {
+    "designator": "U21_ALIM1",
+    "rotation": 0,
+    "side": "top",
+    "x": 1085.0,
+    "y": 1005.0
+  },
+  {
+    "designator": "U20_ALIM1",
+    "rotation": 0,
+    "side": "top",
+    "x": 1495.0,
+    "y": 1010.0
+  },
+  {
+    "designator": "U19_ALIM1",
+    "rotation": 0,
+    "side": "top",
+    "x": 2495.0,
+    "y": 1010.0
+  },
+  {
+    "designator": "U18_ALIM1",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 1430.0,
+    "y": 420.0
+  },
+  {
+    "designator": "U17_ALIM1",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 2440.0,
+    "y": 470.0
+  },
+  {
+    "designator": "U16_ALIM1",
+    "rotation": 0,
+    "side": "top",
+    "x": 1270.0,
+    "y": 1010.0
+  },
+  {
+    "designator": "U15_ALIM1",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 2190.0,
+    "y": 1075.0
+  },
+  {
+    "designator": "U14_ALIM1",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 2015.0,
+    "y": 1075.0
+  },
+  {
+    "designator": "U13_ALIM1",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 2760.0,
+    "y": 175.0
+  },
+  {
+    "designator": "U12_ALIM1",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 1645.0,
+    "y": 1000.0
+  },
+  {
+    "designator": "U11_ALIM1",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 2705.0,
+    "y": 1085.0
+  },
+  {
+    "designator": "U10",
+    "rotation": 270,
+    "side": "top",
+    "x": 4040.0,
+    "y": 3300.0
+  },
+  {
+    "designator": "U9",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 680.0,
+    "y": 740.0
+  },
+  {
+    "designator": "U8",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 2570.0,
+    "y": 3450.0
+  },
+  {
+    "designator": "U6",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 2755.0,
+    "y": 2425.0
+  },
+  {
+    "designator": "U5",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 3160.0,
+    "y": 2180.0
+  },
+  {
+    "designator": "U4",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 3495.0,
+    "y": 1470.0
+  },
+  {
+    "designator": "U3",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 3195.0,
+    "y": 1520.0
+  },
+  {
+    "designator": "U2",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 3410.0,
+    "y": 1260.0
+  },
+  {
+    "designator": "U1",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 590.0,
+    "y": 1770.0
+  },
+  {
+    "designator": "R97_VOLT2",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 3720.0,
+    "y": 1635.0
+  },
+  {
+    "designator": "R97_VOLT1",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 850.0,
+    "y": 1760.0
+  },
+  {
+    "designator": "R96_VOLT2",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 3900.0,
+    "y": 2005.0
+  },
+  {
+    "designator": "R96_VOLT1",
+    "rotation": 90,
+    "rotation_si_convention_miroir_x": 270,
+    "side": "bottom",
+    "x": 2160.0,
+    "y": 2290.0
+  },
+  {
+    "designator": "R95_VOLT2",
+    "rotation": 180,
+    "side": "top",
+    "x": 3830.0,
+    "y": 2025.0
+  },
+  {
+    "designator": "R95_VOLT1",
+    "rotation": 0,
+    "side": "top",
+    "x": 2215.0,
+    "y": 2350.0
+  },
+  {
+    "designator": "R94_VOLT2",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 3560.0,
+    "y": 1940.0
+  },
+  {
+    "designator": "R94_VOLT1",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 2675.0,
+    "y": 2275.0
+  },
+  {
+    "designator": "R93_VOLT2",
+    "rotation": 90,
+    "rotation_si_convention_miroir_x": 270,
+    "side": "bottom",
+    "x": 5035.0,
+    "y": 1730.0
+  },
+  {
+    "designator": "R93_VOLT1",
+    "rotation": 270,
+    "side": "top",
+    "x": 2020.0,
+    "y": 1995.0
+  },
+  {
+    "designator": "R92_VOLT2",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 4735.0,
+    "y": 1560.0
+  },
+  {
+    "designator": "R92_VOLT1",
+    "rotation": 270,
+    "rotation_si_convention_miroir_x": 90,
+    "side": "bottom",
+    "x": 1545.0,
+    "y": 1545.0
+  },
+  {
+    "designator": "R91_VOLT2",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 4565.0,
+    "y": 1725.0
+  },
+  {
+    "designator": "R91_VOLT1",
+    "rotation": 90,
+    "rotation_si_convention_miroir_x": 270,
+    "side": "bottom",
+    "x": 1660.0,
+    "y": 1535.0
+  },
+  {
+    "designator": "R90_VOLT2",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 4745.0,
+    "y": 1660.0
+  },
+  {
+    "designator": "R90_VOLT1",
+    "rotation": 270,
+    "rotation_si_convention_miroir_x": 90,
+    "side": "bottom",
+    "x": 1430.0,
+    "y": 1565.0
+  },
+  {
+    "designator": "R89",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 3430.0,
+    "y": 1755.0
+  },
+  {
+    "designator": "R88",
+    "rotation": 180,
+    "side": "top",
+    "x": 2925.0,
+    "y": 1565.0
+  },
+  {
+    "designator": "R87_ALIM1",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 2355.0,
+    "y": 2110.0
+  },
+  {
+    "designator": "R86_ALIM1",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 2750.0,
+    "y": 2580.0
+  },
+  {
+    "designator": "R85_ALIM1",
+    "rotation": 0,
+    "side": "top",
+    "x": 2495.0,
+    "y": 2610.0
+  },
+  {
+    "designator": "R84_ALIM1",
+    "rotation": 180,
+    "side": "top",
+    "x": 2720.0,
+    "y": 1990.0
+  },
+  {
+    "designator": "R83_ALIM1",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 2765.0,
+    "y": 2695.0
+  },
+  {
+    "designator": "R82_ALIM1",
+    "rotation": 90,
+    "rotation_si_convention_miroir_x": 270,
+    "side": "bottom",
+    "x": 805.0,
+    "y": 1520.0
+  },
+  {
+    "designator": "R81_ALIM1",
+    "rotation": 180,
+    "side": "top",
+    "x": 2290.0,
+    "y": 2980.0
+  },
+  {
+    "designator": "R80_ALIM1",
+    "rotation": 0,
+    "side": "top",
+    "x": 2960.0,
+    "y": 2050.0
+  },
+  {
+    "designator": "R79_ALIM1",
+    "rotation": 90,
+    "rotation_si_convention_miroir_x": 270,
+    "side": "bottom",
+    "x": 2965.0,
+    "y": 2410.0
+  },
+  {
+    "designator": "R78_ALIM1",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 2985.0,
+    "y": 2090.0
+  },
+  {
+    "designator": "R77_ALIM1",
+    "rotation": 270,
+    "side": "top",
+    "x": 2855.0,
+    "y": 2300.0
+  },
+  {
+    "designator": "R76_ALIM1",
+    "rotation": 180,
+    "side": "top",
+    "x": 2290.0,
+    "y": 2855.0
+  },
+  {
+    "designator": "R75_ALIM1",
+    "rotation": 180,
+    "side": "top",
+    "x": 2725.0,
+    "y": 2660.0
+  },
+  {
+    "designator": "R74_ALIM1",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 2895.0,
+    "y": 3165.0
+  },
+  {
+    "designator": "R73_ALIM1",
+    "rotation": 270,
+    "rotation_si_convention_miroir_x": 90,
+    "side": "bottom",
+    "x": 2960.0,
+    "y": 1905.0
+  },
+  {
+    "designator": "R72_ALIM1",
+    "rotation": 90,
+    "rotation_si_convention_miroir_x": 270,
+    "side": "bottom",
+    "x": 2745.0,
+    "y": 2865.0
+  },
+  {
+    "designator": "R71_ALIM1",
+    "rotation": 270,
+    "rotation_si_convention_miroir_x": 90,
+    "side": "bottom",
+    "x": 1795.0,
+    "y": 1680.0
+  },
+  {
+    "designator": "R70_ALIM1",
+    "rotation": 0,
+    "side": "top",
+    "x": 3080.0,
+    "y": 2285.0
+  },
+  {
+    "designator": "R69_ALIM1",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 2700.0,
+    "y": 1635.0
+  },
+  {
+    "designator": "R68_ALIM1",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 2975.0,
+    "y": 850.0
+  },
+  {
+    "designator": "R67_ALIM1",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 2795.0,
+    "y": 2100.0
+  },
+  {
+    "designator": "R66_ALIM1",
+    "rotation": 270,
+    "rotation_si_convention_miroir_x": 90,
+    "side": "bottom",
+    "x": 2725.0,
+    "y": 1425.0
+  },
+  {
+    "designator": "R65_ALIM1",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 2935.0,
+    "y": 2265.0
+  },
+  {
+    "designator": "R64_ALIM1",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 2105.0,
+    "y": 1390.0
+  },
+  {
+    "designator": "R63_ALIM1",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 2340.0,
+    "y": 1990.0
+  },
+  {
+    "designator": "R62_ALIM1",
+    "rotation": 90,
+    "side": "top",
+    "x": 2020.0,
+    "y": 2630.0
+  },
+  {
+    "designator": "R61_ALIM1",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 955.0,
+    "y": 645.0
+  },
+  {
+    "designator": "R60_ALIM1",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 1760.0,
+    "y": 430.0
+  },
+  {
+    "designator": "R59_ALIM1",
+    "rotation": 90,
+    "rotation_si_convention_miroir_x": 270,
+    "side": "bottom",
+    "x": 2395.0,
+    "y": 650.0
+  },
+  {
+    "designator": "R58_ALIM1",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 1310.0,
+    "y": 935.0
+  },
+  {
+    "designator": "R57_ALIM1",
+    "rotation": 90,
+    "rotation_si_convention_miroir_x": 270,
+    "side": "bottom",
+    "x": 2485.0,
+    "y": 975.0
+  },
+  {
+    "designator": "R56_ALIM1",
+    "rotation": 0,
+    "side": "top",
+    "x": 2300.0,
+    "y": 1000.0
+  },
+  {
+    "designator": "R55_ALIM1",
+    "rotation": 180,
+    "side": "top",
+    "x": 2030.0,
+    "y": 985.0
+  },
+  {
+    "designator": "R54_ALIM1",
+    "rotation": 90,
+    "rotation_si_convention_miroir_x": 270,
+    "side": "bottom",
+    "x": 2630.0,
+    "y": 375.0
+  },
+  {
+    "designator": "R53_ALIM1",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 1960.0,
+    "y": 390.0
+  },
+  {
+    "designator": "R52_ALIM1",
+    "rotation": 270,
+    "rotation_si_convention_miroir_x": 90,
+    "side": "bottom",
+    "x": 1320.0,
+    "y": 645.0
+  },
+  {
+    "designator": "R51_ALIM1",
+    "rotation": 270,
+    "rotation_si_convention_miroir_x": 90,
+    "side": "bottom",
+    "x": 1600.0,
+    "y": 530.0
+  },
+  {
+    "designator": "R50_ALIM1",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 2180.0,
+    "y": 635.0
+  },
+  {
+    "designator": "R49_ALIM1",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 1110.0,
+    "y": 990.0
+  },
+  {
+    "designator": "R48_ALIM1",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 935.0,
+    "y": 510.0
+  },
+  {
+    "designator": "R47_ALIM1",
+    "rotation": 90,
+    "rotation_si_convention_miroir_x": 270,
+    "side": "bottom",
+    "x": 2370.0,
+    "y": 980.0
+  },
+  {
+    "designator": "R46_ALIM1",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 2060.0,
+    "y": 935.0
+  },
+  {
+    "designator": "R45_ALIM1",
+    "rotation": 90,
+    "rotation_si_convention_miroir_x": 270,
+    "side": "bottom",
+    "x": 1815.0,
+    "y": 990.0
+  },
+  {
+    "designator": "R44_ALIM1",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 2220.0,
+    "y": 515.0
+  },
+  {
+    "designator": "R43_ALIM1",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 1945.0,
+    "y": 680.0
+  },
+  {
+    "designator": "R42_ALIM1",
+    "rotation": 90,
+    "rotation_si_convention_miroir_x": 270,
+    "side": "bottom",
+    "x": 1150.0,
+    "y": 645.0
+  },
+  {
+    "designator": "R41_ALIM1",
+    "rotation": 90,
+    "side": "top",
+    "x": 2640.0,
+    "y": 925.0
+  },
+  {
+    "designator": "R40_ALIM1",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 1430.0,
+    "y": 1390.0
+  },
+  {
+    "designator": "R39_ALIM1",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 2440.0,
+    "y": 1150.0
+  },
+  {
+    "designator": "R38_ALIM1",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 1165.0,
+    "y": 1125.0
+  },
+  {
+    "designator": "R37_ALIM1",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 1180.0,
+    "y": 1415.0
+  },
+  {
+    "designator": "R36_ALIM1",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 2335.0,
+    "y": 1395.0
+  },
+  {
+    "designator": "R35_ALIM1",
+    "rotation": 270,
+    "rotation_si_convention_miroir_x": 90,
+    "side": "bottom",
+    "x": 3115.0,
+    "y": 1100.0
+  },
+  {
+    "designator": "R34_ALIM1",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 1820.0,
+    "y": 1150.0
+  },
+  {
+    "designator": "R33_ALIM1",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 1640.0,
+    "y": 1385.0
+  },
+  {
+    "designator": "R32_ALIM1",
+    "rotation": 180,
+    "side": "top",
+    "x": 1715.0,
+    "y": 1020.0
+  },
+  {
+    "designator": "R31_ALIM1",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 1590.0,
+    "y": 1145.0
+  },
+  {
+    "designator": "R30",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 3965.0,
+    "y": 2875.0
+  },
+  {
+    "designator": "R29",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 3805.0,
+    "y": 2905.0
+  },
+  {
+    "designator": "R28",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 4055.0,
+    "y": 3125.0
+  },
+  {
+    "designator": "R27",
+    "rotation": 90,
+    "side": "top",
+    "x": 3805.0,
+    "y": 2795.0
+  },
+  {
+    "designator": "R26",
+    "rotation": 270,
+    "rotation_si_convention_miroir_x": 90,
+    "side": "bottom",
+    "x": 4105.0,
+    "y": 2870.0
+  },
+  {
+    "designator": "R25",
+    "rotation": 90,
+    "rotation_si_convention_miroir_x": 270,
+    "side": "bottom",
+    "x": 4235.0,
+    "y": 3345.0
+  },
+  {
+    "designator": "R24",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 2660.0,
+    "y": 3275.0
+  },
+  {
+    "designator": "R23",
+    "rotation": 90,
+    "rotation_si_convention_miroir_x": 270,
+    "side": "bottom",
+    "x": 2695.0,
+    "y": 3120.0
+  },
+  {
+    "designator": "R22",
+    "rotation": 90,
+    "rotation_si_convention_miroir_x": 270,
+    "side": "bottom",
+    "x": 3440.0,
+    "y": 3290.0
+  },
+  {
+    "designator": "R21",
+    "rotation": 270,
+    "rotation_si_convention_miroir_x": 90,
+    "side": "bottom",
+    "x": 3250.0,
+    "y": 2455.0
+  },
+  {
+    "designator": "R20",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 3270.0,
+    "y": 1665.0
+  },
+  {
+    "designator": "R19",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 3200.0,
+    "y": 2320.0
+  },
+  {
+    "designator": "R18",
+    "rotation": 90,
+    "rotation_si_convention_miroir_x": 270,
+    "side": "bottom",
+    "x": 3335.0,
+    "y": 1505.0
+  },
+  {
+    "designator": "R17",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 3200.0,
+    "y": 2645.0
+  },
+  {
+    "designator": "R16",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 3480.0,
+    "y": 1605.0
+  },
+  {
+    "designator": "R15",
+    "rotation": 90,
+    "side": "top",
+    "x": 3250.0,
+    "y": 2185.0
+  },
+  {
+    "designator": "R14",
+    "rotation": 270,
+    "rotation_si_convention_miroir_x": 90,
+    "side": "bottom",
+    "x": 3305.0,
+    "y": 1050.0
+  },
+  {
+    "designator": "R13",
+    "rotation": 180,
+    "side": "top",
+    "x": 3590.0,
+    "y": 820.0
+  },
+  {
+    "designator": "R12",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 3395.0,
+    "y": 705.0
+  },
+  {
+    "designator": "R11",
+    "rotation": 270,
+    "rotation_si_convention_miroir_x": 90,
+    "side": "bottom",
+    "x": 3120.0,
+    "y": 1310.0
+  },
+  {
+    "designator": "R10",
+    "rotation": 90,
+    "rotation_si_convention_miroir_x": 270,
+    "side": "bottom",
+    "x": 2450.0,
+    "y": 1540.0
+  },
+  {
+    "designator": "R9",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 2580.0,
+    "y": 1525.0
+  },
+  {
+    "designator": "R8",
+    "rotation": 90,
+    "side": "top",
+    "x": 3075.0,
+    "y": 1725.0
+  },
+  {
+    "designator": "R7",
+    "rotation": 180,
+    "side": "top",
+    "x": 2975.0,
+    "y": 1855.0
+  },
+  {
+    "designator": "R6",
+    "rotation": 90,
+    "side": "top",
+    "x": 3550.0,
+    "y": 1600.0
+  },
+  {
+    "designator": "R5",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 2980.0,
+    "y": 1490.0
+  },
+  {
+    "designator": "R4",
+    "rotation": 90,
+    "rotation_si_convention_miroir_x": 270,
+    "side": "bottom",
+    "x": 3245.0,
+    "y": 445.0
+  },
+  {
+    "designator": "R3",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 3150.0,
+    "y": 670.0
+  },
+  {
+    "designator": "R2",
+    "rotation": 0,
+    "side": "top",
+    "x": 3010.0,
+    "y": 1245.0
+  },
+  {
+    "designator": "R1",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 2935.0,
+    "y": 1590.0
+  },
+  {
+    "designator": "Q7",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 2970.0,
+    "y": 1720.0
+  },
+  {
+    "designator": "Q6_ALIM1",
+    "rotation": 90,
+    "side": "top",
+    "x": 2190.0,
+    "y": 2050.0
+  },
+  {
+    "designator": "Q5_ALIM1",
+    "rotation": 90,
+    "side": "top",
+    "x": 2825.0,
+    "y": 810.0
+  },
+  {
+    "designator": "Q4_ALIM1",
+    "rotation": 180,
+    "side": "top",
+    "x": 2385.0,
+    "y": 3260.0
+  },
+  {
+    "designator": "Q3",
+    "rotation": 270,
+    "side": "top",
+    "x": 3195.0,
+    "y": 750.0
+  },
+  {
+    "designator": "Q2",
+    "rotation": 0,
+    "side": "top",
+    "x": 2930.0,
+    "y": 1695.0
+  },
+  {
+    "designator": "Q1",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 2890.0,
+    "y": 1345.0
+  },
+  {
+    "designator": "M7_ALIM1",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 2515.0,
+    "y": 2250.0
+  },
+  {
+    "designator": "M6_ALIM1",
+    "rotation": 90,
+    "side": "top",
+    "x": 2010.0,
+    "y": 3170.0
+  },
+  {
+    "designator": "M5_ALIM1",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 2470.0,
+    "y": 1725.0
+  },
+  {
+    "designator": "M4_ALIM1",
+    "rotation": 0,
+    "side": "top",
+    "x": 1023.62,
+    "y": 2039.37
+  },
+  {
+    "designator": "M3_ALIM1",
+    "rotation": 270,
+    "side": "top",
+    "x": 2535.0,
+    "y": 2000.0
+  },
+  {
+    "designator": "M2",
+    "rotation": 180,
+    "side": "top",
+    "x": 3820.0,
+    "y": 3035.0
+  },
+  {
+    "designator": "M1",
+    "rotation": 90,
+    "side": "top",
+    "x": 3790.0,
+    "y": 3310.0
+  },
+  {
+    "designator": "L1",
+    "rotation": 270,
+    "side": "top",
+    "x": 4240.0,
+    "y": 2795.0
+  },
+  {
+    "designator": "D23_ALIM1",
+    "rotation": 180,
+    "side": "top",
+    "x": 2605.0,
+    "y": 2155.0
+  },
+  {
+    "designator": "D22_ALIM1",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 2560.0,
+    "y": 2120.0
+  },
+  {
+    "designator": "D21_ALIM1",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 2545.0,
+    "y": 2000.0
+  },
+  {
+    "designator": "D20_ALIM1",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 3115.0,
+    "y": 2510.0
+  },
+  {
+    "designator": "D19_ALIM1",
+    "rotation": 0,
+    "side": "top",
+    "x": 2780.0,
+    "y": 2515.0
+  },
+  {
+    "designator": "D18_ALIM1",
+    "rotation": 90,
+    "side": "top",
+    "x": 2415.0,
+    "y": 2170.0
+  },
+  {
+    "designator": "D17_ALIM1",
+    "rotation": 90,
+    "rotation_si_convention_miroir_x": 270,
+    "side": "bottom",
+    "x": 935.0,
+    "y": 985.0
+  },
+  {
+    "designator": "D16_ALIM1",
+    "rotation": 270,
+    "rotation_si_convention_miroir_x": 90,
+    "side": "bottom",
+    "x": 1115.0,
+    "y": 1690.0
+  },
+  {
+    "designator": "D15_ALIM1",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 2025.0,
+    "y": 1585.0
+  },
+  {
+    "designator": "C47_VOLT2",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 3700.0,
+    "y": 1750.0
+  },
+  {
+    "designator": "C47_VOLT1",
+    "rotation": 270,
+    "rotation_si_convention_miroir_x": 90,
+    "side": "bottom",
+    "x": 1010.0,
+    "y": 1725.0
+  },
+  {
+    "designator": "C46_VOLT2",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 4385.0,
+    "y": 1725.0
+  },
+  {
+    "designator": "C46_VOLT1",
+    "rotation": 270,
+    "rotation_si_convention_miroir_x": 90,
+    "side": "bottom",
+    "x": 1465.0,
+    "y": 1725.0
+  },
+  {
+    "designator": "C45_VOLT2",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 5190.0,
+    "y": 1730.0
+  },
+  {
+    "designator": "C45_VOLT1",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 2035.0,
+    "y": 1990.0
+  },
+  {
+    "designator": "C44_VOLT2",
+    "rotation": 90,
+    "rotation_si_convention_miroir_x": 270,
+    "side": "bottom",
+    "x": 4875.0,
+    "y": 1730.0
+  },
+  {
+    "designator": "C44_VOLT1",
+    "rotation": 180,
+    "side": "top",
+    "x": 2015.0,
+    "y": 2220.0
+  },
+  {
+    "designator": "C43_VOLT2",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 4730.0,
+    "y": 1760.0
+  },
+  {
+    "designator": "C43_VOLT1",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 1645.0,
+    "y": 1755.0
+  },
+  {
+    "designator": "C31_ALIM1",
+    "rotation": 90,
+    "rotation_si_convention_miroir_x": 270,
+    "side": "bottom",
+    "x": 3415.0,
+    "y": 960.0
+  },
+  {
+    "designator": "C30_ALIM1",
+    "rotation": 90,
+    "rotation_si_convention_miroir_x": 270,
+    "side": "bottom",
+    "x": 1295.0,
+    "y": 1575.0
+  },
+  {
+    "designator": "C29_ALIM1",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 1350.0,
+    "y": 1105.0
+  },
+  {
+    "designator": "C28_ALIM1",
+    "rotation": 0,
+    "side": "top",
+    "x": 2985.0,
+    "y": 2660.0
+  },
+  {
+    "designator": "C27_ALIM1",
+    "rotation": 90,
+    "rotation_si_convention_miroir_x": 270,
+    "side": "bottom",
+    "x": 2280.0,
+    "y": 2460.0
+  },
+  {
+    "designator": "C26_ALIM1",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 2970.0,
+    "y": 2700.0
+  },
+  {
+    "designator": "C25_ALIM1",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 2630.0,
+    "y": 1755.0
+  },
+  {
+    "designator": "C24_ALIM1",
+    "rotation": 90,
+    "rotation_si_convention_miroir_x": 270,
+    "side": "bottom",
+    "x": 2690.0,
+    "y": 860.0
+  },
+  {
+    "designator": "C23",
+    "rotation": 90,
+    "rotation_si_convention_miroir_x": 270,
+    "side": "bottom",
+    "x": 3925.0,
+    "y": 3060.0
+  },
+  {
+    "designator": "C22",
+    "rotation": 90,
+    "side": "top",
+    "x": 3625.0,
+    "y": 2945.0
+  },
+  {
+    "designator": "C21",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 4095.0,
+    "y": 3000.0
+  },
+  {
+    "designator": "C20",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 4145.0,
+    "y": 2590.0
+  },
+  {
+    "designator": "C19",
+    "rotation": 90,
+    "side": "top",
+    "x": 4210.0,
+    "y": 3175.0
+  },
+  {
+    "designator": "C18",
+    "rotation": 270,
+    "side": "top",
+    "x": 4120.0,
+    "y": 3625.0
+  },
+  {
+    "designator": "C17",
+    "rotation": 90,
+    "rotation_si_convention_miroir_x": 270,
+    "side": "bottom",
+    "x": 3820.0,
+    "y": 3510.0
+  },
+  {
+    "designator": "C16",
+    "rotation": 270,
+    "side": "top",
+    "x": 4235.0,
+    "y": 3335.0
+  },
+  {
+    "designator": "C15",
+    "rotation": 0,
+    "side": "top",
+    "x": 3705.0,
+    "y": 3490.0
+  },
+  {
+    "designator": "C14",
+    "rotation": 270,
+    "rotation_si_convention_miroir_x": 90,
+    "side": "bottom",
+    "x": 2300.0,
+    "y": 2270.0
+  },
+  {
+    "designator": "C13",
+    "rotation": 0,
+    "side": "top",
+    "x": 550.0,
+    "y": 765.0
+  },
+  {
+    "designator": "C12",
+    "rotation": 90,
+    "side": "top",
+    "x": 2840.0,
+    "y": 3405.0
+  },
+  {
+    "designator": "C11",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 2530.0,
+    "y": 2450.0
+  },
+  {
+    "designator": "C10",
+    "rotation": 180,
+    "side": "top",
+    "x": 360.0,
+    "y": 1630.0
+  },
+  {
+    "designator": "C9",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 3565.0,
+    "y": 1055.0
+  },
+  {
+    "designator": "C8",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 3680.0,
+    "y": 1155.0
+  },
+  {
+    "designator": "C7",
+    "rotation": 90,
+    "side": "top",
+    "x": 3580.0,
+    "y": 3320.0
+  },
+  {
+    "designator": "C6",
+    "rotation": 180,
+    "side": "top",
+    "x": 755.0,
+    "y": 725.0
+  },
+  {
+    "designator": "C5",
+    "rotation": 0,
+    "rotation_si_convention_miroir_x": 180,
+    "side": "bottom",
+    "x": 1850.0,
+    "y": 1445.0
+  },
+  {
+    "designator": "C4",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 2580.0,
+    "y": 1420.0
+  },
+  {
+    "designator": "C3",
+    "rotation": 90,
+    "side": "top",
+    "x": 3175.0,
+    "y": 1210.0
+  },
+  {
+    "designator": "C2",
+    "rotation": 180,
+    "rotation_si_convention_miroir_x": 0,
+    "side": "bottom",
+    "x": 2955.0,
+    "y": 1180.0
+  },
+  {
+    "designator": "C1",
+    "rotation": 270,
+    "rotation_si_convention_miroir_x": 90,
+    "side": "bottom",
+    "x": 3185.0,
+    "y": 3170.0
+  }
+]

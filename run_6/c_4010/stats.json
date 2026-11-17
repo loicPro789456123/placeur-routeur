@@ -1,0 +1,33 @@
+{
+  "cause": "routage detaille incomplet",
+  "connexions_echouees": 11,
+  "echecs": [
+    "R57_ALIM2.2 : pas de place pour un via de plan a moins de 6 mm (ni via / pastille traversante du plan joignable) [140 cellule(s) de depart admissibles sur 140]",
+    "R30.1 : pas de place pour un via de plan a moins de 6 mm (ni via / pastille traversante du plan joignable) [99 cellule(s) de depart admissibles sur 99]",
+    "C46_VOLT2.1 : pas de chemin libre (congestion)",
+    "RESET_AL1.1 : pas de chemin libre (congestion)",
+    "R9.1 : pas de chemin libre (congestion)",
+    "C4.2 : pas de chemin libre (congestion)",
+    "U1.13 : pas de chemin libre (congestion)",
+    "U10.9 : pas de chemin libre (congestion)",
+    "U22_ALIM2.4 : pas de chemin libre (congestion)",
+    "Q7.2 : pas de chemin libre (congestion)",
+    "U1.8 : pas de chemin libre (congestion)"
+  ],
+  "graine": 4010,
+  "recuit": {
+    "acceptation_initiale": 0.9340232858990944,
+    "cout": 13763.156654493934,
+    "cout_depart": 52225.29688139144,
+    "hpwl": 5527.567433539999,
+    "hpwl_depart": 23199.245315920005,
+    "mouvements": 43402650,
+    "paliers": 1404,
+    "rechauffes": 0,
+    "t0": 244.03981818536468,
+    "temps_s": 386.711216179
+  },
+  "temps_s": 4951.733522535,
+  "tours_boucle": 4,
+  "valide": false
+}
