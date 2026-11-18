@@ -11,6 +11,7 @@
 import argparse
 import os
 
+from PyInstaller.utils.hooks import collect_submodules
 from PyInstaller.utils.win32.versioninfo import (FixedFileInfo, StringFileInfo, StringStruct, StringTable,
                                                  VarFileInfo, VarStruct, VSVersionInfo)
 
@@ -69,13 +70,17 @@ def _version(nom_original, description):
         ])
 
 
+import sys  # noqa: E402
+sys.path.insert(0, os.path.join(OUTILS, "format_altium"))   # collect_submodules importe altium_fichier ici
+
 a = Analysis(                                            # noqa: F821
     [os.path.join(SOURCES, "lanceur.py")],
-    pathex=[SOURCES, os.path.join(OUTILS, "serigraphie"), OUTILS],
+    pathex=[SOURCES, os.path.join(OUTILS, "serigraphie"), os.path.join(OUTILS, "format_altium"), OUTILS],
     binaries=[(os.path.join(_a.moteurs, "placeur_routage.exe"), "moteurs"),
               (os.path.join(_a.moteurs, "serigraphie.exe"), "moteurs")],
     datas=[(os.path.join(OUTILS, "VERSION"), "."), (os.path.join(_travail, "COMMIT"), ".")],
-    hiddenimports=["placeur", "interface", "parametres", "chemins", "olefile", "format_altium"]
+    hiddenimports=["placeur", "interface", "parametres", "chemins", "olefile", "altium_fichier"]
+                  + collect_submodules("altium_fichier")
                   + _modules_presents(),
     hookspath=[],
     runtime_hooks=[],
