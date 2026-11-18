@@ -24,6 +24,11 @@ pub const ORIGINE: &str = "repere des donnees du placeur (donnees_placeur/2)";
 
 /// Placement au format `placements/2` (mil, repere des donnees) : toutes les pieces, fixes comprises (pose exacte des
 /// donnees pour les pieces fixes et virtuelles).
+/// Arrondi au millionième de mil : une grille de placement quelconque (0,05 mm = 1,9685… mil) reste exacte.
+fn r6(v: f64) -> f64 {
+    (v * 1e6).round() / 1e6
+}
+
 pub fn placement_json(m: &Modele, e: &Etat) -> Value {
     let mut v = Vec::new();
     let [ox, oy] = m.origine;
@@ -35,7 +40,7 @@ pub fn placement_json(m: &Modele, e: &Etat) -> Value {
             None => (p.x + ox, p.y + oy, p.rot as f64, p.bot),
         };
         let mut o = json!({"designator": c.nom, "side": if bot {"bottom"} else {"top"},
-            "x": r2(x / MIL), "y": r2(y / MIL), "rotation": rot,
+            "x": r6(x / MIL), "y": r6(y / MIL), "rotation": rot,
             "statut": if c.statut == Statut::Mobile { "mobile" } else { "fixe" }});
         if bot {
             o["rotation_si_convention_miroir_x"] = json!((rot + 180.0).rem_euclid(360.0));

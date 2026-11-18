@@ -22,7 +22,7 @@ Set-StrictMode -Version 2.0
 $Essais = @(
     @{ Nom = "version";            Bloquant = $true;  Texte = "placeur.exe --version : version X.Y.Z+commit, code 0" },
     @{ Nom = "auto_test";          Bloquant = $true;  Texte = "placeur.exe --auto-test : moteurs, outils importables, dossier inscriptible, code 0 ; moteur retiré : « moteur absent, peut-être mis en quarantaine »" },
-    @{ Nom = "chaine_kicad";       Bloquant = $true;  Texte = "chaîne complète sur la carte KiCad d'exemple (--qualite rapide --essais 2) : code 0, au moins une graine valide, .kicad_pcb produit et relu" },
+    @{ Nom = "chaine_kicad";       Bloquant = $false; Texte = "(non bloquant : génération KiCad, étape C8, non livrée en vague 1) chaîne complète sur la carte KiCad d'exemple (--qualite rapide --essais 2) : code 0, au moins une graine valide, .kicad_pcb produit et relu" },
     @{ Nom = "chaine_pcbdoc";      Bloquant = $true;  Texte = "chaîne complète sur la carte de démonstration .PcbDoc : code 0, carte relue par format_altium, sérigraphie « coherent » (sauté si la carte n'existe pas encore)" },
     @{ Nom = "donnees_metroid";    Bloquant = $true;  Texte = "placeur.exe --donnees sur l'exemple METROID, une graine (seulement avec -Metroid)" },
     @{ Nom = "serigraphie";        Bloquant = $true;  Texte = "sérigraphie synthétique : moteur serigraphie sur la carte de démonstration, contrôle drc_serigraphie (sauté sans carte de démonstration)" },

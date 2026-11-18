@@ -1739,7 +1739,9 @@ fn lire_pastille(
     let centre = [champ_nombre(po, "lx", chp)?, champ_nombre(po, "ly", chp)?];
     let (principale, rotation) = lire_forme_cuivre(po, chp, centre)?;
     let couches = lire_couches(champ_liste(po, "couches", chp)?, &joindre(chp, "couches"), index_couches)?;
-    if couches.is_empty() {
+    // un trou non métallisé sans cuivre (trou de fixation d'empreinte, KiCad « np_thru_hole ») n'a aucune couche
+    let trou_nu = matches!(po.get("trou"), Some(t) if t.get("metallise") == Some(&Value::Bool(false)));
+    if couches.is_empty() && !trou_nu {
         return Err(format!("{chp}.couches : liste vide"));
     }
     let traversante = champ_booleen(po, "traversante", chp)?;

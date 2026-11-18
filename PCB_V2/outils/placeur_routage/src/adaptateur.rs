@@ -19,7 +19,7 @@
 
 use crate::donnees::{self, Donnees, RoleCouche};
 use crate::donnees_v1 as v1;
-use crate::geom::{self, Etat, FormePad, Modele, Pose, Statut, SNAP};
+use crate::geom::{self, Etat, FormePad, Modele, Pose, Statut};
 use crate::parametres::Parametres;
 use std::collections::{BTreeMap, HashMap};
 
@@ -58,16 +58,12 @@ pub struct Adapte {
 /// Construit le modèle interne du cœur depuis les données `donnees_placeur/2` (déjà contrôlées par `donnees::lire`).
 pub fn construire(d: &Donnees, param: Parametres) -> Result<Adapte, String> {
     let mut av: Vec<String> = Vec::new();
+    geom::fixer_pas_snap(d.regles.grille_placement_mm);
+    let pas = geom::pas_snap();
     let bc = d.carte.boite;
-    let ox = (bc[0] / SNAP).floor() * SNAP;
-    let oy = (bc[1] / SNAP).floor() * SNAP;
+    let ox = (bc[0] / pas).floor() * pas;
+    let oy = (bc[1] / pas).floor() * pas;
     let tr = |p: &[f64; 2]| [p[0] - ox, p[1] - oy];
-    if (d.regles.grille_placement_mm - SNAP).abs() > 1e-9 && d.regles.grille_placement_mm > 0.0 {
-        av.push(format!(
-            "grille de placement des données {} mm : le cœur place sur sa grille de {:.3} mm",
-            d.regles.grille_placement_mm, SNAP
-        ));
-    }
 
     // ------------------------------------------------------------------ couches de routage du cœur et plans
     let routage: Vec<&donnees::Couche> = d.couches.iter().filter(|c| c.role == RoleCouche::Routage).collect();

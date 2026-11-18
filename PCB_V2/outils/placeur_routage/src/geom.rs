@@ -5,7 +5,18 @@ use crate::parametres::Parametres;
 use std::collections::HashMap;
 
 pub const MIL: f64 = 0.0254;
-pub const SNAP: f64 = 5.0 * MIL; // origines sur grille 5 mil (comme v3)
+/// Pas de la grille des origines des pièces : 5 mil par défaut (comme v3), sinon `regles.placement.grille_mm`
+/// des données (fixé une fois par l'adaptateur avant tout calcul).
+static PAS_SNAP_BITS: std::sync::atomic::AtomicU64 = std::sync::atomic::AtomicU64::new(0);
+pub fn pas_snap() -> f64 {
+    let b = PAS_SNAP_BITS.load(std::sync::atomic::Ordering::Relaxed);
+    if b == 0 { 5.0 * MIL } else { f64::from_bits(b) }
+}
+pub fn fixer_pas_snap(pas_mm: f64) {
+    if pas_mm > 0.0 {
+        PAS_SNAP_BITS.store(pas_mm.to_bits(), std::sync::atomic::Ordering::Relaxed);
+    }
+}
 pub const PIECE_MARGIN: f64 = 0.25;
 pub const TH_MARGIN: f64 = 0.6;
 pub const DEC_LIM: f64 = 4.0;
@@ -86,7 +97,7 @@ pub struct ConfigCarte {
 pub type Rect = [f64; 4];
 
 pub fn snap(v: f64) -> f64 {
-    (v / SNAP).round() * SNAP
+    (v / pas_snap()).round() * pas_snap()
 }
 
 pub fn ov(a: &Rect, b: &Rect) -> bool {
