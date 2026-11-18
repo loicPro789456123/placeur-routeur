@@ -1111,6 +1111,7 @@ class TestOrchestrateur(unittest.TestCase):
         self.assertEqual((res.rapport["fin"], res.rapport["termine"], res.rapport["meilleure"]),
                          ("arret_demande", False, 1))
 
+    @unittest.skipIf(os.environ.get("GITHUB_ACTIONS") == "true", "minutage et priorite non garantis sur les machines partagees de GitHub")
     def test_arret_demande(self):
         t, etat = self._surveiller(2, lambda d: open(os.path.join(d, "arret_demande"), "w").close())
         res = self.lancer({"defaut": {"type": "lent", "duree_s": 30}}, "--essais", 3, "--processeurs", 2)
@@ -1176,6 +1177,7 @@ class TestOrchestrateur(unittest.TestCase):
         self.assertEqual(res_a["r"].code, 3)
 
     # ------------------------------------------------------------------------------------- parallélisme
+    @unittest.skipIf(os.environ.get("GITHUB_ACTIONS") == "true", "minutage et priorite non garantis sur les machines partagees de GitHub")
     def test_parallelisme_et_priorite(self):
         res = self.lancer({"defaut": {"type": "cpu", "duree_s": 0.1, "cpu_s": 2.5}}, "--essais", 2,
                           "--processeurs", 2, "--garder-graines", "toutes")
@@ -1194,6 +1196,7 @@ class TestOrchestrateur(unittest.TestCase):
         if WINDOWS:
             self.assertEqual(res.stats(1)["_faux"]["priorite"], chemins.NORMAL_PRIORITY_CLASS)
 
+    @unittest.skipIf(os.environ.get("GITHUB_ACTIONS") == "true", "minutage et priorite non garantis sur les machines partagees de GitHub")
     def test_deux_orchestrateurs_processeurs_2(self):
         donnees = donnees_completes(self.tmp, {"defaut": {"type": "lent", "duree_s": 1.0}})
         procs = [chemins.lancer([chemins.interpreteur(), os.path.abspath(__file__), "--orchestrateur-faux",

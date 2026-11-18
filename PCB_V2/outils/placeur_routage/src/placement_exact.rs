@@ -572,6 +572,7 @@ mod tests {
 
     /// Coût d'un contour rond de 256 sommets contre un carré, sur les mêmes 20 000 essais (médiane de 3).
     #[test]
+    #[ignore = "minutage : non fiable sur machine partagee (cargo test -- --ignored pour le lancer)"]
     fn contour_rond_pas_plus_lent_que_le_carre() {
         let rondc = Contour::nouveau(rond(256, 50.0), vec![]);
         let carc = Contour::nouveau(carre([50.0, 50.0], 50.0), vec![]);
