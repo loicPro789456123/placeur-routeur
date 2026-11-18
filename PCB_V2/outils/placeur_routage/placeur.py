@@ -1615,7 +1615,8 @@ class CalculCarte(Calcul):
         os.makedirs(dossier, exist_ok=True)
         self.copie = os.path.join(dossier, os.path.basename(self.carte))
         try:
-            shutil.copyfile(self.carte, self.copie)
+            if os.path.normcase(os.path.abspath(self.carte)) != os.path.normcase(os.path.abspath(self.copie)):
+                shutil.copyfile(self.carte, self.copie)   # reprise : la carte est déjà la copie du calcul
         except OSError as e:
             if carte_verrouillee(self.carte, e):
                 raise ErreurEntree(MESSAGE_VERROUILLEE) from None
