@@ -147,9 +147,14 @@ jobs:
       - name: PyInstaller, vérifications, zip (40 Mo au plus) et SHA-256
         shell: pwsh
         run: |
-          python "$env:PAQUET/construire.py" --sortie construction --cargo-home "$env:CARGO_HOME_PAQUET" `
-            --date-source $env:SOURCE_DATE_EPOCH --sans-moteurs moteurs
-          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+          $sortie = python "$env:PAQUET/construire.py" --sortie construction --cargo-home "$env:CARGO_HOME_PAQUET" `
+            --date-source $env:SOURCE_DATE_EPOCH --sans-moteurs moteurs 2>&1
+          $code = $LASTEXITCODE
+          $sortie | ForEach-Object { "$_" }
+          if ($code) {
+            $sortie | ForEach-Object { "$_" } | Select-Object -Last 20 | ForEach-Object { Write-Output "::error::construire.py : $_" }
+            exit $code
+          }
       - name: Vérifications (a) à (e) du paquet
         shell: pwsh
         run: python "$env:PAQUET/verifier_paquet.py" construction/dist/PlaceurRouteur

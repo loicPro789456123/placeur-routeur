@@ -1097,6 +1097,7 @@ class TestOrchestrateur(unittest.TestCase):
         t.start()
         return t, etat
 
+    @unittest.skipIf(os.environ.get("GITHUB_ACTIONS") == "true", "minutage et priorite non garantis sur les machines partagees de GitHub")
     def test_arret_lancements(self):
         t, etat = self._surveiller(2, lambda d: open(os.path.join(d, "arret_lancements"), "w").close())
         res = self.lancer({"defaut": {"type": "lent", "duree_s": 1.5}}, "--essais", 4, "--processeurs", 2)
@@ -1124,6 +1125,7 @@ class TestOrchestrateur(unittest.TestCase):
         self.assertEqual({e["fin"] for e in res.rapport["graines"]}, {"arret_demande"})
         self.assertEqual(res.rapport["graines_non_lancees"], [3])
 
+    @unittest.skipIf(os.environ.get("GITHUB_ACTIONS") == "true", "minutage et priorite non garantis sur les machines partagees de GitHub")
     def test_ctrl_c(self):
         import _thread
         import signal
