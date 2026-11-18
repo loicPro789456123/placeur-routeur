@@ -1,0 +1,20 @@
+{
+ "format": "cas_validite/1",
+ "nom": "032_garde_bord_pastille",
+ "description": "Piste qui part d'une pastille au bord : la partie de l'axe dans la pastille n'est pas soumise à la garde de bord ; le reste est à 0,889 mm : valide.",
+ "themes": [
+  "violation:garde_bord"
+ ],
+ "grille": true,
+ "couture": false,
+ "modes_differents": false,
+ "fichiers": {
+  "donnees": "donnees_placeur.json",
+  "placement": "placements_routage.json",
+  "routage": "routage_detaille.json",
+  "attendu_strict": "attendu_strict.json",
+  "attendu_altium": "attendu_altium.json",
+  "attendu_mesures": "attendu_mesures.json",
+  "couture": null
+ }
+}

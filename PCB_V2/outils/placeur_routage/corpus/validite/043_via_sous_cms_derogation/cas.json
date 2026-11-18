@@ -1,0 +1,21 @@
+{
+ "format": "cas_validite/1",
+ "nom": "043_via_sous_cms_derogation",
+ "description": "Via dans une pastille CMS du même réseau avec via_dans_pastille_meme_reseau : une dérogation comptée, pas de violation.",
+ "themes": [
+  "violation:via_sous_cms",
+  "derogation:via_dans_pastille"
+ ],
+ "grille": true,
+ "couture": false,
+ "modes_differents": false,
+ "fichiers": {
+  "donnees": "donnees_placeur.json",
+  "placement": "placements_routage.json",
+  "routage": "routage_detaille.json",
+  "attendu_strict": "attendu_strict.json",
+  "attendu_altium": "attendu_altium.json",
+  "attendu_mesures": "attendu_mesures.json",
+  "couture": null
+ }
+}

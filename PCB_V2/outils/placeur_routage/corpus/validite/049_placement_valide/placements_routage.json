@@ -1,0 +1,47 @@
+{
+ "format": "placements/2",
+ "unite": "mil",
+ "origine": "coin bas-gauche de la boite du contour",
+ "pieces": [
+  {
+   "designator": "U1",
+   "side": "top",
+   "x": 200.0,
+   "y": 200.0,
+   "rotation": 0.0,
+   "statut": "mobile"
+  },
+  {
+   "designator": "U2",
+   "side": "top",
+   "x": 300.0,
+   "y": 200.0,
+   "rotation": 0.0,
+   "statut": "mobile"
+  },
+  {
+   "designator": "U3",
+   "side": "top",
+   "x": 560.0,
+   "y": 200.0,
+   "rotation": 0.0,
+   "statut": "mobile"
+  },
+  {
+   "designator": "U4",
+   "side": "top",
+   "x": 500.0,
+   "y": 200.0,
+   "rotation": 0.0,
+   "statut": "mobile"
+  },
+  {
+   "designator": "U5",
+   "side": "bottom",
+   "x": 200.0,
+   "y": 300.0,
+   "rotation": 0.0,
+   "statut": "mobile"
+  }
+ ]
+}

@@ -1,0 +1,21 @@
+{
+ "format": "cas_validite/1",
+ "nom": "012_largeur_arrondi_millieme",
+ "description": "Largeur minimale 0,2 mm arrondie vers le haut au millième de mil (7,875) : une piste à 7,875 mil conforme, une à 7,874 mil en violation.",
+ "themes": [
+  "violation:largeur",
+  "arrondi:largeur"
+ ],
+ "grille": true,
+ "couture": false,
+ "modes_differents": false,
+ "fichiers": {
+  "donnees": "donnees_placeur.json",
+  "placement": "placements_routage.json",
+  "routage": "routage_detaille.json",
+  "attendu_strict": "attendu_strict.json",
+  "attendu_altium": "attendu_altium.json",
+  "attendu_mesures": "attendu_mesures.json",
+  "couture": null
+ }
+}

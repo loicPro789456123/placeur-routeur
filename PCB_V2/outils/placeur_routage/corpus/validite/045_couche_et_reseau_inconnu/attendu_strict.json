@@ -1,0 +1,112 @@
+{
+ "format": "verdict/2",
+ "outil": "attendu ecrit a la main (corpus du lot E)",
+ "mode": "strict",
+ "valide": false,
+ "liaisons_ouvertes": 0,
+ "detail_liaisons_ouvertes": [],
+ "violations": 2,
+ "violations_par_type": {
+  "isolement": 0,
+  "garde_bord": 0,
+  "garde_decoupe": 0,
+  "garde_trou": 0,
+  "zone_interdite": 0,
+  "largeur": 0,
+  "dimension_via": 0,
+  "via_sous_cms": 0,
+  "trou_trou": 0,
+  "antenne": 0,
+  "couche_non_permise": 1,
+  "reseau_inconnu": 1
+ },
+ "detail_violations": [
+  {
+   "genre": "couche_non_permise",
+   "reseaux": [
+    "N1"
+   ],
+   "objets": [
+    "P1"
+   ],
+   "position_mm": [
+    10.16,
+    5.08
+   ],
+   "ecart_mm": null,
+   "requis_mm": null
+  },
+  {
+   "genre": "reseau_inconnu",
+   "reseaux": [
+    "N9"
+   ],
+   "objets": [
+    "P2"
+   ],
+   "position_mm": [
+    3.81,
+    8.89
+   ],
+   "ecart_mm": null,
+   "requis_mm": null
+  }
+ ],
+ "detail_violations_tronque": false,
+ "exemples": {
+  "couche_non_permise": [
+   "P1 (N1)"
+  ],
+  "reseau_inconnu": [
+   "P2 (N9)"
+  ]
+ },
+ "derogations": {
+  "via_dans_pastille_meme_reseau": 0
+ },
+ "avertissements": {
+  "pistes_sous_pieces_sans_piste_dessous": 0,
+  "angles_aigus": 0,
+  "paires_desequilibrees": 0,
+  "regles_non_couvertes": 0,
+  "zones_plan_isolees": 0
+ },
+ "reseaux_a_router": 1,
+ "reseaux_complets": 1,
+ "marge_isolement_min_mm": null,
+ "marge_isolement_min_paire": "",
+ "mesures": {
+  "ecart_moyen_mm": 0.0,
+  "ecart_min_mm": null,
+  "coudes": 0,
+  "coudes_90": 0,
+  "angles_aigus": 0,
+  "longueur_pistes_mm": 33.02,
+  "resistance_puissance_mohm": 0.0,
+  "vias": 0
+ },
+ "placement": {
+  "format": "controle_placement/1",
+  "valide": true,
+  "violations": [],
+  "violations_par_type": {
+   "absente": 0,
+   "inconnue": 0,
+   "fixe_deplacee": 0,
+   "orientation": 0,
+   "grille": 0,
+   "chevauchement": 0,
+   "obstacle": 0,
+   "marge_bord": 0,
+   "marge_decoupe": 0,
+   "eloignement": 0,
+   "pastille_pastille": 0,
+   "zone_imposee": 0,
+   "au_bord": 0,
+   "groupe_rigide": 0
+  },
+  "infos": {
+   "eloignements": []
+  }
+ }
+}

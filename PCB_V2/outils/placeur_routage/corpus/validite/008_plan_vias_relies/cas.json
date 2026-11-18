@@ -1,0 +1,21 @@
+{
+ "format": "cas_validite/1",
+ "nom": "008_plan_vias_relies",
+ "description": "Deux pastilles GND reliées chacune au plan interne par une piste et un via : valide.",
+ "themes": [
+  "contact:zone-via",
+  "zone_plan"
+ ],
+ "grille": true,
+ "couture": false,
+ "modes_differents": false,
+ "fichiers": {
+  "donnees": "donnees_placeur.json",
+  "placement": "placements_routage.json",
+  "routage": "routage_detaille.json",
+  "attendu_strict": "attendu_strict.json",
+  "attendu_altium": "attendu_altium.json",
+  "attendu_mesures": "attendu_mesures.json",
+  "couture": null
+ }
+}

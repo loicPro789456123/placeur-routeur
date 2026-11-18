@@ -1,0 +1,136 @@
+{
+ "format": "attendu_deduction/1",
+ "carte": "quatre_couches",
+ "famille": "chaine",
+ "description": "4 couches : plans GND (In1) et +3V3 (In2) couvrants de type power, pastilles de plan.",
+ "regles": [
+  "R-C3",
+  "R-C4",
+  "R-M2",
+  "R-R3",
+  "R-R7",
+  "R-P2",
+  "R-P3",
+  "§3.6 fonctionnel"
+ ],
+ "couches": [
+  {
+   "nom": "TopLayer",
+   "role": "routage",
+   "plans": []
+  },
+  {
+   "nom": "MidLayer1",
+   "role": "plan",
+   "plans": [
+    "GND"
+   ]
+  },
+  {
+   "nom": "MidLayer2",
+   "role": "plan",
+   "plans": [
+    "+3V3"
+   ]
+  },
+  {
+   "nom": "BottomLayer",
+   "role": "routage",
+   "plans": []
+  }
+ ],
+ "masses": [
+  "GND"
+ ],
+ "roles": {
+  "plan": [
+   "+3V3",
+   "GND"
+  ],
+  "signal": [
+   "FB_A",
+   "INT",
+   "LED",
+   "LED_A",
+   "RST",
+   "SCL",
+   "SDA",
+   "SENS_IN",
+   "SENS_O",
+   "SENS_P"
+  ]
+ },
+ "largeurs": {
+  "SCL": [
+   0.2,
+   0.25,
+   null
+  ]
+ },
+ "convertisseurs": [],
+ "sans_piste_dessous": [],
+ "pas_fin": [
+  "U1"
+ ],
+ "matrice": [],
+ "isolement": {
+  "defaut": 0.2,
+  "requis": [
+   {
+    "reseaux": [
+     "SCL",
+     "SDA"
+    ],
+    "mm": 0.2
+   }
+  ]
+ },
+ "pieces_fixes": {
+  "H1": "mecanique",
+  "H2": "mecanique",
+  "J1": "suggestion",
+  "J2": "suggestion",
+  "J3": "suggestion"
+ },
+ "groupes": [
+  {
+   "type": "fonctionnel",
+   "pieces": [
+    "C3",
+    "R1",
+    "R2",
+    "R7",
+    "R8",
+    "R9",
+    "U1"
+   ]
+  },
+  {
+   "type": "fonctionnel",
+   "pieces": [
+    "C5",
+    "R3",
+    "R4",
+    "R5",
+    "U2"
+   ]
+  }
+ ],
+ "chaine": {
+  "niveau": "rapide",
+  "graines": 10,
+  "graines_valides_min": 1,
+  "couches_pistes": [
+   "TopLayer",
+   "BottomLayer"
+  ],
+  "couches_sans_piste": [
+   "MidLayer1",
+   "MidLayer2"
+  ],
+  "descentes_par_vias": [
+   "+3V3",
+   "GND"
+  ]
+ }
+}

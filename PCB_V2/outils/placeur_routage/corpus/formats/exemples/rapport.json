@@ -1,0 +1,360 @@
+{
+ "format": "rapport/2",
+ "version": "2.0.0",
+ "carte": "carte",
+ "termine": true,
+ "fin": "normale",
+ "parametres": {
+  "effectifs": {
+   "campagne": {
+    "chaines": 4,
+    "duree_max_s": 7200,
+    "arret_apres": "complet",
+    "seuil_abandon_echecs": 10,
+    "seuil_abandon_part": 0.005,
+    "memoire_max_mo": 0,
+    "threads": 4
+   },
+   "placement": {
+    "degagement_pas_fin_mm": 0.8,
+    "copier_motifs": false
+   },
+   "recuit": {
+    "mouvements_max": 100000000,
+    "alpha": 0.99,
+    "palier_par_piece": 100,
+    "acceptation_initiale": 0.85,
+    "t_fin_relative": 1e-06,
+    "rudy_capacite": 2.0,
+    "rudy_lambda": 2.0,
+    "rechauffes": 0,
+    "arret_paliers_sans_progres": 150,
+    "periode_reroutage": 3000,
+    "pas_grille_globale_mm": 0.5,
+    "affinage": {
+     "fraction_mouvements": 0.05,
+     "acceptation": 0.03,
+     "t_fin_relative": 0.01,
+     "alpha": 0.85,
+     "palier_par_piece": 25
+    }
+   },
+   "boucle": {
+    "tours": 4,
+    "mouvements_locaux": 60000,
+    "rayon_zone_mm": 3.5,
+    "poids_initial": 30,
+    "rayon_pieces_mm": 4.0,
+    "t0_facteur": 0.15,
+    "sigma_mm": 2.5,
+    "reroutage_local": false
+   },
+   "routage": {
+    "iters_negociation": 40,
+    "tours_arrachage": 4,
+    "arret_si_aggravation": false,
+    "ordre_pas_fin_d_abord": true,
+    "pas_grille_detail_mm": "auto",
+    "largeur_plancher_mm": 0.254,
+    "eventail_auto": true,
+    "eventail_pas_sortie_mm": "auto",
+    "eventail_longueur_mm": 0.3,
+    "amorce_eventail_paires": false,
+    "amorce_moyenne": false,
+    "ponts_plans": false,
+    "rayon_via_plan_mm": 6.0,
+    "fenetre_mm": 15.0,
+    "espacement": {
+     "actif": true,
+     "prox": 1.0,
+     "coude": 0.3,
+     "allongement_max": 0.15
+    },
+    "sens_par_couche": {
+     "actif": false,
+     "penalite": 0.2
+    },
+    "copier_motifs": false,
+    "global": {
+     "cout_via": 2.0,
+     "penalite_via": 2.0,
+     "penalite_debordement": 5.0,
+     "penalite_echec": 100.0,
+     "max_expansions": 250000,
+     "rayon_echappement_cellules": 8
+    }
+   },
+   "finition": {
+    "reparer_tours": 4,
+    "reparer_si_echecs_max": null,
+    "routage_complet": false,
+    "routage_complet_iters": 80,
+    "routage_complet_tours": 8,
+    "verification_reparer_tours": 2,
+    "lissage_marches": false,
+    "surfaces_puissance": {
+     "actif": false,
+     "roles": [
+      "puissance",
+      "commutation"
+     ],
+     "largeur_min_mm": 1.0
+    }
+   },
+   "conjointe": {
+    "essais": null,
+    "essais_par_piece_mobile": 6.0,
+    "plafond_s": 1800,
+    "t0": 3.0,
+    "t_fin": 0.05,
+    "sigma_mm": 1.5,
+    "poids_proximite": 1.0,
+    "periode_zone": 40,
+    "max_expansions": 200000
+   },
+   "couts": {
+    "conjointe": {
+     "longueur": 1.0,
+     "via": 1.5,
+     "retreci": 2.0,
+     "resistance_carre": 1.5,
+     "segment": 0.1,
+     "echec": 100000
+    },
+    "convertisseur": {
+     "boucle_mm2": 8,
+     "perimetre": 10,
+     "noeud": 15,
+     "courts": 10,
+     "decouplage_pilote": 10,
+     "bulk": 3,
+     "sensible": 40,
+     "distance_sensible_mm": 4
+    },
+    "decouplage": {
+     "limite_mm": 4.0,
+     "poids": 25.0
+    }
+   },
+   "roles": {
+    "signal": {
+     "priorite": 8,
+     "largeur_preferee_mm": null,
+     "largeur_preferee_pastille": false,
+     "paliers_mm": [
+      0.3,
+      0.254
+     ],
+     "facteur_via": 1,
+     "vias_doubles": false,
+     "couches": null,
+     "resistance_conjointe": false,
+     "sorties_longues": false
+    },
+    "alimentation": {
+     "priorite": 7,
+     "largeur_preferee_mm": null,
+     "largeur_preferee_pastille": false,
+     "paliers_mm": [
+      0.3,
+      0.254
+     ],
+     "facteur_via": 3,
+     "vias_doubles": false,
+     "couches": null,
+     "resistance_conjointe": false,
+     "sorties_longues": false
+    },
+    "puissance": {
+     "priorite": 1,
+     "largeur_preferee_mm": null,
+     "largeur_preferee_pastille": false,
+     "paliers_mm": [
+      1.5,
+      1.0,
+      0.5,
+      0.3
+     ],
+     "facteur_via": 3,
+     "vias_doubles": true,
+     "couches": null,
+     "resistance_conjointe": true,
+     "sorties_longues": false
+    },
+    "commutation": {
+     "priorite": 3,
+     "largeur_preferee_mm": 2.0,
+     "largeur_preferee_pastille": true,
+     "paliers_mm": [
+      1.5,
+      1.0,
+      0.5,
+      0.3,
+      0.254
+     ],
+     "facteur_via": 1,
+     "vias_doubles": true,
+     "couches": [
+      {
+       "si": "face_convertisseur",
+       "facteur": 1.0
+      },
+      {
+       "si": "externe",
+       "facteur": 1.2
+      },
+      {
+       "si": "interne",
+       "facteur": 3.0
+      }
+     ],
+     "resistance_conjointe": false,
+     "sorties_longues": true
+    },
+    "plan": {
+     "priorite": 6,
+     "descentes_mm": [
+      0.3,
+      0.254
+     ],
+     "descente_puissance_mm": [
+      0.5,
+      0.3
+     ],
+     "rayon_vias_doubles_mm": 2.5,
+     "facteur_via": 1,
+     "vias_doubles": false,
+     "couches": null,
+     "resistance_conjointe": false,
+     "sorties_longues": false
+    }
+   },
+   "sensibilites": {
+    "normale": {
+     "couches": null,
+     "proximite": 1.0,
+     "priorite_signal": null
+    },
+    "sensible": {
+     "couches": [
+      {
+       "si": "preferee_puissance",
+       "facteur": 3.0
+      },
+      {
+       "si": "adjacente_plan",
+       "facteur": 1.0
+      },
+      {
+       "si": "externe",
+       "facteur": 1.2
+      },
+      {
+       "si": "interne",
+       "facteur": 3.0
+      }
+     ],
+     "proximite": 2.0,
+     "priorite_signal": 4
+    },
+    "peu_sensible": {
+     "couches": null,
+     "proximite": 0.3,
+     "priorite_signal": null
+    }
+   },
+   "couche_preferee": {
+    "penalite_ailleurs": 1.5
+   },
+   "journal": {
+    "niveau": "normal",
+    "debug": []
+   }
+  },
+  "niveau": "normal",
+  "fichiers_ini": [
+   "parametres.ini"
+  ]
+ },
+ "import": {
+  "composants": 16,
+  "reseaux": 14,
+  "couches": 4
+ },
+ "deduction": {
+  "convertisseurs": 1,
+  "pieces_fixes": 2,
+  "plans": [
+   "MidLayer1"
+  ]
+ },
+ "estimation": {
+  "memoire_mo": 450,
+  "duree_prevue_s": 1700,
+  "duree_max_s": 7200
+ },
+ "graines": [
+  {
+   "graine": 7,
+   "dossier": "technique/graine_7",
+   "code": 0,
+   "fin": "normale",
+   "plantage": false,
+   "duree_s": 1687.8,
+   "valide_moteur": false,
+   "placement": {
+    "violations": 0
+   },
+   "drc_strict": {
+    "ouvertes": 3,
+    "violations": 0
+   },
+   "drc_altium": {
+    "ouvertes": 3,
+    "violations": 0
+   },
+   "valide": false,
+   "cout_commun": 10412.7,
+   "incoherence": false
+  },
+  {
+   "graine": 8,
+   "dossier": "technique/graine_8",
+   "code": 4,
+   "fin": "erreur_interne",
+   "plantage": true,
+   "duree_s": 12.0,
+   "valide_moteur": null,
+   "placement": null,
+   "drc_strict": null,
+   "drc_altium": null,
+   "valide": false,
+   "cout_commun": null,
+   "incoherence": false
+  }
+ ],
+ "meilleure": 7,
+ "livrable": {
+  "fichier": "carte_A_TERMINER_g7.PcbDoc",
+  "type": "a_terminer",
+  "erreurs": [],
+  "anomalies": []
+ },
+ "couture": {
+  "vias": 2,
+  "drc": {
+   "ouvertes": 3,
+   "violations": 0
+  }
+ },
+ "reference_existante": {
+  "cout_commun": 10328.5,
+  "liaisons_ouvertes": 0,
+  "violations": 0
+ },
+ "incoherences": 0,
+ "avertissements": [
+  "pièce M4_ALIM1 : hauteur inconnue"
+ ],
+ "duree_totale_s": 1750.2
+}

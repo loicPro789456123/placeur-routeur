@@ -1,0 +1,20 @@
+{
+ "format": "cas_validite/1",
+ "nom": "042_via_sous_cms",
+ "description": "Via dans une pastille CMS dont le via n'est pas permis (même réseau, sans dérogation) : via_sous_cms.",
+ "themes": [
+  "violation:via_sous_cms"
+ ],
+ "grille": true,
+ "couture": false,
+ "modes_differents": false,
+ "fichiers": {
+  "donnees": "donnees_placeur.json",
+  "placement": "placements_routage.json",
+  "routage": "routage_detaille.json",
+  "attendu_strict": "attendu_strict.json",
+  "attendu_altium": "attendu_altium.json",
+  "attendu_mesures": "attendu_mesures.json",
+  "couture": null
+ }
+}

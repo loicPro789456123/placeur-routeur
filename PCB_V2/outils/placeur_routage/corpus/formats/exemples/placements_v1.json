@@ -1,0 +1,115 @@
+[
+ {
+  "designator": "U10",
+  "side": "top",
+  "x": 3397.638,
+  "y": 1582.677,
+  "rotation": 90.0,
+  "rotation_si_convention_miroir_x": 90.0
+ },
+ {
+  "designator": "M1",
+  "side": "top",
+  "x": 3149.606,
+  "y": 1771.654,
+  "rotation": 0.0
+ },
+ {
+  "designator": "M2",
+  "side": "top",
+  "x": 3149.606,
+  "y": 1456.693,
+  "rotation": 0.0
+ },
+ {
+  "designator": "L1",
+  "side": "top",
+  "x": 3740.157,
+  "y": 1653.543,
+  "rotation": 0.0
+ },
+ {
+  "designator": "C7",
+  "side": "top",
+  "x": 2952.756,
+  "y": 1771.654,
+  "rotation": 90.0
+ },
+ {
+  "designator": "C15",
+  "side": "top",
+  "x": 3307.087,
+  "y": 1732.283,
+  "rotation": 0.0
+ },
+ {
+  "designator": "C17",
+  "side": "top",
+  "x": 3976.378,
+  "y": 1653.543,
+  "rotation": 90.0
+ },
+ {
+  "designator": "C19",
+  "side": "top",
+  "x": 3397.638,
+  "y": 1476.378,
+  "rotation": 0.0
+ },
+ {
+  "designator": "C20",
+  "side": "top",
+  "x": 3897.638,
+  "y": 1811.024,
+  "rotation": 0.0
+ },
+ {
+  "designator": "U25_VOLT1",
+  "side": "top",
+  "x": 5118.11,
+  "y": 1181.102,
+  "rotation": 0.0
+ },
+ {
+  "designator": "R62_ALIM1",
+  "side": "top",
+  "x": 1574.803,
+  "y": 787.402,
+  "rotation": 0.0
+ },
+ {
+  "designator": "C1_ALIM1",
+  "side": "top",
+  "x": 1574.803,
+  "y": 905.512,
+  "rotation": 0.0
+ },
+ {
+  "designator": "R62_ALIM2",
+  "side": "top",
+  "x": 2362.205,
+  "y": 787.402,
+  "rotation": 0.0
+ },
+ {
+  "designator": "C1_ALIM2",
+  "side": "top",
+  "x": 2362.205,
+  "y": 905.512,
+  "rotation": 0.0
+ },
+ {
+  "designator": "P1",
+  "side": "top",
+  "x": 3228.346,
+  "y": 3818.898,
+  "rotation": 0.0
+ },
+ {
+  "designator": "M4_ALIM1",
+  "side": "top",
+  "x": 452.756,
+  "y": 2836.614,
+  "rotation": 0.0
+ }
+]

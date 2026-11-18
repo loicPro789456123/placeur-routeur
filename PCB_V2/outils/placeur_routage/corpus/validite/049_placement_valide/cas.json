@@ -1,0 +1,21 @@
+{
+ "format": "cas_validite/1",
+ "nom": "049_placement_valide",
+ "description": "Pièces mobiles déplacées, boîtes à 0,508 mm (marge 2 × 0,25), une pièce retournée, éloignement souple (information) : placement valide.",
+ "themes": [
+  "placement:valide",
+  "placement:eloignement"
+ ],
+ "grille": true,
+ "couture": false,
+ "modes_differents": false,
+ "fichiers": {
+  "donnees": "donnees_placeur.json",
+  "placement": "placements_routage.json",
+  "routage": "routage_detaille.json",
+  "attendu_strict": "attendu_strict.json",
+  "attendu_altium": "attendu_altium.json",
+  "attendu_mesures": "attendu_mesures.json",
+  "couture": null
+ }
+}

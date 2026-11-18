@@ -1,0 +1,22 @@
+{
+ "format": "cas_validite/1",
+ "nom": "015_piste_region",
+ "description": "Piste dont l'extrémité est dans une région d'empreinte qui recouvre la pastille : valide dans les deux modes.",
+ "themes": [
+  "contact:piste-region",
+  "contact:preexistants",
+  "objet:region"
+ ],
+ "grille": true,
+ "couture": false,
+ "modes_differents": false,
+ "fichiers": {
+  "donnees": "donnees_placeur.json",
+  "placement": "placements_routage.json",
+  "routage": "routage_detaille.json",
+  "attendu_strict": "attendu_strict.json",
+  "attendu_altium": "attendu_altium.json",
+  "attendu_mesures": "attendu_mesures.json",
+  "couture": null
+ }
+}

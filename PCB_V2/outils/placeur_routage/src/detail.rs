@@ -33,6 +33,8 @@ pub const H_DEF: f64 = 0.127;
 pub const DELTA: f64 = 0.02;
 /// marge ajoutee a tous les isolements (iteration 5 : un ecart de 0,199 mm a ete refuse par Altium)
 pub const MARGE_ISOL: f64 = 0.01;
+/// ecart mini entre bords de trous (regle Altium Hole To Hole Clearance)
+pub const TROU_TROU: f64 = 0.254;
 /// trou a trou : 0,254 mm entre parois de percage, + 0,05 de marge, trous de 0,3 mm -> entraxe mini
 pub const ENTRAXE_VIAS: f64 = 0.254 + 0.05 + 0.3;
 const DIAG: f64 = 0.0711;
@@ -217,6 +219,14 @@ pub struct Detail<'a> {
     /// nombre de centres de via par cellule (regle trou a trou, y compris meme reseau)
     vias_c: Vec<u16>,
     offs_trou: Vec<(i32, i32)>,
+    /// cache exact du test de via (avenant 2.2, A.4-1) : nombre de centres de via dans le disque trou a trou autour de
+    /// chaque cellule, tenu a jour a la pose, au retrait et a la restauration d'un instantane
+    trou_cnt: Vec<u32>,
+    /// cache actif (faux avec la construction `sans_cache_via` ; modifiable par les tests de l'identite des sorties)
+    pub cache_via: bool,
+    /// memoire du test de via par recherche : estampille de recherche et valeur
+    vsm: Vec<u32>,
+    vsv: Vec<u8>,
     legv: Vec<u8>,
     /// via pose en recouvrement depuis ce noeud (estampille de recherche)
     vsoft: Vec<u32>,
@@ -231,7 +241,7 @@ pub struct Detail<'a> {
     /// amorces de sortie dans l'axe (hors grille) des pastilles a pas fin du bloc : (reseau, segments)
     pub amorces: Vec<(usize, Vec<SegD>)>,
     /// broches ordinaires amorcees (pastilles inaccessibles depuis la grille, convertisseur libere) : noeud de raccord
-    pub pin_extra: std::collections::HashMap<(usize, usize), u32>,
+    pub pin_extra: std::collections::BTreeMap<(usize, usize), u32>,
     pub pieces_pont: Vec<usize>,
     /// finition ciblee : ne jamais arracher les reseaux de plan (GND) comme reseaux genants
     pub proteger_plans: bool,
@@ -261,11 +271,6 @@ fn dist_seg(px: f64, py: f64, s: &SegD) -> f64 {
 }
 
 /// Disque de cellules a tester pour une surlargeur r (0 = centre seul).
-fn dbg_marge() -> bool {
-    static V: std::sync::OnceLock<bool> = std::sync::OnceLock::new();
-    *V.get_or_init(|| std::env::var("DEBUG_MARGE").is_ok())
-}
-
 pub fn offsets(r: f64) -> Vec<(i32, i32)> {
     if r <= 1e-9 {
         return vec![(0, 0)];
@@ -317,6 +322,10 @@ impl<'a> Detail<'a> {
             planaire: vec![false; nn],
             vias_c: vec![0; nc],
             offs_trou: Vec::new(),
+            trou_cnt: vec![0; nc],
+            cache_via: !cfg!(feature = "sans_cache_via"),
+            vsm: vec![0; nc],
+            vsv: vec![0; nc],
             legv: vec![0; nn],
             vsoft: vec![0; nn],
             heap: BinaryHeap::new(),
@@ -326,7 +335,7 @@ impl<'a> Detail<'a> {
             via_dans_pad: false,
             derogations: Vec::new(),
             amorces: Vec::new(),
-            pin_extra: std::collections::HashMap::new(),
+            pin_extra: std::collections::BTreeMap::new(),
             pieces_pont: Vec::new(),
             proteger_plans: false,
             nonet: m.nets.len() as u32 + 1,
@@ -344,6 +353,10 @@ impl<'a> Detail<'a> {
             for ix in 0..nx {
                 let (x, y) = d.cxy(ix, iy);
                 let mut h = x < g || y < g || x > m.w - g || y > m.h - g;
+                // contour polygonal de la carte (donnees) : garde au bord sur tout le contour
+                if !h && m.contour.len() >= 3 && dist_poly(x, y, &m.contour) > -g {
+                    h = true;
+                }
                 for f in &m.fentes {
                     if dist_rect(x, y, &[f[0], f[1], f[0] + f[2], f[1] + f[3]]) < g {
                         h = true;
@@ -447,11 +460,11 @@ impl<'a> Detail<'a> {
             if let CuivreObj::Via { x, y, .. } = cu.obj {
                 let c = d.node_at(x, y, 0) as usize;
                 d.vias_c[c] += 1;
+                d.maj_trou(c, 1);
             }
         }
         d.poser_amorces();
         d.poser_ponts();
-        d.poser_eventail();
         d.amorcer_broches();
         d
     }
@@ -479,6 +492,19 @@ impl<'a> Detail<'a> {
                     }
                 }
             }
+            // regle Altium « Hole To Hole Clearance » (0,254 mm) : pas de via dont le trou approche celui d'une
+            // pastille traversante (via dans la pastille compris)
+            if pd.th {
+                let tr = if pd.trou > 0.0 { pd.trou } else { (2.0 * hw.min(hh) - 0.3).max(0.3) };
+                let r = tr / 2.0 + m.regles.via.trou / 2.0 + TROU_TROU + 0.01;
+                for c in self.cells_pad(cx, cy, 0.0, 0.0, FormePad::Rond, r, f64::MAX) {
+                    if ajout {
+                        self.novia[c] += 1;
+                    } else {
+                        self.novia[c] -= 1;
+                    }
+                }
+            }
             if !pd.th && !m.comps[i].via_sous_pad {
                 let rv = m.regles.via.diametre / 2.0 + 0.01;
                 for c in self.cells_pad(cx, cy, hw, hh, pd.forme, rv, f64::MAX) {
@@ -486,6 +512,38 @@ impl<'a> Detail<'a> {
                         self.novia[c] += 1;
                     } else {
                         self.novia[c] -= 1;
+                    }
+                }
+            }
+        }
+            // regions de cuivre d'empreinte : meme isolement que les pastilles (cle de leur reseau, sinon « sans reseau »)
+        let regs = m.comps[i].regions.clone();
+        for r in &regs {
+            let (pts, ls) = m.region_monde(i, r, &p);
+            if pts.len() < 3 {
+                continue;
+            }
+            let key = r.1.map(|n| n as u32 + 1).unwrap_or(self.nonet);
+            let clr = r.1.map(|n| self.clr_net(n)).unwrap_or(m.regles.isolement.defaut + MARGE_ISOL);
+            let infl = clr + H_DEF + DELTA;
+            let bx0 = pts.iter().map(|q| q.0).fold(f64::MAX, f64::min) - infl;
+            let by0 = pts.iter().map(|q| q.1).fold(f64::MAX, f64::min) - infl;
+            let bx1 = pts.iter().map(|q| q.0).fold(f64::MIN, f64::max) + infl;
+            let by1 = pts.iter().map(|q| q.1).fold(f64::MIN, f64::max) + infl;
+            let (ix0, iy0) = (((bx0 / P).floor().max(0.0)) as usize, ((by0 / P).floor().max(0.0)) as usize);
+            let (ix1, iy1) = (((bx1 / P).ceil() as usize).min(self.nx - 1), ((by1 / P).ceil() as usize).min(self.ny - 1));
+            for iy in iy0..=iy1 {
+                for ix in ix0..=ix1 {
+                    let (x, y) = self.cxy(ix, iy);
+                    if dist_poly(x, y, &pts) < infl {
+                        let c = iy * self.nx + ix;
+                        for &l in &ls {
+                            if ajout {
+                                self.kp.add(l * nc + c, key);
+                            } else {
+                                self.kp.sub(l * nc + c, key);
+                            }
+                        }
                     }
                 }
             }
@@ -641,7 +699,7 @@ impl<'a> Detail<'a> {
             x
         }
         let cle = |x: f64, y: f64| ((x * 1e5).round() as i64, (y * 1e5).round() as i64);
-        let mut pts: std::collections::HashMap<(i64, i64), Vec<usize>> = std::collections::HashMap::new();
+        let mut pts: std::collections::BTreeMap<(i64, i64), Vec<usize>> = std::collections::BTreeMap::new();
         for (k, sg) in r.segs.iter().enumerate() {
             pts.entry(cle(sg.x1, sg.y1)).or_default().push(k);
             pts.entry(cle(sg.x2, sg.y2)).or_default().push(k);
@@ -657,7 +715,7 @@ impl<'a> Detail<'a> {
                 }
             }
         }
-        let mut groupes: std::collections::HashMap<usize, (Vec<(usize, usize)>, Vec<usize>, Vec<usize>)> = std::collections::HashMap::new();
+        let mut groupes: std::collections::BTreeMap<usize, (Vec<(usize, usize)>, Vec<usize>, Vec<usize>)> = std::collections::BTreeMap::new();
         for k in 0..ns {
             let rt = f(&mut par, k);
             groupes.entry(rt).or_default().1.push(k);
@@ -723,8 +781,17 @@ impl<'a> Detail<'a> {
         base.kprox.clear();
         base.carres = 0.0;
         base.ok = 0;
-        base.ko = 0;
-        base.diag.clear();
+        // avenant 2.2, ecart (6) : compte d'echecs exact ; les echecs des pastilles qui ne sont pas rerouees (pastille
+        // CMS deja sans descente, hors des zones) restent comptes (9b5b5a3 remettait le compte a 0)
+        let m = self.m;
+        let gardes: Vec<String> = old
+            .diag
+            .iter()
+            .filter(|dg| !a_router.iter().any(|&(i, k)| dg.starts_with(&format!("{}.{} : ", m.comps[i].nom, m.comps[i].pads[k].nom))))
+            .cloned()
+            .collect();
+        base.ko = gardes.len();
+        base.diag = gardes;
         self.nets[g] = base;
         self.commit_geom(g, gs, gv, Vec::new());
         a_router.retain(|&(i, k)| !self.m.comps[i].pads[k].th);
@@ -882,7 +949,7 @@ impl<'a> Detail<'a> {
                     let u = t as f64 / k2 as f64;
                     let (px, py) = (s.x1 + u * (s.x2 - s.x1), s.y1 + u * (s.y2 - s.y1));
                     let v = dist_pad(px, py, x, y, hw, hh, pd.forme) - s.w / 2.0 - req;
-                    if v < pire && dbg_marge() {
+                    if v < pire && m.param.journal.debug_marge {
                         eprintln!("  marge pad {}.{} {:.4}", m.comps[i].nom, m.comps[i].pads[k].nom, v);
                     }
                     pire = pire.min(v);
@@ -891,6 +958,29 @@ impl<'a> Detail<'a> {
         }
         for (t, rt) in m.trous.iter().zip(m.trous_r.iter()) {
             pire = pire.min(dist_seg(t[0], t[1], s) - rt - s.w / 2.0 - m.regles.isolement.defaut);
+        }
+        // regions de cuivre d'empreinte des autres reseaux
+        for i in 0..m.comps.len() {
+            if m.comps[i].regions.is_empty() {
+                continue;
+            }
+            let p = self.e.poses[i];
+            for r in &m.comps[i].regions {
+                if r.1 == Some(n) {
+                    continue;
+                }
+                let (pts, ls) = m.region_monde(i, r, &p);
+                if !ls.contains(&(s.couche as usize)) {
+                    continue;
+                }
+                let req = clr_n.max(m.regles.isolement.defaut);
+                let k2 = 40;
+                for t in 0..=k2 {
+                    let u = t as f64 / k2 as f64;
+                    let (px, py) = (s.x1 + u * (s.x2 - s.x1), s.y1 + u * (s.y2 - s.y1));
+                    pire = pire.min(dist_poly(px, py, &pts) - s.w / 2.0 - req);
+                }
+            }
         }
         // amorces deja posees des autres reseaux
         for (n2, segs) in &self.amorces {
@@ -909,7 +999,7 @@ impl<'a> Detail<'a> {
                     d = d.min(dist_seg(s.x1 + u * (s.x2 - s.x1), s.y1 + u * (s.y2 - s.y1), o));
                     d = d.min(dist_seg(o.x1 + u * (o.x2 - o.x1), o.y1 + u * (o.y2 - o.y1), s));
                 }
-                if d - o.w / 2.0 - s.w / 2.0 - req < pire && dbg_marge() {
+                if d - o.w / 2.0 - s.w / 2.0 - req < pire && m.param.journal.debug_marge {
                     eprintln!("  marge amorce {} {:.4}", m.nets[*n2].nom, d - o.w / 2.0 - s.w / 2.0 - req);
                 }
                 pire = pire.min(d - o.w / 2.0 - s.w / 2.0 - req);
@@ -1029,9 +1119,10 @@ impl<'a> Detail<'a> {
         // rejoindre la grille (les amorces des commandes de grille voisines restent courtes)
         // boitier a pas fin : sorties en eventail decalees (une broche sur deux longue) pour que les raccords voisins ne
         // soient pas cote a cote sur la grille
-        // (essai d'eventail decale une broche sur deux : plus d'echecs, abandonne ; variable AMORCE_EVENTAIL=1 pour le refaire)
-        let pair = std::env::var("AMORCE_EVENTAIL").is_ok() && m.comps[i].pads[k].nom.parse::<i32>().map(|v| v % 2 == 0).unwrap_or(false);
-        let moyen = std::env::var("AMORCE_MOYENNE").map(|v| v != "0").unwrap_or(false);
+        // (essai d'eventail decale une broche sur deux : plus d'echecs, abandonne ; reglage routage.amorce_eventail_paires
+        // pour le refaire)
+        let pair = m.param.routage.amorce_eventail_paires && m.comps[i].pads[k].nom.parse::<i32>().map(|v| v % 2 == 0).unwrap_or(false);
+        let moyen = m.param.routage.amorce_moyenne;
         let longueurs: &[f64] = if self.m.nets[n].classe == "COMMUTATION" || (m.comps[i].pas_fin && pair) {
             &[1.3, 1.7, 2.2, 1.0, 0.8, 0.6, 0.4]
         } else if m.comps[i].pas_fin && moyen {
@@ -1043,7 +1134,7 @@ impl<'a> Detail<'a> {
         for &l_ext in longueurs {
             let (ex, ey) = (x + ux * (demi + l_ext), y + uy * (demi + l_ext));
             let s1 = SegD { x1: x, y1: y, x2: ex, y2: ey, w, couche };
-            if std::env::var("DEBUG_AMORCE").is_ok() {
+            if m.param.journal.debug_amorces {
                 eprintln!("amorce {} {}.{} l {} marge {:.4} w {}", m.nets[n].nom, m.comps[i].nom, m.comps[i].pads[k].nom, l_ext, self.marge_segment(n, &s1), w);
             }
             // amorce : isolement de la regle exact (sans la marge interne MARGE_ISOL) + 2 microns ; necessaire pour la
@@ -1109,7 +1200,7 @@ impl<'a> Detail<'a> {
         if !m.bloc_libre {
             return;
         }
-        if std::env::var("SANS_EVENTAIL_AUTO").is_err() {
+        if m.param.routage.eventail_auto {
             for i in 0..m.comps.len() {
                 if m.comps[i].pas_fin {
                     self.eventail_auto(i);
@@ -1154,8 +1245,10 @@ impl<'a> Detail<'a> {
         let couche: u8 = if p.bot { 1 } else { 0 };
         let (cx, cy) = m.centre(i, &p);
         let iso_max = m.regles.isolement.commutation.max(m.regles.isolement.defaut);
-        let p_out = std::env::var("EVENTAIL_POUT").ok().and_then(|v| v.parse().ok()).unwrap_or(0.254 + 2.0 * iso_max + 2.0 * P);
-        let l0: f64 = std::env::var("EVENTAIL_L0").ok().and_then(|v| v.parse().ok()).unwrap_or(0.3);
+        // reglages routage.eventail_pas_sortie_mm (« auto » : formule de 9b5b5a3, rendue generique a l'etape 6) et
+        // routage.eventail_longueur_mm
+        let p_out = m.param.routage.eventail_pas_sortie_mm.valeur().unwrap_or(0.254 + 2.0 * iso_max + 2.0 * P);
+        let l0: f64 = m.param.routage.eventail_longueur_mm;
         // rangees : (sens sortant ux, uy ; coordonnee d'axe arrondie) -> pastilles
         let mut rangees: Vec<((i32, i32, i64), Vec<usize>)> = Vec::new();
         for k in 0..m.comps[i].pads.len() {
@@ -1244,7 +1337,7 @@ impl<'a> Detail<'a> {
                 }
                 }
                 let delta = cible - lat(k);
-                if std::env::var("DEBUG_AMORCE").is_ok() {
+                if m.param.journal.debug_amorces {
                     eprintln!("eventail {}.{} delta {:.3} marges {:?}", m.comps[i].nom, m.comps[i].pads[k].nom, delta,
                         segs.iter().map(|sg| (self.marge_segment(n, sg) * 1000.0).round() / 1000.0).collect::<Vec<_>>());
                 }
@@ -1309,71 +1402,6 @@ impl<'a> Detail<'a> {
             self.raster_seg(&s, infl, n as u32 + 1, &mut store);
             self.amorces.push((n, vec![s]));
             self.pieces_pont.push(i);
-        }
-    }
-
-    /// Eventail de sortie fixe d'U10 (convertisseur libere) : pistes du bloc manuel attachees a la piece, posees une fois ;
-    /// la broche est raccordee au bout de l'eventail (cellule libre la plus proche), d'ou part le routeur.
-    fn poser_eventail(&mut self) {
-        let m = self.m;
-        let u = match m.u10 {
-            Some(u) if m.bloc_libre && !m.eventail.is_empty() => u,
-            _ => return,
-        };
-        let p = self.e.poses[u];
-        let couche: u8 = if p.bot { 1 } else { 0 };
-        for (k, ch) in m.eventail.clone() {
-            let n = match m.comps[u].pads[k].net {
-                Some(n) => n,
-                None => continue,
-            };
-            let key = n as u32 + 1;
-            let mut segs: Vec<SegD> = ch.iter().map(|s| {
-                let (a, b) = fwd(s[0], s[1], p.rot, p.bot);
-                let (c, d) = fwd(s[2], s[3], p.rot, p.bot);
-                // largeur au moins la mini de la classe (le bloc manuel a 10 mil = 0,254)
-                SegD { x1: p.x + a, y1: p.y + b, x2: p.x + c, y2: p.y + d, w: s[4].max(*self.larg(n).w.last().unwrap()), couche }
-            }).collect();
-            let (ex, ey) = (segs.last().unwrap().x2, segs.last().unwrap().y2);
-            // raccord : cellule libre (largeur la plus fine) la plus proche du bout
-            let ctx = self.ctx(n, Mode::Strict);
-            let offs_min = ctx.offs.last().unwrap().clone();
-            let (ix, iy) = ((ex / P).floor() as i64, (ey / P).floor() as i64);
-            let mut best: Option<(f64, usize)> = None;
-            for dy in -3..=3 {
-                for dx in -3..=3 {
-                    let (gx, gy) = (ix + dx, iy + dy);
-                    if gx < 0 || gy < 0 || gx >= self.nx as i64 || gy >= self.ny as i64 {
-                        continue;
-                    }
-                    let nd = couche as usize * self.nc + gy as usize * self.nx + gx as usize;
-                    if self.disk_state(nd, key, &offs_min, false) != 1 {
-                        continue;
-                    }
-                    let (qx, qy) = self.node_xy(nd);
-                    let dd = ((qx - ex).powi(2) + (qy - ey).powi(2)).sqrt();
-                    if best.map_or(true, |b| dd < b.0) {
-                        best = Some((dd, nd));
-                    }
-                }
-            }
-            let (_, nd) = match best {
-                Some(b) => b,
-                None => {
-                    self.derogations.push(format!("eventail U10.{} : bout bloque, amorce ordinaire", m.comps[u].pads[k].nom));
-                    continue;
-                }
-            };
-            let (qx, qy) = self.node_xy(nd);
-            let w = segs.last().unwrap().w;
-            segs.push(SegD { x1: ex, y1: ey, x2: qx, y2: qy, w, couche });
-            let mut store = Vec::new();
-            let infl = self.clr_net(n) + H_DEF + DELTA;
-            for sg in &segs {
-                self.raster_seg(sg, infl, key, &mut store);
-            }
-            self.amorces.push((n, segs));
-            self.pin_extra.insert((u, k), nd as u32);
         }
     }
 
@@ -1449,10 +1477,9 @@ impl<'a> Detail<'a> {
     fn ctx(&self, n: usize, mode: Mode) -> Ctx {
         let l = self.larg(n);
         // surcroit d'isolement de la classe au-dela de l'isolement par defaut (COMMUTATION : 0,05 mm) ; la marge
-        // interne MARGE_ISOL est deja dans le gonflement des cartes (variable DETAIL_CLRX_ANCIEN=1 : ancien calcul,
-        // qui la comptait une seconde fois et elargissait d'une cellule le disque de toutes les pistes)
-        let ancien = std::env::var("DETAIL_CLRX_ANCIEN").is_ok();
-        let clr_x = (self.clr_net(n) - if ancien { 0.0 } else { MARGE_ISOL } - self.m.regles.isolement.defaut).max(0.0);
+        // interne MARGE_ISOL est deja dans le gonflement des cartes (l'ancien calcul, qui la comptait une seconde fois
+        // et elargissait d'une cellule le disque de toutes les pistes, est supprime : annexe A du contrat)
+        let clr_x = (self.clr_net(n) - MARGE_ISOL - self.m.regles.isolement.defaut).max(0.0);
         Ctx {
             key: n as u32 + 1,
             offs: l.w.iter().map(|w| offsets(w / 2.0 - H_DEF + clr_x)).collect(),
@@ -1571,6 +1598,10 @@ impl<'a> Detail<'a> {
 
     /// Etat d'un noeud : 0 interdit ; sinon 1 + 2 x (indice de la largeur la plus large qui passe) + (1 si recouvrement).
     fn leg(&mut self, n: usize, ctx: &Ctx) -> u8 {
+        // couche de routage absente de la carte (donnees) : aucune piste
+        if !self.m.couches_actives[n / self.nc] {
+            return 0;
+        }
         if self.legm[n] == self.ep {
             return self.legv[n];
         }
@@ -1599,17 +1630,37 @@ impl<'a> Detail<'a> {
         v
     }
 
+    /// Test de via memorise pour la recherche en cours (estampille `ep`) ; sans le cache (`sans_cache_via`), test
+    /// direct : les sorties sont identiques octet pour octet (avenant 2.2, A.4-1, test (a)).
+    #[inline]
+    fn via_state_memo(&mut self, c: usize, ctx: &Ctx, ep: u32) -> u8 {
+        if !self.cache_via {
+            return self.via_state(c, ctx);
+        }
+        if self.vsm[c] == ep {
+            return self.vsv[c];
+        }
+        let v = self.via_state(c, ctx);
+        self.vsm[c] = ep;
+        self.vsv[c] = v;
+        v
+    }
+
     fn via_state(&self, c: usize, ctx: &Ctx) -> u8 {
         if self.novia[c] > 0 {
             return 0;
         }
         // trou a trou >= 0,254 mm (+ marge) avec tout via deja pose, y compris du meme reseau
-        let (x, y) = ((c % self.nx) as i32, (c / self.nx) as i32);
-        for &(dx, dy) in &self.offs_trou {
-            let (u, v) = (x + dx, y + dy);
-            if u >= 0 && v >= 0 && u < self.nx as i32 && v < self.ny as i32 && self.vias_c[v as usize * self.nx + u as usize] > 0 {
-                return 0;
+        if !self.cache_via {
+            let (x, y) = ((c % self.nx) as i32, (c / self.nx) as i32);
+            for &(dx, dy) in &self.offs_trou {
+                let (u, v) = (x + dx, y + dy);
+                if u >= 0 && v >= 0 && u < self.nx as i32 && v < self.ny as i32 && self.vias_c[v as usize * self.nx + u as usize] > 0 {
+                    return 0;
+                }
             }
+        } else if self.trou_cnt[c] > 0 {
+            return 0;
         }
         let souple = ctx.mode != Mode::Strict;
         let mut st = 1;
@@ -1746,7 +1797,7 @@ impl<'a> Detail<'a> {
                     if self.tree[n] == self.tep {
                         true
                     } else if self.par[n] != NONE {
-                        let vs = self.via_state(c, ctx);
+                        let vs = self.via_state_memo(c, ctx, ep);
                         if vs == 2 {
                             self.vsoft[n] = ep;
                         }
@@ -1818,7 +1869,7 @@ impl<'a> Detail<'a> {
             // pas de via sur l'axe d'une piste existante du bloc, sauf au bout d'une piste nouvelle de la meme couche
             let via_interdit = self.planaire[n] && (self.par[n] == NONE || self.din[n] == 8);
             if let (But::Arbre(_), false) = (but, via_interdit) {
-                let st = self.via_state(c, ctx);
+                let st = self.via_state_memo(c, ctx, ep);
                 for lo in 0..NCOUCHES {
                 if lo == l || st == 0 {
                     continue;
@@ -1951,6 +2002,7 @@ impl<'a> Detail<'a> {
         for v in &vias {
             let cv = self.node_at(v.x, v.y, 0) as usize;
             self.vias_c[cv] += 1;
+            self.maj_trou(cv, 1);
             self.raster_via(v.x, v.y, infl, key, &mut store);
         }
         self.nets[n].kt = store;
@@ -2004,6 +2056,7 @@ impl<'a> Detail<'a> {
         for v in self.nets[n].vias.clone() {
             let cv = self.node_at(v.x, v.y, 0) as usize;
             self.vias_c[cv] -= 1;
+            self.maj_trou(cv, -1);
         }
         let kt = std::mem::take(&mut self.nets[n].kt);
         for &c in &kt {
@@ -2064,10 +2117,12 @@ impl<'a> Detail<'a> {
         let mut centres = Vec::new();
         let mut noms = Vec::new();
         for &(i, k) in &self.m.nets[n].pins_ext {
-            let mut pc = self.pad_cells(i, k);
-            if let Some(&nd) = self.pin_extra.get(&(i, k)) {
-                pc.push(nd);
-            }
+            // broche amorcee (eventail / amorce) : on n'arrive QUE par le bout de l'amorce (sinon l'amorce reste en
+            // antenne quand le routeur rejoint la pastille directement)
+            let pc = match self.pin_extra.get(&(i, k)) {
+                Some(&nd) => vec![nd],
+                None => self.pad_cells(i, k),
+            };
             cells.push(pc);
             let (x, y, _, _) = self.m.pad_world(i, k, &self.e.poses[i]);
             centres.push((x, y));
@@ -2106,7 +2161,7 @@ impl<'a> Detail<'a> {
         let ctx_acc = self.ctx(n, Mode::Negocie);
         self.ep += 1;
         let acc: Vec<bool> = (0..cells.len()).map(|p| cells[p].iter().any(|&c| self.leg(c as usize, &ctx_acc) != 0)).collect();
-        if std::env::var("DEBUG_AMORCE").is_ok() {
+        if self.m.param.journal.debug_amorces {
             for p in 0..cells.len() {
                 if !acc[p] {
                     let det: Vec<(f64, f64, usize, u8)> = cells[p].iter().take(12).map(|&c| {
@@ -2390,9 +2445,16 @@ impl<'a> Detail<'a> {
     fn priorite(&self, n: usize) -> u8 {
         let net = &self.m.nets[n];
         if net.plan {
-            return 5;
+            return 6;
         }
-        match net.classe.as_str() {
+        // signaux d'un boitier a pas fin (commandes de grille, bootstrap, compensation...) : routes AVANT la puissance,
+        // sinon les pistes larges ferment leurs couloirs de sortie (reglage routage.ordre_pas_fin_d_abord = false pour
+        // l'ancien ordre)
+        let puiss = matches!(net.classe.as_str(), "PUISSANCE_8V" | "ENTREE_12V" | "CANAL_2A" | "COMMUTATION");
+        if !puiss && self.m.param.routage.ordre_pas_fin_d_abord && net.pins.iter().any(|&(i, _)| self.m.comps[i].pas_fin) {
+            return 0;
+        }
+        1 + match net.classe.as_str() {
             "PUISSANCE_8V" => 0, // +8V route en premier (plus de plan, iteration 3)
             "ENTREE_12V" => 1,
             "CANAL_2A" => 1,
@@ -2515,6 +2577,223 @@ impl<'a> Detail<'a> {
         }
     }
 
+    /// Retire les antennes (regle Altium Net Antennae, tolerance 0) : segment dont une extremite ne touche aucun autre
+    /// cuivre de son reseau (piste, via, pastille, amorce), et amorce dont le bout n'est rejoint par rien ; iteratif
+    /// (une antenne retiree peut en reveler une autre). Ne coupe aucune liaison : le bout libre ne reliait rien.
+    pub fn retirer_antennes(&mut self) -> usize {
+        let m = self.m;
+        let vd = m.regles.via.diametre / 2.0;
+        let mut total = 0;
+        loop {
+            let mut retire = 0;
+            for n in 0..self.nets.len() {
+                if self.nets[n].segs.is_empty() && !self.amorces.iter().any(|a| a.0 == n) {
+                    continue;
+                }
+                let pads: Vec<(f64, f64, f64, f64, FormePad, Vec<u8>)> = m.nets[n].pins.iter().chain(m.ponts.iter().filter(|p| p.0 == n).map(|p| (p.1, p.3)).collect::<Vec<_>>().iter())
+                    .map(|&(i, k)| {
+                        let p = self.e.poses[i];
+                        let (x, y, hw, hh) = m.pad_world(i, k, &p);
+                        let pd = &m.comps[i].pads[k];
+                        (x, y, hw, hh, pd.forme, if pd.th { vec![0, 1, 2] } else if p.bot { vec![1] } else { vec![0] })
+                    }).collect();
+                let vias: Vec<(f64, f64)> = self.nets[n].vias.iter().map(|v| (v.x, v.y)).collect();
+                let amorces: Vec<SegD> = self.amorces.iter().filter(|a| a.0 == n).flat_map(|a| a.1.iter().cloned()).collect();
+                let segs = self.nets[n].segs.clone();
+                let touche = |x: f64, y: f64, l: u8, moi: Option<usize>, autres: &[SegD], segs: &[SegD]| -> bool {
+                    if vias.iter().any(|v| ((v.0 - x).powi(2) + (v.1 - y).powi(2)).sqrt() <= vd + 1e-6) {
+                        return true;
+                    }
+                    if pads.iter().any(|q| q.5.contains(&l) && dist_pad(x, y, q.0, q.1, q.2, q.3, q.4) <= 1e-6) {
+                        return true;
+                    }
+                    for (j, o) in segs.iter().enumerate() {
+                        if Some(j) == moi || o.couche != l {
+                            continue;
+                        }
+                        if dist_seg(x, y, o) <= o.w / 2.0 + 1e-6 {
+                            return true;
+                        }
+                    }
+                    autres.iter().any(|o| o.couche == l && dist_seg(x, y, o) <= o.w / 2.0 + 1e-6)
+                };
+                let mut garde = Vec::new();
+                let mut change = false;
+                for (j, sg) in segs.iter().enumerate() {
+                    let l0 = ((sg.x2 - sg.x1).powi(2) + (sg.y2 - sg.y1).powi(2)).sqrt();
+                    let ok = l0 > 1e-9 && touche(sg.x1, sg.y1, sg.couche, Some(j), &amorces, &segs) && touche(sg.x2, sg.y2, sg.couche, Some(j), &amorces, &segs);
+                    if ok {
+                        garde.push(sg.clone());
+                    } else {
+                        change = true;
+                        retire += 1;
+                    }
+                }
+                if change {
+                    let old = self.nets[n].clone();
+                    self.arracher(n);
+                    let mut base = old.clone();
+                    base.segs.clear();
+                    base.vias.clear();
+                    base.noeuds.clear();
+                    base.kt.clear();
+                    base.kprox.clear();
+                    base.carres = 0.0;
+                    self.nets[n] = base;
+                    self.commit_geom(n, garde, old.vias.clone(), old.noeuds.clone());
+                }
+                // amorces dont le bout n'est rejoint par aucune piste / via du reseau : retirees de la sortie, mais
+                // seulement si le reseau est complet (un reseau encore en echec sera peut-etre raccorde plus tard)
+                if self.nets[n].ko > 0 || !self.est_routable(n) {
+                    continue;
+                }
+                let segs2 = self.nets[n].segs.clone();
+                let mut k = 0;
+                while k < self.amorces.len() {
+                    if self.amorces[k].0 != n {
+                        k += 1;
+                        continue;
+                    }
+                    let bout = self.amorces[k].1.last().cloned().unwrap();
+                    let autres: Vec<SegD> = Vec::new();
+                    if !touche(bout.x2, bout.y2, bout.couche, None, &autres, &segs2) {
+                        self.amorces.remove(k);
+                        retire += 1;
+                    } else {
+                        k += 1;
+                    }
+                }
+            }
+            total += retire;
+            if retire == 0 {
+                break;
+            }
+        }
+        total
+    }
+
+    /// Controle (et reparation) des descentes de plan : chaque pastille CMS d'un reseau de plan doit toucher une piste
+    /// de son reseau (extremite dans la pastille) ou un via dans la pastille ; sinon la descente est reposee.
+    /// Renvoie (pastilles sans descente trouvees, reposees avec succes).
+    pub fn verifier_plans(&mut self) -> (usize, usize) {
+        let m = self.m;
+        let vd = m.regles.via.diametre / 2.0;
+        let (mut trouvees, mut reposees) = (0, 0);
+        for n in 0..self.nets.len() {
+            if !m.nets[n].plan {
+                continue;
+            }
+            let mut manquantes = Vec::new();
+            for &(i, k) in &m.nets[n].pins_ext {
+                let pd = &m.comps[i].pads[k];
+                if pd.th {
+                    continue;
+                }
+                let p = self.e.poses[i];
+                let (x, y, hw, hh) = m.pad_world(i, k, &p);
+                let couche: u8 = if p.bot { 1 } else { 0 };
+                let dans = |px: f64, py: f64| dist_pad(px, py, x, y, hw, hh, pd.forme) <= 1e-6;
+                let ok = self.nets[n].segs.iter().any(|s| s.couche == couche && (dans(s.x1, s.y1) || dans(s.x2, s.y2)))
+                    || self.nets[n].vias.iter().any(|v| dist_pad(v.x, v.y, x, y, hw, hh, pd.forme) <= vd)
+                    || m.ponts.iter().any(|q| q.0 == n && q.1 == i && (q.2 == k || q.3 == k));
+                if !ok {
+                    manquantes.push((i, k));
+                }
+            }
+            if manquantes.is_empty() {
+                continue;
+            }
+            trouvees += manquantes.len();
+            let ko0 = self.nets[n].ko;
+            self.router_plan_pins(n, Mode::Strict, manquantes.clone());
+            let ko1 = self.nets[n].ko;
+            reposees += manquantes.len().saturating_sub(ko1.saturating_sub(ko0));
+        }
+        (trouvees, reposees)
+    }
+
+    /// Lissage sans risque : deux segments du meme reseau, meme couche, meme largeur, colineaires et bout a bout, dont
+    /// la jonction n'est touchee par rien d'autre (ni troisieme segment, ni via, ni pastille) sont fusionnes. Le cuivre
+    /// est identique : aucun effet sur l'isolement ni sur la connexite.
+    pub fn fusionner_colineaires(&mut self) -> usize {
+        let m = self.m;
+        let vd = m.regles.via.diametre / 2.0;
+        let mut total = 0;
+        for n in 0..self.nets.len() {
+            if self.nets[n].segs.len() < 2 {
+                continue;
+            }
+            let pads: Vec<(f64, f64, f64, f64, FormePad, Vec<u8>)> = m.nets[n].pins.iter().map(|&(i, k)| {
+                let p = self.e.poses[i];
+                let (x, y, hw, hh) = m.pad_world(i, k, &p);
+                let pd = &m.comps[i].pads[k];
+                (x, y, hw, hh, pd.forme, if pd.th { vec![0, 1, 2] } else if p.bot { vec![1] } else { vec![0] })
+            }).collect();
+            let vias: Vec<(f64, f64)> = self.nets[n].vias.iter().map(|v| (v.x, v.y)).collect();
+            let mut segs = self.nets[n].segs.clone();
+            let mut fusions = 0;
+            loop {
+                let mut fait = false;
+                'ext: for a in 0..segs.len() {
+                    for (ax, ay) in [(segs[a].x1, segs[a].y1), (segs[a].x2, segs[a].y2)] {
+                        let l = segs[a].couche;
+                        let proches = |x: f64, y: f64, sx: f64, sy: f64| (x - sx).abs() < 1e-6 && (y - sy).abs() < 1e-6;
+                        let lies: Vec<usize> = (0..segs.len()).filter(|&b| segs[b].couche == l
+                            && (proches(segs[b].x1, segs[b].y1, ax, ay) || proches(segs[b].x2, segs[b].y2, ax, ay))).collect();
+                        if lies.len() != 2 {
+                            continue;
+                        }
+                        // jonction touchee par un autre segment (en son milieu), un via ou une pastille : on garde
+                        let milieu = (0..segs.len()).any(|b| !lies.contains(&b) && segs[b].couche == l && dist_seg(ax, ay, &segs[b]) <= segs[b].w / 2.0 + 1e-6);
+                        if milieu || vias.iter().any(|v| ((v.0 - ax).powi(2) + (v.1 - ay).powi(2)).sqrt() <= vd + 1e-6)
+                            || pads.iter().any(|q| q.5.contains(&l) && dist_pad(ax, ay, q.0, q.1, q.2, q.3, q.4) <= 1e-6) {
+                            continue;
+                        }
+                        let b = if lies[0] == a { lies[1] } else { lies[0] };
+                        if (segs[a].w - segs[b].w).abs() > 1e-9 {
+                            continue;
+                        }
+                        let autre = |s: &SegD| if proches(s.x1, s.y1, ax, ay) { (s.x2, s.y2) } else { (s.x1, s.y1) };
+                        let (pa, pb) = (autre(&segs[a]), autre(&segs[b]));
+                        let (ux, uy) = (pa.0 - ax, pa.1 - ay);
+                        let (vx, vy) = (pb.0 - ax, pb.1 - ay);
+                        let (nu, nv) = ((ux * ux + uy * uy).sqrt(), (vx * vx + vy * vy).sqrt());
+                        if nu < 1e-9 || nv < 1e-9 || (ux * vx + uy * vy) / (nu * nv) > -0.99999 {
+                            continue;
+                        }
+                        let w = segs[a].w;
+                        let neuf = SegD { x1: pa.0, y1: pa.1, x2: pb.0, y2: pb.1, w, couche: l };
+                        let (i0, i1) = (a.max(b), a.min(b));
+                        segs.remove(i0);
+                        segs.remove(i1);
+                        segs.push(neuf);
+                        fusions += 1;
+                        fait = true;
+                        break 'ext;
+                    }
+                }
+                if !fait {
+                    break;
+                }
+            }
+            if fusions > 0 {
+                let old = self.nets[n].clone();
+                self.arracher(n);
+                let mut base = old.clone();
+                base.segs.clear();
+                base.vias.clear();
+                base.noeuds.clear();
+                base.kt.clear();
+                base.kprox.clear();
+                base.carres = 0.0;
+                self.nets[n] = base;
+                self.commit_geom(n, segs, old.vias.clone(), old.noeuds.clone());
+                total += fusions;
+            }
+        }
+        total
+    }
+
     /// Arrachage-reroutage cible des connexions en echec : le reseau en echec d'abord, puis les reseaux qui le genent
     /// (trouves par sondage, plans GND proteges) ; garde seulement si le total d'echecs baisse. Generique.
     pub fn reparer_echecs(&mut self, journal: &mut dyn FnMut(String)) {
@@ -2543,6 +2822,7 @@ impl<'a> Detail<'a> {
         self.proteger_plans = false;
         if self.total_ko() != avant {
             self.scinder_segments();
+            self.retirer_antennes();
         }
     }
 
@@ -2568,6 +2848,12 @@ impl<'a> Detail<'a> {
         journal(format!("  elargissement final : {} troncons rendus plus larges ({:.1} mm)", ne, le));
         let ns = self.scinder_segments();
         journal(format!("  pistes coupees aux jonctions (via ou extremite sur l'axe) : {}", ns));
+        let na = self.retirer_antennes();
+        journal(format!("  antennes retirees (bouts de piste ne touchant aucun cuivre de leur reseau) : {}", na));
+        let (np, nr) = self.verifier_plans();
+        journal(format!("  pastilles CMS de plan sans descente : {} (reposees : {})", np, nr));
+        let nf = self.fusionner_colineaires();
+        journal(format!("  segments colineaires fusionnes : {}", nf));
         // controle final : aucun recouvrement ne doit subsister
         let restants: usize = ordre.iter().map(|&n| self.conflits(n).0.len()).sum();
         journal(format!("  recouvrements residuels : {} noeuds", restants));
@@ -2820,7 +3106,7 @@ impl<'a> Detail<'a> {
         for n in 0..self.nets.len() {
             loop {
                 let segs = &self.nets[n].segs;
-                let mut ends: std::collections::HashMap<(i64, i64, u8), Vec<(usize, bool)>> = std::collections::HashMap::new();
+                let mut ends: std::collections::BTreeMap<(i64, i64, u8), Vec<(usize, bool)>> = std::collections::BTreeMap::new();
                 for (k, s) in segs.iter().enumerate() {
                     ends.entry(((s.x1 * 1000.0).round() as i64, (s.y1 * 1000.0).round() as i64, s.couche)).or_default().push((k, true));
                     ends.entry(((s.x2 * 1000.0).round() as i64, (s.y2 * 1000.0).round() as i64, s.couche)).or_default().push((k, false));
@@ -3024,6 +3310,38 @@ impl<'a> Detail<'a> {
         self.kt_who = i.1;
         self.nets = i.2;
         self.vias_c = i.3;
+        self.recalculer_trou();
+    }
+
+    /// Carte d'exclusion trou a trou tenue a jour : `trou_cnt[c]` = somme des `vias_c` sur le disque `offs_trou`
+    /// autour de `c` (sans le cache : rien a tenir).
+    fn maj_trou(&mut self, cv: usize, delta: i32) {
+        if !self.cache_via {
+            return;
+        }
+        let (x, y) = ((cv % self.nx) as i32, (cv / self.nx) as i32);
+        for k in 0..self.offs_trou.len() {
+            let (dx, dy) = self.offs_trou[k];
+            let (u, v) = (x - dx, y - dy);
+            if u >= 0 && v >= 0 && u < self.nx as i32 && v < self.ny as i32 {
+                let c = v as usize * self.nx + u as usize;
+                self.trou_cnt[c] = (self.trou_cnt[c] as i64 + delta as i64) as u32;
+            }
+        }
+    }
+
+    fn recalculer_trou(&mut self) {
+        if !self.cache_via {
+            return;
+        }
+        for v in self.trou_cnt.iter_mut() {
+            *v = 0;
+        }
+        for c in 0..self.nc {
+            for _ in 0..self.vias_c[c] {
+                self.maj_trou(c, 1);
+            }
+        }
     }
 
     pub fn total_ko(&self) -> usize {
@@ -3050,9 +3368,10 @@ impl Modele {
 }
 
 #[cfg(test)]
-mod tests {
+pub(crate) mod tests {
     use super::*;
     use crate::globalr::tests::{comp, donnees, pad};
+    use crate::parametres::Parametres;
 
     fn esp_off() -> ParamEsp {
         ParamEsp { actif: false, prox: 0.0, coude: 0.0, allong_max: 0.0 }
@@ -3061,7 +3380,7 @@ mod tests {
     #[test]
     fn liaison_simple_sans_violation() {
         let d = donnees(vec![comp("A", 4.25, 5.25, false, vec![pad("1", "S", 0.0, 0.0, false)]), comp("B", 12.25, 5.25, false, vec![pad("1", "S", 0.0, 0.0, false)])], vec![]);
-        let m = Modele::new(&d);
+        let m = Modele::new(&d, Parametres::defaut());
         let e = m.etat_v3();
         let mut dt = Detail::new(&m, &e);
         dt.tout(5, 0, &esp_off(), &mut |_| {});
@@ -3077,7 +3396,7 @@ mod tests {
     #[test]
     fn via_de_plan() {
         let d = donnees(vec![comp("A", 4.25, 5.25, false, vec![pad("1", "GND", 0.0, 0.0, false)])], vec![]);
-        let m = Modele::new(&d);
+        let m = Modele::new(&d, Parametres::defaut());
         let e = m.etat_v3();
         let mut dt = Detail::new(&m, &e);
         dt.tout(5, 0, &esp_off(), &mut |_| {});
@@ -3097,7 +3416,7 @@ mod tests {
         let mut d = donnees(vec![comp("A", 4.25, 5.25, false, vec![pad("1", "+5V", 0.0, 0.0, false)]), comp("B", 12.25, 5.25, false, vec![pad("1", "+5V", 0.0, 0.0, false)])], vec![]);
         d.classes.insert("+5V".into(), "RAILS".into());
         d.regles.largeurs.insert("RAILS".into(), [0.254, 0.508, 5.0]);
-        let m = Modele::new(&d);
+        let m = Modele::new(&d, Parametres::defaut());
         let e = m.etat_v3();
         let mut dt = Detail::new(&m, &e);
         dt.tout(5, 0, &esp_off(), &mut |_| {});
@@ -3105,5 +3424,75 @@ mod tests {
         assert_eq!(dt.nets[n].ok, 1);
         assert!(dt.nets[n].neck_mm < 1e-9, "retreci {}", dt.nets[n].neck_mm);
         assert!(dt.nets[n].segs.iter().all(|s| (s.w - 0.508).abs() < 1e-9));
+    }
+
+    /// Carte d'essai : deux rangees de 4 pastilles reliees en ordre inverse (croisements, donc vias), au pas `pas`
+    /// (pastilles de 0,6 x `2 hh`), avec ou sans pastilles du plan GND.
+    pub(crate) fn carte_croisee(pas: f64, hh: f64, gnd: bool, pas_fin: bool) -> crate::donnees_v1::Donnees {
+        let (mut ga, mut gb) = (Vec::new(), Vec::new());
+        for k in 0..4 {
+            let y = (k as f64 - 1.5) * pas;
+            ga.push(pad(&format!("{}", k + 1), &format!("S{}", k), 0.0, y, false));
+            gb.push(pad(&format!("{}", k + 1), &format!("S{}", 3 - k), 0.0, y, false));
+        }
+        if gnd {
+            ga.push(pad("G", "GND", 1.2, 0.0, false));
+            gb.push(pad("G", "GND", -1.2, 0.0, false));
+        }
+        for p in ga.iter_mut().chain(gb.iter_mut()) {
+            p.hh = hh;
+        }
+        let mut d = donnees(vec![comp("A", 5.25, 5.25, false, ga), comp("B", 14.25, 5.25, false, gb)], vec![]);
+        if pas_fin {
+            d.regles.isolement.pieces_pas_fin = vec!["A".into(), "B".into()];
+        }
+        d
+    }
+
+    fn router_carte(d: &crate::donnees_v1::Donnees, cache: bool) -> (serde_json::Value, usize, usize) {
+        let m = Modele::new(d, Parametres::defaut());
+        let e = m.etat_v3();
+        let mut dt = Detail::new(&m, &e);
+        dt.cache_via = cache;
+        dt.tout(5, 1, &esp_off(), &mut |_| {});
+        let vias: usize = dt.nets.iter().map(|r| r.vias.len()).sum();
+        (crate::sortie::routage_json(&dt), dt.total_ko(), vias)
+    }
+
+    /// Avenant 2.2, A.4-1, test (a) en processus : routage avec et sans le cache exact du test de via sur trois cartes
+    /// (pas normal, pas fin, plan) : pistes, vias et compteurs identiques.
+    #[test]
+    fn test_a_cache_via_sorties_identiques() {
+        let cartes = [carte_croisee(1.0, 0.3, false, false), carte_croisee(0.5, 0.125, false, true), carte_croisee(1.0, 0.3, true, false)];
+        let mut vias_total = 0;
+        for (k, d) in cartes.iter().enumerate() {
+            let (a, ko_a, v_a) = router_carte(d, true);
+            let (b, ko_b, v_b) = router_carte(d, false);
+            assert_eq!(a, b, "carte {} : sorties differentes avec et sans cache", k);
+            assert_eq!((ko_a, v_a), (ko_b, v_b), "carte {}", k);
+            vias_total += v_a;
+        }
+        assert!(vias_total > 0, "aucun via pose : le cache n'est pas exerce");
+    }
+
+    /// Avenant 2.2, ecart (6), test (b) : un reroutage partiel d'un plan qui ne touche pas une pastille CMS deja sans
+    /// descente laisse le compte du plan >= 1 (9b5b5a3 le remettait a 0).
+    #[test]
+    fn test_b_reroutage_partiel_garde_l_echec_du_plan() {
+        let d = carte_croisee(1.0, 0.3, true, false);
+        let m = Modele::new(&d, Parametres::defaut());
+        let e = m.etat_v3();
+        let mut dt = Detail::new(&m, &e);
+        dt.tout(5, 1, &esp_off(), &mut |_| {});
+        let g = m.nets.iter().position(|n| n.nom == "GND").unwrap();
+        let a = m.comp_idx["A"];
+        let ka = m.comps[a].pads.iter().position(|p| p.nom == "G").unwrap();
+        // B.G marquee sans descente (echec compte avec son diagnostic, comme apres une recherche de via de plan manquee)
+        dt.nets[g].ko = 1;
+        dt.nets[g].diag = vec!["B.G : pas de place pour un via de plan (essai)".to_string()];
+        // reroutage partiel de A.G seulement : l'echec de B.G reste compte
+        let (ok, _) = dt.rerouter_plan_partiel(g, &[(a, ka)], &[]);
+        assert!(dt.nets[g].ko >= 1, "compte du plan remis a {}", dt.nets[g].ko);
+        assert!(!ok);
     }
 }

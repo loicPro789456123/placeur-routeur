@@ -1,0 +1,110 @@
+######## exp_e01 -> exp_e07a
+== Texts/Data (964 -> 964 octets)
+######## exp_e07a -> exp_e07b
+== Texts/Data (964 -> 964 octets)
+######## exp_e07b -> exp_e05a
+== DrillManager/Data (12095 -> 12096 octets)
+   FluxGestionnairePercage : 4203 octets différents (premiers : [6375, 6506, 6507, 6508, 6509, 6510, 6511, 6512, 6513, 6514, 6515, 6516, 6517, 6518, 6519, 6520, 6521, 6522, 6524, 6525])
+== Texts/Data (964 -> 964 octets)
+== Vias6/Data (328608 -> 328608 octets)
+   [0] via
+      sous1.inconnu_246 [I] : 00000000000000002a00000000 -> 00000000000000002a00000001  (octets relatifs modifiés : [12])
+   1 enregistrement(s) modifié(s)
+######## exp_e05a -> exp_e05b
+== DrillManager/Data (12096 -> 12100 octets)
+   FluxGestionnairePercage : 2413 octets différents (premiers : [6375, 6506, 6507, 6508, 6509, 6510, 6511, 6512, 6513, 6514, 6515, 6516, 6517, 6518, 6519, 6520, 6521, 6522, 6523, 6524])
+== Vias6/Data (328608 -> 328608 octets)
+   [0] via
+      sous1.masque_expansion_haut [C] : 40000 -> 20000
+      sous1.masque_drapeaux [C] : 1 -> 2
+      sous1.masque_lie [C] : 0 -> 1
+      sous1.masque_expansion_bas [C] : 40000 -> 30000
+   1 enregistrement(s) modifié(s)
+######## exp_e05b -> exp_e09v
+   [0]
+      HASHKEY#15 : '[315000][0][0][1][2147483647 2147483647]' -> '[118120][0][0][1][20000 40000]'
+      HASHKEY#16 : '[394000][0][0][1][2147483647 2147483647]' -> '[315000][0][0][1][2147483647 2147483647]'
+      HASHKEY#17 : None -> '[394000][0][0][1][2147483647 2147483647]'
+      HASHVALUE#15 : '4' -> '16'
+      HASHVALUE#16 : '1' -> '4'
+      HASHVALUE#17 : None -> '1'
+      HOLESHAPEHASHSIZE : '17' -> '18'
+   1 enregistrement(s) modifié(s)
+== DrillManager/Data (12100 -> 12513 octets)
+   FluxGestionnairePercage : 4380 octets différents (premiers : [4, 6375, 6390, 6513, 6515, 6516, 6517, 6518, 6519, 6520, 6521, 6522, 6523, 6524, 6525, 6526, 6527, 6528, 6530, 6531])
+== Texts/Data (964 -> 964 octets)
+== Vias6/Data (328608 -> 328608 octets)
+   [0] via
+      sous1.tolerance_plus [C] : 2147483647 -> 20000
+      sous1.tolerance_moins [C] : 2147483647 -> 40000
+   1 enregistrement(s) modifié(s)
+######## exp_e09v -> exp_e08a
+== Pads6/Data (247182 -> 247182 octets)
+   [927] pastille
+      sous5.pate_expansion [C] : 0 -> -999990000
+      sous5.inconnu_170 [I] : 00011a000000000000000000000001030000000000000000 -> 00011a000000000000000000000001010000000000000000  (octets relatifs modifiés : [15])
+   1 enregistrement(s) modifié(s)
+== Texts/Data (964 -> 964 octets)
+######## exp_e08a -> exp_e08b
+== Pads6/Data (247182 -> 247182 octets)
+   [927] pastille
+      sous5.rotation_trou [C] : 0.0 -> 2.121995791e-314
+   1 enregistrement(s) modifié(s)
+== Texts/Data (964 -> 964 octets)
+######## exp_e08b -> exp_e09p
+   [0]
+      HASHKEY#18 : None -> '[1259840][0][0][1][20000 40000]'
+      HASHVALUE#18 : None -> '18'
+      HOLESHAPEHASHSIZE : '18' -> '19'
+   1 enregistrement(s) modifié(s)
+== DrillManager/Data (12513 -> 12927 octets)
+   FluxGestionnairePercage : 10543 octets différents (premiers : [4, 865, 877, 878, 881, 885, 889, 893, 894, 897, 898, 901, 902, 903, 904, 905, 906, 907, 908, 909])
+== Pads6/Data (247182 -> 247182 octets)
+   [417] pastille
+      sous5.tolerance_plus [S] : 2147483647 -> 20000
+      sous5.tolerance_moins [S] : 2147483647 -> 40000
+   1 enregistrement(s) modifié(s)
+== Texts/Data (964 -> 964 octets)
+######## exp_e09p -> exp_e09q
+== DrillManager/Data (12927 -> 12936 octets)
+   FluxGestionnairePercage : 8414 octets différents (premiers : [2551, 2685, 2686, 2687, 2688, 2689, 2690, 2691, 2692, 2693, 2694, 2696, 2697, 2698, 2699, 2700, 2701, 2702, 2703, 2704])
+== Pads6/Data (247182 -> 247182 octets)
+   [417] pastille
+      sous5.masque_expansion [C] : 40000 -> 20000
+      sous5.masque_mode [C] : 1 -> 2
+      sous5.inconnu_118 [I] : 000000 -> 000001  (octets relatifs modifiés : [2])
+      sous5.masque_expansion_bas [S] : 40000 -> 30000
+   1 enregistrement(s) modifié(s)
+== Texts/Data (964 -> 964 octets)
+######## exp_e09q -> exp_e02a
+== Texts/Data (964 -> 964 octets)
+== Tracks6/Data (397710 -> 397710 octets)
+   [3600] piste
+      sous1.drapeaux1 [C] : 12 -> 4
+   1 enregistrement(s) modifié(s)
+######## exp_e02a -> exp_e02b
+== Texts/Data (964 -> 964 octets)
+######## exp_e02b -> exp_e13
+== Texts/Data (964 -> 964 octets)
+   [15] texte
+      sous1.x [C] : 51050000 -> 51037454
+      sous1.y [C] : 67262546 -> 67250000
+      sous1.rotation [C] : 0.0 -> 90.0
+   1 enregistrement(s) modifié(s)
+######## exp_e13 -> exp_e15
+== Texts/Data (964 -> 964 octets)
+   [15] texte
+      sous1.inverse [C] : 0 -> 1
+      sous1.rect_inverse [C] : 0 -> 1
+   1 enregistrement(s) modifié(s)
+######## exp_e15 -> exp_e14
+== Texts/Data (964 -> 964 octets)
+   [15] texte
+      sous1.x [C] : 51037454 -> 51050000
+      sous1.type_police [C] : 1 -> 0
+      sous1.inconnu_137 [I] : a037a000200b2000 -> c0e1e400c0c62d00  (octets relatifs modifiés : [0, 1, 2, 4, 5, 6])
+      sous1.codebarre_marge_x [C] : 200000 -> 150000
+      sous1.codebarre_marge_y [C] : 200000 -> 250000
+      sous1.inconnu_153 [I] : 0 -> 46296
+      sous1.type_police_2 [C] : 1 -> 2
+   1 enregistrement(s) modifié(s)

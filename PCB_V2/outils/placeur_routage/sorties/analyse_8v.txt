@@ -1,6 +1,0 @@
-Reseau +8V : 205 pistes, 21 vias routes ; source = cuivre +8V du bloc ; 2 A par canal
-  R62_ALIM1.2 : chute 69.2 mV
-  R62_ALIM2.2 : chute 51.8 mV
-  resistance equivalente source -> R62_ALIM1.2 : 34.6 mOhm
-  resistance equivalente source -> R62_ALIM2.2 : 25.9 mOhm
-{"R62_ALIM1.2": 69.24, "R62_ALIM2.2": 51.84}

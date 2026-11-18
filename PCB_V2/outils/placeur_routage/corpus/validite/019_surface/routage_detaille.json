@@ -1,0 +1,61 @@
+{
+ "format": "routage/2",
+ "unite": "mil",
+ "origine": "coin bas-gauche de la boite du contour",
+ "couches_routage": [
+  "TopLayer",
+  "BottomLayer"
+ ],
+ "pistes": [
+  {
+   "x1": 100.0,
+   "y1": 200.0,
+   "x2": 310.0,
+   "y2": 200.0,
+   "width": 10.0,
+   "layer": "TopLayer",
+   "net_name": "N1"
+  },
+  {
+   "x1": 490.0,
+   "y1": 200.0,
+   "x2": 700.0,
+   "y2": 200.0,
+   "width": 10.0,
+   "layer": "TopLayer",
+   "net_name": "N1"
+  }
+ ],
+ "vias": [],
+ "surfaces": [
+  {
+   "net": "N1",
+   "layer": "TopLayer",
+   "contour": [
+    [
+     300.0,
+     170.0
+    ],
+    [
+     500.0,
+     170.0
+    ],
+    [
+     500.0,
+     230.0
+    ],
+    [
+     300.0,
+     230.0
+    ]
+   ],
+   "trous": [],
+   "type": "remplissage",
+   "origine": "moteur"
+  }
+ ],
+ "amorces_pas_fin": [],
+ "derogations": [],
+ "reseaux": [],
+ "echecs": []
+}

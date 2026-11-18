@@ -1,0 +1,22 @@
+{
+ "format": "cas_validite/1",
+ "nom": "003_piste_pastille_recouvrement",
+ "description": "Piste dont l'extrémité est hors du cuivre de la pastille mais dont le cuivre la recouvre : liaison ouverte en strict, reliée en altium ; antenne dans les deux modes.",
+ "themes": [
+  "contact:piste-pastille",
+  "modes_differents",
+  "violation:antenne"
+ ],
+ "grille": true,
+ "couture": false,
+ "modes_differents": true,
+ "fichiers": {
+  "donnees": "donnees_placeur.json",
+  "placement": "placements_routage.json",
+  "routage": "routage_detaille.json",
+  "attendu_strict": "attendu_strict.json",
+  "attendu_altium": "attendu_altium.json",
+  "attendu_mesures": "attendu_mesures.json",
+  "couture": null
+ }
+}

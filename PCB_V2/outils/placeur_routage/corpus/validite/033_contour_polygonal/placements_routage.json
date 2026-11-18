@@ -1,0 +1,23 @@
+{
+ "format": "placements/2",
+ "unite": "mil",
+ "origine": "coin bas-gauche de la boite du contour",
+ "pieces": [
+  {
+   "designator": "J1",
+   "side": "top",
+   "x": 100.0,
+   "y": 225.0,
+   "rotation": 0.0,
+   "statut": "fixe"
+  },
+  {
+   "designator": "J2",
+   "side": "top",
+   "x": 700.0,
+   "y": 225.0,
+   "rotation": 0.0,
+   "statut": "fixe"
+  }
+ ]
+}

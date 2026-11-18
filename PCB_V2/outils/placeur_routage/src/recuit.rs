@@ -522,6 +522,10 @@ pub struct ResCampagne {
     pub rechauffes: usize,
     pub mouvements: usize,
     pub temps: f64,
+    /// fin de l'exploration (avenant 2.2, A.5) : paliers, mouvements, HPWL, cout
+    pub exploration: (usize, usize, f64, f64),
+    /// longueur du noeud de commutation de chaque convertisseur estimee a la fin de l'exploration (demi-perimetre)
+    pub noeuds_exploration: Vec<Option<f64>>,
 }
 
 /// Groupes fonctionnels : chaque circuit integre (U, hors bloc) avec ses passifs a 2 pastilles relies a lui par un reseau
@@ -765,10 +769,13 @@ pub fn chaine_campagne(m: &Modele, depart: &Etat, graine: u64, p: &ParamCampagne
     ch.rudy = Some(Rudy::new(m, &ch.etat, p.rudy_cap, p.rudy_lambda));
     ch.activer_hpwl();
     let cout_depart = ch.cout();
-    let (b1, s1) = recuire(&mut ch, groupes, p.mouvements_max, p.acc_initiale, p.t_fin_rel, p.alpha, p.palier_par_piece * m.mobiles.len(), 0, journal, "exploration", 1.0, 3);
+    let (b1, s1) = recuire(&mut ch, groupes, p.mouvements_max, p.acc_initiale, p.t_fin_rel, p.alpha, p.palier_par_piece * m.mobiles.len(), 0, journal, "exploration", 1.0, m.param.recuit.rechauffes);
     ch.hpwl_mode = false;
     ch.etat = b1.1.clone();
     ch.occ = Occup::new(m, &ch.etat);
+    let exploration = (s1.2, s1.4, m.hpwl(&ch.etat), b1.0);
+    let noeuds_exploration: Vec<Option<f64>> =
+        m.cfg.convertisseurs.iter().map(|cv| m.reseau_commutation(cv).map(|n| m.hpwl_net(n, &ch.etat))).collect();
     {
         let r = Rudy::new(m, &ch.etat, p.rudy_cap, p.rudy_lambda);
         let (mx, p95, dep) = r.stats();
@@ -790,7 +797,7 @@ pub fn chaine_campagne(m: &Modele, depart: &Etat, graine: u64, p: &ParamCampagne
     let best = b2;
     let (t0, acc_init) = (s1.0, s1.1);
     let (paliers, rechauffes, mouvements) = (s1.2 + s2.2, s1.3 + s2.3, s1.4 + s2.4);
-    ResCampagne { etat: best.1, cout: best.0, cout_depart, t0, acc_initiale_mesuree: acc_init, paliers, rechauffes, mouvements, temps: t_start.elapsed().as_secs_f64() }
+    ResCampagne { etat: best.1, cout: best.0, cout_depart, t0, acc_initiale_mesuree: acc_init, paliers, rechauffes, mouvements, temps: t_start.elapsed().as_secs_f64(), exploration, noeuds_exploration }
 }
 
 /// Recuit a paliers : calibration de T0 pour le taux d'acceptation voulu, paliers a temperature constante,
@@ -867,6 +874,12 @@ fn recuire(ch: &mut Chaine, groupes: &[Vec<usize>], budget: usize, acc_cible: f6
         if paliers % 10 == 0 || paliers == 1 {
             journal(format!("  {} palier {} : T {:.3} (T0 {:.3}) ; acceptation {:.0} % ; cout {:.1} ; meilleur {:.1} ; {} mouvements ; {:.0} s",
                 nom, paliers, temp, t0, 100.0 * taux, c, best.0, mouvements, t_start.elapsed().as_secs_f64()));
+        }
+        // arret des que le meilleur ne progresse plus depuis recuit.arret_paliers_sans_progres paliers (150 par defaut ;
+        // 40 degradait le recuit) et qu'il n'y a plus de rechauffe a faire
+        if stagn >= ch.m.param.recuit.arret_paliers_sans_progres && rechauffes >= rech_max {
+            journal(format!("  {} : arret, meilleur inchange depuis {} paliers ({} paliers, {:.0} s)", nom, stagn, paliers, t_start.elapsed().as_secs_f64()));
+            break;
         }
         if stagn >= 15 && rechauffes < rech_max {
             temp *= 5.0;

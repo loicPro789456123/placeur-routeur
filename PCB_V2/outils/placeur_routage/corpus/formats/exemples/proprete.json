@@ -1,0 +1,23 @@
+{
+ "format": "proprete/1",
+ "segments": 2421,
+ "segments_courts": 627,
+ "coudes_par_connexion": 1.875,
+ "vias_par_connexion": 0.597,
+ "detour": {
+  "mediane": 1.12,
+  "p90": 1.61
+ },
+ "vias_puissance": 27,
+ "entrees_excentrees": 4,
+ "hors_direction": {
+  "TopLayer": 0.0,
+  "MidLayer2": 0.0,
+  "BottomLayer": 0.0
+ },
+ "ecart_jumeaux": {
+  "longueur": 0.8,
+  "vias": 0
+ },
+ "paires": {}
+}

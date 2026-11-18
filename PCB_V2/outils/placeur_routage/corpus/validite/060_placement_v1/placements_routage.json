@@ -1,0 +1,16 @@
+[
+ {
+  "designator": "U1",
+  "side": "top",
+  "x": 200.0,
+  "y": 200.0,
+  "rotation": 0.0
+ },
+ {
+  "designator": "X9",
+  "side": "top",
+  "x": 400.0,
+  "y": 100.0,
+  "rotation": 0.0
+ }
+]

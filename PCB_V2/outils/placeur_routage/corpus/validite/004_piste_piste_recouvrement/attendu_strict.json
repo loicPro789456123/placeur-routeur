@@ -1,0 +1,125 @@
+{
+ "format": "verdict/2",
+ "outil": "attendu ecrit a la main (corpus du lot E)",
+ "mode": "strict",
+ "valide": false,
+ "liaisons_ouvertes": 1,
+ "detail_liaisons_ouvertes": [
+  {
+   "reseau": "N1",
+   "nature": "pastilles",
+   "pastilles": [
+    "J2#0"
+   ],
+   "noms": [
+    "J2.1"
+   ],
+   "position_mm": [
+    17.78,
+    5.08
+   ]
+  }
+ ],
+ "violations": 2,
+ "violations_par_type": {
+  "isolement": 0,
+  "garde_bord": 0,
+  "garde_decoupe": 0,
+  "garde_trou": 0,
+  "zone_interdite": 0,
+  "largeur": 0,
+  "dimension_via": 0,
+  "via_sous_cms": 0,
+  "trou_trou": 0,
+  "antenne": 2,
+  "couche_non_permise": 0,
+  "reseau_inconnu": 0
+ },
+ "detail_violations": [
+  {
+   "genre": "antenne",
+   "reseaux": [
+    "N1"
+   ],
+   "objets": [
+    "P0"
+   ],
+   "position_mm": [
+    10.16,
+    5.08
+   ],
+   "ecart_mm": null,
+   "requis_mm": null
+  },
+  {
+   "genre": "antenne",
+   "reseaux": [
+    "N1"
+   ],
+   "objets": [
+    "P1"
+   ],
+   "position_mm": [
+    9.652,
+    5.2832
+   ],
+   "ecart_mm": null,
+   "requis_mm": null
+  }
+ ],
+ "detail_violations_tronque": false,
+ "exemples": {
+  "antenne": [
+   "P0 (N1) : extrémité (10.160 ; 5.080) mm sans contact strict",
+   "P1 (N1) : extrémité (9.652 ; 5.283) mm sans contact strict"
+  ]
+ },
+ "derogations": {
+  "via_dans_pastille_meme_reseau": 0
+ },
+ "avertissements": {
+  "pistes_sous_pieces_sans_piste_dessous": 0,
+  "angles_aigus": 0,
+  "paires_desequilibrees": 0,
+  "regles_non_couvertes": 0,
+  "zones_plan_isolees": 0
+ },
+ "reseaux_a_router": 1,
+ "reseaux_complets": 0,
+ "marge_isolement_min_mm": null,
+ "marge_isolement_min_paire": "",
+ "mesures": {
+  "ecart_moyen_mm": 0.0,
+  "ecart_min_mm": null,
+  "coudes": 0,
+  "coudes_90": 0,
+  "angles_aigus": 0,
+  "longueur_pistes_mm": 15.748,
+  "resistance_puissance_mohm": 0.0,
+  "vias": 0
+ },
+ "placement": {
+  "format": "controle_placement/1",
+  "valide": true,
+  "violations": [],
+  "violations_par_type": {
+   "absente": 0,
+   "inconnue": 0,
+   "fixe_deplacee": 0,
+   "orientation": 0,
+   "grille": 0,
+   "chevauchement": 0,
+   "obstacle": 0,
+   "marge_bord": 0,
+   "marge_decoupe": 0,
+   "eloignement": 0,
+   "pastille_pastille": 0,
+   "zone_imposee": 0,
+   "au_bord": 0,
+   "groupe_rigide": 0
+  },
+  "infos": {
+   "eloignements": []
+  }
+ }
+}

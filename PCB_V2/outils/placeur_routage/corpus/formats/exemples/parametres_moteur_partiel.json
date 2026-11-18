@@ -1,0 +1,10 @@
+{
+ "format": "parametres_moteur/1",
+ "_doc": "Fichier --parametres-moteur partiel de l'utilisateur (§2.6) : fusionné en profondeur sur les défauts du niveau ; un tableau est remplacé en bloc.",
+ "campagne": {"chaines": 2, "duree_max_s": 3600},
+ "routage": {"pas_grille_detail_mm": 0.05, "espacement": {"actif": false}, "_essai": "commentaire ignoré"},
+ "conjointe": {"essais": 500},
+ "finition": {"reparer_si_echecs_max": null},
+ "roles": {"signal": {"paliers_mm": [0.25, 0.2]}, "commutation": {"couches": null}},
+ "journal": {"debug": ["marge", "conjointe"]}
+}

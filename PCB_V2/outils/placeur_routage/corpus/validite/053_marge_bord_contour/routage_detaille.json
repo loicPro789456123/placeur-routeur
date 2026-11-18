@@ -1,0 +1,16 @@
+{
+ "format": "routage/2",
+ "unite": "mil",
+ "origine": "coin bas-gauche de la boite du contour",
+ "couches_routage": [
+  "TopLayer",
+  "BottomLayer"
+ ],
+ "pistes": [],
+ "vias": [],
+ "surfaces": [],
+ "amorces_pas_fin": [],
+ "derogations": [],
+ "reseaux": [],
+ "echecs": []
+}

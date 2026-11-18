@@ -1,0 +1,24 @@
+{
+ "format": "cas_validite/1",
+ "nom": "017_piste_cuivre_fixe",
+ "description": "Piste dont l'extrémité est hors d'une piste de cuivre fixe mais la recouvre : liaison ouverte en strict, reliée en altium ; antenne dans les deux modes.",
+ "themes": [
+  "contact:piste-cuivre-fixe",
+  "contact:preexistants",
+  "objet:cuivre_fixe",
+  "modes_differents",
+  "violation:antenne"
+ ],
+ "grille": true,
+ "couture": false,
+ "modes_differents": true,
+ "fichiers": {
+  "donnees": "donnees_placeur.json",
+  "placement": "placements_routage.json",
+  "routage": "routage_detaille.json",
+  "attendu_strict": "attendu_strict.json",
+  "attendu_altium": "attendu_altium.json",
+  "attendu_mesures": "attendu_mesures.json",
+  "couture": null
+ }
+}

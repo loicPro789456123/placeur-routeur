@@ -1,0 +1,22 @@
+{
+ "format": "cas_validite/1",
+ "nom": "046_matrice_classes",
+ "description": "Matrice des classes : une règle relâche l'isolement d'une paire (0,1), une autre le durcit (0,3) : un seul isolement, requis lu dans la matrice.",
+ "themes": [
+  "violation:isolement",
+  "regles:matrice",
+  "mesure:ecart"
+ ],
+ "grille": true,
+ "couture": false,
+ "modes_differents": false,
+ "fichiers": {
+  "donnees": "donnees_placeur.json",
+  "placement": "placements_routage.json",
+  "routage": "routage_detaille.json",
+  "attendu_strict": "attendu_strict.json",
+  "attendu_altium": "attendu_altium.json",
+  "attendu_mesures": "attendu_mesures.json",
+  "couture": null
+ }
+}

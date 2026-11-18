@@ -1,10 +1,16 @@
 {
- "commentaire": "Parametres de la campagne lancee sur GitHub Actions. Modifier ce fichier puis pousser lance une campagne (une graine par machine).",
- "graine_base": 2020,
- "nombre": 20,
- "bloc": "libre",
- "budget_s": 600,
- "boucle": 4,
- "mouvements": 100000000,
- "version": "generique 3, graines 2020-2039, fichiers des graines valides conserves"
+ "_commentaire": "Campagnes de placeur.yml (lancement manuel et nuit, une graine par machine). graines : mesure d'acceptation de l'avenant 2.2, A.7 (40 graines appariées) ; graines_nuit : campagne de nuit (20 graines suffisent, A.8). jeux : données METROID (B2) ; reference_cout : rev4 (§4.7) ; comparer : campagnes de référence de 9b5b5a3 sur la branche ci-resultats-placeur (run_4 : 3001-3020 ; run_6 : 4001-4040).",
+ "format": "ci_campagne/2",
+ "graines": ["3001-3020", "4001-4020"],
+ "graines_nuit": ["3001-3020"],
+ "jeux": {
+  "nominal": "exemples/metroid_v2/donnees_placeur.json",
+  "compatibilite": "exemples/metroid_v2/donnees_placeur_9b5b5a3.json"
+ },
+ "qualite": "normal",
+ "reference_cout": 10328.5,
+ "marge_cout": 0.04,
+ "comparer": {"compatibilite": ["run_4", "run_6"]},
+ "corpus_graines": 10,
+ "corpus_qualite": "normal"
 }

@@ -1,0 +1,22 @@
+{
+ "format": "cas_validite/1",
+ "nom": "005_piste_via_recouvrement",
+ "description": "Piste dont l'extrémité est hors du rayon du via mais dont le cuivre le recouvre : liaison ouverte en strict, reliée en altium ; antenne dans les deux modes.",
+ "themes": [
+  "contact:piste-via",
+  "modes_differents",
+  "violation:antenne"
+ ],
+ "grille": true,
+ "couture": false,
+ "modes_differents": true,
+ "fichiers": {
+  "donnees": "donnees_placeur.json",
+  "placement": "placements_routage.json",
+  "routage": "routage_detaille.json",
+  "attendu_strict": "attendu_strict.json",
+  "attendu_altium": "attendu_altium.json",
+  "attendu_mesures": "attendu_mesures.json",
+  "couture": null
+ }
+}

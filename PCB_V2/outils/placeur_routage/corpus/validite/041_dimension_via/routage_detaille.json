@@ -1,0 +1,81 @@
+{
+ "format": "routage/2",
+ "unite": "mil",
+ "origine": "coin bas-gauche de la boite du contour",
+ "couches_routage": [
+  "TopLayer",
+  "BottomLayer"
+ ],
+ "pistes": [
+  {
+   "x1": 100.0,
+   "y1": 200.0,
+   "x2": 250.0,
+   "y2": 200.0,
+   "width": 10.0,
+   "layer": "TopLayer",
+   "net_name": "N1"
+  },
+  {
+   "x1": 250.0,
+   "y1": 200.0,
+   "x2": 400.0,
+   "y2": 200.0,
+   "width": 10.0,
+   "layer": "TopLayer",
+   "net_name": "N1"
+  },
+  {
+   "x1": 400.0,
+   "y1": 200.0,
+   "x2": 550.0,
+   "y2": 200.0,
+   "width": 10.0,
+   "layer": "TopLayer",
+   "net_name": "N1"
+  },
+  {
+   "x1": 550.0,
+   "y1": 200.0,
+   "x2": 700.0,
+   "y2": 200.0,
+   "width": 10.0,
+   "layer": "TopLayer",
+   "net_name": "N1"
+  }
+ ],
+ "vias": [
+  {
+   "x": 250.0,
+   "y": 200.0,
+   "size": 31.516,
+   "hole_size": 11.811,
+   "net": "N1",
+   "de": "TopLayer",
+   "a": "BottomLayer"
+  },
+  {
+   "x": 400.0,
+   "y": 200.0,
+   "size": 35.433,
+   "hole_size": 11.811,
+   "net": "N1",
+   "de": "TopLayer",
+   "a": "BottomLayer"
+  },
+  {
+   "x": 550.0,
+   "y": 200.0,
+   "size": 23.622,
+   "hole_size": 9.449,
+   "net": "N1",
+   "de": "TopLayer",
+   "a": "BottomLayer"
+  }
+ ],
+ "surfaces": [],
+ "amorces_pas_fin": [],
+ "derogations": [],
+ "reseaux": [],
+ "echecs": []
+}

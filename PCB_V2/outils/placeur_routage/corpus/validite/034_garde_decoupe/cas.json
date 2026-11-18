@@ -1,0 +1,20 @@
+{
+ "format": "cas_validite/1",
+ "nom": "034_garde_decoupe",
+ "description": "Piste à 0,508 mm d'une découpe (garde 0,6) : garde_decoupe.",
+ "themes": [
+  "violation:garde_decoupe"
+ ],
+ "grille": true,
+ "couture": false,
+ "modes_differents": false,
+ "fichiers": {
+  "donnees": "donnees_placeur.json",
+  "placement": "placements_routage.json",
+  "routage": "routage_detaille.json",
+  "attendu_strict": "attendu_strict.json",
+  "attendu_altium": "attendu_altium.json",
+  "attendu_mesures": "attendu_mesures.json",
+  "couture": null
+ }
+}

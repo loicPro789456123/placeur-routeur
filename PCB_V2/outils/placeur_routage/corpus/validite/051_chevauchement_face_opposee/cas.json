@@ -1,0 +1,21 @@
+{
+ "format": "cas_validite/1",
+ "nom": "051_chevauchement_face_opposee",
+ "description": "CMS de la face opposée sous une pièce : permis ; pastille traversante de la face opposée à moins de 0,6 mm de la boîte d'une pièce : chevauchement.",
+ "themes": [
+  "placement:chevauchement",
+  "placement:face_opposee"
+ ],
+ "grille": true,
+ "couture": false,
+ "modes_differents": false,
+ "fichiers": {
+  "donnees": "donnees_placeur.json",
+  "placement": "placements_routage.json",
+  "routage": "routage_detaille.json",
+  "attendu_strict": "attendu_strict.json",
+  "attendu_altium": "attendu_altium.json",
+  "attendu_mesures": "attendu_mesures.json",
+  "couture": null
+ }
+}

@@ -688,6 +688,9 @@ impl<'a> Routeur<'a> {
                     continue;
                 }
                 let lm = m / nc;
+                if !self.m.couches_actives[lm] {
+                    continue;
+                }
                 let step = if d >= 4 { VIA_G } else { pas * (1.0 + self.hist[m]) * mult[lm] };
                 let cost = g + step + self.cong(m);
                 if self.seen[m] != ep || cost < self.gc[m] {
@@ -868,7 +871,8 @@ impl<'a> Routeur<'a> {
 pub(crate) mod tests {
     //! Tests sur une petite carte synthetique (2 pieces a 2 pastilles + 1 pastille isolee).
     use super::*;
-    use crate::donnees::*;
+    use crate::donnees_v1::*;
+    use crate::parametres::Parametres;
     use std::collections::HashMap;
 
     pub(crate) fn pad(nom: &str, net: &str, lx: f64, ly: f64, bot_th: bool) -> PadIn {
@@ -882,8 +886,9 @@ pub(crate) mod tests {
             lbb: [-0.5, -0.5, 0.5, 0.5],
             pastilles: pads,
             pose_actuelle: (x, y, 0, bot),
-            pose_v3: (x, y, 0, bot),
+            pose_cible: (x, y, 0, bot),
             orientations: vec![],
+            regions: vec![],
         }
     }
 
@@ -894,7 +899,7 @@ pub(crate) mod tests {
         // M1 et U25 factices (exiges par le modele)
         all.push(comp("M1", 1.0, 1.0, false, vec![]));
         Donnees {
-            contour: Contour { w: 20.0, h: 10.0 },
+            contour: Contour { w: 20.0, h: 10.0, points: vec![] },
             marge_bord: 0.5,
             composants: all,
             obstacles_placement: vec![],
@@ -925,7 +930,7 @@ pub(crate) mod tests {
     }
 
     fn route_net(d: &Donnees, net: &str) -> Route {
-        let m = Modele::new(d);
+        let m = Modele::new(d, Parametres::defaut());
         let e = m.etat_v3();
         let mut r = Routeur::new(&m, &e, 0.5);
         r.route_tout(&e, 4);

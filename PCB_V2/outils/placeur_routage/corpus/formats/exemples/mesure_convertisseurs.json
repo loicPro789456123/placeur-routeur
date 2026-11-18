@@ -1,0 +1,18 @@
+{
+ "format": "mesure_convertisseurs/1",
+ "convertisseurs": [
+  {
+   "nom": "abaisseur +12V -> +8V",
+   "boucle_chaude_evaluee": true,
+   "boucle_chaude_mm2": 21.4,
+   "boucle_chaude_perimetre_mm": 19.8,
+   "noeud_longueur_mm": 8.3,
+   "noeud_surface_mm2": 24.9,
+   "chutes_mv": {
+    "R62_ALIM1.2": 41.7
+   },
+   "noeud_vias": 0,
+   "sensibles_distance_min_mm": 8.7
+  }
+ ]
+}

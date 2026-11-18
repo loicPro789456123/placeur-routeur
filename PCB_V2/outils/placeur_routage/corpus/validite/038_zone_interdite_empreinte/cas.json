@@ -1,0 +1,21 @@
+{
+ "format": "cas_validite/1",
+ "nom": "038_zone_interdite_empreinte",
+ "description": "Keep-out polyligne d'une empreinte tournée de 180° : posé avec la pièce, il passe à 0,113 mm de la piste : zone_interdite.",
+ "themes": [
+  "violation:zone_interdite",
+  "zone_interdite:empreinte"
+ ],
+ "grille": true,
+ "couture": false,
+ "modes_differents": false,
+ "fichiers": {
+  "donnees": "donnees_placeur.json",
+  "placement": "placements_routage.json",
+  "routage": "routage_detaille.json",
+  "attendu_strict": "attendu_strict.json",
+  "attendu_altium": "attendu_altium.json",
+  "attendu_mesures": "attendu_mesures.json",
+  "couture": null
+ }
+}

@@ -1,0 +1,21 @@
+{
+ "format": "cas_validite/1",
+ "nom": "036_cuivre_de_trou",
+ "description": "Trou métallisé à cuivre de 2 mm à 0,397 mm d'une piste : obstacle d'isolement respecté, voisin de l'écart moyen ; valide.",
+ "themes": [
+  "objet:trou",
+  "mesure:ecart"
+ ],
+ "grille": true,
+ "couture": false,
+ "modes_differents": false,
+ "fichiers": {
+  "donnees": "donnees_placeur.json",
+  "placement": "placements_routage.json",
+  "routage": "routage_detaille.json",
+  "attendu_strict": "attendu_strict.json",
+  "attendu_altium": "attendu_altium.json",
+  "attendu_mesures": "attendu_mesures.json",
+  "couture": null
+ }
+}

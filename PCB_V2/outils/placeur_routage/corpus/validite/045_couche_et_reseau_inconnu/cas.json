@@ -1,0 +1,21 @@
+{
+ "format": "cas_validite/1",
+ "nom": "045_couche_et_reseau_inconnu",
+ "description": "Piste sur une couche hors des couches permises de son réseau, piste d'un réseau inconnu.",
+ "themes": [
+  "violation:couche_non_permise",
+  "violation:reseau_inconnu"
+ ],
+ "grille": true,
+ "couture": false,
+ "modes_differents": false,
+ "fichiers": {
+  "donnees": "donnees_placeur.json",
+  "placement": "placements_routage.json",
+  "routage": "routage_detaille.json",
+  "attendu_strict": "attendu_strict.json",
+  "attendu_altium": "attendu_altium.json",
+  "attendu_mesures": "attendu_mesures.json",
+  "couture": null
+ }
+}

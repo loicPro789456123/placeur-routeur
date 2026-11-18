@@ -1,0 +1,17 @@
+{
+ "format": "rapport_pcbdoc/1",
+ "fichier": "carte_g7.PcbDoc",
+ "livrable": "valide",
+ "controles": {
+  "erreurs": [],
+  "anomalies": []
+ },
+ "conflits_isolement": 0,
+ "serigraphie": {
+  "etat": "coherent",
+  "masques": 3
+ },
+ "polygones_a_recouler": 4,
+ "chemins_effaces": true,
+ "duree_s": 12.4
+}

@@ -1,0 +1,118 @@
+{
+ "format": "verdict/2",
+ "outil": "drc_maison 2.0.0",
+ "mode": "strict",
+ "valide": false,
+ "liaisons_ouvertes": 1,
+ "detail_liaisons_ouvertes": [
+  {
+   "reseau": "NetR25_2",
+   "nature": "pastilles",
+   "pastilles": [
+    "U10#7"
+   ],
+   "noms": [
+    "U10.8"
+   ],
+   "position_mm": [86.8, 41.65]
+  }
+ ],
+ "violations": 1,
+ "violations_par_type": {
+  "isolement": 0,
+  "garde_bord": 0,
+  "garde_decoupe": 0,
+  "garde_trou": 0,
+  "zone_interdite": 0,
+  "largeur": 1,
+  "dimension_via": 0,
+  "via_sous_cms": 0,
+  "trou_trou": 0,
+  "antenne": 0,
+  "couche_non_permise": 0,
+  "reseau_inconnu": 0
+ },
+ "detail_violations": [
+  {
+   "genre": "largeur",
+   "reseaux": [
+    "NetC19_2"
+   ],
+   "objets": [
+    "P3"
+   ],
+   "position_mm": [85.3, 38.1],
+   "ecart_mm": 0.254,
+   "requis_mm": 0.3
+  }
+ ],
+ "detail_violations_tronque": false,
+ "exemples": {
+  "largeur": [
+   "P3 (NetC19_2) : largeur 0,254 mm < minimum 0,3 mm"
+  ]
+ },
+ "derogations": {
+  "via_dans_pastille_meme_reseau": 0
+ },
+ "avertissements": {
+  "pistes_sous_pieces_sans_piste_dessous": 0,
+  "angles_aigus": 0,
+  "paires_desequilibrees": 0,
+  "regles_non_couvertes": 1,
+  "zones_plan_isolees": 0
+ },
+ "reseaux_a_router": 9,
+ "reseaux_complets": 8,
+ "marge_isolement_min_mm": 0.0123,
+ "marge_isolement_min_paire": "P1(+12V) / U10#8(GND)",
+ "mesures": {
+  "ecart_moyen_mm": 0.84,
+  "ecart_min_mm": 0.2,
+  "coudes": 3,
+  "coudes_90": 0,
+  "angles_aigus": 0,
+  "longueur_pistes_mm": 13.414,
+  "resistance_puissance_mohm": 2.349,
+  "vias": 1
+ },
+ "placement": {
+  "format": "controle_placement/1",
+  "valide": false,
+  "violations": [
+   {
+    "genre": "grille",
+    "pieces": [
+     "C20"
+    ],
+    "texte": "C20 : origine hors de la grille de 0,127 mm"
+   }
+  ],
+  "violations_par_type": {
+   "absente": 0,
+   "inconnue": 0,
+   "fixe_deplacee": 0,
+   "orientation": 0,
+   "grille": 1,
+   "chevauchement": 0,
+   "obstacle": 0,
+   "marge_bord": 0,
+   "marge_decoupe": 0,
+   "eloignement": 0,
+   "pastille_pastille": 0,
+   "zone_imposee": 0,
+   "au_bord": 0,
+   "groupe_rigide": 0
+  },
+  "infos": {
+   "eloignements": [
+    {
+     "objet": "U25_VOLT1#26",
+     "reference": "M1",
+     "distance_mm": 51.3,
+     "minimum_mm": 30.0
+    }
+   ]
+  }
+ }
+}

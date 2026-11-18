@@ -1,0 +1,23 @@
+{
+ "format": "cas_validite/1",
+ "nom": "018_via_region",
+ "description": "Via dont le centre est hors d'une région d'empreinte mais dont le cuivre la recouvre : liaison ouverte en strict, valide en altium.",
+ "themes": [
+  "contact:via-region",
+  "contact:preexistants",
+  "objet:region",
+  "modes_differents"
+ ],
+ "grille": true,
+ "couture": false,
+ "modes_differents": true,
+ "fichiers": {
+  "donnees": "donnees_placeur.json",
+  "placement": "placements_routage.json",
+  "routage": "routage_detaille.json",
+  "attendu_strict": "attendu_strict.json",
+  "attendu_altium": "attendu_altium.json",
+  "attendu_mesures": "attendu_mesures.json",
+  "couture": null
+ }
+}

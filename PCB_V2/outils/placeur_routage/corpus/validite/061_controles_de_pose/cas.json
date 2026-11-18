@@ -1,0 +1,24 @@
+{
+ "format": "cas_validite/1",
+ "nom": "061_controles_de_pose",
+ "description": "Pièce fixe déplacée, orientation non permise, origine hors grille, pièce absente, pièce inconnue.",
+ "themes": [
+  "placement:fixe_deplacee",
+  "placement:orientation",
+  "placement:grille",
+  "placement:absente",
+  "placement:inconnue"
+ ],
+ "grille": true,
+ "couture": false,
+ "modes_differents": false,
+ "fichiers": {
+  "donnees": "donnees_placeur.json",
+  "placement": "placements_routage.json",
+  "routage": "routage_detaille.json",
+  "attendu_strict": "attendu_strict.json",
+  "attendu_altium": "attendu_altium.json",
+  "attendu_mesures": "attendu_mesures.json",
+  "couture": null
+ }
+}

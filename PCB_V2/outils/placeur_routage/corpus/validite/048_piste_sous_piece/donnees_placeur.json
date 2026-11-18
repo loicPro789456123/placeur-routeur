@@ -1,0 +1,461 @@
+{
+ "format": "donnees_placeur/2",
+ "source": {
+  "entree": "entree_carte.json",
+  "sha256_entree": "cas 048_piste_sous_piece",
+  "contraintes": null,
+  "config": "config_carte.json",
+  "controle_gabarit": null,
+  "construit_par": "construire_donnees corpus-e1 (cas ecrit a la main)"
+ },
+ "unite": "mm",
+ "carte": {
+  "contour": [
+   [
+    0.0,
+    0.0
+   ],
+   [
+    20.32,
+    0.0
+   ],
+   [
+    20.32,
+    10.16
+   ],
+   [
+    0.0,
+    10.16
+   ]
+  ],
+  "boite": [
+   0.0,
+   0.0,
+   20.32,
+   10.16
+  ],
+  "decoupes": [],
+  "remplissages": [],
+  "marge_bord_mm": 1.0,
+  "marge_decoupe_mm": 1.0,
+  "garde_bord_mm": 0.6,
+  "garde_decoupe_mm": 0.6
+ },
+ "couches": [
+  {
+   "nom": "TopLayer",
+   "rang": 0,
+   "role": "routage",
+   "zones_plan": [],
+   "epaisseur_cuivre_mm": 0.035,
+   "direction_preferee": null
+  },
+  {
+   "nom": "BottomLayer",
+   "rang": 1,
+   "role": "routage",
+   "zones_plan": [],
+   "epaisseur_cuivre_mm": 0.035,
+   "direction_preferee": null
+  }
+ ],
+ "trous": [],
+ "obstacles_placement": [],
+ "zones_imposees": [],
+ "zones_routage_interdites": [],
+ "cuivre_fixe": [],
+ "composants": [
+  {
+   "nom": "J1",
+   "empreinte": "CORPUS_PASTILLES",
+   "nature": "connecteur",
+   "genre": "standard",
+   "valeur": "",
+   "hauteur": 0.0,
+   "statut": "fixe",
+   "raison_statut": "contrainte",
+   "virtuel": false,
+   "lbb": [
+    -0.508,
+    -0.508,
+    0.508,
+    0.508
+   ],
+   "pastilles": [
+    {
+     "id": "J1#0",
+     "nom": "1",
+     "reseau": "N1",
+     "lx": 0.0,
+     "ly": 0.0,
+     "forme": "rect",
+     "largeur": 1.016,
+     "hauteur": 1.016,
+     "rotation": 0.0,
+     "rayon_coin": 0.0,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.0,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 0,
+     "hw": 0.508,
+     "hh": 0.508,
+     "th": false
+    }
+   ],
+   "regions": [],
+   "vias": [],
+   "zones_interdites": [],
+   "decoupes": [],
+   "pose_actuelle": [
+    2.54,
+    7.62,
+    0.0,
+    false
+   ],
+   "pose_cible": [
+    2.54,
+    7.62,
+    0.0,
+    false
+   ],
+   "orientations": [],
+   "regle": "contrainte",
+   "pas_fin": false,
+   "matrice": false,
+   "pas_min_mm": null
+  },
+  {
+   "nom": "J2",
+   "empreinte": "CORPUS_PASTILLES",
+   "nature": "connecteur",
+   "genre": "standard",
+   "valeur": "",
+   "hauteur": 0.0,
+   "statut": "fixe",
+   "raison_statut": "contrainte",
+   "virtuel": false,
+   "lbb": [
+    -0.508,
+    -0.508,
+    0.508,
+    0.508
+   ],
+   "pastilles": [
+    {
+     "id": "J2#0",
+     "nom": "1",
+     "reseau": "N1",
+     "lx": 0.0,
+     "ly": 0.0,
+     "forme": "rect",
+     "largeur": 1.016,
+     "hauteur": 1.016,
+     "rotation": 0.0,
+     "rayon_coin": 0.0,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.0,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 0,
+     "hw": 0.508,
+     "hh": 0.508,
+     "th": false
+    }
+   ],
+   "regions": [],
+   "vias": [],
+   "zones_interdites": [],
+   "decoupes": [],
+   "pose_actuelle": [
+    17.78,
+    7.62,
+    0.0,
+    false
+   ],
+   "pose_cible": [
+    17.78,
+    7.62,
+    0.0,
+    false
+   ],
+   "orientations": [],
+   "regle": "contrainte",
+   "pas_fin": false,
+   "matrice": false,
+   "pas_min_mm": null
+  },
+  {
+   "nom": "L1",
+   "empreinte": "CORPUS_PASTILLES",
+   "nature": "inductance",
+   "genre": "standard",
+   "valeur": "",
+   "hauteur": 0.0,
+   "statut": "fixe",
+   "raison_statut": "contrainte",
+   "virtuel": false,
+   "lbb": [
+    -0.508,
+    -2.032,
+    0.508,
+    2.032
+   ],
+   "pastilles": [
+    {
+     "id": "L1#0",
+     "nom": "1",
+     "reseau": "N2",
+     "lx": 0.0,
+     "ly": -1.524,
+     "forme": "rect",
+     "largeur": 1.016,
+     "hauteur": 1.016,
+     "rotation": 0.0,
+     "rayon_coin": 0.0,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.0,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 0,
+     "hw": 0.508,
+     "hh": 0.508,
+     "th": false
+    },
+    {
+     "id": "L1#1",
+     "nom": "2",
+     "reseau": "N3",
+     "lx": 0.0,
+     "ly": 1.524,
+     "forme": "rect",
+     "largeur": 1.016,
+     "hauteur": 1.016,
+     "rotation": 0.0,
+     "rayon_coin": 0.0,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.0,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 0,
+     "hw": 0.508,
+     "hh": 0.508,
+     "th": false
+    }
+   ],
+   "regions": [],
+   "vias": [],
+   "zones_interdites": [],
+   "decoupes": [],
+   "pose_actuelle": [
+    10.16,
+    7.62,
+    0.0,
+    false
+   ],
+   "pose_cible": [
+    10.16,
+    7.62,
+    0.0,
+    false
+   ],
+   "orientations": [],
+   "regle": "contrainte",
+   "pas_fin": false,
+   "matrice": false,
+   "pas_min_mm": null
+  }
+ ],
+ "reseaux": [
+  {
+   "nom": "N1",
+   "classe": "",
+   "role": "signal",
+   "masse": false,
+   "sensibilite": "normale",
+   "largeurs_mm": [
+    0.2,
+    0.254,
+    1.0
+   ],
+   "descente_large": false,
+   "isolement_mm": 0.2,
+   "classes_isolement": {
+    "piste": 0,
+    "via": 0,
+    "surface": 0
+   },
+   "via": {
+    "diametre": 0.6,
+    "trou": 0.3,
+    "diametre_min": 0.5,
+    "diametre_max": 0.8,
+    "trou_min": 0.25,
+    "trou_max": 0.4
+   },
+   "poids": 1.0,
+   "priorite": null,
+   "priorite_routage": 0,
+   "couche_preferee": null,
+   "couches_permises": [
+    "TopLayer",
+    "BottomLayer"
+   ],
+   "plan_couches": [],
+   "remplissages": [],
+   "alimentation_schema": false,
+   "paire": null
+  },
+  {
+   "nom": "N2",
+   "classe": "",
+   "role": "signal",
+   "masse": false,
+   "sensibilite": "normale",
+   "largeurs_mm": [
+    0.2,
+    0.254,
+    1.0
+   ],
+   "descente_large": false,
+   "isolement_mm": 0.2,
+   "classes_isolement": {
+    "piste": 0,
+    "via": 0,
+    "surface": 0
+   },
+   "via": {
+    "diametre": 0.6,
+    "trou": 0.3,
+    "diametre_min": 0.5,
+    "diametre_max": 0.8,
+    "trou_min": 0.25,
+    "trou_max": 0.4
+   },
+   "poids": 1.0,
+   "priorite": null,
+   "priorite_routage": 0,
+   "couche_preferee": null,
+   "couches_permises": [
+    "TopLayer",
+    "BottomLayer"
+   ],
+   "plan_couches": [],
+   "remplissages": [],
+   "alimentation_schema": false,
+   "paire": null
+  },
+  {
+   "nom": "N3",
+   "classe": "",
+   "role": "signal",
+   "masse": false,
+   "sensibilite": "normale",
+   "largeurs_mm": [
+    0.2,
+    0.254,
+    1.0
+   ],
+   "descente_large": false,
+   "isolement_mm": 0.2,
+   "classes_isolement": {
+    "piste": 0,
+    "via": 0,
+    "surface": 0
+   },
+   "via": {
+    "diametre": 0.6,
+    "trou": 0.3,
+    "diametre_min": 0.5,
+    "diametre_max": 0.8,
+    "trou_min": 0.25,
+    "trou_max": 0.4
+   },
+   "poids": 1.0,
+   "priorite": null,
+   "priorite_routage": 0,
+   "couche_preferee": null,
+   "couches_permises": [
+    "TopLayer",
+    "BottomLayer"
+   ],
+   "plan_couches": [],
+   "remplissages": [],
+   "alimentation_schema": false,
+   "paire": null
+  }
+ ],
+ "regles": {
+  "isolement": {
+   "defaut": 0.2,
+   "classes": [
+    "defaut"
+   ],
+   "matrice": [
+    [
+     0.2
+    ]
+   ],
+   "classe_reference": 0
+  },
+  "via": {
+   "diametre": 0.6,
+   "trou": 0.3,
+   "diametre_min": 0.5,
+   "diametre_max": 0.8,
+   "trou_min": 0.25,
+   "trou_max": 0.4
+  },
+  "trou_trou_mm": 0.254,
+  "garde_trou_mm": 0.6,
+  "placement": {
+   "grille_mm": 0.127,
+   "marge_piece_mm": 0.25,
+   "marge_traversante_mm": 0.6
+  },
+  "via_dans_pastille_meme_reseau": false,
+  "connexion_plans": {
+   "isolement": 0.5,
+   "connexion": "relief"
+  }
+ },
+ "convertisseurs": [],
+ "sans_piste_dessous": [
+  "L1"
+ ],
+ "decouplages": [],
+ "eloignements": [],
+ "charges": [],
+ "groupes": [],
+ "paires": [],
+ "au_bord": [],
+ "masses": [],
+ "parametres_deduction": {
+  "pas_fin_mm": 0.65,
+  "regles_non_interpretees": 0
+ }
+}

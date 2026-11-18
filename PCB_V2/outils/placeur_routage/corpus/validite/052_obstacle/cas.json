@@ -1,0 +1,20 @@
+{
+ "format": "cas_validite/1",
+ "nom": "052_obstacle",
+ "description": "Obstacle de placement de la face, rayon interdit d'un trou et zone interdite « placement » d'une empreinte fixe : trois obstacles ; l'obstacle de l'autre face est sans effet.",
+ "themes": [
+  "placement:obstacle"
+ ],
+ "grille": true,
+ "couture": false,
+ "modes_differents": false,
+ "fichiers": {
+  "donnees": "donnees_placeur.json",
+  "placement": "placements_routage.json",
+  "routage": "routage_detaille.json",
+  "attendu_strict": "attendu_strict.json",
+  "attendu_altium": "attendu_altium.json",
+  "attendu_mesures": "attendu_mesures.json",
+  "couture": null
+ }
+}

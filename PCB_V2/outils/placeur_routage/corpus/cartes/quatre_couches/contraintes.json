@@ -1,0 +1,5 @@
+{
+ "format": "contraintes/2",
+ "_doc": "Carte synthétique quatre_couches : tout est déduit (seuil de pas fin par défaut).",
+ "pas_fin_mm": 0.65
+}

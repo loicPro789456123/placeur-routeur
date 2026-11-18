@@ -1,0 +1,21 @@
+{
+ "format": "cas_validite/1",
+ "nom": "040_largeur_max_millieme",
+ "description": "Largeur maximale 0,3 mm arrondie à 11,812 mil : 11,812 conforme, 11,813 en violation.",
+ "themes": [
+  "violation:largeur",
+  "arrondi:largeur"
+ ],
+ "grille": true,
+ "couture": false,
+ "modes_differents": false,
+ "fichiers": {
+  "donnees": "donnees_placeur.json",
+  "placement": "placements_routage.json",
+  "routage": "routage_detaille.json",
+  "attendu_strict": "attendu_strict.json",
+  "attendu_altium": "attendu_altium.json",
+  "attendu_mesures": "attendu_mesures.json",
+  "couture": null
+ }
+}

@@ -1,0 +1,20 @@
+{
+ "format": "cas_validite/1",
+ "nom": "054_marge_decoupe_polygone",
+ "description": "Marge de placement au polygone exact d'une découpe triangulaire : une pièce trop proche, une pièce valide près de l'hypoténuse (fautive avec la seule boîte).",
+ "themes": [
+  "placement:marge_decoupe"
+ ],
+ "grille": true,
+ "couture": false,
+ "modes_differents": false,
+ "fichiers": {
+  "donnees": "donnees_placeur.json",
+  "placement": "placements_routage.json",
+  "routage": "routage_detaille.json",
+  "attendu_strict": "attendu_strict.json",
+  "attendu_altium": "attendu_altium.json",
+  "attendu_mesures": "attendu_mesures.json",
+  "couture": null
+ }
+}

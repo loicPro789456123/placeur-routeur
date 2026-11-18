@@ -1,0 +1,84 @@
+{
+ "format": "config_carte/2",
+ "convertisseurs": [
+  {
+   "nom": "abaisseur +12V -> +8V",
+   "topologie": "abaisseur",
+   "commutation": "synchrone",
+   "haut": "M1",
+   "bas": "M2",
+   "pilote": "U10",
+   "inductance": "L1",
+   "cond_entree": [
+    "C15",
+    "C7"
+   ],
+   "cond_sortie": [
+    "C20"
+   ],
+   "cond_bulk": [
+    "C17"
+   ],
+   "cond_pilote": [
+    "C15"
+   ],
+   "cond_bootstrap": [
+    "C19"
+   ],
+   "reseau_entree": "+12V",
+   "reseau_sortie": "+8V",
+   "reseau_masse": "GND",
+   "reseau_commutation": "NetC19_1",
+   "reseaux_courts": [
+    "NetC16_2",
+    "NetC18_2",
+    "NetC19_2",
+    "NetM1_4",
+    "NetM2_4"
+   ],
+   "reseaux_sensibles": [
+    "NetC21_1",
+    "NetC22_2",
+    "NetR25_2"
+   ],
+   "boucle_chaude": {
+    "condensateurs": [
+     "C15",
+     "C7"
+    ],
+    "reseau_rail": "+12V",
+    "reseau_masse": "GND"
+   },
+   "origine": "deduit"
+  }
+ ],
+ "sans_piste_dessous": [
+  "L1"
+ ],
+ "pieces_a_fixer_suggerees": [
+  "TRIG_AL_OUT1",
+  "TRIG_AL_IN1",
+  "SENSE2",
+  "SENSE1",
+  "OUT2",
+  "OUT1",
+  "SW_TRIG_AL1",
+  "SET_AL1",
+  "RESET_AL1",
+  "DS3_VOLT2",
+  "DS3_VOLT1",
+  "DS2_VOLT2",
+  "DS2_VOLT1",
+  "DS1_VOLT2",
+  "DS1_VOLT1"
+ ],
+ "surcharges_appliquees": [],
+ "avertissements": [],
+ "a_confirmer": [],
+ "pieces_par_prefixe": [
+  "M4_ALIM2",
+  "M4_ALIM1",
+  "U7"
+ ],
+ "eloignements": []
+}

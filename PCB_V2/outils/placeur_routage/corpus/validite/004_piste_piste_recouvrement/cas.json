@@ -1,0 +1,22 @@
+{
+ "format": "cas_validite/1",
+ "nom": "004_piste_piste_recouvrement",
+ "description": "Deux pistes qui se recouvrent sans qu'une extrémité d'axe soit dans la demi-largeur de l'autre : liaison ouverte en strict, reliées en altium ; deux antennes.",
+ "themes": [
+  "contact:piste-piste",
+  "modes_differents",
+  "violation:antenne"
+ ],
+ "grille": true,
+ "couture": false,
+ "modes_differents": true,
+ "fichiers": {
+  "donnees": "donnees_placeur.json",
+  "placement": "placements_routage.json",
+  "routage": "routage_detaille.json",
+  "attendu_strict": "attendu_strict.json",
+  "attendu_altium": "attendu_altium.json",
+  "attendu_mesures": "attendu_mesures.json",
+  "couture": null
+ }
+}

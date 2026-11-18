@@ -1,0 +1,28 @@
+# Caisse d'essai du lot E : compile src/validite.rs (module du moteur, lot E) hors du moteur (lot A), en
+# bibliothèque (pour les tests) et en binaire (module privé, comme dans le moteur, pour voir ses avertissements).
+# Toujours hors ligne, depuis la racine du dépôt :
+#   cargo build --release --offline -j 4 --manifest-path PCB_V2/outils/placeur_routage/corpus/validite_rs/Cargo.toml
+#   cargo test  --release --offline -j 4 --manifest-path PCB_V2/outils/placeur_routage/corpus/validite_rs/Cargo.toml
+[package]
+name = "validite_rs"
+version = "0.1.0"
+edition = "2021"
+publish = false
+description = "Caisse d'essai du module de validité de référence (lot E)"
+
+[lib]
+path = "lib.rs"
+
+[[bin]]
+name = "validite_verifier"
+path = "verifier.rs"
+
+[dependencies]
+serde_json = "1"
+
+[profile.release]
+opt-level = 3
+debug = false
+
+# Caisse autonome : jamais membre d'un espace de travail parent.
+[workspace]

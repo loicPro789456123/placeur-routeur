@@ -1,0 +1,12 @@
+# Produits de la construction du paquet (lot D ; contrat §5.5) : jamais suivis.
+/construction/
+/build/
+/dist/
+*.zip
+*.zip.sha256
+MODE_EMPLOI.html
+parametres_modele.ini
+LICENCES.txt
+0_LIRE_AVANT.txt
+__pycache__/
+*.pyc

@@ -1,0 +1,20 @@
+{
+ "format": "cas_validite/1",
+ "nom": "057_zone_imposee",
+ "description": "Zone imposée (face dessus) : une pièce dedans, une qui déborde, une sur l'autre face.",
+ "themes": [
+  "placement:zone_imposee"
+ ],
+ "grille": true,
+ "couture": false,
+ "modes_differents": false,
+ "fichiers": {
+  "donnees": "donnees_placeur.json",
+  "placement": "placements_routage.json",
+  "routage": "routage_detaille.json",
+  "attendu_strict": "attendu_strict.json",
+  "attendu_altium": "attendu_altium.json",
+  "attendu_mesures": "attendu_mesures.json",
+  "couture": null
+ }
+}

@@ -1,0 +1,69 @@
+{
+ "format": "deduction/1",
+ "elements": [
+  {
+   "objet": "couche:MidLayer1",
+   "propriete": "role",
+   "valeur": "plan",
+   "regle": "R-C1",
+   "preuve": "plan négatif Altium du réseau GND",
+   "source": "fichier"
+  },
+  {
+   "objet": "reseau:+8V",
+   "propriete": "largeur_preferee_mm",
+   "valeur": 2.0066,
+   "regle": "R-R2",
+   "preuve": "largeur préférée 2,0066 = 6,69 × défaut 0,3",
+   "source": "deduit"
+  },
+  {
+   "objet": "piece:P1",
+   "propriete": "statut",
+   "valeur": "fixe",
+   "regle": "R-P3",
+   "preuve": "connecteur posé dans le contour",
+   "source": "deduit"
+  },
+  {
+   "objet": "convertisseur:abaisseur +12V -> +8V",
+   "propriete": "topologie",
+   "valeur": "abaisseur",
+   "regle": "R-V1",
+   "preuve": "L1 entre NetC19_1 et +8V ; M1 vers +12V, M2 vers GND",
+   "source": "deduit"
+  },
+  {
+   "objet": "groupe:ALIM",
+   "propriete": "exemplaires",
+   "valeur": 2,
+   "regle": "R-G2",
+   "preuve": "2 canaux de 2 pièces (SOURCEDESIGNATOR partagé)",
+   "source": "fichier"
+  }
+ ],
+ "suggestions": [
+  {
+   "objet": "piece:U25_VOLT1",
+   "proposition": "fixer",
+   "raison": "interface posée près du bord"
+  }
+ ],
+ "a_confirmer": [
+  {
+   "objet": "reseau:NetC21_1",
+   "proposition": "sensible",
+   "raison": "réseau de compensation"
+  }
+ ],
+ "avertissements": [
+  "règle Width « Largeur_rf » non interprétée"
+ ],
+ "positions_imposees": [
+  {
+   "piece": "P1",
+   "repere_fichier": [1082.0, 1097.0],
+   "repere_carte": [82.0, 97.0]
+  }
+ ]
+}

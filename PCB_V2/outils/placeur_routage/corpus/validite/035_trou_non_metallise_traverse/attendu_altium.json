@@ -1,0 +1,72 @@
+{
+ "format": "verdict/2",
+ "outil": "attendu ecrit a la main (corpus du lot E)",
+ "mode": "altium",
+ "valide": false,
+ "liaisons_ouvertes": 0,
+ "detail_liaisons_ouvertes": [],
+ "violations": 1,
+ "violations_par_type": {
+  "isolement": 0,
+  "garde_bord": 0,
+  "garde_decoupe": 0,
+  "garde_trou": 1,
+  "zone_interdite": 0,
+  "largeur": 0,
+  "dimension_via": 0,
+  "via_sous_cms": 0,
+  "trou_trou": 0,
+  "antenne": 0,
+  "couche_non_permise": 0,
+  "reseau_inconnu": 0
+ },
+ "detail_violations": [
+  {
+   "genre": "garde_trou",
+   "reseaux": [
+    "N1",
+    ""
+   ],
+   "objets": [
+    "P0",
+    "T1"
+   ],
+   "position_mm": [
+    10.16,
+    5.08
+   ],
+   "ecart_mm": -0.627,
+   "requis_mm": 0.6
+  }
+ ],
+ "detail_violations_tronque": false,
+ "exemples": {
+  "garde_trou": [
+   "P0 / T1 (N1 / )"
+  ]
+ },
+ "derogations": {
+  "via_dans_pastille_meme_reseau": 0
+ },
+ "avertissements": {
+  "pistes_sous_pieces_sans_piste_dessous": 0,
+  "angles_aigus": 0,
+  "paires_desequilibrees": 0,
+  "regles_non_couvertes": 0,
+  "zones_plan_isolees": 0
+ },
+ "reseaux_a_router": 1,
+ "reseaux_complets": 1,
+ "marge_isolement_min_mm": null,
+ "marge_isolement_min_paire": "",
+ "mesures": {
+  "ecart_moyen_mm": 0.0,
+  "ecart_min_mm": null,
+  "coudes": 0,
+  "coudes_90": 0,
+  "angles_aigus": 0,
+  "longueur_pistes_mm": 15.24,
+  "resistance_puissance_mohm": 0.0,
+  "vias": 0
+ }
+}

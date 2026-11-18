@@ -1,0 +1,22 @@
+{
+ "format": "cas_validite/1",
+ "nom": "009_plan_descente_gnd_manquante",
+ "description": "Pastille GND d'une pièce CMS sans descente vers le plan (cas D3.2 de l'audit) : une liaison ouverte dans les deux modes.",
+ "themes": [
+  "zone_plan",
+  "audit:D3.2",
+  "contact:zone-via"
+ ],
+ "grille": true,
+ "couture": false,
+ "modes_differents": false,
+ "fichiers": {
+  "donnees": "donnees_placeur.json",
+  "placement": "placements_routage.json",
+  "routage": "routage_detaille.json",
+  "attendu_strict": "attendu_strict.json",
+  "attendu_altium": "attendu_altium.json",
+  "attendu_mesures": "attendu_mesures.json",
+  "couture": null
+ }
+}

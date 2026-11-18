@@ -19,75 +19,85 @@ fn w3(mm: f64) -> f64 {
     ((mm / MIL) * 1000.0 - 1e-6).ceil() / 1000.0
 }
 
+/// Texte du champ `origine` des sorties (repere des donnees).
+pub const ORIGINE: &str = "repere des donnees du placeur (donnees_placeur/2)";
+
+/// Placement au format `placements/2` (mil, repere des donnees) : toutes les pieces, fixes comprises (pose exacte des
+/// donnees pour les pieces fixes et virtuelles).
 pub fn placement_json(m: &Modele, e: &Etat) -> Value {
     let mut v = Vec::new();
+    let [ox, oy] = m.origine;
     for (i, c) in m.comps.iter().enumerate() {
         let p = e.poses[i];
-        if c.statut == Statut::Fixe && p == c.pose_base {
-            continue; // fixes inchanges : absents, comme dans placements_v3.json
-        }
-        let mut o = json!({"designator": c.nom, "side": if p.bot {"bottom"} else {"top"},
-            "x": r2(p.x / MIL), "y": r2(p.y / MIL), "rotation": p.rot});
-        if p.bot {
-            o["rotation_si_convention_miroir_x"] = json!((p.rot + 180).rem_euclid(360));
+        let exacte = if c.statut == Statut::Mobile { None } else { m.poses_donnees.get(i).copied().flatten() };
+        let (x, y, rot, bot) = match exacte {
+            Some(q) => q,
+            None => (p.x + ox, p.y + oy, p.rot as f64, p.bot),
+        };
+        let mut o = json!({"designator": c.nom, "side": if bot {"bottom"} else {"top"},
+            "x": r2(x / MIL), "y": r2(y / MIL), "rotation": rot,
+            "statut": if c.statut == Statut::Mobile { "mobile" } else { "fixe" }});
+        if bot {
+            o["rotation_si_convention_miroir_x"] = json!((rot + 180.0).rem_euclid(360.0));
         }
         v.push(o);
     }
-    Value::Array(v)
+    json!({"format": "placements/2", "unite": "mil", "origine": ORIGINE, "pieces": v})
 }
 
 /// Resistance d'une piste en milliohms : cuivre 35 um, 0,5 mOhm par carre.
 pub const MOHM_CARRE: f64 = 0.5;
 
-pub fn routage_json(d: &Detail, stats: Value) -> Value {
+/// Routage detaille au format `routage/2` (mil, repere des donnees, noms de couches des donnees). Les segments poses
+/// sur une couche absente de la carte (a l'interieur d'une pastille traversante, sans effet) ne sont pas ecrits.
+pub fn routage_json(d: &Detail) -> Value {
     let m = d.m;
-    let em = d.emprise;
+    let [ox, oy] = m.origine;
     let (mut p, mut v) = (Vec::new(), Vec::new());
     let via_d = m.regles.via.diametre;
     let via_t = m.regles.via.trou;
     let mut echecs = Vec::new();
     let mut reseaux = Vec::new();
-    let mut attentes = Vec::new();
-    let mut dans_emprise = 0;
+    let piste = |s: &SegD, nom: &str| {
+        json!({"x1": r3((s.x1 + ox) / MIL), "y1": r3((s.y1 + oy) / MIL), "x2": r3((s.x2 + ox) / MIL), "y2": r3((s.y2 + oy) / MIL),
+            "width": w3(s.w), "layer": m.noms_couches[s.couche as usize], "net_name": nom})
+    };
     for (n, segs) in &d.amorces {
         for s in segs {
-            p.push(json!({"x1": r3(s.x1 / MIL), "y1": r3(s.y1 / MIL), "x2": r3(s.x2 / MIL), "y2": r3(s.y2 / MIL),
-                "width": w3(s.w), "layer": (["TopLayer", "BottomLayer", "MidLayer2"][s.couche as usize]), "net_name": m.nets[*n].nom}));
+            if m.couches_actives[s.couche as usize] {
+                p.push(piste(s, &m.nets[*n].nom));
+            }
         }
     }
     for (n, r) in d.nets.iter().enumerate() {
         let nom = &m.nets[n].nom;
         let mut long = 0.0;
         for s in &r.segs {
-            let h = s.w / 2.0;
-            let b = [s.x1.min(s.x2) - h, s.y1.min(s.y2) - h, s.x1.max(s.x2) + h, s.y1.max(s.y2) + h];
-            if ov(&b, &em) {
-                dans_emprise += 1;
+            if !m.couches_actives[s.couche as usize] {
+                continue;
             }
             long += ((s.x2 - s.x1).powi(2) + (s.y2 - s.y1).powi(2)).sqrt();
-            p.push(json!({"x1": r3(s.x1 / MIL), "y1": r3(s.y1 / MIL), "x2": r3(s.x2 / MIL), "y2": r3(s.y2 / MIL),
-                "width": w3(s.w), "layer": (["TopLayer", "BottomLayer", "MidLayer2"][s.couche as usize]), "net_name": nom}));
+            p.push(piste(s, nom));
         }
         for x in &r.vias {
-            v.push(json!({"x": r3(x.x / MIL), "y": r3(x.y / MIL), "size": w3(via_d), "hole_size": w3(via_t), "net": nom}));
+            v.push(json!({"x": r3((x.x + ox) / MIL), "y": r3((x.y + oy) / MIL), "size": w3(via_d), "hole_size": w3(via_t), "net": nom,
+                "de": m.via_de_a[0], "a": m.via_de_a[1]}));
         }
         if r.ko > 0 {
-            echecs.push(json!({"net": nom, "classe": m.nets[n].classe, "connexions_echouees": r.ko, "connexions_reussies": r.ok, "diagnostic": r.diag}));
+            echecs.push(json!({"net": nom, "role": m.nets[n].role, "connexions_echouees": r.ko, "connexions_reussies": r.ok, "diagnostic": r.diag}));
         }
         if !r.segs.is_empty() {
-            reseaux.push(json!({"net": nom, "classe": m.nets[n].classe, "longueur_mm": (long * 100.0).round() / 100.0,
+            reseaux.push(json!({"net": nom, "role": m.nets[n].role, "longueur_mm": (long * 100.0).round() / 100.0,
                 "resistance_mohm": (r.carres * MOHM_CARRE * 1000.0).round() / 1000.0, "longueur_retrecie_mm": (r.neck_mm * 100.0).round() / 100.0,
                 "longueur_sous_mini_regle_mm": (r.derog_mm * 100.0).round() / 100.0, "vias": r.vias.len(), "vias_doubles": r.vias_doubles}));
         }
-        if !d.cibles_bloc[n].is_empty() && !m.nets[n].plan && !m.nets[n].pins_ext.is_empty() {
-            attentes.push(json!({"net": nom, "cible": "cuivre existant du bloc (pastille, piste, via ou surface du meme reseau)", "relie_selon_routeur": r.ko == 0}));
-        }
     }
+    let couches: Vec<&String> = (0..3).filter(|&l| m.couches_actives[l]).map(|l| &m.noms_couches[l]).collect();
     json!({
-        "unite": "mil", "origine": "coin bas-gauche de la carte",
-        "note": "le cuivre existant du bloc hacheur (cuivre_bloc_hacheur.json) n'est pas repete ici : les reseaux qui touchent le bloc sont relies a ce cuivre.",
-        "segments_touchant_emprise": dans_emprise,
-        "derogations": d.derogations, "amorces_pas_fin": d.amorces.iter().map(|(n, _)| m.nets[*n].nom.clone()).collect::<Vec<_>>(), "pistes": p, "vias": v, "raccords_bloc": attentes, "reseaux": reseaux, "echecs": echecs, "stats": stats
+        "format": "routage/2", "unite": "mil", "origine": ORIGINE, "couches_routage": couches,
+        "pistes": p, "vias": v, "surfaces": [],
+        "amorces_pas_fin": d.amorces.iter().map(|(n, _)| m.nets[*n].nom.clone()).collect::<Vec<_>>(),
+        "derogations": d.derogations, "reseaux": reseaux, "echecs": echecs
     })
 }
 

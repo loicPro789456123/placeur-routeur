@@ -1,0 +1,22 @@
+{
+ "format": "cas_validite/1",
+ "nom": "039_arrondi_limite_pastille",
+ "description": "Pastilles à 7,874 et 7,870 mil d'une piste (isolement 0,2 mm = 7,874 mil) : la première est dans ε_isolement, la seconde non : un isolement.",
+ "themes": [
+  "violation:isolement",
+  "arrondi:pastille",
+  "mesure:ecart"
+ ],
+ "grille": true,
+ "couture": false,
+ "modes_differents": false,
+ "fichiers": {
+  "donnees": "donnees_placeur.json",
+  "placement": "placements_routage.json",
+  "routage": "routage_detaille.json",
+  "attendu_strict": "attendu_strict.json",
+  "attendu_altium": "attendu_altium.json",
+  "attendu_mesures": "attendu_mesures.json",
+  "couture": null
+ }
+}

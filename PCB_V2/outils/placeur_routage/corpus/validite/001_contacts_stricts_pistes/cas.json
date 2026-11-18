@@ -1,0 +1,21 @@
+{
+ "format": "cas_validite/1",
+ "nom": "001_contacts_stricts_pistes",
+ "description": "Contacts stricts piste–pastille et piste–piste (jonction en T) : valide dans les deux modes.",
+ "themes": [
+  "contact:piste-pastille",
+  "contact:piste-piste"
+ ],
+ "grille": true,
+ "couture": false,
+ "modes_differents": false,
+ "fichiers": {
+  "donnees": "donnees_placeur.json",
+  "placement": "placements_routage.json",
+  "routage": "routage_detaille.json",
+  "attendu_strict": "attendu_strict.json",
+  "attendu_altium": "attendu_altium.json",
+  "attendu_mesures": "attendu_mesures.json",
+  "couture": null
+ }
+}

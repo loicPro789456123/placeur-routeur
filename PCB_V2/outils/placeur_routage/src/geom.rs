@@ -1,15 +1,12 @@
 //! Modele de la carte : pieces, pastilles, reseaux, poses, contraintes de placement (memes regles que placer_v3.py).
-use crate::donnees::*;
+//! Les reglages du moteur (`parametres_moteur/1`) sont portes par le modele (champ `param`).
+use crate::donnees_v1::*;
+use crate::parametres::Parametres;
 use std::collections::HashMap;
 
 pub const MIL: f64 = 0.0254;
 pub const SNAP: f64 = 5.0 * MIL; // origines sur grille 5 mil (comme v3)
 pub const PIECE_MARGIN: f64 = 0.25;
-/// degagement autour des boitiers a pas fin (convertisseur libere) ; variable CAMP_DEGAGEMENT pour l'ajuster
-pub fn degagement_pas_fin() -> f64 {
-    static V: std::sync::OnceLock<f64> = std::sync::OnceLock::new();
-    *V.get_or_init(|| std::env::var("CAMP_DEGAGEMENT").ok().and_then(|v| v.parse().ok()).unwrap_or(0.8))
-}
 pub const TH_MARGIN: f64 = 0.6;
 pub const DEC_LIM: f64 = 4.0;
 pub const DEC_W: f64 = 25.0;
@@ -63,8 +60,20 @@ pub struct Convertisseur {
     /// decouplage d'entree du pilote : condensateur a rapprocher de la broche d'entree du pilote
     #[serde(default)]
     pub cond_pilote: String,
+    /// distances minimales entre le noeud de commutation (centre de l'interrupteur haut) et des broches sensibles
+    /// ("PIECE.BROCHE")
+    #[serde(default)]
+    pub eloignement: Vec<Eloignement>,
 }
 
+#[derive(Clone, Debug, Default, serde::Deserialize)]
+pub struct Eloignement {
+    pub broches: Vec<String>,
+    pub distance_mm: f64,
+}
+
+/// Convertisseurs et pieces sans piste dessous (copiees des donnees du placeur a partir de l'etape 3 du lot A ; plus
+/// aucune lecture implicite d'un fichier de configuration).
 #[derive(Clone, Debug, Default, serde::Deserialize)]
 pub struct ConfigCarte {
     #[serde(default)]
@@ -72,13 +81,6 @@ pub struct ConfigCarte {
     /// pieces sous lesquelles aucune piste n'est posee sur leur face (inductances, sauf sur leurs pastilles)
     #[serde(default)]
     pub sans_piste_dessous: Vec<String>,
-}
-
-impl ConfigCarte {
-    pub fn lire(chemin: &str) -> Result<ConfigCarte, String> {
-        let txt = std::fs::read_to_string(chemin).map_err(|e| format!("lecture {} : {}", chemin, e))?;
-        serde_json::from_str(&txt).map_err(|e| format!("JSON {} : {}", chemin, e))
-    }
 }
 
 pub type Rect = [f64; 4];
@@ -138,6 +140,8 @@ pub struct Pad {
     /// demi-dimensions de placement (boite de la pastille, masque compris, comme placer_v3) : zones des traversantes
     pub pw: f64,
     pub ph: f64,
+    /// diametre du trou (pastille traversante ; 0 si inconnu ou CMS)
+    pub trou: f64,
 }
 
 /// Distance signee d'un point au cuivre d'une pastille (centre, demi-dimensions monde) : negative a l'interieur
@@ -183,6 +187,8 @@ pub struct Comp {
     pub pose_v3: Pose,
     pub pas_fin: bool,
     pub via_sous_pad: bool,
+    /// regions de cuivre d'empreinte (locales) : (face relative 0 composant / 1 opposee / 2 toutes, reseau, polygone)
+    pub regions: Vec<(u8, Option<usize>, Vec<(f64, f64)>)>,
 }
 
 /// Point d'attente au bord de l'emprise du bloc : le reseau y arrive, le dernier raccord vers la pastille
@@ -235,6 +241,8 @@ pub struct Net {
     pub classe: String,
     pub bloc_seul: bool,
     pub touche_bloc: bool,
+    /// role du reseau dans les donnees (`signal`, `alimentation`, `puissance`, `commutation`, `plan`)
+    pub role: String,
 }
 
 #[derive(Clone)]
@@ -278,13 +286,24 @@ pub struct Modele {
     pub hacheur_puissance: Vec<usize>,
     /// ponts (reseau, piece, pastille gardee, pastille pontee, largeur) entre pastilles voisines d'un meme reseau
     pub ponts: Vec<(usize, usize, usize, usize, f64)>,
-    /// eventail de sortie fixe d'U10 (repris du bloc manuel) : (pastille, segments locaux [x1, y1, x2, y2, largeur])
-    pub eventail: Vec<(usize, Vec<[f64; 5]>)>,
-    /// U10 et rectangle local englobant son eventail (legalite du placement)
-    pub u10: Option<usize>,
-    pub eventail_bb: Option<Rect>,
     /// configuration de carte (convertisseurs, pieces sans piste dessous)
     pub cfg: ConfigCarte,
+    /// contour polygonal de la carte (vide = rectangle w x h)
+    pub contour: Vec<(f64, f64)>,
+    /// reglages du moteur (`parametres_moteur/1`)
+    pub param: Parametres,
+    /// origine du repere interne dans le repere des donnees (mm) : point (0, 0) du modele
+    pub origine: [f64; 2],
+    /// noms des couches de routage du coeur (0 dessus, 1 dessous, 2 interne), lus dans les donnees
+    pub noms_couches: [String; 3],
+    /// couches de routage du coeur presentes sur la carte
+    pub couches_actives: [bool; 3],
+    /// couches extremes des vias traversants (premiere et derniere couche de cuivre)
+    pub via_de_a: [String; 2],
+    /// pose exacte des donnees (repere des donnees, mm, degres) des pieces fixes ou virtuelles, ecrite telle quelle
+    pub poses_donnees: Vec<Option<(f64, f64, f64, bool)>>,
+    /// derogation des donnees : via dans une pastille CMS du meme reseau (`regles.via_dans_pastille_meme_reseau`)
+    pub via_dans_pad: bool,
 }
 
 #[derive(Clone)]
@@ -295,7 +314,7 @@ pub struct Etat {
 }
 
 impl Modele {
-    pub fn new(d: &Donnees) -> Modele {
+    pub fn new(d: &Donnees, param: Parametres) -> Modele {
         let mut net_names: Vec<String> = Vec::new();
         for c in &d.composants {
             for p in &c.pastilles {
@@ -329,11 +348,12 @@ impl Modele {
                     forme: FormePad::Rect,
                     pw: p.hw,
                     ph: p.hh,
+                    trou: 0.0,
                 })
                 .collect();
             let has_th = pads.iter().any(|p| p.th);
             let pa = c.pose_actuelle;
-            let pv = c.pose_v3;
+            let pv = c.pose_cible;
             comps.push(Comp {
                 nom: c.nom.clone(),
                 statut: st,
@@ -345,6 +365,7 @@ impl Modele {
                 pose_v3: Pose { x: pv.0, y: pv.1, rot: pv.2, bot: pv.3 },
                 pas_fin: fin.iter().any(|f| **f == c.nom),
                 via_sous_pad: d.regles.via.via_sous_cms_permis.iter().any(|f| *f == c.nom),
+                regions: Vec::new(),
             });
         }
         let comp_idx: HashMap<String, usize> = comps.iter().enumerate().map(|(i, c)| (c.nom.clone(), i)).collect();
@@ -361,6 +382,7 @@ impl Modele {
                 classe: d.classes.get(n).cloned().unwrap_or_else(|| "defaut".to_string()),
                 bloc_seul: false,
                 touche_bloc: false,
+                role: if d.reseaux_plans.contains(n) { "plan".to_string() } else { "signal".to_string() },
             })
             .collect();
         let mut comp_nets = vec![Vec::new(); comps.len()];
@@ -420,10 +442,15 @@ impl Modele {
             hacheur: Vec::new(),
             hacheur_puissance: Vec::new(),
             ponts: Vec::new(),
-            eventail: Vec::new(),
-            u10: None,
-            eventail_bb: None,
             cfg: ConfigCarte::default(),
+            contour: d.contour.points.iter().map(|p| (p[0], p[1])).collect(),
+            param,
+            origine: [0.0, 0.0],
+            noms_couches: ["TopLayer".to_string(), "BottomLayer".to_string(), "MidLayer2".to_string()],
+            couches_actives: [true; 3],
+            via_de_a: ["TopLayer".to_string(), "BottomLayer".to_string()],
+            poses_donnees: Vec::new(),
+            via_dans_pad: false,
         };
         m.calculer_attentes();
         m
@@ -500,7 +527,7 @@ impl Modele {
                         continue;
                     }
                     let n = a.net.unwrap();
-                    if self.nets[n].plan && std::env::var("PONTS_PLAN").is_err() && !self.hacheur_puissance.contains(&i) {
+                    if self.nets[n].plan && !self.param.routage.ponts_plans && !self.hacheur_puissance.contains(&i) {
                         continue;
                     }
                     let (x1, y1, w1, h1) = self.pad_world(i, k1, &pv);
@@ -521,100 +548,47 @@ impl Modele {
         }
     }
 
-    /// Eventail de sortie fixe d'U10, repris du cuivre manuel du bloc (cuivre_bloc_hacheur.json, coordonnees de la
-    /// pose v3) : pour chaque broche, chaine de pistes partant de la pastille, coupee a `l_max` mm ou a un via ;
-    /// stocke en coordonnees locales d'U10 (se deplace et tourne avec la piece). A appeler apres liberer_bloc.
-    pub fn charger_eventail_u10(&mut self, chemin: &str, l_max: f64) -> Result<usize, String> {
-        let u = match self.comp_idx.get("U10") {
-            Some(&u) => u,
-            None => return Ok(0),
-        };
-        let txt = std::fs::read_to_string(chemin).map_err(|e| format!("lecture {} : {}", chemin, e))?;
-        let v: serde_json::Value = serde_json::from_str(&txt).map_err(|e| e.to_string())?;
-        let f = |x: &serde_json::Value| x.as_f64().unwrap_or(0.0) * MIL;
-        let segs: Vec<(String, [f64; 5], bool)> = v["pistes"].as_array().map(|a| a.iter().map(|p| {
-            (p[6].as_str().unwrap_or("").to_string(), [f(&p[0]), f(&p[1]), f(&p[2]), f(&p[3]), f(&p[4])], p[5].as_str() == Some("T"))
-        }).collect()).unwrap_or_default();
-        let vias: Vec<(String, f64, f64)> = v["vias"].as_array().map(|a| a.iter().map(|q| (q[4].as_str().unwrap_or("").to_string(), f(&q[0]), f(&q[1]))).collect()).unwrap_or_default();
-        let pv = self.comps[u].pose_v3;
-        let inv = |x: f64, y: f64| -> (f64, f64) {
-            let (vx, vy) = fwd(x - pv.x, y - pv.y, (360 - pv.rot).rem_euclid(360), false);
-            (vx, if pv.bot { -vy } else { vy })
-        };
-        let mut out = Vec::new();
-        for k in 0..self.comps[u].pads.len() {
-            let n = match self.comps[u].pads[k].net {
-                Some(n) => n,
+    /// Regions de cuivre d'empreinte : depuis les donnees (champ `regions` de chaque composant) ou un fichier
+    /// {"PIECE": [regions]} au meme format (donnee d'essai). Renvoie le nombre de regions lues.
+    pub fn charger_regions(&mut self, par_piece: &[(String, Vec<RegionIn>)]) -> usize {
+        let mut n = 0;
+        for (nom, rs) in par_piece {
+            let i = match self.comp_idx.get(nom) {
+                Some(&i) => i,
                 None => continue,
             };
-            if self.nets[n].plan {
-                continue;
-            }
-            let nom = self.nets[n].nom.clone();
-            let (px, py, hw, hh) = self.pad_world(u, k, &pv);
-            let dans = |x: f64, y: f64| (x - px).abs() <= hw + 1e-3 && (y - py).abs() <= hh + 1e-3;
-            // premier segment : une extremite dans la pastille, sur la couche du dessus
-            let mut cour: Option<(f64, f64)> = None;
-            let mut pris: Vec<usize> = Vec::new();
-            let mut chaine: Vec<[f64; 5]> = Vec::new();
-            for (q, (nn, s, top)) in segs.iter().enumerate() {
-                if *nn != nom || !*top {
-                    continue;
-                }
-                if dans(s[0], s[1]) {
-                    cour = Some((s[0], s[1]));
-                } else if dans(s[2], s[3]) {
-                    cour = Some((s[2], s[3]));
-                } else {
-                    continue;
-                }
-                let _ = q;
-                break;
-            }
-            // noeud de commutation : chaine complete du bloc manuel (sortie jusqu'a la zone de M1 / M2)
-            let mut reste = if self.nets[n].classe == "COMMUTATION" { l_max.max(3.5) } else { l_max };
-            while let Some((cx, cy)) = cour {
-                if reste <= 1e-6 || vias.iter().any(|(vn, vx, vy)| *vn == nom && (vx - cx).abs() < 1e-3 && (vy - cy).abs() < 1e-3) {
-                    break;
-                }
-                let suiv = segs.iter().enumerate().find(|(q, (nn, s, top))| {
-                    *nn == nom && *top && !pris.contains(q)
-                        && (((s[0] - cx).abs() < 1e-3 && (s[1] - cy).abs() < 1e-3) || ((s[2] - cx).abs() < 1e-3 && (s[3] - cy).abs() < 1e-3))
-                });
-                let (q, (_, s, _)) = match suiv {
-                    Some(x) => x,
-                    None => break,
+            for r in rs {
+                let net = match (&r.pastille, &r.reseau) {
+                    (Some(p), _) => self.comps[i].pads.iter().find(|q| q.nom == *p).and_then(|q| q.net),
+                    (None, Some(nn)) => self.net_idx.get(nn).copied(),
+                    _ => None,
                 };
-                pris.push(q);
-                let (ax, ay, bx, by) = if (s[0] - cx).abs() < 1e-3 && (s[1] - cy).abs() < 1e-3 { (s[0], s[1], s[2], s[3]) } else { (s[2], s[3], s[0], s[1]) };
-                let l = ((bx - ax).powi(2) + (by - ay).powi(2)).sqrt();
-                let t = if l > reste { reste / l } else { 1.0 };
-                let (ex, ey) = (ax + (bx - ax) * t, ay + (by - ay) * t);
-                let (l1x, l1y) = inv(ax, ay);
-                let (l2x, l2y) = inv(ex, ey);
-                chaine.push([l1x, l1y, l2x, l2y, s[4]]);
-                reste -= l * t;
-                cour = if t < 1.0 { None } else { Some((bx, by)) };
-            }
-            if !chaine.is_empty() {
-                out.push((k, chaine));
+                let face = match r.face.as_str() {
+                    "opposee" => 1,
+                    "toutes" => 2,
+                    _ => 0,
+                };
+                self.comps[i].regions.push((face, net, r.points.iter().map(|p| (p[0], p[1])).collect()));
+                n += 1;
             }
         }
-        let mut bb = self.bb_rel(u, 0, false);
-        if pv.bot {
-            // bb_rel en pose (0, dessus) ; l'eventail est local : meme repere
-        }
-        for (_, ch) in &out {
-            for s in ch {
-                let h = s[4] / 2.0 + 0.2;
-                bb = [bb[0].min(s[0].min(s[2]) - h), bb[1].min(s[1].min(s[3]) - h), bb[2].max(s[0].max(s[2]) + h), bb[3].max(s[1].max(s[3]) + h)];
-            }
-        }
-        let nb = out.len();
-        self.eventail = out;
-        self.u10 = Some(u);
-        self.eventail_bb = Some(bb);
-        Ok(nb)
+        n
+    }
+
+    /// Polygone monde d'une region et couches de cuivre concernees.
+    pub fn region_monde(&self, i: usize, r: &(u8, Option<usize>, Vec<(f64, f64)>), p: &Pose) -> (Vec<(f64, f64)>, Vec<usize>) {
+        let pts = r.2.iter().map(|&(lx, ly)| {
+            let (dx, dy) = fwd(lx, ly, p.rot, p.bot);
+            (p.x + dx, p.y + dy)
+        }).collect();
+        let face = if p.bot { 1 } else { 0 };
+        let l = match r.0 {
+            0 => vec![face],
+            1 => vec![1 - face],
+            _ => vec![0, 1, 2],
+        };
+        let _ = i;
+        (pts, l)
     }
 
     /// Centre des pastilles d'une piece sur un reseau (None si aucune).
@@ -766,11 +740,40 @@ impl Modele {
                 }
             }
         }
-        // contrainte du plan (donnees) : noeud de commutation a la distance minimale des broches sensibles
-        let (sx, sy) = self.sw_node(e);
-        let dmin = self.u25.iter().map(|p| ((p[0] - sx).powi(2) + (p[1] - sy).powi(2)).sqrt()).fold(f64::MAX, f64::min);
-        if dmin < self.sw_min + 1.0 {
-            c += 300.0 * (self.sw_min + 1.0 - dmin);
+        // distances minimales du noeud de commutation aux broches sensibles (configuration de carte ; sinon ancienne
+        // donnee du plan, broches fixes et distance)
+        for cv in &self.cfg.convertisseurs {
+            let h = match ci(&cv.haut) {
+                Some(h) => h,
+                None => continue,
+            };
+            let (sx, sy) = self.centre(h, &e.poses[h]);
+            for el in &cv.eloignement {
+                for b in &el.broches {
+                    let (pc, pk) = match b.rsplit_once('.') {
+                        Some(x) => x,
+                        None => continue,
+                    };
+                    let i = match ci(pc) {
+                        Some(i) => i,
+                        None => continue,
+                    };
+                    if let Some(k) = self.comps[i].pads.iter().position(|q| q.nom == pk) {
+                        let (x, y, _, _) = self.pad_world(i, k, &e.poses[i]);
+                        let dd = dist((x, y), (sx, sy));
+                        if dd < el.distance_mm + 1.0 {
+                            c += 300.0 * (el.distance_mm + 1.0 - dd);
+                        }
+                    }
+                }
+            }
+        }
+        if self.cfg.convertisseurs.iter().all(|cv| cv.eloignement.is_empty()) && !self.u25.is_empty() {
+            let (sx, sy) = self.sw_node(e);
+            let dmin = self.u25.iter().map(|p| ((p[0] - sx).powi(2) + (p[1] - sy).powi(2)).sqrt()).fold(f64::MAX, f64::min);
+            if dmin < self.sw_min + 1.0 {
+                c += 300.0 * (self.sw_min + 1.0 - dmin);
+            }
         }
         c
     }
@@ -813,6 +816,7 @@ impl Modele {
                 p.hw = q["hw"].as_f64().unwrap();
                 p.hh = q["hh"].as_f64().unwrap();
                 p.th = q["th"].as_bool().unwrap();
+                p.trou = q["trou"].as_f64().unwrap_or(0.0);
                 p.forme = if q["forme"].as_str() == Some("rect") { FormePad::Rect } else { FormePad::Rond };
                 n += 1;
             }
@@ -1116,20 +1120,9 @@ impl Modele {
     pub fn rects_of(&self, i: usize, p: &Pose) -> Vec<(u8, Rect)> {
         let b = self.bbox(i, p);
         // convertisseur libere : degagement autour des boitiers a pas fin (U10, M1, M2) pour que leurs broches au pas
-        // de 0,5 / 0,65 mm puissent sortir en eventail (sinon les voisins colles bouchent les sorties)
-        let m = if self.bloc_libre && self.comps[i].pas_fin { PIECE_MARGIN + degagement_pas_fin() } else { PIECE_MARGIN };
-        // U10 avec son eventail de sortie fixe : l'emprise de l'eventail compte dans la legalite
-        let b = match (self.u10, self.eventail_bb) {
-            (Some(u), Some(e)) if u == i && self.bloc_libre => {
-                let mut r = b;
-                for (lx, ly) in [(e[0], e[1]), (e[2], e[1]), (e[2], e[3]), (e[0], e[3])] {
-                    let (dx, dy) = fwd(lx, ly, p.rot, p.bot);
-                    r = [r[0].min(p.x + dx), r[1].min(p.y + dy), r[2].max(p.x + dx), r[3].max(p.y + dy)];
-                }
-                r
-            }
-            _ => b,
-        };
+        // de 0,5 / 0,65 mm puissent sortir en eventail (sinon les voisins colles bouchent les sorties) ; reglage
+        // placement.degagement_pas_fin_mm
+        let m = if self.bloc_libre && self.comps[i].pas_fin { PIECE_MARGIN + self.param.placement.degagement_pas_fin_mm } else { PIECE_MARGIN };
         let f: u8 = if p.bot { 1 } else { 0 };
         let mut out = vec![(f, [b[0] - m, b[1] - m, b[2] + m, b[3] + m])];
         if self.comps[i].has_th {
@@ -1157,6 +1150,12 @@ impl Modele {
 
     pub fn in_board(&self, r: &Rect) -> bool {
         let m = self.marge;
+        if self.contour.len() >= 3 {
+            // contour polygonal : les quatre coins a au moins la marge a l'interieur (+ centre, pour les encoches)
+            return [(r[0], r[1]), (r[2], r[1]), (r[2], r[3]), (r[0], r[3]), ((r[0] + r[2]) / 2.0, (r[1] + r[3]) / 2.0)]
+                .iter()
+                .all(|&(x, y)| dist_poly(x, y, &self.contour) <= -m);
+        }
         r[0] >= m && r[1] >= m && r[2] <= self.w - m && r[3] <= self.h - m
     }
 
@@ -1473,5 +1472,28 @@ impl Rng {
         let u1 = self.f64().max(1e-12);
         let u2 = self.f64();
         (-2.0 * u1.ln()).sqrt() * (2.0 * std::f64::consts::PI * u2).cos()
+    }
+}
+
+/// Distance signee d'un point a un polygone simple (negative a l'interieur).
+pub fn dist_poly(px: f64, py: f64, pts: &[(f64, f64)]) -> f64 {
+    let n = pts.len();
+    if n == 0 {
+        return f64::MAX;
+    }
+    let mut d = f64::MAX;
+    let mut dedans = false;
+    for k in 0..n {
+        let (ax, ay) = pts[k];
+        let (bx, by) = pts[(k + 1) % n];
+        d = d.min(d_pt_seg(px, py, ax, ay, bx, by));
+        if (ay > py) != (by > py) && px < ax + (py - ay) * (bx - ax) / (by - ay) {
+            dedans = !dedans;
+        }
+    }
+    if dedans {
+        -d
+    } else {
+        d
     }
 }

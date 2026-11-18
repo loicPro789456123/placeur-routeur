@@ -1,0 +1,8 @@
+# Dependances Python du placeur-routeur (contrat 2.1, section 0.2-3)
+# Python 3.10 ou plus recent (essaye avec 3.12) ; installation :
+#     python -m pip install -r requirements.txt
+olefile>=0.46        # lecture et ecriture des .PcbDoc (conteneur OLE) par ../format_altium
+# tkinter (fenetre de l'utilitaire) est fourni avec Python sous Windows ; sous Linux : paquet python3-tk.
+# Rien d'autre : ni numpy, ni matplotlib, ni scipy.
+# Hors Python, en mode source seulement : Rust (cargo) pour construire les deux moteurs
+# (placeur_routage et serigraphie).

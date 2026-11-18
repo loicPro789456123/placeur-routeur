@@ -1,0 +1,21 @@
+{
+ "format": "cas_validite/1",
+ "nom": "011_isolement_piste_pastille",
+ "description": "Piste qui passe à 0,127 mm d'une pastille d'un autre réseau (isolement 0,2) : violation dans les deux modes ; écart moyen et marge d'isolement.",
+ "themes": [
+  "violation:isolement",
+  "mesure:ecart"
+ ],
+ "grille": true,
+ "couture": false,
+ "modes_differents": false,
+ "fichiers": {
+  "donnees": "donnees_placeur.json",
+  "placement": "placements_routage.json",
+  "routage": "routage_detaille.json",
+  "attendu_strict": "attendu_strict.json",
+  "attendu_altium": "attendu_altium.json",
+  "attendu_mesures": "attendu_mesures.json",
+  "couture": null
+ }
+}

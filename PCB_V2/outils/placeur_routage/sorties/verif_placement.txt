@@ -1,7 +1,0 @@
-Controle independant : 0 violation(s)
-Bloc : translation (-2.54 ; -6.10) mm ; noeud SW a 37.1 mm des broches 27-36 des U25
-  U23_ALIM1 a 63.3 mm du noeud SW
-  U23_ALIM2 a 63.2 mm du noeud SW
-  U11_ALIM1 a 33.1 mm du noeud SW
-  U11_ALIM2 a 36.5 mm du noeud SW
-Pieces listees : 319 (dessus 108, dessous 211)

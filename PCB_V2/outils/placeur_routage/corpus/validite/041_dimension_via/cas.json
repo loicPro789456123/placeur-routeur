@@ -1,0 +1,20 @@
+{
+ "format": "cas_validite/1",
+ "nom": "041_dimension_via",
+ "description": "Vias hors des bornes de leur réseau (diamètre 0,9, trou 0,24) : deux dimension_via ; Ø 0,8005 dans ε_via.",
+ "themes": [
+  "violation:dimension_via"
+ ],
+ "grille": true,
+ "couture": false,
+ "modes_differents": false,
+ "fichiers": {
+  "donnees": "donnees_placeur.json",
+  "placement": "placements_routage.json",
+  "routage": "routage_detaille.json",
+  "attendu_strict": "attendu_strict.json",
+  "attendu_altium": "attendu_altium.json",
+  "attendu_mesures": "attendu_mesures.json",
+  "couture": null
+ }
+}

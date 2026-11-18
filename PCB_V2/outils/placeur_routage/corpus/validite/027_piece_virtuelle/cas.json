@@ -1,0 +1,21 @@
+{
+ "format": "cas_validite/1",
+ "nom": "027_piece_virtuelle",
+ "description": "Pastille libre (pièce virtuelle, absente du placement) reliée par une piste : membre de son réseau, valide dans les deux modes.",
+ "themes": [
+  "objet:piece_virtuelle",
+  "contact:piste-pastille"
+ ],
+ "grille": true,
+ "couture": false,
+ "modes_differents": false,
+ "fichiers": {
+  "donnees": "donnees_placeur.json",
+  "placement": "placements_routage.json",
+  "routage": "routage_detaille.json",
+  "attendu_strict": "attendu_strict.json",
+  "attendu_altium": "attendu_altium.json",
+  "attendu_mesures": "attendu_mesures.json",
+  "couture": null
+ }
+}

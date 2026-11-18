@@ -1,0 +1,20 @@
+{
+ "format": "cas_validite/1",
+ "nom": "031_garde_bord",
+ "description": "Piste à 0,508 mm du bord (garde 0,6) hors de ses pastilles : garde_bord dans les deux modes.",
+ "themes": [
+  "violation:garde_bord"
+ ],
+ "grille": true,
+ "couture": false,
+ "modes_differents": false,
+ "fichiers": {
+  "donnees": "donnees_placeur.json",
+  "placement": "placements_routage.json",
+  "routage": "routage_detaille.json",
+  "attendu_strict": "attendu_strict.json",
+  "attendu_altium": "attendu_altium.json",
+  "attendu_mesures": "attendu_mesures.json",
+  "couture": null
+ }
+}

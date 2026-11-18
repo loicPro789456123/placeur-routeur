@@ -1,0 +1,21 @@
+{
+ "format": "cas_validite/1",
+ "nom": "013_antenne",
+ "description": "Tronçon de piste dont une extrémité ne touche aucun cuivre de son réseau : antenne dans les deux modes, sans liaison ouverte.",
+ "themes": [
+  "violation:antenne",
+  "contact:piste-piste"
+ ],
+ "grille": true,
+ "couture": false,
+ "modes_differents": false,
+ "fichiers": {
+  "donnees": "donnees_placeur.json",
+  "placement": "placements_routage.json",
+  "routage": "routage_detaille.json",
+  "attendu_strict": "attendu_strict.json",
+  "attendu_altium": "attendu_altium.json",
+  "attendu_mesures": "attendu_mesures.json",
+  "couture": null
+ }
+}

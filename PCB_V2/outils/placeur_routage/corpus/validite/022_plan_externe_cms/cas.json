@@ -1,0 +1,23 @@
+{
+ "format": "cas_validite/1",
+ "nom": "022_plan_externe_cms",
+ "description": "Pastilles CMS posées sur un plan externe : l'une entièrement dans la zone (contact strict), l'autre qui mord un trou de la zone (recouvrement seulement) : liaison ouverte en strict, valide en altium.",
+ "themes": [
+  "contact:zone-cms",
+  "zone_plan",
+  "zone:plan_externe",
+  "modes_differents"
+ ],
+ "grille": true,
+ "couture": false,
+ "modes_differents": true,
+ "fichiers": {
+  "donnees": "donnees_placeur.json",
+  "placement": "placements_routage.json",
+  "routage": "routage_detaille.json",
+  "attendu_strict": "attendu_strict.json",
+  "attendu_altium": "attendu_altium.json",
+  "attendu_mesures": "attendu_mesures.json",
+  "couture": null
+ }
+}

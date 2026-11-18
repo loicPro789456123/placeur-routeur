@@ -1,0 +1,2906 @@
+{
+ "format": "entree_carte/2",
+ "source": {
+  "fichier": "carte.PcbDoc",
+  "type": "altium_pcbdoc",
+  "sha256": "d6e7f8a9b0c1e3d8a6b1f6c2f4f1c3ea295c710119d9179b67a2b4cba20414d5",
+  "version_fichier": "6.0",
+  "origine_fichier_mil": [1000.0, 1000.0],
+  "origine_fichier_mm": null,
+  "origine_cao_mil": [1000.0, 1000.0]
+ },
+ "unite": "mm",
+ "carte": {
+  "contour": [
+   [0, 0],
+   [164, 0],
+   [164, 97],
+   [0, 97]
+  ],
+  "boite": [
+   0,
+   0,
+   164,
+   97
+  ],
+  "aire_reference_mm2": 15908.0,
+  "decoupes": [
+   {
+    "id": "D1",
+    "points": [
+     [4.0, 51.05],
+     [19.0, 51.05],
+     [19.0, 93.05],
+     [4.0, 93.05]
+    ],
+    "proprietaire": "M4_ALIM1"
+   }
+  ],
+  "trous": [
+   {
+    "id": "T1",
+    "x": 4.0,
+    "y": 4.0,
+    "rotation": 0.0,
+    "trou": {
+     "diametre": 3.2,
+     "forme": "rond",
+     "longueur": 0.0,
+     "rotation": 0.0,
+     "decalage": [0.0, 0.0],
+     "metallise": true
+    },
+    "metallise": true,
+    "diametre_cuivre": 6.35,
+    "couches": [
+     "TopLayer",
+     "MidLayer1",
+     "MidLayer2",
+     "BottomLayer"
+    ]
+   }
+  ],
+  "couches": [
+   {
+    "nom": "TopLayer",
+    "nom_fichier": "TopLayer",
+    "rang": 0,
+    "type": "signal",
+    "plans": [],
+    "retrait_mm": 0.0,
+    "epaisseur_cuivre_mm": 0.035,
+    "pistes_libres": 0,
+    "type_kicad": null,
+    "routage_permis": null
+   },
+   {
+    "nom": "MidLayer1",
+    "nom_fichier": "MidLayer1",
+    "rang": 1,
+    "type": "plan_negatif",
+    "plans": [
+     {
+      "reseau": "GND",
+      "contour": [
+       [0.5, 0.5],
+       [163.5, 0.5],
+       [163.5, 96.5],
+       [0.5, 96.5]
+      ],
+      "trous": []
+     }
+    ],
+    "retrait_mm": 0.5,
+    "epaisseur_cuivre_mm": 0.0356,
+    "pistes_libres": 0,
+    "type_kicad": null,
+    "routage_permis": null
+   },
+   {
+    "nom": "MidLayer2",
+    "nom_fichier": "MidLayer2",
+    "rang": 2,
+    "type": "signal",
+    "plans": [],
+    "retrait_mm": 0.0,
+    "epaisseur_cuivre_mm": 0.0356,
+    "pistes_libres": 0,
+    "type_kicad": null,
+    "routage_permis": null
+   },
+   {
+    "nom": "BottomLayer",
+    "nom_fichier": "BottomLayer",
+    "rang": 3,
+    "type": "signal",
+    "plans": [],
+    "retrait_mm": 0.0,
+    "epaisseur_cuivre_mm": 0.035,
+    "pistes_libres": 1,
+    "type_kicad": null,
+    "routage_permis": null
+   }
+  ],
+  "remplissages": [
+   {
+    "nom": "GND_TopLayer",
+    "couche": "TopLayer",
+    "reseau": "GND",
+    "contour": [
+     [0, 0],
+     [164, 0],
+     [164, 97],
+     [0, 97]
+    ],
+    "trous": [],
+    "couverture": 1.0
+   },
+   {
+    "nom": "GND_MidLayer2",
+    "couche": "MidLayer2",
+    "reseau": "GND",
+    "contour": [
+     [0, 0],
+     [164, 0],
+     [164, 97],
+     [0, 97]
+    ],
+    "trous": [],
+    "couverture": 1.0
+   },
+   {
+    "nom": "GND_BottomLayer",
+    "couche": "BottomLayer",
+    "reseau": "GND",
+    "contour": [
+     [0, 0],
+     [164, 0],
+     [164, 97],
+     [0, 97]
+    ],
+    "trous": [],
+    "couverture": 1.0
+   }
+  ],
+  "zones_interdites": [
+   {
+    "id": "Z1",
+    "couches": [
+     "toutes"
+    ],
+    "forme": "polygone",
+    "points": [
+     [150.0, 80.0],
+     [160.0, 80.0],
+     [160.0, 90.0],
+     [150.0, 90.0]
+    ],
+    "largeur": 0.0,
+    "effets": [
+     "pistes",
+     "vias"
+    ],
+    "source": "keepout"
+   }
+  ],
+  "obstacles_cuivre": [
+   {
+    "id": "O1",
+    "type": "pastille",
+    "couches": [
+     "TopLayer"
+    ],
+    "points": [
+     [150.0, 5.0],
+     [151.0, 5.0],
+     [151.0, 6.0],
+     [150.0, 6.0]
+    ]
+   }
+  ],
+  "cuivre_existant": [
+   {
+    "id": "E1",
+    "type": "piste",
+    "reseau": "GND",
+    "couches": [
+     "BottomLayer"
+    ],
+    "verrouille": true,
+    "x1": 5.0,
+    "y1": 20.0,
+    "x2": 5.0,
+    "y2": 40.0,
+    "largeur": 1.0
+   },
+   {
+    "id": "E2",
+    "type": "via",
+    "reseau": "GND",
+    "couches": [
+     "TopLayer",
+     "MidLayer1",
+     "MidLayer2",
+     "BottomLayer"
+    ],
+    "verrouille": true,
+    "x": 5.0,
+    "y": 40.0,
+    "diametre": 0.6,
+    "trou": 0.3
+   }
+  ],
+  "couches_cuivre": 4,
+  "noms_couches_cuivre": [
+   "TopLayer",
+   "MidLayer1",
+   "MidLayer2",
+   "BottomLayer"
+  ]
+ },
+ "composants": [
+  {
+   "designateur": "U10",
+   "designateur_source": "U10",
+   "empreinte": "QFN-12",
+   "description": "",
+   "reference": "circuit",
+   "valeur": "contrôleur",
+   "genre": "standard",
+   "classes_composants": [
+    "CONVERTISSEUR"
+   ],
+   "canal": null,
+   "hauteur": 1.0,
+   "source_hauteur": "corps3d",
+   "x": 86.3,
+   "y": 40.2,
+   "rotation": 0.0,
+   "face": "dessus",
+   "verrouille": false,
+   "boite": [
+    -1.6,
+    -1.6,
+    1.6,
+    1.6
+   ],
+   "pastilles": [
+    {
+     "id": "U10#0",
+     "nom": "1",
+     "reseau": "NetC16_2",
+     "forme": "rect",
+     "largeur": 0.24,
+     "hauteur": 0.6,
+     "rotation": 0.0,
+     "rayon_coin": 0.0,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 1,
+     "x": -1.0,
+     "y": -1.45
+    },
+    {
+     "id": "U10#1",
+     "nom": "2",
+     "reseau": "NetC19_2",
+     "forme": "rect",
+     "largeur": 0.24,
+     "hauteur": 0.6,
+     "rotation": 0.0,
+     "rayon_coin": 0.0,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 1,
+     "x": -0.5,
+     "y": -1.45
+    },
+    {
+     "id": "U10#2",
+     "nom": "3",
+     "reseau": "NetC19_1",
+     "forme": "rect",
+     "largeur": 0.24,
+     "hauteur": 0.6,
+     "rotation": 0.0,
+     "rayon_coin": 0.0,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 1,
+     "x": 0.0,
+     "y": -1.45
+    },
+    {
+     "id": "U10#3",
+     "nom": "4",
+     "reseau": "NetM1_4",
+     "forme": "rect",
+     "largeur": 0.24,
+     "hauteur": 0.6,
+     "rotation": 0.0,
+     "rayon_coin": 0.0,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 1,
+     "x": 0.5,
+     "y": -1.45
+    },
+    {
+     "id": "U10#4",
+     "nom": "5",
+     "reseau": "NetM2_4",
+     "forme": "rect",
+     "largeur": 0.24,
+     "hauteur": 0.6,
+     "rotation": 0.0,
+     "rayon_coin": 0.0,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 1,
+     "x": 1.0,
+     "y": -1.45
+    },
+    {
+     "id": "U10#5",
+     "nom": "6",
+     "reseau": "NetC21_1",
+     "forme": "rect",
+     "largeur": 0.6,
+     "hauteur": 0.24,
+     "rotation": 0.0,
+     "rayon_coin": 0.0,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 1,
+     "x": 1.45,
+     "y": 0.0
+    },
+    {
+     "id": "U10#6",
+     "nom": "7",
+     "reseau": "NetC22_2",
+     "forme": "rect",
+     "largeur": 0.24,
+     "hauteur": 0.6,
+     "rotation": 0.0,
+     "rayon_coin": 0.0,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 1,
+     "x": 1.0,
+     "y": 1.45
+    },
+    {
+     "id": "U10#7",
+     "nom": "8",
+     "reseau": "NetR25_2",
+     "forme": "rect",
+     "largeur": 0.24,
+     "hauteur": 0.6,
+     "rotation": 0.0,
+     "rayon_coin": 0.0,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 1,
+     "x": 0.5,
+     "y": 1.45
+    },
+    {
+     "id": "U10#8",
+     "nom": "9",
+     "reseau": "GND",
+     "forme": "rect",
+     "largeur": 0.24,
+     "hauteur": 0.6,
+     "rotation": 0.0,
+     "rayon_coin": 0.0,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 1,
+     "x": 0.0,
+     "y": 1.45
+    },
+    {
+     "id": "U10#9",
+     "nom": "10",
+     "reseau": "+12V",
+     "forme": "rect",
+     "largeur": 0.24,
+     "hauteur": 0.6,
+     "rotation": 0.0,
+     "rayon_coin": 0.0,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 1,
+     "x": -0.5,
+     "y": 1.45
+    },
+    {
+     "id": "U10#10",
+     "nom": "13",
+     "reseau": "GND",
+     "forme": "polygone",
+     "largeur": 1.6,
+     "hauteur": 1.6,
+     "rotation": 0.0,
+     "rayon_coin": 0.0,
+     "points": [
+      [-0.8, -0.8],
+      [0.8, -0.8],
+      [0.8, 0.8],
+      [-0.8, 0.8]
+     ],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": true,
+     "classe_isolement": 1,
+     "x": 0.0,
+     "y": 0.0
+    },
+    {
+     "id": "U10#11",
+     "nom": "12",
+     "reseau": "NetC18_2",
+     "forme": "rect",
+     "largeur": 0.6,
+     "hauteur": 0.24,
+     "rotation": 0.0,
+     "rayon_coin": 0.0,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 1,
+     "x": -1.45,
+     "y": 0.0
+    }
+   ],
+   "regions": [
+    {
+     "id": "U10/R0",
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "pastille": "U10#10",
+     "reseau": "GND",
+     "liaison": null,
+     "points": [
+      [-0.8, -0.8],
+      [0.8, -0.8],
+      [0.8, 0.8],
+      [-0.8, 0.8]
+     ],
+     "classe_isolement": 1
+    }
+   ],
+   "vias": [
+    {
+     "id": "U10/V0",
+     "x": 0.0,
+     "y": 0.0,
+     "diametre": 0.5,
+     "trou": 0.25,
+     "reseau": "GND",
+     "classe_isolement": 1
+    }
+   ],
+   "zones_interdites": [],
+   "decoupes": []
+  },
+  {
+   "designateur": "M1",
+   "designateur_source": "M1",
+   "empreinte": "PowerPAK",
+   "description": "",
+   "reference": "transistor",
+   "valeur": "30 V",
+   "genre": "standard",
+   "classes_composants": [
+    "CONVERTISSEUR"
+   ],
+   "canal": null,
+   "hauteur": 1.1,
+   "source_hauteur": "corps3d",
+   "x": 80.0,
+   "y": 45.0,
+   "rotation": 0.0,
+   "face": "dessus",
+   "verrouille": false,
+   "boite": [
+    -2.0,
+    -1.8,
+    2.0,
+    1.9
+   ],
+   "pastilles": [
+    {
+     "id": "M1#0",
+     "nom": "G",
+     "reseau": "NetM1_4",
+     "forme": "rect",
+     "largeur": 0.8,
+     "hauteur": 1.0,
+     "rotation": 0.0,
+     "rayon_coin": 0.0,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 1,
+     "x": -1.27,
+     "y": -1.0
+    },
+    {
+     "id": "M1#1",
+     "nom": "S",
+     "reseau": "NetC19_1",
+     "forme": "rect",
+     "largeur": 0.8,
+     "hauteur": 1.0,
+     "rotation": 0.0,
+     "rayon_coin": 0.0,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 1,
+     "x": 1.27,
+     "y": -1.0
+    },
+    {
+     "id": "M1#2",
+     "nom": "D",
+     "reseau": "+12V",
+     "forme": "rect",
+     "largeur": 3.0,
+     "hauteur": 1.6,
+     "rotation": 0.0,
+     "rayon_coin": 0.0,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 1,
+     "x": 0.0,
+     "y": 1.0
+    }
+   ],
+   "regions": [],
+   "vias": [],
+   "zones_interdites": [],
+   "decoupes": []
+  },
+  {
+   "designateur": "M2",
+   "designateur_source": "M2",
+   "empreinte": "PowerPAK",
+   "description": "",
+   "reference": "transistor",
+   "valeur": "30 V",
+   "genre": "standard",
+   "classes_composants": [
+    "CONVERTISSEUR"
+   ],
+   "canal": null,
+   "hauteur": 1.1,
+   "source_hauteur": "corps3d",
+   "x": 80.0,
+   "y": 37.0,
+   "rotation": 0.0,
+   "face": "dessus",
+   "verrouille": false,
+   "boite": [
+    -2.0,
+    -1.8,
+    2.0,
+    1.9
+   ],
+   "pastilles": [
+    {
+     "id": "M2#0",
+     "nom": "G",
+     "reseau": "NetM2_4",
+     "forme": "rect",
+     "largeur": 0.8,
+     "hauteur": 1.0,
+     "rotation": 0.0,
+     "rayon_coin": 0.0,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 1,
+     "x": -1.27,
+     "y": -1.0
+    },
+    {
+     "id": "M2#1",
+     "nom": "S",
+     "reseau": "GND",
+     "forme": "rect",
+     "largeur": 0.8,
+     "hauteur": 1.0,
+     "rotation": 0.0,
+     "rayon_coin": 0.0,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 1,
+     "x": 1.27,
+     "y": -1.0
+    },
+    {
+     "id": "M2#2",
+     "nom": "D",
+     "reseau": "NetC19_1",
+     "forme": "rect",
+     "largeur": 3.0,
+     "hauteur": 1.6,
+     "rotation": 0.0,
+     "rayon_coin": 0.0,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 1,
+     "x": 0.0,
+     "y": 1.0
+    }
+   ],
+   "regions": [],
+   "vias": [],
+   "zones_interdites": [],
+   "decoupes": []
+  },
+  {
+   "designateur": "L1",
+   "designateur_source": "L1",
+   "empreinte": "IND-7x7",
+   "description": "",
+   "reference": "inductance",
+   "valeur": "10 uH",
+   "genre": "standard",
+   "classes_composants": [],
+   "canal": null,
+   "hauteur": 4.5,
+   "source_hauteur": "corps3d",
+   "x": 95.0,
+   "y": 42.0,
+   "rotation": 0.0,
+   "face": "dessus",
+   "verrouille": false,
+   "boite": [
+    -3.6,
+    -3.6,
+    3.6,
+    3.6
+   ],
+   "pastilles": [
+    {
+     "id": "L1#0",
+     "nom": "1",
+     "reseau": "NetC19_1",
+     "forme": "rect",
+     "largeur": 1.5,
+     "hauteur": 3.0,
+     "rotation": 0.0,
+     "rayon_coin": 0.0,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 0,
+     "x": -2.0,
+     "y": 0.0
+    },
+    {
+     "id": "L1#1",
+     "nom": "2",
+     "reseau": "+8V",
+     "forme": "rect",
+     "largeur": 1.5,
+     "hauteur": 3.0,
+     "rotation": 0.0,
+     "rayon_coin": 0.0,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 2,
+     "x": 2.0,
+     "y": 0.0
+    }
+   ],
+   "regions": [],
+   "vias": [],
+   "zones_interdites": [
+    {
+     "id": "L1/Z0",
+     "couches": [
+      "MidLayer2"
+     ],
+     "forme": "polygone",
+     "points": [
+      [-3.0, -3.0],
+      [3.0, -3.0],
+      [3.0, 3.0],
+      [-3.0, 3.0]
+     ],
+     "largeur": 0.0,
+     "effets": [
+      "pistes"
+     ],
+     "source": "keepout"
+    }
+   ],
+   "decoupes": []
+  },
+  {
+   "designateur": "C7",
+   "designateur_source": "C7",
+   "empreinte": "0805",
+   "description": "",
+   "reference": "condensateur",
+   "valeur": "10 uF",
+   "genre": "standard",
+   "classes_composants": [],
+   "canal": null,
+   "hauteur": 1.25,
+   "source_hauteur": "corps3d",
+   "x": 75.0,
+   "y": 45.0,
+   "rotation": 90.0,
+   "face": "dessus",
+   "verrouille": false,
+   "boite": [
+    -1.0,
+    -0.6,
+    1.0,
+    0.6
+   ],
+   "pastilles": [
+    {
+     "id": "C7#0",
+     "nom": "1",
+     "reseau": "+12V",
+     "forme": "rect_arrondi",
+     "largeur": 0.6,
+     "hauteur": 0.6,
+     "rotation": 0.0,
+     "rayon_coin": 0.075,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 2,
+     "x": -0.5,
+     "y": 0.0
+    },
+    {
+     "id": "C7#1",
+     "nom": "2",
+     "reseau": "GND",
+     "forme": "rect_arrondi",
+     "largeur": 0.6,
+     "hauteur": 0.6,
+     "rotation": 0.0,
+     "rayon_coin": 0.075,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 2,
+     "x": 0.5,
+     "y": 0.0
+    }
+   ],
+   "regions": [],
+   "vias": [],
+   "zones_interdites": [],
+   "decoupes": []
+  },
+  {
+   "designateur": "C15",
+   "designateur_source": "C15",
+   "empreinte": "0603",
+   "description": "",
+   "reference": "condensateur",
+   "valeur": "1 uF",
+   "genre": "standard",
+   "classes_composants": [],
+   "canal": null,
+   "hauteur": 0.8,
+   "source_hauteur": "corps3d",
+   "x": 84.0,
+   "y": 44.0,
+   "rotation": 0.0,
+   "face": "dessus",
+   "verrouille": false,
+   "boite": [
+    -0.8,
+    -0.4,
+    0.8,
+    0.4
+   ],
+   "pastilles": [
+    {
+     "id": "C15#0",
+     "nom": "1",
+     "reseau": "+12V",
+     "forme": "rect_arrondi",
+     "largeur": 0.6,
+     "hauteur": 0.6,
+     "rotation": 0.0,
+     "rayon_coin": 0.075,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 2,
+     "x": -0.5,
+     "y": 0.0
+    },
+    {
+     "id": "C15#1",
+     "nom": "2",
+     "reseau": "GND",
+     "forme": "rect_arrondi",
+     "largeur": 0.6,
+     "hauteur": 0.6,
+     "rotation": 0.0,
+     "rayon_coin": 0.075,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 2,
+     "x": 0.5,
+     "y": 0.0
+    }
+   ],
+   "regions": [],
+   "vias": [],
+   "zones_interdites": [],
+   "decoupes": []
+  },
+  {
+   "designateur": "C17",
+   "designateur_source": "C17",
+   "empreinte": "1210",
+   "description": "",
+   "reference": "condensateur",
+   "valeur": "47 uF",
+   "genre": "standard",
+   "classes_composants": [],
+   "canal": null,
+   "hauteur": 2.5,
+   "source_hauteur": "corps3d",
+   "x": 101.0,
+   "y": 42.0,
+   "rotation": 90.0,
+   "face": "dessus",
+   "verrouille": false,
+   "boite": [
+    -1.6,
+    -1.25,
+    1.6,
+    1.25
+   ],
+   "pastilles": [
+    {
+     "id": "C17#0",
+     "nom": "1",
+     "reseau": "+8V",
+     "forme": "rect_arrondi",
+     "largeur": 0.6,
+     "hauteur": 0.6,
+     "rotation": 0.0,
+     "rayon_coin": 0.075,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 2,
+     "x": -0.5,
+     "y": 0.0
+    },
+    {
+     "id": "C17#1",
+     "nom": "2",
+     "reseau": "GND",
+     "forme": "rect_arrondi",
+     "largeur": 0.6,
+     "hauteur": 0.6,
+     "rotation": 0.0,
+     "rayon_coin": 0.075,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 2,
+     "x": 0.5,
+     "y": 0.0
+    }
+   ],
+   "regions": [],
+   "vias": [],
+   "zones_interdites": [],
+   "decoupes": []
+  },
+  {
+   "designateur": "C19",
+   "designateur_source": "C19",
+   "empreinte": "0402",
+   "description": "",
+   "reference": "condensateur",
+   "valeur": "100 nF",
+   "genre": "standard",
+   "classes_composants": [],
+   "canal": null,
+   "hauteur": 0.5,
+   "source_hauteur": "corps3d",
+   "x": 86.3,
+   "y": 37.5,
+   "rotation": 0.0,
+   "face": "dessus",
+   "verrouille": false,
+   "boite": [
+    -0.5,
+    -0.25,
+    0.5,
+    0.25
+   ],
+   "pastilles": [
+    {
+     "id": "C19#0",
+     "nom": "1",
+     "reseau": "NetC19_2",
+     "forme": "rect_arrondi",
+     "largeur": 0.6,
+     "hauteur": 0.6,
+     "rotation": 0.0,
+     "rayon_coin": 0.075,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 2,
+     "x": -0.5,
+     "y": 0.0
+    },
+    {
+     "id": "C19#1",
+     "nom": "2",
+     "reseau": "NetC19_1",
+     "forme": "rect_arrondi",
+     "largeur": 0.6,
+     "hauteur": 0.6,
+     "rotation": 0.0,
+     "rayon_coin": 0.075,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 0,
+     "x": 0.5,
+     "y": 0.0
+    }
+   ],
+   "regions": [],
+   "vias": [],
+   "zones_interdites": [],
+   "decoupes": []
+  },
+  {
+   "designateur": "C20",
+   "designateur_source": "C20",
+   "empreinte": "0805",
+   "description": "",
+   "reference": "condensateur",
+   "valeur": "22 uF",
+   "genre": "standard",
+   "classes_composants": [],
+   "canal": null,
+   "hauteur": 1.25,
+   "source_hauteur": "corps3d",
+   "x": 99.0,
+   "y": 46.0,
+   "rotation": 0.0,
+   "face": "dessus",
+   "verrouille": false,
+   "boite": [
+    -1.0,
+    -0.6,
+    1.0,
+    0.6
+   ],
+   "pastilles": [
+    {
+     "id": "C20#0",
+     "nom": "1",
+     "reseau": "+8V",
+     "forme": "rect_arrondi",
+     "largeur": 0.6,
+     "hauteur": 0.6,
+     "rotation": 0.0,
+     "rayon_coin": 0.075,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 2,
+     "x": -0.5,
+     "y": 0.0
+    },
+    {
+     "id": "C20#1",
+     "nom": "2",
+     "reseau": "GND",
+     "forme": "rect_arrondi",
+     "largeur": 0.6,
+     "hauteur": 0.6,
+     "rotation": 0.0,
+     "rayon_coin": 0.075,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 2,
+     "x": 0.5,
+     "y": 0.0
+    }
+   ],
+   "regions": [],
+   "vias": [],
+   "zones_interdites": [],
+   "decoupes": []
+  },
+  {
+   "designateur": "U25_VOLT1",
+   "designateur_source": "U25_VOLT1",
+   "empreinte": "SSOP-28",
+   "description": "",
+   "reference": "circuit",
+   "valeur": "mesure",
+   "genre": "standard",
+   "classes_composants": [],
+   "canal": null,
+   "hauteur": 1.75,
+   "source_hauteur": "corps3d",
+   "x": 130.0,
+   "y": 30.0,
+   "rotation": 0.0,
+   "face": "dessus",
+   "verrouille": false,
+   "boite": [
+    -5.2,
+    -4.0,
+    5.2,
+    4.0
+   ],
+   "pastilles": [
+    {
+     "id": "U25_VOLT1#0",
+     "nom": "1",
+     "reseau": "GND",
+     "forme": "rect",
+     "largeur": 0.35,
+     "hauteur": 1.2,
+     "rotation": 0.0,
+     "rayon_coin": 0.0,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 2,
+     "x": -4.225,
+     "y": -2.7
+    },
+    {
+     "id": "U25_VOLT1#1",
+     "nom": "2",
+     "reseau": "",
+     "forme": "rect",
+     "largeur": 0.35,
+     "hauteur": 1.2,
+     "rotation": 0.0,
+     "rayon_coin": 0.0,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 2,
+     "x": -3.575,
+     "y": -2.7
+    },
+    {
+     "id": "U25_VOLT1#2",
+     "nom": "3",
+     "reseau": "",
+     "forme": "rect",
+     "largeur": 0.35,
+     "hauteur": 1.2,
+     "rotation": 0.0,
+     "rayon_coin": 0.0,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 2,
+     "x": -2.925,
+     "y": -2.7
+    },
+    {
+     "id": "U25_VOLT1#3",
+     "nom": "4",
+     "reseau": "",
+     "forme": "rect",
+     "largeur": 0.35,
+     "hauteur": 1.2,
+     "rotation": 0.0,
+     "rayon_coin": 0.0,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 2,
+     "x": -2.275,
+     "y": -2.7
+    },
+    {
+     "id": "U25_VOLT1#4",
+     "nom": "5",
+     "reseau": "",
+     "forme": "rect",
+     "largeur": 0.35,
+     "hauteur": 1.2,
+     "rotation": 0.0,
+     "rayon_coin": 0.0,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 2,
+     "x": -1.625,
+     "y": -2.7
+    },
+    {
+     "id": "U25_VOLT1#5",
+     "nom": "6",
+     "reseau": "",
+     "forme": "rect",
+     "largeur": 0.35,
+     "hauteur": 1.2,
+     "rotation": 0.0,
+     "rayon_coin": 0.0,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 2,
+     "x": -0.975,
+     "y": -2.7
+    },
+    {
+     "id": "U25_VOLT1#6",
+     "nom": "7",
+     "reseau": "",
+     "forme": "rect",
+     "largeur": 0.35,
+     "hauteur": 1.2,
+     "rotation": 0.0,
+     "rayon_coin": 0.0,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 2,
+     "x": -0.325,
+     "y": -2.7
+    },
+    {
+     "id": "U25_VOLT1#7",
+     "nom": "8",
+     "reseau": "",
+     "forme": "rect",
+     "largeur": 0.35,
+     "hauteur": 1.2,
+     "rotation": 0.0,
+     "rayon_coin": 0.0,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 2,
+     "x": 0.325,
+     "y": -2.7
+    },
+    {
+     "id": "U25_VOLT1#8",
+     "nom": "9",
+     "reseau": "",
+     "forme": "rect",
+     "largeur": 0.35,
+     "hauteur": 1.2,
+     "rotation": 0.0,
+     "rayon_coin": 0.0,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 2,
+     "x": 0.975,
+     "y": -2.7
+    },
+    {
+     "id": "U25_VOLT1#9",
+     "nom": "10",
+     "reseau": "",
+     "forme": "rect",
+     "largeur": 0.35,
+     "hauteur": 1.2,
+     "rotation": 0.0,
+     "rayon_coin": 0.0,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 2,
+     "x": 1.625,
+     "y": -2.7
+    },
+    {
+     "id": "U25_VOLT1#10",
+     "nom": "11",
+     "reseau": "",
+     "forme": "rect",
+     "largeur": 0.35,
+     "hauteur": 1.2,
+     "rotation": 0.0,
+     "rayon_coin": 0.0,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 2,
+     "x": 2.275,
+     "y": -2.7
+    },
+    {
+     "id": "U25_VOLT1#11",
+     "nom": "12",
+     "reseau": "",
+     "forme": "rect",
+     "largeur": 0.35,
+     "hauteur": 1.2,
+     "rotation": 0.0,
+     "rayon_coin": 0.0,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 2,
+     "x": 2.925,
+     "y": -2.7
+    },
+    {
+     "id": "U25_VOLT1#12",
+     "nom": "13",
+     "reseau": "",
+     "forme": "rect",
+     "largeur": 0.35,
+     "hauteur": 1.2,
+     "rotation": 0.0,
+     "rayon_coin": 0.0,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 2,
+     "x": 3.575,
+     "y": -2.7
+    },
+    {
+     "id": "U25_VOLT1#13",
+     "nom": "14",
+     "reseau": "",
+     "forme": "rect",
+     "largeur": 0.35,
+     "hauteur": 1.2,
+     "rotation": 0.0,
+     "rayon_coin": 0.0,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 2,
+     "x": 4.225,
+     "y": -2.7
+    },
+    {
+     "id": "U25_VOLT1#14",
+     "nom": "15",
+     "reseau": "",
+     "forme": "rect",
+     "largeur": 0.35,
+     "hauteur": 1.2,
+     "rotation": 0.0,
+     "rayon_coin": 0.0,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 2,
+     "x": -4.225,
+     "y": 2.7
+    },
+    {
+     "id": "U25_VOLT1#15",
+     "nom": "16",
+     "reseau": "",
+     "forme": "rect",
+     "largeur": 0.35,
+     "hauteur": 1.2,
+     "rotation": 0.0,
+     "rayon_coin": 0.0,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 2,
+     "x": -3.575,
+     "y": 2.7
+    },
+    {
+     "id": "U25_VOLT1#16",
+     "nom": "17",
+     "reseau": "",
+     "forme": "rect",
+     "largeur": 0.35,
+     "hauteur": 1.2,
+     "rotation": 0.0,
+     "rayon_coin": 0.0,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 2,
+     "x": -2.925,
+     "y": 2.7
+    },
+    {
+     "id": "U25_VOLT1#17",
+     "nom": "18",
+     "reseau": "",
+     "forme": "rect",
+     "largeur": 0.35,
+     "hauteur": 1.2,
+     "rotation": 0.0,
+     "rayon_coin": 0.0,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 2,
+     "x": -2.275,
+     "y": 2.7
+    },
+    {
+     "id": "U25_VOLT1#18",
+     "nom": "19",
+     "reseau": "",
+     "forme": "rect",
+     "largeur": 0.35,
+     "hauteur": 1.2,
+     "rotation": 0.0,
+     "rayon_coin": 0.0,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 2,
+     "x": -1.625,
+     "y": 2.7
+    },
+    {
+     "id": "U25_VOLT1#19",
+     "nom": "20",
+     "reseau": "",
+     "forme": "rect",
+     "largeur": 0.35,
+     "hauteur": 1.2,
+     "rotation": 0.0,
+     "rayon_coin": 0.0,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 2,
+     "x": -0.975,
+     "y": 2.7
+    },
+    {
+     "id": "U25_VOLT1#20",
+     "nom": "21",
+     "reseau": "",
+     "forme": "rect",
+     "largeur": 0.35,
+     "hauteur": 1.2,
+     "rotation": 0.0,
+     "rayon_coin": 0.0,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 2,
+     "x": -0.325,
+     "y": 2.7
+    },
+    {
+     "id": "U25_VOLT1#21",
+     "nom": "22",
+     "reseau": "",
+     "forme": "rect",
+     "largeur": 0.35,
+     "hauteur": 1.2,
+     "rotation": 0.0,
+     "rayon_coin": 0.0,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 2,
+     "x": 0.325,
+     "y": 2.7
+    },
+    {
+     "id": "U25_VOLT1#22",
+     "nom": "23",
+     "reseau": "",
+     "forme": "rect",
+     "largeur": 0.35,
+     "hauteur": 1.2,
+     "rotation": 0.0,
+     "rayon_coin": 0.0,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 2,
+     "x": 0.975,
+     "y": 2.7
+    },
+    {
+     "id": "U25_VOLT1#23",
+     "nom": "24",
+     "reseau": "",
+     "forme": "rect",
+     "largeur": 0.35,
+     "hauteur": 1.2,
+     "rotation": 0.0,
+     "rayon_coin": 0.0,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 2,
+     "x": 1.625,
+     "y": 2.7
+    },
+    {
+     "id": "U25_VOLT1#24",
+     "nom": "25",
+     "reseau": "",
+     "forme": "rect",
+     "largeur": 0.35,
+     "hauteur": 1.2,
+     "rotation": 0.0,
+     "rayon_coin": 0.0,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 2,
+     "x": 2.275,
+     "y": 2.7
+    },
+    {
+     "id": "U25_VOLT1#25",
+     "nom": "26",
+     "reseau": "",
+     "forme": "rect",
+     "largeur": 0.35,
+     "hauteur": 1.2,
+     "rotation": 0.0,
+     "rayon_coin": 0.0,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 2,
+     "x": 2.925,
+     "y": 2.7
+    },
+    {
+     "id": "U25_VOLT1#26",
+     "nom": "27",
+     "reseau": "",
+     "forme": "rect",
+     "largeur": 0.35,
+     "hauteur": 1.2,
+     "rotation": 0.0,
+     "rayon_coin": 0.0,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 2,
+     "x": 3.575,
+     "y": 2.7
+    },
+    {
+     "id": "U25_VOLT1#27",
+     "nom": "28",
+     "reseau": "+8V",
+     "forme": "rect",
+     "largeur": 0.35,
+     "hauteur": 1.2,
+     "rotation": 0.0,
+     "rayon_coin": 0.0,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 2,
+     "x": 4.225,
+     "y": 2.7
+    }
+   ],
+   "regions": [],
+   "vias": [],
+   "zones_interdites": [],
+   "decoupes": []
+  },
+  {
+   "designateur": "R62_ALIM1",
+   "designateur_source": "R62",
+   "empreinte": "0603",
+   "description": "",
+   "reference": "resistance",
+   "valeur": "0R",
+   "genre": "standard",
+   "classes_composants": [],
+   "canal": {
+    "groupe": "R62",
+    "instance": "ALIM1"
+   },
+   "hauteur": 0.5,
+   "source_hauteur": "corps3d",
+   "x": 40.0,
+   "y": 20.0,
+   "rotation": 0.0,
+   "face": "dessus",
+   "verrouille": false,
+   "boite": [
+    -0.8,
+    -0.4,
+    0.8,
+    0.4
+   ],
+   "pastilles": [
+    {
+     "id": "R62_ALIM1#0",
+     "nom": "1",
+     "reseau": "NetR62_ALIM1_1",
+     "forme": "rect_arrondi",
+     "largeur": 0.6,
+     "hauteur": 0.6,
+     "rotation": 0.0,
+     "rayon_coin": 0.075,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 2,
+     "x": -0.5,
+     "y": 0.0
+    },
+    {
+     "id": "R62_ALIM1#1",
+     "nom": "2",
+     "reseau": "+8V",
+     "forme": "rect_arrondi",
+     "largeur": 0.6,
+     "hauteur": 0.6,
+     "rotation": 0.0,
+     "rayon_coin": 0.075,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 2,
+     "x": 0.5,
+     "y": 0.0
+    }
+   ],
+   "regions": [],
+   "vias": [],
+   "zones_interdites": [],
+   "decoupes": []
+  },
+  {
+   "designateur": "C1_ALIM1",
+   "designateur_source": "C1",
+   "empreinte": "0603",
+   "description": "",
+   "reference": "condensateur",
+   "valeur": "100 nF",
+   "genre": "standard",
+   "classes_composants": [],
+   "canal": {
+    "groupe": "C1",
+    "instance": "ALIM1"
+   },
+   "hauteur": 0.8,
+   "source_hauteur": "corps3d",
+   "x": 40.0,
+   "y": 23.0,
+   "rotation": 0.0,
+   "face": "dessus",
+   "verrouille": false,
+   "boite": [
+    -0.8,
+    -0.4,
+    0.8,
+    0.4
+   ],
+   "pastilles": [
+    {
+     "id": "C1_ALIM1#0",
+     "nom": "1",
+     "reseau": "NetR62_ALIM1_1",
+     "forme": "rect_arrondi",
+     "largeur": 0.6,
+     "hauteur": 0.6,
+     "rotation": 0.0,
+     "rayon_coin": 0.075,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 2,
+     "x": -0.5,
+     "y": 0.0
+    },
+    {
+     "id": "C1_ALIM1#1",
+     "nom": "2",
+     "reseau": "GND",
+     "forme": "rect_arrondi",
+     "largeur": 0.6,
+     "hauteur": 0.6,
+     "rotation": 0.0,
+     "rayon_coin": 0.075,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 2,
+     "x": 0.5,
+     "y": 0.0
+    }
+   ],
+   "regions": [],
+   "vias": [],
+   "zones_interdites": [],
+   "decoupes": []
+  },
+  {
+   "designateur": "R62_ALIM2",
+   "designateur_source": "R62",
+   "empreinte": "0603",
+   "description": "",
+   "reference": "resistance",
+   "valeur": "0R",
+   "genre": "standard",
+   "classes_composants": [],
+   "canal": {
+    "groupe": "R62",
+    "instance": "ALIM2"
+   },
+   "hauteur": 0.5,
+   "source_hauteur": "corps3d",
+   "x": 60.0,
+   "y": 20.0,
+   "rotation": 0.0,
+   "face": "dessus",
+   "verrouille": false,
+   "boite": [
+    -0.8,
+    -0.4,
+    0.8,
+    0.4
+   ],
+   "pastilles": [
+    {
+     "id": "R62_ALIM2#0",
+     "nom": "1",
+     "reseau": "NetR62_ALIM2_1",
+     "forme": "rect_arrondi",
+     "largeur": 0.6,
+     "hauteur": 0.6,
+     "rotation": 0.0,
+     "rayon_coin": 0.075,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 2,
+     "x": -0.5,
+     "y": 0.0
+    },
+    {
+     "id": "R62_ALIM2#1",
+     "nom": "2",
+     "reseau": "+8V",
+     "forme": "rect_arrondi",
+     "largeur": 0.6,
+     "hauteur": 0.6,
+     "rotation": 0.0,
+     "rayon_coin": 0.075,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 2,
+     "x": 0.5,
+     "y": 0.0
+    }
+   ],
+   "regions": [],
+   "vias": [],
+   "zones_interdites": [],
+   "decoupes": []
+  },
+  {
+   "designateur": "C1_ALIM2",
+   "designateur_source": "C1",
+   "empreinte": "0603",
+   "description": "",
+   "reference": "condensateur",
+   "valeur": "100 nF",
+   "genre": "standard",
+   "classes_composants": [],
+   "canal": {
+    "groupe": "C1",
+    "instance": "ALIM2"
+   },
+   "hauteur": 0.8,
+   "source_hauteur": "corps3d",
+   "x": 60.0,
+   "y": 23.0,
+   "rotation": 0.0,
+   "face": "dessus",
+   "verrouille": false,
+   "boite": [
+    -0.8,
+    -0.4,
+    0.8,
+    0.4
+   ],
+   "pastilles": [
+    {
+     "id": "C1_ALIM2#0",
+     "nom": "1",
+     "reseau": "NetR62_ALIM2_1",
+     "forme": "rect_arrondi",
+     "largeur": 0.6,
+     "hauteur": 0.6,
+     "rotation": 0.0,
+     "rayon_coin": 0.075,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 2,
+     "x": -0.5,
+     "y": 0.0
+    },
+    {
+     "id": "C1_ALIM2#1",
+     "nom": "2",
+     "reseau": "GND",
+     "forme": "rect_arrondi",
+     "largeur": 0.6,
+     "hauteur": 0.6,
+     "rotation": 0.0,
+     "rayon_coin": 0.075,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 2,
+     "x": 0.5,
+     "y": 0.0
+    }
+   ],
+   "regions": [],
+   "vias": [],
+   "zones_interdites": [],
+   "decoupes": []
+  },
+  {
+   "designateur": "P1",
+   "designateur_source": "P1",
+   "empreinte": "BORNIER-2",
+   "description": "",
+   "reference": "connecteur",
+   "valeur": "alimentation",
+   "genre": "standard",
+   "classes_composants": [],
+   "canal": null,
+   "hauteur": 8.0,
+   "source_hauteur": "corps3d",
+   "x": 82.0,
+   "y": 97.0,
+   "rotation": 0.0,
+   "face": "dessus",
+   "verrouille": true,
+   "boite": [
+    -3.0,
+    -3.5,
+    3.0,
+    3.5
+   ],
+   "pastilles": [
+    {
+     "id": "P1#0",
+     "nom": "1",
+     "reseau": "+12V",
+     "forme": "rond",
+     "largeur": 1.7,
+     "hauteur": 1.7,
+     "rotation": 0.0,
+     "rayon_coin": 0.0,
+     "points": [],
+     "couches": [
+      "TopLayer",
+      "MidLayer1",
+      "MidLayer2",
+      "BottomLayer"
+     ],
+     "face": "toutes",
+     "trou": {
+      "diametre": 1.0,
+      "forme": "rond",
+      "longueur": 0.0,
+      "rotation": 0.0,
+      "decalage": [0.0, 0.0],
+      "metallise": true
+     },
+     "traversante": true,
+     "expansion_masque": 0.1016,
+     "pile": {
+      "opposee": {
+       "forme": "rond",
+       "largeur": 1.7,
+       "hauteur": 1.7,
+       "rotation": 0.0,
+       "rayon_coin": 0.0,
+       "points": [],
+       "decalage": [0.0, 0.0]
+      },
+      "interne": {
+       "forme": "rond",
+       "largeur": 1.5,
+       "hauteur": 1.5,
+       "rotation": 0.0,
+       "rayon_coin": 0.0,
+       "points": [],
+       "decalage": [0.0, 0.0]
+      }
+     },
+     "via_dans_pastille_permis": true,
+     "classe_isolement": 2,
+     "x": -1.27,
+     "y": 0.0
+    },
+    {
+     "id": "P1#1",
+     "nom": "2",
+     "reseau": "GND",
+     "forme": "rond",
+     "largeur": 1.7,
+     "hauteur": 1.7,
+     "rotation": 0.0,
+     "rayon_coin": 0.0,
+     "points": [],
+     "couches": [
+      "TopLayer",
+      "MidLayer1",
+      "MidLayer2",
+      "BottomLayer"
+     ],
+     "face": "toutes",
+     "trou": {
+      "diametre": 1.0,
+      "forme": "rond",
+      "longueur": 0.0,
+      "rotation": 0.0,
+      "decalage": [0.0, 0.0],
+      "metallise": true
+     },
+     "traversante": true,
+     "expansion_masque": 0.1016,
+     "pile": null,
+     "via_dans_pastille_permis": true,
+     "classe_isolement": 2,
+     "x": 1.27,
+     "y": 0.0
+    }
+   ],
+   "regions": [],
+   "vias": [],
+   "zones_interdites": [],
+   "decoupes": []
+  },
+  {
+   "designateur": "M4_ALIM1",
+   "designateur_source": "M4_ALIM1",
+   "empreinte": "SUPPORT",
+   "description": "",
+   "reference": "mecanique",
+   "valeur": "",
+   "genre": "mecanique",
+   "classes_composants": [],
+   "canal": null,
+   "hauteur": 0.0,
+   "source_hauteur": "inconnue",
+   "x": 11.5,
+   "y": 72.05,
+   "rotation": 0.0,
+   "face": "dessus",
+   "verrouille": false,
+   "boite": [
+    -7.5,
+    -21.0,
+    7.5,
+    21.0
+   ],
+   "pastilles": [],
+   "regions": [],
+   "vias": [],
+   "zones_interdites": [],
+   "decoupes": [
+    "D1"
+   ]
+  }
+ ],
+ "pastilles_libres": [
+  {
+   "id": "__libre_0",
+   "nom": "1",
+   "reseau": "GND",
+   "forme": "rond",
+   "largeur": 0.6,
+   "hauteur": 0.6,
+   "rotation": 0.0,
+   "rayon_coin": 0.0,
+   "points": [],
+   "couches": [
+    "TopLayer"
+   ],
+   "face": "dessus",
+   "trou": null,
+   "traversante": false,
+   "expansion_masque": 0.1016,
+   "pile": null,
+   "via_dans_pastille_permis": false,
+   "classe_isolement": 2,
+   "x": 10.0,
+   "y": 10.0
+  }
+ ],
+ "reseaux": [
+  "GND",
+  "+12V",
+  "+8V",
+  "NetC19_1",
+  "NetC16_2",
+  "NetC18_2",
+  "NetC19_2",
+  "NetM1_4",
+  "NetM2_4",
+  "NetC21_1",
+  "NetC22_2",
+  "NetR25_2",
+  "NetR62_ALIM1_1",
+  "NetR62_ALIM2_1"
+ ],
+ "classes": {
+  "ENTREE_12V": [
+   "+12V"
+  ],
+  "PUISSANCE_8V": [
+   "+8V"
+  ],
+  "COMMUTATION": [
+   "NetC19_1"
+  ]
+ },
+ "classes_composants": {
+  "CONVERTISSEUR": [
+   "M1",
+   "M2",
+   "U10"
+  ]
+ },
+ "paires": [],
+ "regles_fichier": [
+  {
+   "type": "Clearance",
+   "nom": "Clearance",
+   "priorite": 3,
+   "portee1": "All",
+   "portee2": "All",
+   "valeurs": {
+    "GAP": "0.2mm"
+   }
+  },
+  {
+   "type": "Clearance",
+   "nom": "Commutation",
+   "priorite": 1,
+   "portee1": "InNetClass('COMMUTATION')",
+   "portee2": "All",
+   "valeurs": {
+    "GAP": "0.25mm"
+   }
+  },
+  {
+   "type": "Width",
+   "nom": "Largeur_rf",
+   "priorite": 1,
+   "portee1": "InNamedPolygon('ANT')",
+   "portee2": "",
+   "valeurs": {
+    "MINLIMIT": "0.5mm"
+   }
+  }
+ ],
+ "regles": {
+  "isolement": {
+   "defaut": 0.2,
+   "classes": [
+    "commutation hors M1, M2, U10",
+    "objets de M1, M2, U10",
+    "autres objets"
+   ],
+   "matrice": [
+    [
+     0.25,
+     0.25,
+     0.25
+    ],
+    [
+     0.25,
+     0.12446,
+     0.2
+    ],
+    [
+     0.25,
+     0.2,
+     0.2
+    ]
+   ],
+   "classe_reference": 2
+  },
+  "reseaux": {
+   "GND": {
+    "largeurs": [
+     0.254,
+     0.3,
+     3.0
+    ],
+    "via": {
+     "diametre": 0.6,
+     "trou": 0.3,
+     "diametre_min": 0.3,
+     "diametre_max": 0.8,
+     "trou_min": 0.3,
+     "trou_max": 0.4
+    },
+    "classes_isolement": {
+     "piste": 2,
+     "via": 2,
+     "surface": 2
+    },
+    "couches_permises": null,
+    "priorite_routage": 0,
+    "alimentation_schema": true,
+    "regle_largeur_propre": false
+   },
+   "+12V": {
+    "largeurs": [
+     0.3,
+     2.0066,
+     15.0
+    ],
+    "via": {
+     "diametre": 0.6,
+     "trou": 0.3,
+     "diametre_min": 0.3,
+     "diametre_max": 0.8,
+     "trou_min": 0.3,
+     "trou_max": 0.4
+    },
+    "classes_isolement": {
+     "piste": 2,
+     "via": 2,
+     "surface": 2
+    },
+    "couches_permises": null,
+    "priorite_routage": 0,
+    "alimentation_schema": true,
+    "regle_largeur_propre": true
+   },
+   "+8V": {
+    "largeurs": [
+     0.3,
+     2.0066,
+     15.0
+    ],
+    "via": {
+     "diametre": 0.6,
+     "trou": 0.3,
+     "diametre_min": 0.3,
+     "diametre_max": 0.8,
+     "trou_min": 0.3,
+     "trou_max": 0.4
+    },
+    "classes_isolement": {
+     "piste": 2,
+     "via": 2,
+     "surface": 2
+    },
+    "couches_permises": null,
+    "priorite_routage": 0,
+    "alimentation_schema": true,
+    "regle_largeur_propre": true
+   },
+   "NetC19_1": {
+    "largeurs": [
+     0.254,
+     0.3,
+     3.0
+    ],
+    "via": {
+     "diametre": 0.6,
+     "trou": 0.3,
+     "diametre_min": 0.3,
+     "diametre_max": 0.8,
+     "trou_min": 0.3,
+     "trou_max": 0.4
+    },
+    "classes_isolement": {
+     "piste": 0,
+     "via": 0,
+     "surface": 0
+    },
+    "couches_permises": null,
+    "priorite_routage": 0,
+    "alimentation_schema": false,
+    "regle_largeur_propre": false
+   },
+   "NetC16_2": {
+    "largeurs": [
+     0.254,
+     0.3,
+     3.0
+    ],
+    "via": {
+     "diametre": 0.6,
+     "trou": 0.3,
+     "diametre_min": 0.3,
+     "diametre_max": 0.8,
+     "trou_min": 0.3,
+     "trou_max": 0.4
+    },
+    "classes_isolement": {
+     "piste": 2,
+     "via": 2,
+     "surface": 2
+    },
+    "couches_permises": null,
+    "priorite_routage": 0,
+    "alimentation_schema": false,
+    "regle_largeur_propre": false
+   },
+   "NetC18_2": {
+    "largeurs": [
+     0.254,
+     0.3,
+     3.0
+    ],
+    "via": {
+     "diametre": 0.6,
+     "trou": 0.3,
+     "diametre_min": 0.3,
+     "diametre_max": 0.8,
+     "trou_min": 0.3,
+     "trou_max": 0.4
+    },
+    "classes_isolement": {
+     "piste": 2,
+     "via": 2,
+     "surface": 2
+    },
+    "couches_permises": null,
+    "priorite_routage": 0,
+    "alimentation_schema": false,
+    "regle_largeur_propre": false
+   },
+   "NetC19_2": {
+    "largeurs": [
+     0.254,
+     0.3,
+     3.0
+    ],
+    "via": {
+     "diametre": 0.6,
+     "trou": 0.3,
+     "diametre_min": 0.3,
+     "diametre_max": 0.8,
+     "trou_min": 0.3,
+     "trou_max": 0.4
+    },
+    "classes_isolement": {
+     "piste": 2,
+     "via": 2,
+     "surface": 2
+    },
+    "couches_permises": null,
+    "priorite_routage": 0,
+    "alimentation_schema": false,
+    "regle_largeur_propre": false
+   },
+   "NetM1_4": {
+    "largeurs": [
+     0.254,
+     0.3,
+     3.0
+    ],
+    "via": {
+     "diametre": 0.6,
+     "trou": 0.3,
+     "diametre_min": 0.3,
+     "diametre_max": 0.8,
+     "trou_min": 0.3,
+     "trou_max": 0.4
+    },
+    "classes_isolement": {
+     "piste": 2,
+     "via": 2,
+     "surface": 2
+    },
+    "couches_permises": null,
+    "priorite_routage": 0,
+    "alimentation_schema": false,
+    "regle_largeur_propre": false
+   },
+   "NetM2_4": {
+    "largeurs": [
+     0.254,
+     0.3,
+     3.0
+    ],
+    "via": {
+     "diametre": 0.6,
+     "trou": 0.3,
+     "diametre_min": 0.3,
+     "diametre_max": 0.8,
+     "trou_min": 0.3,
+     "trou_max": 0.4
+    },
+    "classes_isolement": {
+     "piste": 2,
+     "via": 2,
+     "surface": 2
+    },
+    "couches_permises": null,
+    "priorite_routage": 0,
+    "alimentation_schema": false,
+    "regle_largeur_propre": false
+   },
+   "NetC21_1": {
+    "largeurs": [
+     0.254,
+     0.3,
+     3.0
+    ],
+    "via": {
+     "diametre": 0.6,
+     "trou": 0.3,
+     "diametre_min": 0.3,
+     "diametre_max": 0.8,
+     "trou_min": 0.3,
+     "trou_max": 0.4
+    },
+    "classes_isolement": {
+     "piste": 2,
+     "via": 2,
+     "surface": 2
+    },
+    "couches_permises": null,
+    "priorite_routage": 0,
+    "alimentation_schema": false,
+    "regle_largeur_propre": false
+   },
+   "NetC22_2": {
+    "largeurs": [
+     0.254,
+     0.3,
+     3.0
+    ],
+    "via": {
+     "diametre": 0.6,
+     "trou": 0.3,
+     "diametre_min": 0.3,
+     "diametre_max": 0.8,
+     "trou_min": 0.3,
+     "trou_max": 0.4
+    },
+    "classes_isolement": {
+     "piste": 2,
+     "via": 2,
+     "surface": 2
+    },
+    "couches_permises": null,
+    "priorite_routage": 0,
+    "alimentation_schema": false,
+    "regle_largeur_propre": false
+   },
+   "NetR25_2": {
+    "largeurs": [
+     0.254,
+     0.3,
+     3.0
+    ],
+    "via": {
+     "diametre": 0.6,
+     "trou": 0.3,
+     "diametre_min": 0.3,
+     "diametre_max": 0.8,
+     "trou_min": 0.3,
+     "trou_max": 0.4
+    },
+    "classes_isolement": {
+     "piste": 2,
+     "via": 2,
+     "surface": 2
+    },
+    "couches_permises": null,
+    "priorite_routage": 0,
+    "alimentation_schema": false,
+    "regle_largeur_propre": false
+   },
+   "NetR62_ALIM1_1": {
+    "largeurs": [
+     0.254,
+     0.3,
+     3.0
+    ],
+    "via": {
+     "diametre": 0.6,
+     "trou": 0.3,
+     "diametre_min": 0.3,
+     "diametre_max": 0.8,
+     "trou_min": 0.3,
+     "trou_max": 0.4
+    },
+    "classes_isolement": {
+     "piste": 2,
+     "via": 2,
+     "surface": 2
+    },
+    "couches_permises": null,
+    "priorite_routage": 0,
+    "alimentation_schema": false,
+    "regle_largeur_propre": false
+   },
+   "NetR62_ALIM2_1": {
+    "largeurs": [
+     0.254,
+     0.3,
+     3.0
+    ],
+    "via": {
+     "diametre": 0.6,
+     "trou": 0.3,
+     "diametre_min": 0.3,
+     "diametre_max": 0.8,
+     "trou_min": 0.3,
+     "trou_max": 0.4
+    },
+    "classes_isolement": {
+     "piste": 2,
+     "via": 2,
+     "surface": 2
+    },
+    "couches_permises": null,
+    "priorite_routage": 0,
+    "alimentation_schema": false,
+    "regle_largeur_propre": false
+   }
+  },
+  "largeur_defaut": [
+   0.254,
+   0.3,
+   3.0
+  ],
+  "via": {
+   "diametre": 0.6,
+   "trou": 0.3,
+   "diametre_min": 0.3,
+   "diametre_max": 0.8,
+   "trou_min": 0.3,
+   "trou_max": 0.4
+  },
+  "trou_trou": 0.254,
+  "garde_bord": null,
+  "isolement_pieces": 0.254,
+  "hauteurs": {
+   "dessus": null,
+   "dessous": null
+  },
+  "pieces": {
+   "P1": {
+    "faces_permises": [
+     "dessus"
+    ],
+    "rotations_permises": null,
+    "hauteur_max": null
+   }
+  },
+  "connexion_plans": {
+   "isolement": 0.5,
+   "connexion": "relief"
+  },
+  "masque_serigraphie": 0.1016,
+  "salles": [],
+  "tolerances_longueur": {},
+  "non_interpretees": [
+   {
+    "type": "Width",
+    "nom": "Largeur_rf",
+    "portee1": "InNamedPolygon('ANT')",
+    "portee2": "",
+    "cause": "prédicat non pris en charge : InNamedPolygon"
+   }
+  ],
+  "ignorees": [
+   "Testpoint"
+  ]
+ },
+ "avertissements": [
+  "règle Width « Largeur_rf » non interprétée (prédicat InNamedPolygon)"
+ ]
+}

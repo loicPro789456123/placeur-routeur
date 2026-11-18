@@ -1,6 +1,0 @@
-pastilles : Altium (altium_rev3/pastilles.json)
-DRC maison : 0 violation(s) de routage ; par type : {} ; derogations : {}
-marge d isolement minimale (ecart - regle applicable) : 0.0195 mm [R86_ALIM2.2(NetR85_ALIM2_2) / trk(NetM3_ALIM2_3) : ecart 0.2195 mm, regle 0.200 mm]
-liaisons ouvertes (mode strict) : 0 ; reseaux complets 255 / 255
-angles aigus 1 ; coudes a 90 degres 9 ; longueur 5381.4 mm ; ecart moyen 0.509 / min 0.199 mm ; resistance puissance 1273.4 mOhm
--> sorties/drc_maison.json

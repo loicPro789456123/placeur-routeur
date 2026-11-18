@@ -1,0 +1,23 @@
+{
+ "format": "cas_validite/1",
+ "nom": "021_zone_pastille_traversante",
+ "description": "Pastille traversante métallisée dans la zone de plan mais à moins de rayon + isolement de connexion d'un trou de la zone : liaison ouverte en strict, valide en altium.",
+ "themes": [
+  "contact:zone-via",
+  "zone_plan",
+  "objet:pastille_traversante",
+  "modes_differents"
+ ],
+ "grille": true,
+ "couture": false,
+ "modes_differents": true,
+ "fichiers": {
+  "donnees": "donnees_placeur.json",
+  "placement": "placements_routage.json",
+  "routage": "routage_detaille.json",
+  "attendu_strict": "attendu_strict.json",
+  "attendu_altium": "attendu_altium.json",
+  "attendu_mesures": "attendu_mesures.json",
+  "couture": null
+ }
+}

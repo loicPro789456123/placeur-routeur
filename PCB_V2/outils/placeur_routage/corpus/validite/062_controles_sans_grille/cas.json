@@ -1,0 +1,21 @@
+{
+ "format": "cas_validite/1",
+ "nom": "062_controles_sans_grille",
+ "description": "Mêmes poses que 061, contrôle sans grille (--sans-grille, référence manuelle) : pas de violation de grille.",
+ "themes": [
+  "placement:fixe_deplacee",
+  "placement:sans_grille"
+ ],
+ "grille": false,
+ "couture": false,
+ "modes_differents": false,
+ "fichiers": {
+  "donnees": "donnees_placeur.json",
+  "placement": "placements_routage.json",
+  "routage": "routage_detaille.json",
+  "attendu_strict": "attendu_strict.json",
+  "attendu_altium": "attendu_altium.json",
+  "attendu_mesures": "attendu_mesures.json",
+  "couture": null
+ }
+}

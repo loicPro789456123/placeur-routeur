@@ -1,0 +1,22 @@
+{
+ "format": "cas_validite/1",
+ "nom": "023_zone_ilot_autre_reseau",
+ "description": "Via GND posé dans l'îlot d'un autre réseau du plan partagé : ni contact ni violation ; liaison ouverte dans les deux modes.",
+ "themes": [
+  "contact:zone-via",
+  "zone_plan",
+  "zone:ilot_autre_reseau"
+ ],
+ "grille": true,
+ "couture": false,
+ "modes_differents": false,
+ "fichiers": {
+  "donnees": "donnees_placeur.json",
+  "placement": "placements_routage.json",
+  "routage": "routage_detaille.json",
+  "attendu_strict": "attendu_strict.json",
+  "attendu_altium": "attendu_altium.json",
+  "attendu_mesures": "attendu_mesures.json",
+  "couture": null
+ }
+}

@@ -1,0 +1,111 @@
+{
+ "format": "routage/2",
+ "unite": "mil",
+ "origine": "coin bas-gauche de la boite du contour",
+ "couches_routage": [
+  "TopLayer",
+  "MidLayer2",
+  "BottomLayer"
+ ],
+ "pistes": [
+  {
+   "x1": 3149.606,
+   "y1": 1771.654,
+   "x2": 3307.087,
+   "y2": 1771.654,
+   "width": 79.0,
+   "layer": "TopLayer",
+   "net_name": "+12V"
+  },
+  {
+   "x1": 3307.087,
+   "y1": 1771.654,
+   "x2": 3346.457,
+   "y2": 1732.283,
+   "width": 79.0,
+   "layer": "TopLayer",
+   "net_name": "+12V"
+  },
+  {
+   "x1": 3740.157,
+   "y1": 1653.543,
+   "x2": 3897.638,
+   "y2": 1653.543,
+   "width": 79.0,
+   "layer": "MidLayer2",
+   "net_name": "+8V"
+  },
+  {
+   "x1": 3358.268,
+   "y1": 1525.591,
+   "x2": 3358.268,
+   "y2": 1476.378,
+   "width": 10.0,
+   "layer": "BottomLayer",
+   "net_name": "NetC19_2"
+  }
+ ],
+ "vias": [
+  {
+   "x": 3740.157,
+   "y": 1653.543,
+   "size": 23.623,
+   "hole_size": 11.812,
+   "net": "+8V",
+   "de": "TopLayer",
+   "a": "BottomLayer"
+  }
+ ],
+ "surfaces": [
+  {
+   "net": "GND",
+   "layer": "TopLayer",
+   "contour": [
+    [0.0, 0.0],
+    [6456.693, 0.0],
+    [6456.693, 3818.898],
+    [0.0, 3818.898]
+   ],
+   "trous": [],
+   "type": "remplissage",
+   "origine": "reference"
+  }
+ ],
+ "amorces_pas_fin": [
+  "NetC16_2"
+ ],
+ "derogations": [],
+ "reseaux": [
+  {
+   "net": "+12V",
+   "role": "puissance",
+   "longueur_mm": 5.414,
+   "resistance_mohm": 1.351,
+   "longueur_retrecie_mm": 0.0,
+   "longueur_sous_mini_regle_mm": 0.0,
+   "vias": 0,
+   "vias_doubles": 0
+  },
+  {
+   "net": "+8V",
+   "role": "puissance",
+   "longueur_mm": 4.0,
+   "resistance_mohm": 0.998,
+   "longueur_retrecie_mm": 0.0,
+   "longueur_sous_mini_regle_mm": 0.0,
+   "vias": 1,
+   "vias_doubles": 0
+  }
+ ],
+ "echecs": [
+  {
+   "net": "NetR25_2",
+   "role": "signal",
+   "connexions_echouees": 1,
+   "connexions_reussies": 0,
+   "diagnostic": [
+    "fenêtre épuisée"
+   ]
+  }
+ ]
+}

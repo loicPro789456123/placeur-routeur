@@ -1,0 +1,22 @@
+{
+ "format": "cas_validite/1",
+ "nom": "030_trou_decale",
+ "description": "Via dans une pastille traversante dont le trou est décalé : contact strict, parois à 0,566 mm (pas de trou_trou) : valide dans les deux modes.",
+ "themes": [
+  "geometrie:trou_decale",
+  "objet:pastille_traversante",
+  "contact:via-pastille"
+ ],
+ "grille": true,
+ "couture": false,
+ "modes_differents": false,
+ "fichiers": {
+  "donnees": "donnees_placeur.json",
+  "placement": "placements_routage.json",
+  "routage": "routage_detaille.json",
+  "attendu_strict": "attendu_strict.json",
+  "attendu_altium": "attendu_altium.json",
+  "attendu_mesures": "attendu_mesures.json",
+  "couture": null
+ }
+}

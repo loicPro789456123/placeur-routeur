@@ -1,0 +1,481 @@
+{
+ "format": "donnees_placeur/2",
+ "source": {
+  "entree": "entree_carte.json",
+  "sha256_entree": "cas 050_chevauchement",
+  "contraintes": null,
+  "config": "config_carte.json",
+  "controle_gabarit": null,
+  "construit_par": "construire_donnees corpus-e1 (cas ecrit a la main)"
+ },
+ "unite": "mm",
+ "carte": {
+  "contour": [
+   [
+    0.0,
+    0.0
+   ],
+   [
+    20.32,
+    0.0
+   ],
+   [
+    20.32,
+    10.16
+   ],
+   [
+    0.0,
+    10.16
+   ]
+  ],
+  "boite": [
+   0.0,
+   0.0,
+   20.32,
+   10.16
+  ],
+  "decoupes": [],
+  "remplissages": [],
+  "marge_bord_mm": 1.0,
+  "marge_decoupe_mm": 1.0,
+  "garde_bord_mm": 0.6,
+  "garde_decoupe_mm": 0.6
+ },
+ "couches": [
+  {
+   "nom": "TopLayer",
+   "rang": 0,
+   "role": "routage",
+   "zones_plan": [],
+   "epaisseur_cuivre_mm": 0.035,
+   "direction_preferee": null
+  },
+  {
+   "nom": "BottomLayer",
+   "rang": 1,
+   "role": "routage",
+   "zones_plan": [],
+   "epaisseur_cuivre_mm": 0.035,
+   "direction_preferee": null
+  }
+ ],
+ "trous": [],
+ "obstacles_placement": [],
+ "zones_imposees": [],
+ "zones_routage_interdites": [],
+ "cuivre_fixe": [],
+ "composants": [
+  {
+   "nom": "U1",
+   "empreinte": "CORPUS_PASTILLES",
+   "nature": "connecteur",
+   "genre": "standard",
+   "valeur": "",
+   "hauteur": 0.0,
+   "statut": "mobile",
+   "raison_statut": "libre",
+   "virtuel": false,
+   "lbb": [
+    -0.508,
+    -0.508,
+    0.508,
+    0.508
+   ],
+   "pastilles": [
+    {
+     "id": "U1#0",
+     "nom": "1",
+     "reseau": "",
+     "lx": 0.0,
+     "ly": 0.0,
+     "forme": "rect",
+     "largeur": 1.016,
+     "hauteur": 1.016,
+     "rotation": 0.0,
+     "rayon_coin": 0.0,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.0,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 0,
+     "hw": 0.508,
+     "hh": 0.508,
+     "th": false
+    }
+   ],
+   "regions": [],
+   "vias": [],
+   "zones_interdites": [],
+   "decoupes": [],
+   "pose_actuelle": [
+    2.54,
+    2.54,
+    0.0,
+    false
+   ],
+   "pose_cible": [
+    2.54,
+    2.54,
+    0.0,
+    false
+   ],
+   "orientations": [
+    [
+     0.0,
+     false
+    ],
+    [
+     90.0,
+     false
+    ],
+    [
+     180.0,
+     false
+    ],
+    [
+     270.0,
+     false
+    ],
+    [
+     0.0,
+     true
+    ],
+    [
+     180.0,
+     true
+    ]
+   ],
+   "regle": "corpus",
+   "pas_fin": false,
+   "matrice": false,
+   "pas_min_mm": null
+  },
+  {
+   "nom": "U2",
+   "empreinte": "CORPUS_PASTILLES",
+   "nature": "connecteur",
+   "genre": "standard",
+   "valeur": "",
+   "hauteur": 0.0,
+   "statut": "mobile",
+   "raison_statut": "libre",
+   "virtuel": false,
+   "lbb": [
+    -0.508,
+    -0.508,
+    0.508,
+    0.508
+   ],
+   "pastilles": [
+    {
+     "id": "U2#0",
+     "nom": "1",
+     "reseau": "",
+     "lx": 0.0,
+     "ly": 0.0,
+     "forme": "rect",
+     "largeur": 1.016,
+     "hauteur": 1.016,
+     "rotation": 0.0,
+     "rayon_coin": 0.0,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.0,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 0,
+     "hw": 0.508,
+     "hh": 0.508,
+     "th": false
+    }
+   ],
+   "regions": [],
+   "vias": [],
+   "zones_interdites": [],
+   "decoupes": [],
+   "pose_actuelle": [
+    2.54,
+    7.62,
+    0.0,
+    false
+   ],
+   "pose_cible": [
+    2.54,
+    7.62,
+    0.0,
+    false
+   ],
+   "orientations": [
+    [
+     0.0,
+     false
+    ],
+    [
+     90.0,
+     false
+    ],
+    [
+     180.0,
+     false
+    ],
+    [
+     270.0,
+     false
+    ],
+    [
+     0.0,
+     true
+    ],
+    [
+     180.0,
+     true
+    ]
+   ],
+   "regle": "corpus",
+   "pas_fin": false,
+   "matrice": false,
+   "pas_min_mm": null
+  },
+  {
+   "nom": "U3",
+   "empreinte": "CORPUS_PASTILLES",
+   "nature": "connecteur",
+   "genre": "standard",
+   "valeur": "",
+   "hauteur": 0.0,
+   "statut": "mobile",
+   "raison_statut": "libre",
+   "virtuel": false,
+   "lbb": [
+    -0.508,
+    -0.508,
+    0.508,
+    0.508
+   ],
+   "pastilles": [
+    {
+     "id": "U3#0",
+     "nom": "1",
+     "reseau": "",
+     "lx": 0.0,
+     "ly": 0.0,
+     "forme": "rect",
+     "largeur": 1.016,
+     "hauteur": 1.016,
+     "rotation": 0.0,
+     "rayon_coin": 0.0,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.0,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 0,
+     "hw": 0.508,
+     "hh": 0.508,
+     "th": false
+    }
+   ],
+   "regions": [],
+   "vias": [],
+   "zones_interdites": [],
+   "decoupes": [],
+   "pose_actuelle": [
+    17.78,
+    2.54,
+    0.0,
+    false
+   ],
+   "pose_cible": [
+    17.78,
+    2.54,
+    0.0,
+    false
+   ],
+   "orientations": [
+    [
+     0.0,
+     false
+    ],
+    [
+     90.0,
+     false
+    ],
+    [
+     180.0,
+     false
+    ],
+    [
+     270.0,
+     false
+    ],
+    [
+     0.0,
+     true
+    ],
+    [
+     180.0,
+     true
+    ]
+   ],
+   "regle": "corpus",
+   "pas_fin": false,
+   "matrice": false,
+   "pas_min_mm": null
+  },
+  {
+   "nom": "U4",
+   "empreinte": "CORPUS_PASTILLES",
+   "nature": "connecteur",
+   "genre": "standard",
+   "valeur": "",
+   "hauteur": 0.0,
+   "statut": "mobile",
+   "raison_statut": "libre",
+   "virtuel": false,
+   "lbb": [
+    -0.508,
+    -0.508,
+    0.508,
+    0.508
+   ],
+   "pastilles": [
+    {
+     "id": "U4#0",
+     "nom": "1",
+     "reseau": "",
+     "lx": 0.0,
+     "ly": 0.0,
+     "forme": "rect",
+     "largeur": 1.016,
+     "hauteur": 1.016,
+     "rotation": 0.0,
+     "rayon_coin": 0.0,
+     "points": [],
+     "couches": [
+      "TopLayer"
+     ],
+     "face": "composant",
+     "trou": null,
+     "traversante": false,
+     "expansion_masque": 0.0,
+     "pile": null,
+     "via_dans_pastille_permis": false,
+     "classe_isolement": 0,
+     "hw": 0.508,
+     "hh": 0.508,
+     "th": false
+    }
+   ],
+   "regions": [],
+   "vias": [],
+   "zones_interdites": [],
+   "decoupes": [],
+   "pose_actuelle": [
+    17.78,
+    7.62,
+    0.0,
+    false
+   ],
+   "pose_cible": [
+    17.78,
+    7.62,
+    0.0,
+    false
+   ],
+   "orientations": [
+    [
+     0.0,
+     false
+    ],
+    [
+     90.0,
+     false
+    ],
+    [
+     180.0,
+     false
+    ],
+    [
+     270.0,
+     false
+    ],
+    [
+     0.0,
+     true
+    ],
+    [
+     180.0,
+     true
+    ]
+   ],
+   "regle": "corpus",
+   "pas_fin": false,
+   "matrice": false,
+   "pas_min_mm": null
+  }
+ ],
+ "reseaux": [],
+ "regles": {
+  "isolement": {
+   "defaut": 0.2,
+   "classes": [
+    "defaut"
+   ],
+   "matrice": [
+    [
+     0.2
+    ]
+   ],
+   "classe_reference": 0
+  },
+  "via": {
+   "diametre": 0.6,
+   "trou": 0.3,
+   "diametre_min": 0.5,
+   "diametre_max": 0.8,
+   "trou_min": 0.25,
+   "trou_max": 0.4
+  },
+  "trou_trou_mm": 0.254,
+  "garde_trou_mm": 0.6,
+  "placement": {
+   "grille_mm": 0.127,
+   "marge_piece_mm": 0.25,
+   "marge_traversante_mm": 0.6
+  },
+  "via_dans_pastille_meme_reseau": false,
+  "connexion_plans": {
+   "isolement": 0.5,
+   "connexion": "relief"
+  }
+ },
+ "convertisseurs": [],
+ "sans_piste_dessous": [],
+ "decouplages": [],
+ "eloignements": [],
+ "charges": [],
+ "groupes": [],
+ "paires": [],
+ "au_bord": [],
+ "masses": [],
+ "parametres_deduction": {
+  "pas_fin_mm": 0.65,
+  "regles_non_interpretees": 0
+ }
+}

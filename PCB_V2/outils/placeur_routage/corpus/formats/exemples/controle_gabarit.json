@@ -1,0 +1,24 @@
+{
+ "format": "controle_gabarit/1",
+ "fichier": "carte.PcbDoc",
+ "sha256": "d6e7f8a9b0c1e3d8a6b1f6c2f4f1c3ea295c710119d9179b67a2b4cba20414d5",
+ "utilisable": true,
+ "erreurs": [],
+ "avertissements": [
+  "couche mécanique 13 non appairée"
+ ],
+ "couches_ecrivibles": [
+  "TopLayer",
+  "MidLayer1",
+  "MidLayer2",
+  "BottomLayer"
+ ],
+ "non_retournables": {
+  "P1": "couche mécanique non appairée"
+ },
+ "modeles": {
+  "via": true,
+  "piste": true,
+  "region": true
+ }
+}

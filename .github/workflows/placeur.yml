@@ -1,18 +1,30 @@
-# Campagnes du placeur-routeur depuis zero, en parallele : une graine par machine, puis une synthese.
-# Lancement : automatique quand PCB_V2/outils/placeur_routage/ci_campagne.json change (graines, bloc libre/fige, budget) ;
-#             manuel : onglet Actions > Placeur-routeur > Run workflow.
-# Resultats : resume de l'execution (onglet Actions), artefact "synthese-placeur" (tout),
-#             et branche ci-resultats-placeur (dossier run_<numero> : csv, confiance, meilleur etat, statistiques par graine).
+# Placeur-routeur : intégration continue (contrat §7.6, avenant 2.2 A.7 et A.8). Elle mesure ce qui est livré :
+# placeur.py, jamais les étapes une à une (§1.1).
+# - À chaque poussée sur PCB_V2/outils/** : rust (deux systèmes, deux moteurs), python (tous les tests), contrat,
+#   synthetiques (cartes « chaîne » du corpus) et arret_posix.
+# - En lancement manuel et chaque nuit : campagne_metroid (liste de graines de ci_campagne.json, jeux nominal et
+#   compatibilité, une graine par machine, --qualite normal --sans-pcbdoc), campagne_corpus, puis fusion publiée sur
+#   la branche ci-resultats-placeur (dossier run_<numéro>, sans chemin).
+# - La nuit ne tourne que si la variable du dépôt CAMPAGNE_NUIT vaut « oui » (décision §8.9-6 : fréquence et budget de
+#   minutes de la campagne de nuit, à prendre par l'utilisateur).
 name: Placeur-routeur
 
 on:
-  workflow_dispatch:
   push:
     paths:
-      - 'PCB_V2/outils/placeur_routage/ci_campagne.json'
+      - 'PCB_V2/outils/**'
       - '.github/workflows/placeur.yml'
+  workflow_dispatch:
+    inputs:
+      campagnes:
+        description: "Campagnes : toutes, metroid, corpus ou aucune"
+        default: toutes
+      graines:
+        description: "acceptation (graines de ci_campagne.json, 40 appariées) ou nuit (graines_nuit)"
+        default: acceptation
+  schedule:
+    - cron: '17 1 * * *'
 
-# Pas d'annulation : plusieurs campagnes (versions differentes du code) peuvent tourner en meme temps.
 concurrency:
   group: placeur-${{ github.run_id }}
   cancel-in-progress: false
@@ -24,126 +36,309 @@ env:
   P: PCB_V2/outils/placeur_routage
 
 jobs:
-  compilation:
-    name: Compilation et tests
-    runs-on: ubuntu-24.04
-    timeout-minutes: 30
-    outputs:
-      graines: ${{ steps.g.outputs.graines }}
-      options: ${{ steps.g.outputs.options }}
+  rust:
+    name: rust (${{ matrix.os }})
+    if: github.event_name != 'schedule' || vars.CAMPAGNE_NUIT == 'oui'
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2022]
+    defaults:
+      run:
+        shell: bash
     steps:
       - uses: actions/checkout@v4
-        with:
-          sparse-checkout: PCB_V2/outils
       - uses: actions/cache@v4
         with:
           path: |
             ~/.cargo/registry
             ~/.cargo/git
-            ${{ env.P }}/target
-          key: cargo-${{ runner.os }}-${{ hashFiles('PCB_V2/outils/placeur_routage/Cargo.lock') }}
-      - name: Tests unitaires
-        working-directory: ${{ env.P }}
-        run: cargo test --release
-      - name: Compilation
-        working-directory: ${{ env.P }}
-        run: cargo build --release
+            PCB_V2/outils/placeur_routage/target
+            PCB_V2/outils/serigraphie/target
+          key: cargo-${{ runner.os }}-${{ hashFiles('PCB_V2/outils/*/Cargo.lock') }}
+      - name: cargo test et cargo build des deux moteurs
+        run: |
+          for m in placeur_routage serigraphie; do
+            cargo test --release --locked --manifest-path "PCB_V2/outils/$m/Cargo.toml"
+            cargo build --release --locked --manifest-path "PCB_V2/outils/$m/Cargo.toml"
+          done
+      - name: Moteurs Linux pour les autres jobs
+        if: runner.os == 'Linux'
+        run: |
+          mkdir -p moteurs
+          cp PCB_V2/outils/placeur_routage/target/release/placeur_routage moteurs/
+          cp PCB_V2/outils/serigraphie/target/release/serigraphie moteurs/
       - uses: actions/upload-artifact@v4
+        if: runner.os == 'Linux'
         with:
-          name: executable
-          path: ${{ env.P }}/target/release/placeur_routage
+          name: moteurs-linux
+          path: moteurs
           retention-days: 3
-      - id: g
-        name: Liste des graines
-        working-directory: ${{ env.P }}
-        run: python3 ci_graines.py >> "$GITHUB_OUTPUT"
 
-  campagne:
-    name: graine ${{ matrix.graine }}
-    needs: compilation
+  python:
+    name: python
+    needs: rust
+    if: github.event_name != 'schedule'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r "$P/requirements.txt"
+      - uses: actions/download-artifact@v4
+        with:
+          name: moteurs-linux
+          path: moteurs
+      - name: Moteurs à leur place du mode source
+        run: |
+          chmod +x moteurs/*
+          mkdir -p "$P/target/release" PCB_V2/outils/serigraphie/target/release
+          cp moteurs/placeur_routage "$P/target/release/"
+          cp moteurs/serigraphie PCB_V2/outils/serigraphie/target/release/
+      - name: Tous les tests (avec olefile)
+        working-directory: ${{ env.P }}
+        run: |
+          python -m unittest discover -s . -p "test_*.py" -v
+          (cd corpus && python -m unittest discover -s . -p "test_*.py" -v)
+          (cd ../paquet && python -m unittest discover -s . -p "test_*.py" -v)
+
+  contrat:
+    name: contrat
+    needs: rust
+    if: github.event_name != 'schedule'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r "$P/requirements.txt"
+      - uses: actions/download-artifact@v4
+        with:
+          name: moteurs-linux
+          path: moteurs
+      - name: corpus/comparer_validite.py
+        working-directory: ${{ env.P }}
+        run: |
+          chmod +x "$GITHUB_WORKSPACE"/moteurs/*
+          mkdir -p target/release && cp "$GITHUB_WORKSPACE/moteurs/placeur_routage" target/release/
+          python corpus/comparer_validite.py
+
+  liste:
+    name: listes de graines et de cartes
+    if: github.event_name != 'schedule' || vars.CAMPAGNE_NUIT == 'oui'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    outputs:
+      matrice: ${{ steps.l.outputs.matrice }}
+      cartes: ${{ steps.l.outputs.cartes }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - id: l
+        working-directory: ${{ env.P }}
+        run: |
+          if [ "${{ github.event_name }}" = "schedule" ] || [ "${{ inputs.graines }}" = "nuit" ]; then N=--nuit; else N=; fi
+          python ci_graines.py graines $N --github >> "$GITHUB_OUTPUT"
+          python ci_graines.py cartes corpus --github >> "$GITHUB_OUTPUT"
+
+  synthetiques:
+    name: synthetiques (${{ matrix.carte.nom }})
+    needs: [rust, liste]
+    if: github.event_name != 'schedule'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        carte: ${{ fromJSON(needs.liste.outputs.cartes) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r "$P/requirements.txt"
+      - uses: actions/download-artifact@v4
+        with:
+          name: moteurs-linux
+          path: moteurs
+      - name: placeur.py --qualite rapide --essais 2, puis contrôle de la sortie
+        working-directory: ${{ env.P }}
+        run: |
+          chmod +x "$GITHUB_WORKSPACE"/moteurs/*
+          python placeur.py "${{ matrix.carte.carte }}" --qualite rapide --essais 2 \
+            --moteurs "$GITHUB_WORKSPACE/moteurs" --sortie "$RUNNER_TEMP/synth" || echo "placeur.py : code $?"
+          python ci_graines.py controler "$RUNNER_TEMP/synth" --valides-min 1
+
+  arret_posix:
+    name: arret_posix
+    if: github.event_name != 'schedule'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r "$P/requirements.txt"
+      - name: Arrêt du groupe de processus sous Linux
+        working-directory: ${{ env.P }}
+        run: |
+          python -m unittest -v test_placeur.TestOrchestrateur.test_arret_demande \
+            test_placeur.TestOrchestrateur.test_arret_lancements test_placeur.TestOrchestrateur.test_code_2_du_moteur_arrete_tout \
+            test_lanceur.TestChemins
+
+  campagne_metroid:
+    name: metroid ${{ matrix.jeu }} ${{ matrix.graine }}
+    needs: [rust, liste]
+    if: >-
+      (github.event_name == 'workflow_dispatch' && (inputs.campagnes == 'toutes' || inputs.campagnes == 'metroid'))
+      || (github.event_name == 'schedule' && vars.CAMPAGNE_NUIT == 'oui')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 300
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.liste.outputs.matrice) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r "$P/requirements.txt"
+      - uses: actions/download-artifact@v4
+        with:
+          name: moteurs-linux
+          path: moteurs
+      - name: placeur.py --donnees, une graine, --qualite normal --sans-pcbdoc
+        working-directory: ${{ env.P }}
+        run: |
+          chmod +x "$GITHUB_WORKSPACE"/moteurs/*
+          echo "machine : $(nproc) fils"
+          python placeur.py --donnees "${{ matrix.donnees }}" --graine-depart ${{ matrix.graine }} --essais 1 \
+            --qualite normal --sans-pcbdoc --moteurs "$GITHUB_WORKSPACE/moteurs" \
+            --sortie "$RUNNER_TEMP/sortie" || echo "placeur.py : code $?"
+          # artefact : rapport et fichiers de graine, sans la copie des données
+          find "$RUNNER_TEMP/sortie" -name donnees_placeur.json -delete
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: metroid-${{ matrix.jeu }}-${{ matrix.graine }}
+          path: ${{ runner.temp }}/sortie
+          retention-days: 14
+
+  campagne_corpus:
+    name: corpus ${{ matrix.carte.nom }}
+    needs: [rust, liste]
+    if: >-
+      (github.event_name == 'workflow_dispatch' && (inputs.campagnes == 'toutes' || inputs.campagnes == 'corpus'))
+      || (github.event_name == 'schedule' && vars.CAMPAGNE_NUIT == 'oui')
     runs-on: ubuntu-24.04
     timeout-minutes: 300
     strategy:
       fail-fast: false
       matrix:
-        graine: ${{ fromJSON(needs.compilation.outputs.graines) }}
+        carte: ${{ fromJSON(needs.liste.outputs.cartes) }}
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
-          sparse-checkout: PCB_V2/outils
+          python-version: '3.12'
+      - run: python -m pip install -r "$P/requirements.txt"
       - uses: actions/download-artifact@v4
         with:
-          name: executable
-          path: ${{ env.P }}/target/release
-      - run: pip install --quiet numpy matplotlib
-      - name: Campagne
+          name: moteurs-linux
+          path: moteurs
+      - name: placeur.py, 10 graines normal
         working-directory: ${{ env.P }}
         run: |
-          chmod +x target/release/placeur_routage
-          echo "machine : $(nproc) coeurs,$(grep -m1 'model name' /proc/cpuinfo | cut -d: -f2)"
-          python3 campagnes.py --dossier ci --graine-base ${{ matrix.graine }} --n-min 1 --n-max 1 \
-            --workers 1 --threads $(nproc) ${{ needs.compilation.outputs.options }}
-          tail -n 5 sorties/ci/journal.txt
+          chmod +x "$GITHUB_WORKSPACE"/moteurs/*
+          N=$(python -c "import json;print(json.load(open('ci_campagne.json',encoding='utf-8'))['corpus_graines'])")
+          python placeur.py "${{ matrix.carte.carte }}" --qualite normal --essais "$N" --sans-pcbdoc \
+            --moteurs "$GITHUB_WORKSPACE/moteurs" --sortie "$RUNNER_TEMP/sortie" || echo "placeur.py : code $?"
+          find "$RUNNER_TEMP/sortie" -name donnees_placeur.json -delete
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: graine-${{ matrix.graine }}
-          path: ${{ env.P }}/sorties/ci
+          name: corpus-${{ matrix.carte.nom }}
+          path: ${{ runner.temp }}/sortie
           retention-days: 14
 
-  synthese:
-    name: Synthese
-    needs: [compilation, campagne]
-    if: always() && needs.compilation.result == 'success'
+  fusion:
+    name: fusion et publication
+    needs: [campagne_metroid, campagne_corpus]
+    if: always() && (needs.campagne_metroid.result != 'skipped' || needs.campagne_corpus.result != 'skipped')
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     permissions:
       contents: write
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
-          sparse-checkout: PCB_V2/outils
+          python-version: '3.12'
+      - run: python -m pip install -r "$P/requirements.txt"
       - uses: actions/download-artifact@v4
         with:
-          pattern: graine-*
-          path: artefacts
-      - run: pip install --quiet numpy matplotlib
-      - name: Fusion
+          path: ${{ runner.temp }}/artefacts
+      - name: Anciens résultats de 9b5b5a3 (lecture seule)
+        run: |
+          git clone -q --depth 1 --branch ci-resultats-placeur \
+            "https://github.com/${GITHUB_REPOSITORY}.git" "$RUNNER_TEMP/anciens" || mkdir -p "$RUNNER_TEMP/anciens"
+      - name: Fusion (rapport/2, statistiques de A.7, NI(m ; d), durées par phase)
         working-directory: ${{ env.P }}
         run: |
-          python3 ci_fusion.py "$GITHUB_WORKSPACE/artefacts" --dossier ci_fusion ${{ contains(needs.compilation.outputs.options, '--bloc-fige') && '--bloc-fige' || '' }}
-          cat sorties/ci_fusion/resume.md >> "$GITHUB_STEP_SUMMARY"
+          A="$RUNNER_TEMP/artefacts"; F="$RUNNER_TEMP/fusion"; mkdir -p "$F"
+          REF=$(python -c "import json;print(json.load(open('ci_campagne.json',encoding='utf-8'))['reference_cout'])")
+          D=$(python -c "import json;print(json.load(open('ci_campagne.json',encoding='utf-8'))['marge_cout'])")
+          for jeu in nominal compatibilite; do
+            ls -d "$A"/metroid-$jeu-* >/dev/null 2>&1 || continue
+            C=""
+            for r in $(python -c "import json;print(' '.join(json.load(open('ci_campagne.json',encoding='utf-8'))['comparer'].get('$jeu',[])))"); do
+              [ -d "$RUNNER_TEMP/anciens/$r" ] && C="$C --comparer $RUNNER_TEMP/anciens/$r"
+            done
+            python ci_fusion.py "$A"/metroid-$jeu-* --sortie "$F/metroid_$jeu" --reference-cout "$REF" \
+              --marge-cout "$D" $C || echo "fusion metroid $jeu : code $?"
+            [ -f "$F/metroid_$jeu/resume.md" ] && cat "$F/metroid_$jeu/resume.md" >> "$GITHUB_STEP_SUMMARY"
+          done
+          for c in "$A"/corpus-*; do
+            [ -d "$c" ] || continue
+            n=$(basename "$c")
+            python ci_fusion.py "$c" --sortie "$F/$n" || echo "fusion $n : code $?"
+            [ -f "$F/$n/resume.md" ] && cat "$F/$n/resume.md" >> "$GITHUB_STEP_SUMMARY"
+          done
+          cp ci_campagne.json "$F/"
+          echo "${{ github.sha }}" > "$F/commit.txt"
+          echo "${{ github.ref_name }}" > "$F/branche.txt"
       - uses: actions/upload-artifact@v4
         with:
           name: synthese-placeur
-          path: ${{ env.P }}/sorties/ci_fusion
+          path: ${{ runner.temp }}/fusion
           retention-days: 30
-      - name: Resultats sur la branche ci-resultats-placeur
+      - name: Résultats sur la branche ci-resultats-placeur
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          S="$GITHUB_WORKSPACE/$P/sorties/ci_fusion"
+          S="$RUNNER_TEMP/fusion"
           D="run_${{ github.run_number }}"
-          git init -q res && cd res
-          git remote add origin "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
-          if git fetch -q --depth 1 origin ci-resultats-placeur; then git checkout -q -b ci-resultats-placeur FETCH_HEAD; else git checkout -q --orphan ci-resultats-placeur; fi
-          mkdir -p "$D"
-          cp "$S"/campagnes.csv "$S"/confiance.md "$S"/resume.md "$D"/
-          cp "$GITHUB_WORKSPACE/$P/ci_campagne.json" "$D"/
-          echo "${{ github.sha }}" > "$D/commit.txt"
-          if [ -d "$S/meilleur" ]; then cp -r "$S/meilleur" "$D"/; fi
-          for c in "$S"/c_*; do
-            mkdir -p "$D/$(basename "$c")"
-            for f in stats.json console.txt; do
-              if [ -f "$c/$f" ]; then cp "$c/$f" "$D/$(basename "$c")/"; fi
-            done
-            # graines entierement routees : on garde placement, routage et vias de couture (pour les poser dans Altium)
-            if grep -q '"valide": true' "$c/stats.json" 2>/dev/null; then
-              for f in placements_routage.json routage_detaille.json vias_couture.json; do
-                if [ -f "$c/$f" ]; then cp "$c/$f" "$D/$(basename "$c")/"; fi
-              done
-            fi
+          # Chaque essai repart de la dernière version de la branche ; chaque exécution n'écrit que son dossier.
+          publier() {
+            rm -rf "$RUNNER_TEMP/res" && git init -q "$RUNNER_TEMP/res" && cd "$RUNNER_TEMP/res" || return 1
+            git remote add origin "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+            if git fetch -q --depth 1 origin ci-resultats-placeur; then git checkout -q -b ci-resultats-placeur FETCH_HEAD; else git checkout -q --orphan ci-resultats-placeur; fi
+            mkdir -p "$D" && cp -r "$S"/. "$D"/
+            git add -A
+            git -c user.name="github-actions" -c user.email="github-actions@users.noreply.github.com" commit -q -m "Résultats placeur-routeur, exécution ${{ github.run_number }}"
+            git push -q origin ci-resultats-placeur
+          }
+          for essai in 1 2 3 4 5 6 7 8; do
+            if publier; then echo "résultats publiés (essai $essai)"; exit 0; fi
+            sleep $((essai * 9))
           done
-          git add -A
-          git -c user.name="github-actions" -c user.email="github-actions@users.noreply.github.com" commit -q -m "Resultats placeur-routeur, execution ${{ github.run_number }}"
-          git push -q origin ci-resultats-placeur
+          echo "échec de la publication des résultats après 8 essais"; exit 1

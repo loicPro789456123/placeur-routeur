@@ -1,0 +1,482 @@
+{
+ "format": "stats/2",
+ "version_moteur": "2.0.0+inconnu",
+ "graine": 7,
+ "fin": "normale",
+ "valide": false,
+ "cause": "liaisons ouvertes",
+ "piece": null,
+ "raison": null,
+ "validite": {
+  "format": "verdict/2",
+  "outil": "validite 2.0.0",
+  "mode": "strict",
+  "valide": false,
+  "liaisons_ouvertes": 3,
+  "detail_liaisons_ouvertes": [
+   {
+    "reseau": "NetR25_2",
+    "nature": "pastilles",
+    "pastilles": [
+     "U10#7"
+    ],
+    "noms": [
+     "U10.8"
+    ],
+    "position_mm": [86.8, 41.65]
+   },
+   {
+    "reseau": "NetC21_1",
+    "nature": "pastilles",
+    "pastilles": [
+     "U10#5"
+    ],
+    "noms": [
+     "U10.6"
+    ],
+    "position_mm": [87.75, 40.2]
+   },
+   {
+    "reseau": "NetC22_2",
+    "nature": "ilot",
+    "pastilles": [
+     "U10#6"
+    ],
+    "noms": [
+     "U10.7"
+    ],
+    "position_mm": [87.3, 41.65]
+   }
+  ],
+  "violations": 0,
+  "violations_par_type": {
+   "isolement": 0,
+   "garde_bord": 0,
+   "garde_decoupe": 0,
+   "garde_trou": 0,
+   "zone_interdite": 0,
+   "largeur": 0,
+   "dimension_via": 0,
+   "via_sous_cms": 0,
+   "trou_trou": 0,
+   "antenne": 0,
+   "couche_non_permise": 0,
+   "reseau_inconnu": 0
+  },
+  "detail_violations": [],
+  "detail_violations_tronque": false,
+  "exemples": {},
+  "derogations": {
+   "via_dans_pastille_meme_reseau": 0
+  },
+  "avertissements": {
+   "pistes_sous_pieces_sans_piste_dessous": 0,
+   "angles_aigus": 0,
+   "paires_desequilibrees": 0,
+   "regles_non_couvertes": 1,
+   "zones_plan_isolees": 0
+  },
+  "reseaux_a_router": 9,
+  "reseaux_complets": 6,
+  "marge_isolement_min_mm": 0.0123,
+  "marge_isolement_min_paire": "P1(+12V) / U10#8(GND)",
+  "mesures": {
+   "ecart_moyen_mm": 0.84,
+   "ecart_min_mm": 0.2,
+   "coudes": 3,
+   "coudes_90": 0,
+   "angles_aigus": 0,
+   "longueur_pistes_mm": 13.414,
+   "resistance_puissance_mohm": 2.349,
+   "vias": 1
+  },
+  "placement": {
+   "format": "controle_placement/1",
+   "valide": true,
+   "violations": [],
+   "violations_par_type": {
+    "absente": 0,
+    "inconnue": 0,
+    "fixe_deplacee": 0,
+    "orientation": 0,
+    "grille": 0,
+    "chevauchement": 0,
+    "obstacle": 0,
+    "marge_bord": 0,
+    "marge_decoupe": 0,
+    "eloignement": 0,
+    "pastille_pastille": 0,
+    "zone_imposee": 0,
+    "au_bord": 0,
+    "groupe_rigide": 0
+   },
+   "infos": {
+    "eloignements": [
+     {
+      "objet": "U25_VOLT1#26",
+      "reference": "M1",
+      "distance_mm": 51.3,
+      "minimum_mm": 30.0
+     }
+    ]
+   }
+  }
+ },
+ "cout_commun": 10412.7,
+ "connexions_echouees_routeur": 3,
+ "echecs": [
+  "R67_ALIM1.2 : congestion"
+ ],
+ "recuit": {
+  "cout_depart": 0,
+  "cout": 0,
+  "t0": 0,
+  "acceptation_initiale": 0,
+  "paliers": 666,
+  "rechauffes": 0,
+  "mouvements": 20200000,
+  "hpwl_depart": 23209,
+  "hpwl": 6123,
+  "exploration": {
+   "paliers": 1341,
+   "mouvements": 0,
+   "hpwl": 4450.0,
+   "cout": 0
+  }
+ },
+ "boucle": {
+  "tours": 1,
+  "detail": [
+   {
+    "tour": 1,
+    "zones": 14,
+    "pieces": 22,
+    "ko_avant": 14,
+    "ko_apres": 8,
+    "retenu": true
+   }
+  ]
+ },
+ "conjointe": {
+  "essais": 700,
+  "acceptes": 12,
+  "illegaux": 53,
+  "refuses": 72,
+  "cout_depart": 0,
+  "cout": 0
+ },
+ "finition": {
+  "antennes_retirees": 1,
+  "fusions": 24,
+  "descentes_reposees": 0,
+  "ko_avant": 8,
+  "ko_apres": 3,
+  "reparations_verification": 1,
+  "violations_reparees": 0
+ },
+ "convertisseurs": [
+  {
+   "nom": "abaisseur +12V -> +8V",
+   "boucle_chaude_evaluee": true,
+   "noeud_estime_mm": 22.3
+  }
+ ],
+ "mesures": {
+  "longueur_mm": 0,
+  "vias": 0,
+  "vias_doubles": 0,
+  "segments": 0,
+  "longueur_retrecie_mm": 0,
+  "resistance_puissance_mohm": 0
+ },
+ "empreintes": {
+  "donnees_sha256": "5d41402abc4b2a76b9719d911017c592ae3c1f4f2c6f1b6a8d3e1c0b9a8f7e6d",
+  "parametres_sha256": "d6e7f8a9b0c1e3d8a6b1f6c2f4f1c3ea295c710119d9179b67a2b4cba20414d5"
+ },
+ "parametres_effectifs": {
+  "campagne": {
+   "chaines": 4,
+   "duree_max_s": 7200,
+   "arret_apres": "complet",
+   "seuil_abandon_echecs": 10,
+   "seuil_abandon_part": 0.005,
+   "memoire_max_mo": 0
+  },
+  "placement": {
+   "degagement_pas_fin_mm": 0.8,
+   "copier_motifs": false
+  },
+  "recuit": {
+   "mouvements_max": 100000000,
+   "alpha": 0.99,
+   "palier_par_piece": 100,
+   "acceptation_initiale": 0.85,
+   "t_fin_relative": 1e-06,
+   "rudy_capacite": 2.0,
+   "rudy_lambda": 2.0,
+   "rechauffes": 0,
+   "arret_paliers_sans_progres": 150,
+   "periode_reroutage": 3000,
+   "pas_grille_globale_mm": 0.5,
+   "affinage": {
+    "fraction_mouvements": 0.05,
+    "acceptation": 0.03,
+    "t_fin_relative": 0.01,
+    "alpha": 0.85,
+    "palier_par_piece": 25
+   }
+  },
+  "boucle": {
+   "tours": 4,
+   "mouvements_locaux": 60000,
+   "rayon_zone_mm": 3.5,
+   "poids_initial": 30,
+   "rayon_pieces_mm": 4.0,
+   "t0_facteur": 0.15,
+   "sigma_mm": 2.5,
+   "reroutage_local": false
+  },
+  "routage": {
+   "iters_negociation": 40,
+   "tours_arrachage": 4,
+   "arret_si_aggravation": false,
+   "ordre_pas_fin_d_abord": true,
+   "pas_grille_detail_mm": "auto",
+   "largeur_plancher_mm": 0.254,
+   "eventail_auto": true,
+   "eventail_pas_sortie_mm": "auto",
+   "eventail_longueur_mm": 0.3,
+   "amorce_eventail_paires": false,
+   "amorce_moyenne": false,
+   "ponts_plans": false,
+   "rayon_via_plan_mm": 6.0,
+   "fenetre_mm": 15.0,
+   "espacement": {
+    "actif": true,
+    "prox": 1.0,
+    "coude": 0.3,
+    "allongement_max": 0.15
+   },
+   "sens_par_couche": {
+    "actif": false,
+    "penalite": 0.2
+   },
+   "copier_motifs": false,
+   "global": {
+    "cout_via": 2.0,
+    "penalite_via": 2.0,
+    "penalite_debordement": 5.0,
+    "penalite_echec": 100.0,
+    "max_expansions": 250000,
+    "rayon_echappement_cellules": 8
+   }
+  },
+  "finition": {
+   "reparer_tours": 4,
+   "reparer_si_echecs_max": null,
+   "routage_complet": false,
+   "routage_complet_iters": 80,
+   "routage_complet_tours": 8,
+   "verification_reparer_tours": 2,
+   "lissage_marches": false,
+   "surfaces_puissance": {
+    "actif": false,
+    "roles": [
+     "puissance",
+     "commutation"
+    ],
+    "largeur_min_mm": 1.0
+   }
+  },
+  "conjointe": {
+   "essais": null,
+   "essais_par_piece_mobile": 6.0,
+   "plafond_s": 1800,
+   "t0": 3.0,
+   "t_fin": 0.05,
+   "sigma_mm": 1.5,
+   "poids_proximite": 1.0,
+   "periode_zone": 40,
+   "max_expansions": 200000
+  },
+  "couts": {
+   "conjointe": {
+    "longueur": 1.0,
+    "via": 1.5,
+    "retreci": 2.0,
+    "resistance_carre": 1.5,
+    "segment": 0.1,
+    "echec": 100000
+   },
+   "convertisseur": {
+    "boucle_mm2": 8,
+    "perimetre": 10,
+    "noeud": 15,
+    "courts": 10,
+    "decouplage_pilote": 10,
+    "bulk": 3,
+    "sensible": 40,
+    "distance_sensible_mm": 4
+   },
+   "decouplage": {
+    "limite_mm": 4.0,
+    "poids": 25.0
+   }
+  },
+  "roles": {
+   "signal": {
+    "priorite": 8,
+    "largeur_preferee_mm": null,
+    "largeur_preferee_pastille": false,
+    "paliers_mm": [0.3, 0.254],
+    "facteur_via": 1,
+    "vias_doubles": false,
+    "couches": null,
+    "resistance_conjointe": false,
+    "sorties_longues": false
+   },
+   "alimentation": {
+    "priorite": 7,
+    "largeur_preferee_mm": null,
+    "largeur_preferee_pastille": false,
+    "paliers_mm": [0.3, 0.254],
+    "facteur_via": 3,
+    "vias_doubles": false,
+    "couches": null,
+    "resistance_conjointe": false,
+    "sorties_longues": false
+   },
+   "puissance": {
+    "priorite": 1,
+    "largeur_preferee_mm": null,
+    "largeur_preferee_pastille": false,
+    "paliers_mm": [
+     1.5,
+     1.0,
+     0.5,
+     0.3
+    ],
+    "facteur_via": 3,
+    "vias_doubles": true,
+    "couches": null,
+    "resistance_conjointe": true,
+    "sorties_longues": false
+   },
+   "commutation": {
+    "priorite": 3,
+    "largeur_preferee_mm": 2.0,
+    "largeur_preferee_pastille": true,
+    "paliers_mm": [
+     1.5,
+     1.0,
+     0.5,
+     0.3,
+     0.254
+    ],
+    "facteur_via": 1,
+    "vias_doubles": true,
+    "couches": [
+     {
+      "si": "face_convertisseur",
+      "facteur": 1.0
+     },
+     {
+      "si": "externe",
+      "facteur": 1.2
+     },
+     {
+      "si": "interne",
+      "facteur": 3.0
+     }
+    ],
+    "resistance_conjointe": false,
+    "sorties_longues": true
+   },
+   "plan": {
+    "priorite": 6,
+    "descentes_mm": [0.3, 0.254],
+    "descente_puissance_mm": [0.5, 0.3],
+    "rayon_vias_doubles_mm": 2.5,
+    "facteur_via": 1,
+    "vias_doubles": false,
+    "couches": null,
+    "resistance_conjointe": false,
+    "sorties_longues": false
+   }
+  },
+  "sensibilites": {
+   "normale": {
+    "couches": null,
+    "proximite": 1.0,
+    "priorite_signal": null
+   },
+   "sensible": {
+    "couches": [
+     {
+      "si": "preferee_puissance",
+      "facteur": 3.0
+     },
+     {
+      "si": "adjacente_plan",
+      "facteur": 1.0
+     },
+     {
+      "si": "externe",
+      "facteur": 1.2
+     },
+     {
+      "si": "interne",
+      "facteur": 3.0
+     }
+    ],
+    "proximite": 2.0,
+    "priorite_signal": 4
+   },
+   "peu_sensible": {
+    "couches": null,
+    "proximite": 0.3,
+    "priorite_signal": null
+   }
+  },
+  "couche_preferee": {
+   "penalite_ailleurs": 1.5
+  },
+  "journal": {
+   "niveau": "normal",
+   "debug": []
+  }
+ },
+ "execution": {
+  "temps_phases_s": {
+   "chargement": 0.4,
+   "placement_initial": 0.2,
+   "recuit": 315.1,
+   "routage_detaille": 464.4,
+   "boucle": 632.7,
+   "conjointe": 123.8,
+   "finition": 150.0,
+   "verification": 0.9,
+   "ecriture": 0.3
+  },
+  "temps_total_s": 1687.8,
+  "fils": 1,
+  "plafond_temps_atteint": false,
+  "conjointe_plafond_atteint": false,
+  "memoire_estimee_mo": 450,
+  "memoire_pic_mo": 407
+ },
+ "routage_initial": {
+  "echecs_routeur": 9,
+  "ko_exact": 9
+ },
+ "diagnostic": {
+  "recherches": 0,
+  "expansions": 0,
+  "echecs_recherche": {
+   "fenetre_epuisee": 0,
+   "plafond_expansions": 0,
+   "aucun_site_via_plan": 0,
+   "autre": 0
+  }
+ }
+}

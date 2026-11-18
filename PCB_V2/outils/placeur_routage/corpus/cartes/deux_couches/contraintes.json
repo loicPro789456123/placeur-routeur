@@ -1,0 +1,7 @@
+{
+ "format": "contraintes/2",
+ "_doc": "Carte synthétique deux_couches : J1 fixé par contrainte, le reste déduit.",
+ "fixes": [
+  "J1"
+ ]
+}

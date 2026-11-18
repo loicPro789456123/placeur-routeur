@@ -1,0 +1,17 @@
+{
+ "format": "mesures/2",
+ "formule": "cout_commun/2",
+ "cout_commun": 619.74,
+ "termes": {
+  "longueur_mm": 15.24,
+  "vias": 3,
+  "retreci_mm": 0.0,
+  "resistance_puissance_mohm": 0.0,
+  "coudes": 0,
+  "ecart_moyen_mm": 0.0
+ },
+ "parametres": {
+  "seuil_ecart_mm": 0.6,
+  "plafond_ecart_mm": 1.0
+ }
+}

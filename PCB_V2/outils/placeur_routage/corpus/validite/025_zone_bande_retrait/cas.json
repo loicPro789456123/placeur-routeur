@@ -1,0 +1,22 @@
+{
+ "format": "cas_validite/1",
+ "nom": "025_zone_bande_retrait",
+ "description": "Via posé dans la bande de retrait du plan (entre le contour de la carte et la zone) : liaison ouverte dans les deux modes.",
+ "themes": [
+  "contact:zone-via",
+  "zone_plan",
+  "zone:bande_retrait"
+ ],
+ "grille": true,
+ "couture": false,
+ "modes_differents": false,
+ "fichiers": {
+  "donnees": "donnees_placeur.json",
+  "placement": "placements_routage.json",
+  "routage": "routage_detaille.json",
+  "attendu_strict": "attendu_strict.json",
+  "attendu_altium": "attendu_altium.json",
+  "attendu_mesures": "attendu_mesures.json",
+  "couture": null
+ }
+}

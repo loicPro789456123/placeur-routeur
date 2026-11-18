@@ -1,0 +1,21 @@
+{
+ "format": "cas_validite/1",
+ "nom": "037_zone_interdite_elargie",
+ "description": "Piste à 0,127 mm d'une zone interdite (élargie de 0,2) : violation ; zones d'une autre couche ou d'un autre effet : sans effet.",
+ "themes": [
+  "violation:zone_interdite",
+  "zone_interdite:elargie"
+ ],
+ "grille": true,
+ "couture": false,
+ "modes_differents": false,
+ "fichiers": {
+  "donnees": "donnees_placeur.json",
+  "placement": "placements_routage.json",
+  "routage": "routage_detaille.json",
+  "attendu_strict": "attendu_strict.json",
+  "attendu_altium": "attendu_altium.json",
+  "attendu_mesures": "attendu_mesures.json",
+  "couture": null
+ }
+}

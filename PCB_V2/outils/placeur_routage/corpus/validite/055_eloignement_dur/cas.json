@@ -1,0 +1,20 @@
+{
+ "format": "cas_validite/1",
+ "nom": "055_eloignement_dur",
+ "description": "Éloignement dur d'une pastille (7,62 mm < 10) et d'une pièce (12,7 mm) à une pièce de référence : une violation, deux informations.",
+ "themes": [
+  "placement:eloignement"
+ ],
+ "grille": true,
+ "couture": false,
+ "modes_differents": false,
+ "fichiers": {
+  "donnees": "donnees_placeur.json",
+  "placement": "placements_routage.json",
+  "routage": "routage_detaille.json",
+  "attendu_strict": "attendu_strict.json",
+  "attendu_altium": "attendu_altium.json",
+  "attendu_mesures": "attendu_mesures.json",
+  "couture": null
+ }
+}

@@ -1,0 +1,23 @@
+{
+ "format": "cas_validite/1",
+ "nom": "047_amorce_coupee",
+ "description": "Amorce de sortie coupée à 0,254 mm de la suite de la piste : cuivres bout à bout (reliés en altium), liaison ouverte en strict ; deux antennes.",
+ "themes": [
+  "audit:amorce_coupee",
+  "violation:antenne",
+  "contact:piste-piste",
+  "modes_differents"
+ ],
+ "grille": true,
+ "couture": false,
+ "modes_differents": true,
+ "fichiers": {
+  "donnees": "donnees_placeur.json",
+  "placement": "placements_routage.json",
+  "routage": "routage_detaille.json",
+  "attendu_strict": "attendu_strict.json",
+  "attendu_altium": "attendu_altium.json",
+  "attendu_mesures": "attendu_mesures.json",
+  "couture": null
+ }
+}

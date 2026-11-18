@@ -1,9 +1,0 @@
-pastilles : Altium (altium_rev3/pastilles.json)
-DRC maison : 51 violation(s) de routage ; par type : {'pad/trk (pastille libre trou M3)': 23, 'pad/via (pastille libre trou M3)': 1, 'largeur hors regle': 27} ; derogations : {}
-marge d isolement minimale (ecart - regle applicable) : -0.9751 mm [Free-MH5.MH5(<sans>Free-MH5.MH5) / trk(NetQ4_ALIM2_2) : ecart -0.7751 mm, regle 0.200 mm]
-liaisons ouvertes (mode altium) : 166 ; reseaux complets 175 / 259
-angles aigus 0 ; coudes a 90 degres 8 ; longueur 5582.1 mm ; ecart moyen 0.541 / min -0.775 mm ; resistance puissance 1386.7 mOhm
-  pad/trk (pastille libre trou M3) : Free-MH5.MH5(<sans>Free-MH5.MH5) / trk(+8V) : -0.728 < 0.200 mm | Free-MH5.MH5(<sans>Free-MH5.MH5) / trk(+8V) : -0.714 < 0.200 mm | Free-MH5.MH5(<sans>Free-MH5.MH5) / trk(+8V) : -0.711 < 0.200 mm
-  pad/via (pastille libre trou M3) : Free-MH5.MH5(<sans>Free-MH5.MH5) / via(+5V) : -0.376 < 0.200 mm
-  largeur hors regle : +8V : 11.810 mil hors [11.811 mil ; 15.000 mm] | +8V : 11.810 mil hors [11.811 mil ; 15.000 mm] | +8V : 11.810 mil hors [11.811 mil ; 15.000 mm]
--> sorties/drc_ancien_rev3_mode_altium.json

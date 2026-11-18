@@ -1,0 +1,144 @@
+{
+ "format": "attendu_deduction/1",
+ "carte": "sans_classes",
+ "famille": "deduction",
+ "description": "Seule la classe Default ; un abaisseur intégré +12V → +5V.",
+ "regles": [
+  "R-C4",
+  "R-M2",
+  "R-R4",
+  "R-R5b",
+  "R-R7",
+  "R-V3",
+  "R-V5",
+  "R-P3",
+  "§3.6 fonctionnel"
+ ],
+ "couches": [
+  {
+   "nom": "TopLayer",
+   "role": "routage",
+   "plans": []
+  },
+  {
+   "nom": "BottomLayer",
+   "role": "routage",
+   "plans": []
+  }
+ ],
+ "masses": [
+  "GND"
+ ],
+ "roles": {
+  "puissance": [
+   "+12V",
+   "+5V"
+  ],
+  "commutation": [
+   "SW"
+  ],
+  "signal": [
+   "BST",
+   "EN",
+   "FB",
+   "GND",
+   "IN",
+   "OUT"
+  ]
+ },
+ "largeurs": {
+  "+12V": [
+   0.2,
+   0.75,
+   null
+  ],
+  "+5V": [
+   0.2,
+   0.75,
+   null
+  ],
+  "FB": [
+   0.2,
+   0.25,
+   null
+  ]
+ },
+ "convertisseurs": [
+  {
+   "reseau_commutation": "SW",
+   "topologie": "abaisseur",
+   "commutation": "integre",
+   "haut": "U1",
+   "bas": "U1",
+   "pilote": "U1",
+   "inductance": "L1",
+   "reseau_entree": "+12V",
+   "reseau_sortie": "+5V",
+   "reseau_masse": "GND",
+   "cond_entree": [
+    "C1",
+    "C2"
+   ],
+   "cond_sortie": [
+    "C4",
+    "C5"
+   ],
+   "cond_bulk": [
+    "C1"
+   ],
+   "cond_bootstrap": [
+    "C3"
+   ],
+   "boucle_chaude": {
+    "condensateurs": [
+     "C1",
+     "C2"
+    ],
+    "reseau_rail": "+12V",
+    "reseau_masse": "GND"
+   }
+  }
+ ],
+ "sans_piste_dessous": [
+  "L1"
+ ],
+ "pas_fin": [],
+ "matrice": [],
+ "isolement": {
+  "defaut": 0.2,
+  "requis": [
+   {
+    "reseaux": [
+     "+12V",
+     "SW"
+    ],
+    "mm": 0.2
+   }
+  ]
+ },
+ "pieces_fixes": {
+  "J1": "suggestion",
+  "J2": "suggestion"
+ },
+ "groupes": [
+  {
+   "type": "fonctionnel",
+   "pieces": [
+    "C3",
+    "L1",
+    "R1",
+    "R2",
+    "R3",
+    "U1"
+   ]
+  },
+  {
+   "type": "fonctionnel",
+   "pieces": [
+    "R4",
+    "U2"
+   ]
+  }
+ ],
+ "chaine": null
+}

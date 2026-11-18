@@ -1,0 +1,21 @@
+{
+ "format": "cas_validite/1",
+ "nom": "014_coudes_90",
+ "description": "Deux coudes à angle droit : valide ; compte des coudes de §4.7.",
+ "themes": [
+  "mesure:coudes",
+  "contact:piste-piste"
+ ],
+ "grille": true,
+ "couture": false,
+ "modes_differents": false,
+ "fichiers": {
+  "donnees": "donnees_placeur.json",
+  "placement": "placements_routage.json",
+  "routage": "routage_detaille.json",
+  "attendu_strict": "attendu_strict.json",
+  "attendu_altium": "attendu_altium.json",
+  "attendu_mesures": "attendu_mesures.json",
+  "couture": null
+ }
+}

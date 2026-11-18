@@ -1,0 +1,11 @@
+{
+ "format": "config_carte/2",
+ "_doc": "Fichier --config partiel de l'utilisateur (§3.4 R-V4) : chaque convertisseur est désigné par son réseau de commutation ; valider avec « formats.py valider FICHIER --config-utilisateur ».",
+ "convertisseurs": [
+  {"reseau_commutation": "NetC19_1", "cond_bulk": ["C17"], "reseaux_sensibles": ["NetC21_1", "NetC22_2", "NetR25_2"]},
+  {"nom": "abaisseur 5 V", "topologie": "abaisseur", "commutation": "integre", "haut": "U30", "bas": "U30", "pilote": "U30",
+   "inductance": "L30", "cond_entree": ["C30"], "cond_sortie": ["C31"], "reseau_entree": "+12V", "reseau_sortie": "+5V",
+   "reseau_masse": "GND", "reseau_commutation": "SW5"}
+ ],
+ "sans_piste_dessous": ["L1"]
+}

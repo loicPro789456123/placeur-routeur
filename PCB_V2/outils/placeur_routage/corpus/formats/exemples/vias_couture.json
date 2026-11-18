@@ -1,0 +1,29 @@
+{
+ "format": "vias_couture/2",
+ "unite": "mil",
+ "reseaux": [
+  "GND"
+ ],
+ "pas_grille_mm": 2.5,
+ "vias": [
+  {
+   "x": 196.85,
+   "y": 196.85,
+   "size": 23.622,
+   "hole_size": 11.811,
+   "net": "GND"
+  },
+  {
+   "x": 295.276,
+   "y": 196.85,
+   "size": 23.622,
+   "hole_size": 11.811,
+   "net": "GND"
+  }
+ ],
+ "refus": {
+  "isolement": 112,
+  "hors_plan": 40,
+  "zone_interdite": 6
+ }
+}

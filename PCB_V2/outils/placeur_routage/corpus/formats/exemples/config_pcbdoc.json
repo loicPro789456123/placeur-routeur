@@ -1,0 +1,21 @@
+{
+ "format": "config_pcbdoc/2",
+ "livrable": "valide",
+ "serigraphie": {
+  "graine": 1,
+  "chaines": 16,
+  "mouvements": 20000000,
+  "threads": 4,
+  "tailles_mm": "auto",
+  "garde_masque_mm": null,
+  "trous_supplementaires_mm": [
+   [
+    82.0,
+    49.5,
+    3.175
+   ]
+  ],
+  "options": []
+ },
+ "vias_couture": true
+}

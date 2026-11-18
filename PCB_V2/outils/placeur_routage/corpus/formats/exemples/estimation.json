@@ -1,0 +1,10 @@
+{
+ "format": "estimation/1",
+ "memoire_mo": 450,
+ "cellules_detail": 7056000,
+ "pas_grille_mm": 0.0635,
+ "couches_routage": 3,
+ "connexions": 412,
+ "pieces_mobiles": 13,
+ "essais_conjointe": 78
+}

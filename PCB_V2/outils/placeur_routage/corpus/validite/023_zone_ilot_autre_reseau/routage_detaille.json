@@ -1,0 +1,55 @@
+{
+ "format": "routage/2",
+ "unite": "mil",
+ "origine": "coin bas-gauche de la boite du contour",
+ "couches_routage": [
+  "TopLayer",
+  "MidLayer2",
+  "BottomLayer"
+ ],
+ "pistes": [
+  {
+   "x1": 100.0,
+   "y1": 200.0,
+   "x2": 200.0,
+   "y2": 200.0,
+   "width": 10.0,
+   "layer": "TopLayer",
+   "net_name": "GND"
+  },
+  {
+   "x1": 700.0,
+   "y1": 200.0,
+   "x2": 650.0,
+   "y2": 200.0,
+   "width": 10.0,
+   "layer": "TopLayer",
+   "net_name": "GND"
+  }
+ ],
+ "vias": [
+  {
+   "x": 200.0,
+   "y": 200.0,
+   "size": 23.622,
+   "hole_size": 11.811,
+   "net": "GND",
+   "de": "TopLayer",
+   "a": "BottomLayer"
+  },
+  {
+   "x": 650.0,
+   "y": 200.0,
+   "size": 23.622,
+   "hole_size": 11.811,
+   "net": "GND",
+   "de": "TopLayer",
+   "a": "BottomLayer"
+  }
+ ],
+ "surfaces": [],
+ "amorces_pas_fin": [],
+ "derogations": [],
+ "reseaux": [],
+ "echecs": []
+}

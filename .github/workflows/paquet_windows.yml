@@ -1,0 +1,209 @@
+# Paquet portable Windows PlaceurRouteur (contrat §5.5 ; lot D, É7).
+# Construction, vérifications (a) à (e), essais de fumée, job croisé ; publication présente mais désactivée (§8.9-1).
+name: paquet_windows
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "PCB_V2/outils/**"
+      - ".github/workflows/paquet_windows.yml"
+    tags: ["v*"]
+  workflow_dispatch:
+    inputs:
+      verrouiller:
+        description: "Produire exigences-paquet.txt avec ses empreintes (job verrouiller)"
+        type: boolean
+        default: false
+  schedule:
+    - cron: "17 2 * * *"
+
+permissions:
+  contents: read
+
+env:
+  RUST_VERSION: "1.99.0"
+  PYTHON_VERSION: "3.12.10"
+  PYTHONHASHSEED: "0"
+  PAQUET: PCB_V2/outils/paquet
+
+jobs:
+  controles:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: VERSION = Cargo.toml des deux moteurs
+        run: python "$PAQUET/construire.py" --controler-version
+      - name: Étiquette = v + VERSION
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: python "$PAQUET/construire.py" --controler-version --etiquette "${GITHUB_REF_NAME}"
+
+  verrouiller:
+    if: github.event_name == 'workflow_dispatch' && inputs.verrouiller
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          architecture: x64
+      - name: Empreintes des exigences (pip-compile --generate-hashes)
+        shell: pwsh
+        run: |
+          python -m pip install pip-tools==7.4.1
+          python -m piptools compile --generate-hashes --allow-unsafe --strip-extras `
+            --output-file exigences-verrouillees.txt "$env:PAQUET/exigences-paquet.txt"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: exigences-verrouillees
+          path: exigences-verrouillees.txt
+
+  construire:
+    needs: controles
+    strategy:
+      fail-fast: false
+      matrix:
+        image: ${{ fromJSON(vars.IMAGES_PAQUET_WINDOWS || '["windows-2022", "windows-2025"]') }}
+    runs-on: ${{ matrix.image }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          architecture: x64
+      - name: Rust épinglé
+        shell: pwsh
+        run: |
+          rustup toolchain install $env:RUST_VERSION --profile minimal
+          rustup default $env:RUST_VERSION
+          rustc --version
+      - name: Date de construction et drapeaux de compilation
+        shell: pwsh
+        run: |
+          $date = git log -1 --format=%ct
+          "SOURCE_DATE_EPOCH=$date" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+          $cargoHome = if ($env:CARGO_HOME) { $env:CARGO_HOME } else { Join-Path $env:USERPROFILE ".cargo" }
+          "CARGO_HOME_PAQUET=$cargoHome" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+          $s = [char]0x1f
+          $drapeaux = @("-C", "target-feature=+crt-static", "--remap-path-prefix=$cargoHome=/cargo",
+                        "--remap-path-prefix=$env:GITHUB_WORKSPACE=/src", "-C", "link-arg=/Brepro") -join $s
+          "CARGO_ENCODED_RUSTFLAGS=$drapeaux" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+      - name: Moteurs (cargo build et cargo test --release --locked)
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force moteurs | Out-Null
+          foreach ($m in "placeur_routage", "serigraphie") {
+            cargo build --release --locked --manifest-path "PCB_V2/outils/$m/Cargo.toml"
+            if ($LASTEXITCODE) { exit $LASTEXITCODE }
+            cargo test --release --locked --manifest-path "PCB_V2/outils/$m/Cargo.toml"
+            if ($LASTEXITCODE) { exit $LASTEXITCODE }
+            Copy-Item "PCB_V2/outils/$m/target/release/$m.exe" moteurs/
+          }
+      - name: PyInstaller et olefile (--require-hashes, chargeur compilé depuis ses sources)
+        shell: pwsh
+        env:
+          PYINSTALLER_COMPILE_BOOTLOADER: "1"
+        run: |
+          python -m pip install --require-hashes --no-binary pyinstaller -r "$env:PAQUET/exigences-paquet.txt"
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+          python -c "import PyInstaller, os; d = os.path.join(os.path.dirname(PyInstaller.__file__), 'bootloader', 'Windows-64bit-intel'); print(sorted(os.listdir(d)))"
+      - name: Tests Python
+        shell: pwsh
+        run: |
+          Push-Location PCB_V2/outils/placeur_routage
+          python -m unittest test_parametres test_placeur test_lanceur test_anonymat
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+          Pop-Location
+          Push-Location $env:PAQUET
+          python -m unittest test_paquet -v
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+          Pop-Location
+      - name: PyInstaller, vérifications, zip (40 Mo au plus) et SHA-256
+        shell: pwsh
+        run: |
+          python "$env:PAQUET/construire.py" --sortie construction --cargo-home "$env:CARGO_HOME_PAQUET" `
+            --date-source $env:SOURCE_DATE_EPOCH --sans-moteurs moteurs
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+      - name: Vérifications (a) à (e) du paquet
+        shell: pwsh
+        run: python "$env:PAQUET/verifier_paquet.py" construction/dist/PlaceurRouteur
+      - name: Essais de fumée
+        shell: powershell
+        run: |
+          $metroid = @()
+          if ("${{ github.event_name }}" -eq "schedule" -or "${{ github.ref }}".StartsWith("refs/tags/v")) { $metroid = @("-Metroid") }
+          & "$env:PAQUET/essais_fumee.ps1" -Paquet construction/dist/PlaceurRouteur -Depot "$env:GITHUB_WORKSPACE" @metroid
+          exit $LASTEXITCODE
+      - name: Analyse Microsoft Defender (si l'image le permet)
+        continue-on-error: true
+        shell: pwsh
+        run: |
+          $mp = Join-Path $env:ProgramFiles "Windows Defender/MpCmdRun.exe"
+          if (Test-Path $mp) { & $mp -Scan -ScanType 3 -File "$env:GITHUB_WORKSPACE/construction" -DisableRemediation; exit $LASTEXITCODE }
+          Write-Output "MpCmdRun absent de l'image : analyse à faire lors de la vérification manuelle"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: paquet-${{ matrix.image }}
+          path: |
+            construction/PlaceurRouteur-*.zip
+            construction/PlaceurRouteur-*.zip.sha256
+
+  croise:
+    needs: construire
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - construit: windows-2022
+            essaye: windows-2025
+          - construit: windows-2025
+            essaye: windows-2022
+    runs-on: ${{ matrix.essaye }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: paquet-${{ matrix.construit }}
+          path: recu
+      - name: Paquet de ${{ matrix.construit }} essayé sur ${{ matrix.essaye }}, PATH réduit
+        shell: powershell
+        run: |
+          $zip = Get-ChildItem recu -Filter "PlaceurRouteur-*.zip" | Select-Object -First 1
+          Expand-Archive -LiteralPath $zip.FullName -DestinationPath extrait
+          $script = (Resolve-Path "$env:PAQUET/essais_fumee.ps1").Path
+          $paquet = (Resolve-Path extrait/PlaceurRouteur).Path
+          $env:PATH = 'C:\Windows\system32;C:\Windows'
+          & $script -Paquet $paquet -Depot "$env:GITHUB_WORKSPACE"
+          exit $LASTEXITCODE
+
+  publier:
+    # Désactivé tant que la décision de §8.9 (licence, signature, publication) n'est pas prise : « false && ».
+    if: false && startsWith(github.ref, 'refs/tags/v')
+    needs: [controles, construire, croise]
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Auteur de l'étiquette = propriétaire du dépôt
+        run: |
+          if [ "${GITHUB_ACTOR}" != "${GITHUB_REPOSITORY_OWNER}" ]; then
+            echo "étiquette posée par un autre compte que le propriétaire : publication refusée"; exit 1
+          fi
+      - name: Compte rendu de la vérification manuelle dans NOTES_VERSION.md
+        run: |
+          grep -Eq '^COMPTE RENDU : fait le [0-9]{4}-[0-9]{2}-[0-9]{2}' "$PAQUET/NOTES_VERSION.md" || {
+            echo "NOTES_VERSION.md sans compte rendu de la vérification manuelle : publication refusée"; exit 1; }
+      - uses: actions/download-artifact@v4
+        with:
+          name: paquet-windows-2022
+          path: publie
+      - name: Publication par le robot de GitHub (zip de windows-2022, notes de version)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release create "${GITHUB_REF_NAME}" publie/* --notes-file "$PAQUET/NOTES_VERSION.md" --title "PlaceurRouteur ${GITHUB_REF_NAME}"

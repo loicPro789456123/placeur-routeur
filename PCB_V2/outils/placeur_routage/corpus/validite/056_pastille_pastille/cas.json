@@ -1,0 +1,22 @@
+{
+ "format": "cas_validite/1",
+ "nom": "056_pastille_pastille",
+ "description": "Écart entre pastilles de pièces différentes par la matrice des classes : 0,127 < 0,2 fautif, 0,127 ≥ 0,1 permis, paire de deux pièces fixes à leur pose d'entrée exclue.",
+ "themes": [
+  "placement:pastille_pastille",
+  "regles:matrice",
+  "placement:pose_entree"
+ ],
+ "grille": true,
+ "couture": false,
+ "modes_differents": false,
+ "fichiers": {
+  "donnees": "donnees_placeur.json",
+  "placement": "placements_routage.json",
+  "routage": "routage_detaille.json",
+  "attendu_strict": "attendu_strict.json",
+  "attendu_altium": "attendu_altium.json",
+  "attendu_mesures": "attendu_mesures.json",
+  "couture": null
+ }
+}

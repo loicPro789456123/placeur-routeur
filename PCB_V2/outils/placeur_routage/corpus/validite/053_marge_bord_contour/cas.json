@@ -1,0 +1,21 @@
+{
+ "format": "cas_validite/1",
+ "nom": "053_marge_bord_contour",
+ "description": "Carte en L : marge au contour exact (bord, arête rentrante, pièce hors du contour) ; deux pièces juste au-delà de la marge.",
+ "themes": [
+  "placement:marge_bord",
+  "geometrie:contour_polygonal"
+ ],
+ "grille": true,
+ "couture": false,
+ "modes_differents": false,
+ "fichiers": {
+  "donnees": "donnees_placeur.json",
+  "placement": "placements_routage.json",
+  "routage": "routage_detaille.json",
+  "attendu_strict": "attendu_strict.json",
+  "attendu_altium": "attendu_altium.json",
+  "attendu_mesures": "attendu_mesures.json",
+  "couture": null
+ }
+}

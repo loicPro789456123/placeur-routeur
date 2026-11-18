@@ -1,0 +1,26 @@
+{
+ "format": "routage/2",
+ "unite": "mil",
+ "origine": "coin bas-gauche de la boite du contour",
+ "couches_routage": [
+  "TopLayer",
+  "BottomLayer"
+ ],
+ "pistes": [
+  {
+   "x1": 431.058285,
+   "y1": 315.911099,
+   "x2": 411.388038,
+   "y2": 242.500736,
+   "width": 10.0,
+   "layer": "TopLayer",
+   "net_name": "N1"
+  }
+ ],
+ "vias": [],
+ "surfaces": [],
+ "amorces_pas_fin": [],
+ "derogations": [],
+ "reseaux": [],
+ "echecs": []
+}

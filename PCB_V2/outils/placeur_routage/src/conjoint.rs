@@ -15,6 +15,9 @@ use std::time::Instant;
 
 #[derive(Clone)]
 pub struct ParamConj {
+    /// budget en essais (avenant 2.2, A.1 : un essai = un tirage, y compris un tirage sans mouvement)
+    pub essais: usize,
+    /// plafond de duree (s), garde-fou seulement
     pub budget_s: f64,
     pub t0: f64,
     pub t_fin: f64,
@@ -53,6 +56,21 @@ fn signature(m: &Modele, i: usize) -> Vec<i64> {
     v
 }
 
+/// Ecart (7) de l'avenant 2.2 : vrai si la somme des comptes d'echecs internes des reseaux touches n'augmente pas.
+pub fn echecs_non_accrus(d: &Detail, olds: &[(usize, NetR)]) -> bool {
+    let avant: usize = olds.iter().map(|(_, o)| o.ko).sum();
+    let apres: usize = olds.iter().map(|(n, _)| d.nets[*n].ko).sum();
+    apres <= avant
+}
+
+/// Budget de la phase conjointe en essais : `conjointe.essais`, sinon floor(essais_par_piece_mobile x mobiles + 0,5).
+pub fn budget_essais(essais: Option<u64>, par_piece: f64, mobiles: usize) -> usize {
+    match essais {
+        Some(e) => e as usize,
+        None => (par_piece * mobiles as f64 + 0.5).floor() as usize,
+    }
+}
+
 pub fn chaine(base: &Detail, graine: u64, p: &ParamConj, journal: &(dyn Fn(String) + Sync)) -> ResConj {
     let t_start = Instant::now();
     let m = base.m;
@@ -84,10 +102,12 @@ pub fn chaine(base: &Detail, graine: u64, p: &ParamConj, journal: &(dyn Fn(Strin
     let mut dernier_journal = 0.0;
     loop {
         let el = t_start.elapsed().as_secs_f64();
-        if el > p.budget_s {
+        // budget en essais ; la duree n'est qu'un plafond (avenant 2.2, A.1)
+        if essais >= p.essais || el > p.budget_s || mobiles.is_empty() {
             break;
         }
-        let frac = el / p.budget_s;
+        // temperature indexee sur les essais
+        let frac = essais as f64 / p.essais as f64;
         let temp = p.t0 * (p.t_fin / p.t0).powf(frac);
         // resynchronisation periodique (la proximite d'un reseau depend de ses voisins)
         if essais % 300 == 299 {
@@ -117,7 +137,8 @@ pub fn chaine(base: &Detail, graine: u64, p: &ParamConj, journal: &(dyn Fn(Strin
                 .collect();
             nets.truncate(30);
             zones_tentees += 1;
-            let (ok, olds) = d.rerouter_opt(&nets, false);
+            let (_, olds) = d.rerouter_opt(&nets, false);
+            let ok = echecs_non_accrus(&d, &olds);
             let mut delta = 0.0;
             let mut nouveaux = Vec::new();
             for (n, _) in &olds {
@@ -155,6 +176,8 @@ pub fn chaine(base: &Detail, graine: u64, p: &ParamConj, journal: &(dyn Fn(Strin
                     .sum::<f64>()
             })
             .collect();
+        // un essai = un tirage (avenant 2.2, A.1) : compte avant toute sortie sans mouvement
+        essais += 1;
         let tot: f64 = poids.iter().sum();
         let mut r = rng.f64() * tot;
         let mut k = 0;
@@ -209,7 +232,6 @@ pub fn chaine(base: &Detail, graine: u64, p: &ParamConj, journal: &(dyn Fn(Strin
             let o = *al[rng.below(al.len())];
             mv.push((i, centre(&d.e, i, o.0, o.1, cx, cy)));
         }
-        essais += 1;
         // legalite du placement (memes regles que le recuit v3 : boites + 0,25 mm, traversantes, obstacles, bloc)
         let excl: Vec<i32> = mv.iter().map(|x| x.0 as i32).collect();
         let mut rects = Vec::new();
@@ -228,6 +250,22 @@ pub fn chaine(base: &Detail, graine: u64, p: &ParamConj, journal: &(dyn Fn(Strin
                 for (fb, b) in &rects[1] {
                     if fa == fb && ov(a, b) {
                         legal = false;
+                    }
+                }
+            }
+        }
+        // mouvement d'une piece illegal : legalisation locale (spirale autour de la cible) plutot qu'un essai perdu
+        if !legal && mv.len() == 1 {
+            let (j, q) = mv[0];
+            'spirale: for &rad in &[0.25, 0.5, 0.75, 1.0] {
+                for kk in 0..8 {
+                    let a = kk as f64 * std::f64::consts::FRAC_PI_4;
+                    let q2 = Pose { x: snap(q.x + rad * a.cos()), y: snap(q.y + rad * a.sin()), ..q };
+                    if let Some(r) = occ.legal(m, j, &q2, &excl) {
+                        mv[0] = (j, q2);
+                        rects = vec![r];
+                        legal = true;
+                        break 'spirale;
                     }
                 }
             }
@@ -252,7 +290,6 @@ pub fn chaine(base: &Detail, graine: u64, p: &ParamConj, journal: &(dyn Fn(Strin
         nets.retain(|&n| !m.nets[n].plan);
         let tr = Instant::now();
         let mut olds: Vec<(usize, NetR)> = Vec::new();
-        let mut ok = true;
         for g in plans {
             let mut pads = Vec::new();
             let mut zones = Vec::new();
@@ -265,14 +302,15 @@ pub fn chaine(base: &Detail, graine: u64, p: &ParamConj, journal: &(dyn Fn(Strin
                     zones.push((x, y, hw.max(hh) + 0.8));
                 }
             }
-            let (okg, old) = d.rerouter_plan_partiel(g, &pads, &zones);
+            let (_, old) = d.rerouter_plan_partiel(g, &pads, &zones);
             olds.push((g, old));
-            ok &= okg;
         }
-        let (ok2, olds2) = d.rerouter_opt(&nets, false);
-        ok &= ok2;
+        let (_, olds2) = d.rerouter_opt(&nets, false);
         olds.extend(olds2);
-        if std::env::var("CONJ_DEBUG").is_ok() {
+        // avenant 2.2, ecart (7) : refus si la somme des echecs internes des reseaux touches augmente ; sinon Metropolis
+        // sur le cout interne (10^5 par echec)
+        let ok = echecs_non_accrus(&d, &olds);
+        if m.param.journal.debug_conjointe {
             journal(format!("    essai {} : piece {} ; reseaux {:?} ; touches {} ; ok {} ; {:.2} s",
                 essais, m.comps[i].nom, nets.iter().map(|&n| m.nets[n].nom.clone()).collect::<Vec<_>>(), olds.len(), ok, tr.elapsed().as_secs_f64()));
         }
@@ -317,4 +355,58 @@ pub fn chaine(base: &Detail, graine: u64, p: &ParamConj, journal: &(dyn Fn(Strin
     }
     journal(format!("  zones rerouties : {} acceptees sur {}", zones_acceptees, zones_tentees));
     ResConj { cout_depart, cout: best.0, etat: best.1, nets: best.2, essais, illegaux: ill, refuses_routage: refus, acceptes: acc, graine }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::detail::tests::carte_croisee;
+    use crate::parametres::Parametres;
+
+    fn routee(d: &crate::donnees_v1::Donnees) -> Modele {
+        let mut m = Modele::new(d, Parametres::defaut());
+        // B mobile, quatre rotations sur sa face
+        let b = m.comp_idx["B"];
+        m.comps[b].statut = Statut::Mobile;
+        m.comps[b].orients = vec![(0, false), (90, false), (180, false), (270, false)];
+        m.mobiles = vec![b];
+        m
+    }
+
+    /// Avenant 2.2, ecart (7), test (c) : un essai qui fait passer un reseau de 0 a 1 echec sans en retirer ailleurs
+    /// est refuse ; un essai qui deplace un echec d'un reseau a un autre ne l'est pas.
+    #[test]
+    fn test_c_essai_qui_accroit_les_echecs_refuse() {
+        let d = carte_croisee(1.0, 0.3, false, false);
+        let m = routee(&d);
+        let e = m.etat_v3();
+        let mut dt = Detail::new(&m, &e);
+        dt.tout(5, 1, &crate::campagne::param_esp(&m.param), &mut |_| {});
+        let (s0, s1) = (m.net_idx["S0"], m.net_idx["S1"]);
+        assert_eq!(dt.nets[s0].ko + dt.nets[s1].ko, 0);
+        let olds = vec![(s0, dt.nets[s0].clone()), (s1, dt.nets[s1].clone())];
+        dt.nets[s0].ko = 1;
+        assert!(!echecs_non_accrus(&dt, &olds), "0 -> 1 echec accepte");
+        let mut olds2 = olds.clone();
+        olds2[1].1.ko = 1;
+        assert!(echecs_non_accrus(&dt, &olds2), "echec deplace (1 -> 1) refuse");
+    }
+
+    /// Avenant 2.2, A.1 : `conjointe.essais` = 25 => exactement 25 essais comptes ; defaut = floor(6,0 x mobiles + 0,5).
+    #[test]
+    fn budget_de_la_conjointe_en_essais() {
+        assert_eq!(budget_essais(Some(25), 6.0, 314), 25);
+        assert_eq!(budget_essais(None, 6.0, 314), 1884);
+        assert_eq!(budget_essais(None, 2.2293, 3), 7);
+        assert_eq!(budget_essais(None, 6.0, 0), 0);
+        let d = carte_croisee(1.0, 0.3, true, false);
+        let m = routee(&d);
+        let e = m.etat_v3();
+        let mut dt = Detail::new(&m, &e);
+        dt.tout(5, 1, &crate::campagne::param_esp(&m.param), &mut |_| {});
+        let pc = &m.param.conjointe;
+        let p = ParamConj { essais: 25, budget_s: 1e9, t0: pc.t0, t_fin: pc.t_fin, sigma: pc.sigma_mm, prox_poids: pc.poids_proximite, zone_periode: pc.periode_zone };
+        let rc = chaine(&dt, 7, &p, &|_| {});
+        assert_eq!(rc.essais, 25);
+    }
 }

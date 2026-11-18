@@ -1,0 +1,23 @@
+{
+ "format": "cas_validite/1",
+ "nom": "029_pastille_tournee",
+ "description": "Pastille rectangulaire tournée de 30° sur une pièce à 45° : extrémité de piste à 0,1 mm du bout de la pastille sur son axe à 75° : liaison ouverte en strict, reliée en altium ; antenne.",
+ "themes": [
+  "geometrie:pastille_tournee",
+  "contact:piste-pastille",
+  "modes_differents",
+  "violation:antenne"
+ ],
+ "grille": true,
+ "couture": false,
+ "modes_differents": true,
+ "fichiers": {
+  "donnees": "donnees_placeur.json",
+  "placement": "placements_routage.json",
+  "routage": "routage_detaille.json",
+  "attendu_strict": "attendu_strict.json",
+  "attendu_altium": "attendu_altium.json",
+  "attendu_mesures": "attendu_mesures.json",
+  "couture": null
+ }
+}

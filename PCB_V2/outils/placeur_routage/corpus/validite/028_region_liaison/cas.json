@@ -1,0 +1,23 @@
+{
+ "format": "cas_validite/1",
+ "nom": "028_region_liaison",
+ "description": "Région de liaison de deux réseaux : conductrice pour chacun ; une piste qui y finit relie sa pastille : valide dans les deux modes.",
+ "themes": [
+  "objet:region_liaison",
+  "objet:region",
+  "contact:piste-region",
+  "contact:preexistants"
+ ],
+ "grille": true,
+ "couture": false,
+ "modes_differents": false,
+ "fichiers": {
+  "donnees": "donnees_placeur.json",
+  "placement": "placements_routage.json",
+  "routage": "routage_detaille.json",
+  "attendu_strict": "attendu_strict.json",
+  "attendu_altium": "attendu_altium.json",
+  "attendu_mesures": "attendu_mesures.json",
+  "couture": null
+ }
+}

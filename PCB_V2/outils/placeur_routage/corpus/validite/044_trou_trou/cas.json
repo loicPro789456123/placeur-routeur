@@ -1,0 +1,21 @@
+{
+ "format": "cas_validite/1",
+ "nom": "044_trou_trou",
+ "description": "Via à 0,185 mm (paroi à paroi) du trou d'une pastille traversante du même réseau : trou_trou.",
+ "themes": [
+  "violation:trou_trou",
+  "objet:pastille_traversante"
+ ],
+ "grille": true,
+ "couture": false,
+ "modes_differents": false,
+ "fichiers": {
+  "donnees": "donnees_placeur.json",
+  "placement": "placements_routage.json",
+  "routage": "routage_detaille.json",
+  "attendu_strict": "attendu_strict.json",
+  "attendu_altium": "attendu_altium.json",
+  "attendu_mesures": "attendu_mesures.json",
+  "couture": null
+ }
+}

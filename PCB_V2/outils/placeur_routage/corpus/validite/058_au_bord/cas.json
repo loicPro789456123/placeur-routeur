@@ -1,0 +1,21 @@
+{
+ "format": "cas_validite/1",
+ "nom": "058_au_bord",
+ "description": "Pièces au bord (côté imposé, débord, côté quelconque) dispensées de marge de ce côté ; une pièce loin de son côté ; une pièce au bord sans contrainte.",
+ "themes": [
+  "placement:au_bord",
+  "placement:marge_bord"
+ ],
+ "grille": true,
+ "couture": false,
+ "modes_differents": false,
+ "fichiers": {
+  "donnees": "donnees_placeur.json",
+  "placement": "placements_routage.json",
+  "routage": "routage_detaille.json",
+  "attendu_strict": "attendu_strict.json",
+  "attendu_altium": "attendu_altium.json",
+  "attendu_mesures": "attendu_mesures.json",
+  "couture": null
+ }
+}

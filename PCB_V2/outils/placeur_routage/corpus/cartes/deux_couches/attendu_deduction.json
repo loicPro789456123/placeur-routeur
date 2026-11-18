@@ -1,0 +1,144 @@
+{
+ "format": "attendu_deduction/1",
+ "carte": "deux_couches",
+ "famille": "chaine",
+ "description": "2 couches de routage, sans plan, 30 pièces ; classe Alim pour +5V, +3V3 et GND.",
+ "regles": [
+  "R-C4",
+  "R-M2",
+  "R-R6",
+  "R-R7",
+  "R-P2",
+  "R-P3",
+  "§3.6 fonctionnel",
+  "annexe D"
+ ],
+ "couches": [
+  {
+   "nom": "TopLayer",
+   "role": "routage",
+   "plans": []
+  },
+  {
+   "nom": "BottomLayer",
+   "role": "routage",
+   "plans": []
+  }
+ ],
+ "masses": [
+  "GND"
+ ],
+ "roles": {
+  "alimentation": [
+   "+3V3",
+   "+5V",
+   "GND"
+  ],
+  "signal": [
+   "D1_A",
+   "D2_A",
+   "IN_A",
+   "IN_J",
+   "LED1",
+   "LOAD",
+   "OUT_B",
+   "Q_G",
+   "RST",
+   "RX",
+   "RX_J",
+   "SCL",
+   "SCL_J",
+   "SDA",
+   "SDA_J",
+   "SENS",
+   "SENS_J",
+   "TX"
+  ]
+ },
+ "largeurs": {
+  "+5V": [
+   0.2,
+   0.5,
+   null
+  ],
+  "RST": [
+   0.2,
+   0.25,
+   null
+  ]
+ },
+ "convertisseurs": [],
+ "sans_piste_dessous": [],
+ "pas_fin": [],
+ "matrice": [],
+ "isolement": {
+  "defaut": 0.2,
+  "requis": [
+   {
+    "reseaux": [
+     "RST",
+     "SCL"
+    ],
+    "mm": 0.2
+   },
+   {
+    "reseaux": [
+     "+5V",
+     "GND"
+    ],
+    "mm": 0.25
+   },
+   {
+    "reseaux": [
+     "+3V3",
+     "RST"
+    ],
+    "mm": 0.25
+   }
+  ]
+ },
+ "pieces_fixes": {
+  "H1": "mecanique",
+  "H2": "mecanique",
+  "H3": "mecanique",
+  "H4": "mecanique",
+  "J1": "contrainte",
+  "J2": "suggestion"
+ },
+ "groupes": [
+  {
+   "type": "fonctionnel",
+   "pieces": [
+    "C3",
+    "R1",
+    "R2",
+    "R3",
+    "R5",
+    "R6",
+    "R7",
+    "U1"
+   ]
+  },
+  {
+   "type": "fonctionnel",
+   "pieces": [
+    "C6",
+    "R10",
+    "R8",
+    "R9",
+    "U3"
+   ]
+  }
+ ],
+ "chaine": {
+  "niveau": "rapide",
+  "graines": 10,
+  "graines_valides_min": 1,
+  "couches_pistes": [
+   "TopLayer",
+   "BottomLayer"
+  ],
+  "couches_sans_piste": [],
+  "descentes_par_vias": []
+ }
+}

@@ -1,0 +1,16 @@
+# Exigences de construction du paquet portable (contrat §5.5 ; lot D, É7), toutes épinglées.
+# Installées par paquet_windows.yml avec « pip install --require-hashes --no-binary pyinstaller » : le chargeur de
+# PyInstaller est compilé depuis ses sources (MSVC de l'image).
+#
+# ÉCART DÉCLARÉ : les empreintes (--hash=sha256:…) ne peuvent pas être calculées hors ligne. Le job manuel
+# « verrouiller » de paquet_windows.yml les produit (pip-compile --generate-hashes sur ce fichier) et publie le
+# fichier complet en artefact ; il remplace ce fichier une fois, à l'intégration. Tant que ce n'est pas fait,
+# l'installation par --require-hashes échoue (volontairement) : aucune construction sans empreintes.
+pyinstaller==6.11.1
+pyinstaller-hooks-contrib==2024.10
+altgraph==0.17.4
+packaging==24.2
+pefile==2023.2.7
+pywin32-ctypes==0.2.3
+setuptools==75.6.0
+olefile==0.47
