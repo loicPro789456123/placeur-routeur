@@ -152,7 +152,7 @@ jobs:
           $code = $LASTEXITCODE
           $sortie | ForEach-Object { "$_" }
           if ($code) {
-            $sortie | ForEach-Object { "$_" } | Select-Object -Last 20 | ForEach-Object { Write-Output "::error::construire.py : $_" }
+            $sortie | ForEach-Object { "$_" } | Where-Object { $_ -notmatch "INFO:|avertissement" } | Select-Object -Last 9 | ForEach-Object { Write-Output "::error::construire.py : $_" }
             exit $code
           }
       - name: Vérifications (a) à (e) du paquet
