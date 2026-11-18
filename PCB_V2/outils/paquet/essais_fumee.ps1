@@ -80,7 +80,7 @@ function Moteurs-Vivants { return @(Get-Process -Name "placeur_routage", "serigr
 
 function Dossier-Du-Calcul([string]$Sortie) {
     foreach ($l in Get-Content -LiteralPath $Sortie -Encoding UTF8 -ErrorAction SilentlyContinue) {
-        if ($l -match '"type"\s*:\s*"debut"') { return ($l | ConvertFrom-Json).sortie }
+        if ($l -match '"type"\s*:\s*"debut"') { return (($l -replace '^EVT ', '') | ConvertFrom-Json).sortie }
     }
     return $null
 }
