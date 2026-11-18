@@ -524,6 +524,11 @@ fn main() {
     // aucune trace de panique sur la console : une panique du calcul devient le code 4
     std::panic::set_hook(Box::new(|_| {}));
     let args: Vec<String> = std::env::args().skip(1).collect();
+    if args.len() == 1 && args[0] == "--version" {
+        // même forme que le moteur placeur_routage (contrôlée par placeur.exe --auto-test)
+        println!("serigraphie {}+{}", env!("CARGO_PKG_VERSION"), option_env!("PLACEUR_COMMIT").unwrap_or("inconnu"));
+        std::process::exit(0);
+    }
     let code = match analyser(&args) {
         Err(m) => {
             eprintln!("serigraphie : erreur d'entree : {}", m);

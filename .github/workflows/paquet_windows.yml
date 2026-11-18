@@ -103,6 +103,8 @@ jobs:
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force moteurs | Out-Null
+          # commit embarqué dans les moteurs (« --version »), identique à celui que lit placeur.exe
+          $env:PLACEUR_COMMIT = (git rev-parse HEAD).Substring(0, 7)
           foreach ($m in "placeur_routage", "serigraphie") {
             # cargo build --release --locked, puis cargo test --release --locked
             foreach ($etape in "build", "test") {
