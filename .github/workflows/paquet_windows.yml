@@ -129,14 +129,20 @@ jobs:
       - name: Tests Python
         shell: pwsh
         run: |
-          Push-Location PCB_V2/outils/placeur_routage
-          python -m unittest test_parametres test_placeur test_lanceur test_anonymat
-          if ($LASTEXITCODE) { exit $LASTEXITCODE }
-          Pop-Location
-          Push-Location $env:PAQUET
-          python -m unittest test_paquet -v
-          if ($LASTEXITCODE) { exit $LASTEXITCODE }
-          Pop-Location
+          function Essai($dossier, $arguments) {
+            Push-Location $dossier
+            $sortie = python -m unittest @arguments 2>&1
+            $code = $LASTEXITCODE
+            Pop-Location
+            $sortie | ForEach-Object { "$_" }
+            if ($code) {
+              $sortie | ForEach-Object { "$_" } | Where-Object { $_ -match "^(FAIL|ERROR)|Error|assert" } |
+                Select-Object -First 25 | ForEach-Object { Write-Output "::error::$_" }
+              exit $code
+            }
+          }
+          Essai "PCB_V2/outils/placeur_routage" @("test_parametres", "test_placeur", "test_lanceur", "test_anonymat")
+          Essai $env:PAQUET @("test_paquet", "-v")
       - name: PyInstaller, vérifications, zip (40 Mo au plus) et SHA-256
         shell: pwsh
         run: |
