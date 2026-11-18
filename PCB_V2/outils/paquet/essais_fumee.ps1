@@ -165,7 +165,7 @@ try {
     } else { Noter "donnees_metroid" "SAUTÉ" "sans -Metroid" }
 
     # 7 à 9. arrêts
-    $f = Lancement-En-Fond (Exemple-Kicad) (Join-Path $Travail "arret1") "arret1"
+    $f = Lancement-En-Fond (Exemple-Pcbdoc) (Join-Path $Travail "arret1") "arret1"   # reprise jusqu'au livrable (.PcbDoc)
     if ($f.Dossier) {
         "" | Set-Content -LiteralPath (Join-Path $f.Dossier "arret_lancements")
         $f.Processus.WaitForExit(600000) | Out-Null
