@@ -422,8 +422,10 @@ class TestStatique(unittest.TestCase):
 
     def test_exigences_epinglees(self):
         lignes = [l.split("#")[0].strip() for l in lire(os.path.join(ICI, "exigences-paquet.txt")).splitlines()]
-        lignes = [l for l in lignes if l]
+        # format de pip --require-hashes : « nom==version \ » suivi de lignes « --hash=sha256:… »
+        lignes = [l.rstrip("\\").strip() for l in lignes if l and not l.startswith("--hash=sha256:")]
         self.assertTrue(all(re.fullmatch(r"[A-Za-z0-9_.-]+==[0-9][A-Za-z0-9.]*", l) for l in lignes), lignes)
+        self.assertIn("--hash=sha256:", lire(os.path.join(ICI, "exigences-paquet.txt")))
         self.assertIn("olefile==0.47", lignes)
         self.assertTrue(any(l.startswith("pyinstaller==") for l in lignes))
 
