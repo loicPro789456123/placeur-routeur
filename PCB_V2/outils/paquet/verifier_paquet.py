@@ -363,6 +363,16 @@ def empreintes_reference(dossier: str | None) -> set[str]:
     return sortie
 
 
+def _module_standard(nom: str) -> bool:
+    """Membre d'archive (« …!tempfile », « …!ntpath.pyc », « …!encodings/cp1252.pyc ») de la bibliothèque standard."""
+    if "!" not in nom:
+        return False
+    dernier = nom.rsplit("!", 1)[1]
+    if dernier.endswith(".pyc"):
+        dernier = dernier[:-4]
+    return dernier.replace("/", ".").split(".")[0] in sys.stdlib_module_names
+
+
 def verifier_anonymat(racine: str, exemptions: set[str]) -> tuple[list[str], int]:
     """(c) Motifs génériques de §0.3. Rend (erreurs, nombre de fichiers exemptés par empreinte).
     Les erreurs ne citent jamais l'extrait trouvé (il contiendrait ce qu'on cherche à cacher)."""
@@ -374,6 +384,10 @@ def verifier_anonymat(racine: str, exemptions: set[str]) -> tuple[list[str], int
             continue
         for nom, contenu in contenus_imbriques(rel, donnees):
             if nom != rel and hashlib.sha256(contenu).hexdigest() in exemptions:
+                continue
+            if _module_standard(nom) or (nom == rel and os.path.basename(rel) == "base_library.zip"):
+                # bibliothèque standard de Python recompilée par PyInstaller (exemples génériques de chemins dans
+                # ntpath, tempfile…) : ses membres sont contrôlés un à un, les modules standard sont exemptés
                 continue
             motifs = sorted({m for m, _x in chemins.chercher_motifs(contenu, lecteur=True)})
             if motifs:
