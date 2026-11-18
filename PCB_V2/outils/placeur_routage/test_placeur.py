@@ -74,6 +74,9 @@ CLES_ESTIMATION = ("format", "memoire_mo", "cellules_detail", "pas_grille_mm", "
 # ================================================================================================ contrat et avenant
 
 def _lire(chemin: str) -> str:
+    if chemin in (CONTRAT, AVENANT) and not os.path.exists(chemin):
+        # le contrat n'est pas publié (dépôt public) : les tests qui le relisent sont sautés
+        raise unittest.SkipTest(os.path.basename(chemin) + " absent (non publié)")
     with open(chemin, encoding="utf-8") as f:
         return f.read()
 
