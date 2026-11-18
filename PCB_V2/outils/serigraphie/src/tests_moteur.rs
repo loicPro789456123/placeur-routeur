@@ -64,6 +64,10 @@ fn carte_polygonale_et_regles() {
 #[test]
 fn determinisme_nombre_de_fils() {
     let dossier = Path::new(env!("CARGO_MANIFEST_DIR")).join("altium_rev4");
+    if !dossier.exists() {
+        eprintln!("saute : jeu d'essai prive altium_rev4 absent (non publie)");
+        return;
+    }
     let d = charger(&dossier).unwrap();
     let (c, r) = lire_carte(&dossier.join("carte.json")).unwrap();
     let mut o = analyser(&a(&["--entree", "e", "--sortie", "s", "--carte", "c", "--chaines", "3", "--mouvements", "20000"])).unwrap();

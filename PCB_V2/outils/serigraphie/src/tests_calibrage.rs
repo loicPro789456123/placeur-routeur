@@ -11,6 +11,10 @@ fn proche(a: f64, b: f64, e: f64) -> bool {
 #[test]
 fn chargement_jeu_essai_rev4() {
     let dossier = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("altium_rev4");
+    if !dossier.exists() {
+        eprintln!("saute : jeu d'essai prive altium_rev4 absent (non publie)");
+        return;
+    }
     let d = charger(&dossier).expect("jeu d'essai lisible");
     assert_eq!((d.pastilles.len(), d.composants.len(), d.vias.len(), d.textes.len()), (1036, 359, 1008, 740));
     assert!(d.composants.iter().any(|c| c.face == Face::Dessous));
