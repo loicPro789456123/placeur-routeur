@@ -54,7 +54,7 @@ MOTEURS = ("moteurs/placeur_routage.exe", "moteurs/serigraphie.exe")
 INTERNE_AUTORISES = (
     "version", "commit", "base_library.zip", "*.dll", "*.pyd", "moteurs/placeur_routage.exe",
     "moteurs/serigraphie.exe", "_tcl_data/*", "_tk_data/*", "tcl8/*", "tcl/*", "tk/*", "*.dist-info/*",
-    "pyz*.pyz",
+    "pyz*.pyz", "natures.json",
 )
 # extensions et noms de fichiers de données de carte (interdits hors exemples/)
 EXTENSIONS_CARTE = (".pcbdoc", ".pcblib", ".schdoc", ".schlib", ".prjpcb", ".intlib", ".kicad_pcb", ".kicad_sch",
