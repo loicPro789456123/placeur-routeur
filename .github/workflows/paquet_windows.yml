@@ -163,8 +163,13 @@ jobs:
         run: |
           $metroid = @()
           if ("${{ github.event_name }}" -eq "schedule" -or "${{ github.ref }}".StartsWith("refs/tags/v")) { $metroid = @("-Metroid") }
-          & "$env:PAQUET/essais_fumee.ps1" -Paquet construction/dist/PlaceurRouteur -Depot "$env:GITHUB_WORKSPACE" @metroid
-          exit $LASTEXITCODE
+          $sortie = & "$env:PAQUET/essais_fumee.ps1" -Paquet construction/dist/PlaceurRouteur -Depot "$env:GITHUB_WORKSPACE" @metroid 2>&1
+          $code = $LASTEXITCODE
+          $sortie | ForEach-Object { "$_" }
+          if ($code) {
+            $sortie | ForEach-Object { "$_" } | Where-Object { $_ -match "ECHEC|chec|erreur|rreur|refus|code" } | Select-Object -Last 9 | ForEach-Object { Write-Output "::error::fumee : $_" }
+          }
+          exit $code
       - name: Analyse Microsoft Defender (si l'image le permet)
         continue-on-error: true
         shell: pwsh
