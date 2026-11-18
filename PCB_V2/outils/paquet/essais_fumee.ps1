@@ -142,13 +142,13 @@ try {
     # 3. chaîne KiCad
     $r = Chaine "chaine_kicad" $Placeur (Exemple-Kicad) (Join-Path $Travail "kicad")
     $produite = $r.Dossier -and @(Get-ChildItem -LiteralPath $r.Dossier -Filter "*.kicad_pcb" -ErrorAction SilentlyContinue).Count -gt 0
-    if ($r.Code -eq 0 -and $produite) { Noter "chaine_kicad" "OK" "code 0, .kicad_pcb produit" } else { Noter "chaine_kicad" "ÉCHEC" "code $($r.Code)" }
+    if ($r.Code -eq 0 -and $produite) { Noter "chaine_kicad" "OK" "code 0, .kicad_pcb produit" } else { Noter "chaine_kicad" "ÉCHEC" ("code $($r.Code) : " + ((@(Get-Content -LiteralPath $r.Sortie, ($r.Sortie + ".err") -ErrorAction SilentlyContinue) | Where-Object { $_ -match "rreur|CHEC|refus" } | Select-Object -Last 3) -join " | ")) }
 
     # 4. chaîne .PcbDoc de démonstration, et 6. sérigraphie
     if (Test-Path -LiteralPath (Exemple-Pcbdoc)) {
         $r = Chaine "chaine_pcbdoc" $Placeur (Exemple-Pcbdoc) (Join-Path $Travail "pcbdoc")
         $rapport = if ($r.Dossier) { Get-Content -LiteralPath (Join-Path $r.Dossier "rapport.txt") -Raw -Encoding UTF8 -ErrorAction SilentlyContinue } else { "" }
-        if ($r.Code -eq 0 -and $rapport -match "coherent") { Noter "chaine_pcbdoc" "OK" "code 0, sérigraphie coherent" } else { Noter "chaine_pcbdoc" "ÉCHEC" "code $($r.Code)" }
+        if ($r.Code -eq 0 -and $rapport -match "coherent") { Noter "chaine_pcbdoc" "OK" "code 0, sérigraphie coherent" } else { Noter "chaine_pcbdoc" "ÉCHEC" ("code $($r.Code) : " + ((@(Get-Content -LiteralPath $r.Sortie, ($r.Sortie + ".err") -ErrorAction SilentlyContinue) | Where-Object { $_ -match "rreur|CHEC|refus" } | Select-Object -Last 3) -join " | ")) }
         if ($rapport -match "serigraphie") { Noter "serigraphie" "OK" "sérigraphie contrôlée" } else { Noter "serigraphie" "ÉCHEC" "aucun contrôle de sérigraphie au rapport" }
     } else {
         Noter "chaine_pcbdoc" "SAUTÉ" "carte de démonstration absente du paquet (lot B)"
