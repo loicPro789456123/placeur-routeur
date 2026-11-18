@@ -129,6 +129,7 @@ jobs:
       - name: Tests Python
         shell: pwsh
         run: |
+          # python -m unittest test_parametres test_placeur test_lanceur test_anonymat, puis python -m unittest test_paquet -v
           function Essai($dossier, $arguments) {
             Push-Location $dossier
             $sortie = python -m unittest @arguments 2>&1
