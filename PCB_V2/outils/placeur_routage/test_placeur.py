@@ -101,6 +101,10 @@ def correction_avenant() -> dict:
 
 def annexe_c_corrigee() -> dict:
     """Annexe C corrigée par la partie D de l'avenant : `parametres-defaut` du niveau normal."""
+    if not os.path.exists(CONTRAT):
+        # dépôt public (contrat non publié) : même contenu, tenu par le lot E (égalité testée quand le contrat est là)
+        with open(os.path.join(ICI, "corpus", "schemas", "parametres_moteur.defaut.json"), encoding="utf-8") as f:
+            return json.load(f)
     res = annexe_c()
     for cle, valeur in correction_avenant().items():
         if cle not in res:
