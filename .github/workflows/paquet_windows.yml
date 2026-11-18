@@ -31,6 +31,8 @@ jobs:
   controles:
     runs-on: ubuntu-24.04
     steps:
+      - name: Fins de ligne intactes (fichiers d'exemple compares octet pour octet)
+        run: git config --global core.autocrlf false
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
@@ -45,6 +47,8 @@ jobs:
     if: github.event_name == 'workflow_dispatch' && inputs.verrouiller
     runs-on: windows-2022
     steps:
+      - name: Fins de ligne intactes (fichiers d'exemple compares octet pour octet)
+        run: git config --global core.autocrlf false
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
@@ -69,6 +73,8 @@ jobs:
         image: ${{ fromJSON(vars.IMAGES_PAQUET_WINDOWS || '["windows-2022", "windows-2025"]') }}
     runs-on: ${{ matrix.image }}
     steps:
+      - name: Fins de ligne intactes (fichiers d'exemple compares octet pour octet)
+        run: git config --global core.autocrlf false
       - uses: actions/checkout@v4
         with:
           fetch-depth: 1
@@ -98,10 +104,17 @@ jobs:
         run: |
           New-Item -ItemType Directory -Force moteurs | Out-Null
           foreach ($m in "placeur_routage", "serigraphie") {
-            cargo build --release --locked --manifest-path "PCB_V2/outils/$m/Cargo.toml"
-            if ($LASTEXITCODE) { exit $LASTEXITCODE }
-            cargo test --release --locked --manifest-path "PCB_V2/outils/$m/Cargo.toml"
-            if ($LASTEXITCODE) { exit $LASTEXITCODE }
+            foreach ($etape in "build", "test") {
+              $sortie = cargo $etape --release --locked --manifest-path "PCB_V2/outils/$m/Cargo.toml" 2>&1
+              $code = $LASTEXITCODE
+              $sortie | ForEach-Object { "$_" }
+              if ($code) {
+                # derniers messages en annotations : lisibles sans connexion depuis l'onglet Actions
+                $sortie | ForEach-Object { "$_" } | Where-Object { $_ -match "error|panicked|FAILED|failed" } |
+                  Select-Object -Last 25 | ForEach-Object { Write-Output "::error::$m cargo $etape : $_" }
+                exit $code
+              }
+            }
             Copy-Item "PCB_V2/outils/$m/target/release/$m.exe" moteurs/
           }
       - name: PyInstaller et olefile (--require-hashes, chargeur compilé depuis ses sources)
@@ -165,6 +178,8 @@ jobs:
             essaye: windows-2022
     runs-on: ${{ matrix.essaye }}
     steps:
+      - name: Fins de ligne intactes (fichiers d'exemple compares octet pour octet)
+        run: git config --global core.autocrlf false
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
@@ -189,6 +204,8 @@ jobs:
     permissions:
       contents: write
     steps:
+      - name: Fins de ligne intactes (fichiers d'exemple compares octet pour octet)
+        run: git config --global core.autocrlf false
       - uses: actions/checkout@v4
       - name: Auteur de l'étiquette = propriétaire du dépôt
         run: |
