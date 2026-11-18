@@ -1986,6 +1986,8 @@ class CalculCarte(Calcul):
         L += ["", "LIVRABLE"]
         if self.livrable:
             L.append(f"  {self.livrable['fichier']} ({NOMS_LIVRABLE[self.livrable['type']]})")
+            if self.livrable.get("serigraphie"):
+                L.append(f"  sérigraphie (serigraphie) : {self.livrable['serigraphie']}")
             L += [f"  anomalie : {a}" for a in self.livrable["anomalies"]]
         elif not self.reglages.valeur("pcbdoc", "produire"):
             L.append("  aucun : carte produite non demandée")

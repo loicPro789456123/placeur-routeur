@@ -192,15 +192,15 @@ try {
     # 11 à 13. chemins
     $accentue = Join-Path $env:SystemDrive "Essai é à\l'atelier (copie)"
     $exe = Copier-Paquet (Join-Path $accentue "PlaceurRouteur")
-    Copy-Item -LiteralPath (Exemple-Kicad) -Destination $accentue
-    $r = Chaine "chemin_accentue" $exe (Join-Path $accentue "deux_couches.kicad_pcb") (Join-Path $accentue "résultats")
+    Copy-Item -LiteralPath (Exemple-Pcbdoc) -Destination $accentue
+    $r = Chaine "chemin_accentue" $exe (Join-Path $accentue "demonstration.PcbDoc") (Join-Path $accentue "résultats")
     if ($r.Code -eq 0) { Noter "chemin_accentue" "OK" "code 0" } else { Noter "chemin_accentue" "ÉCHEC" "code $($r.Code)" }
     Remove-Item -LiteralPath $accentue -Recurse -Force -ErrorAction SilentlyContinue
 
     $nonLatin = Join-Path $Travail ([string]([char]0x8A66) + [char]0x9A13 + "_" + [char]0x0418 + [char]0x0441 + [char]0x043F)
     $exe = Copier-Paquet (Join-Path $nonLatin "PlaceurRouteur")
-    Copy-Item -LiteralPath (Exemple-Kicad) -Destination $nonLatin
-    $r = Chaine "chemin_non_latin" $exe (Join-Path $nonLatin "deux_couches.kicad_pcb") (Join-Path $nonLatin "sortie")
+    Copy-Item -LiteralPath (Exemple-Pcbdoc) -Destination $nonLatin
+    $r = Chaine "chemin_non_latin" $exe (Join-Path $nonLatin "demonstration.PcbDoc") (Join-Path $nonLatin "sortie")
     if ($r.Code -eq 0) { Noter "chemin_non_latin" "OK" "code 0" } else { Noter "chemin_non_latin" "ÉCHEC" "code $($r.Code)" }
 
     $lecteur = $Paquet.Substring(0, 1)
