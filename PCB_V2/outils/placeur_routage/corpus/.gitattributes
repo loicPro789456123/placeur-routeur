@@ -1,3 +1,6 @@
 # Corpus du lot E : extraction en LF quelle que soit la configuration core.autocrlf de la machine, pour que les
 # fichiers suivis restent égaux octet pour octet à la sortie des générateurs.
 * text eol=lf
+*.PcbDoc binary
+*.PcbLib binary
+*.kicad_pcb -text
