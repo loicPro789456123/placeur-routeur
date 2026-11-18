@@ -78,7 +78,8 @@ a = Analysis(                                            # noqa: F821
     pathex=[SOURCES, os.path.join(OUTILS, "serigraphie"), os.path.join(OUTILS, "format_altium"), OUTILS],
     binaries=[(os.path.join(_a.moteurs, "placeur_routage.exe"), "moteurs"),
               (os.path.join(_a.moteurs, "serigraphie.exe"), "moteurs")],
-    datas=[(os.path.join(OUTILS, "VERSION"), "."), (os.path.join(_travail, "COMMIT"), ".")],
+    datas=[(os.path.join(OUTILS, "VERSION"), "."), (os.path.join(_travail, "COMMIT"), "."),
+           (os.path.join(SOURCES, "natures.json"), ".")],   # table de la déduction (chemins.ressource)
     hiddenimports=["placeur", "interface", "parametres", "chemins", "olefile", "altium_fichier"]
                   + collect_submodules("altium_fichier")
                   + _modules_presents(),
