@@ -57,6 +57,7 @@ import parametres  # noqa: E402
 WINDOWS = os.name == "nt"
 CONTRAT = os.path.join(chemins.OUTILS, "CONTRAT.md")
 AVENANT = os.path.join(chemins.OUTILS, "AVENANT_2.2.md")
+EXTRAIT_NIVEAUX = os.path.join(os.path.dirname(os.path.abspath(__file__)), "corpus", "schemas", "niveaux_contrat.json")
 FAUX_MOTEUR = [chemins.interpreteur(), os.path.abspath(__file__), "--faux-moteur"]
 
 PHASES = ("chargement", "placement_initial", "recuit", "routage_detaille", "boucle", "conjointe", "finition",
@@ -128,6 +129,10 @@ def _nombre_contrat(texte: str) -> float:
 def table_niveaux() -> dict:
     """Clés du moteur de la table des niveaux de §2.6, corrigée par A.1 de l'avenant : {clé: {niveau: valeur}},
     valeurs au type de l'annexe C."""
+    if not os.path.exists(CONTRAT):
+        # dépôt public : extrait figé de la table, régénéré depuis le contrat (test_extrait_niveaux_a_jour)
+        with open(EXTRAIT_NIVEAUX, encoding="utf-8") as f:
+            return json.load(f)
     texte = _lire(CONTRAT)
     i = texte.index("**Niveaux de qualité**")
     lignes = texte[i:].split("\n\n", 2)[1].splitlines()
@@ -2128,6 +2133,15 @@ def est_sous_test(chemin: str, racine: str) -> bool:
     return c == r or c.startswith(r + os.sep)
 
 
+class TestExtraitContrat(unittest.TestCase):
+    def test_extrait_niveaux_a_jour(self):
+        """corpus/schemas/niveaux_contrat.json = table des niveaux du contrat (sert quand le contrat n'est pas publié)."""
+        if not os.path.exists(CONTRAT):
+            self.skipTest("contrat absent")
+        with open(EXTRAIT_NIVEAUX, encoding="utf-8") as f:
+            self.assertEqual(json.load(f), table_niveaux())
+
+
 if __name__ == "__main__":
     if len(sys.argv) > 1 and sys.argv[1] == "--faux-moteur":
         for flux in (sys.stdout, sys.stderr):        # comme le moteur Rust : UTF-8, même redirigé (§0.2-10)
@@ -2140,3 +2154,4 @@ if __name__ == "__main__":
         chemins.commande_moteur = lambda nom, *a, **kw: FAUX_MOTEUR + _prefixe + [str(x) for x in a]
         sys.exit(placeur.main(sys.argv[4:], controles=_doublures()()))
     unittest.main()
+

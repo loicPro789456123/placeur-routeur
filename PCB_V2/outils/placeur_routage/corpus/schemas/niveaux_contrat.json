@@ -1,0 +1,38 @@
+{
+ "boucle.tours": {
+  "apercu": 0,
+  "normal": 4,
+  "rapide": 1,
+  "soigne": 6
+ },
+ "campagne.duree_max_s": {
+  "apercu": 900,
+  "normal": 7200,
+  "rapide": 2700,
+  "soigne": 14400
+ },
+ "conjointe.essais_par_piece_mobile": {
+  "apercu": 0.0,
+  "normal": 6.0,
+  "rapide": 0.48,
+  "soigne": 6.37
+ },
+ "conjointe.plafond_s": {
+  "apercu": 0,
+  "normal": 1800,
+  "rapide": 600,
+  "soigne": 5400
+ },
+ "recuit.mouvements_max": {
+  "apercu": 20000000,
+  "normal": 100000000,
+  "rapide": 20000000,
+  "soigne": 100000000
+ },
+ "routage.iters_negociation": {
+  "apercu": 30,
+  "normal": 40,
+  "rapide": 30,
+  "soigne": 40
+ }
+}
