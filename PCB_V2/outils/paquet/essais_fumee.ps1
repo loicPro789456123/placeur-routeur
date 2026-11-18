@@ -128,7 +128,10 @@ try {
     # 2. auto-test, puis moteur retiré
     $s = Join-Path $Travail "auto_test.txt"; "" | Set-Content -LiteralPath ($s + ".vide")
     $c = Lancer $Placeur @("--auto-test") $s
-    if ($c -eq 0) { Noter "auto_test" "OK" "code 0" } else { Noter "auto_test" "ÉCHEC" "code $c" }
+    if ($c -eq 0) { Noter "auto_test" "OK" "code 0" } else {
+        $d = (@(Get-Content -LiteralPath $s, ($s + ".err") -ErrorAction SilentlyContinue) | Where-Object { $_ -match "CHEC|rreur" }) -join " | "
+        Noter "auto_test" "ÉCHEC" "code $c : $d"
+    }
     $copie = Copier-Paquet (Join-Path $Travail "sans_moteur")
     Remove-Item -LiteralPath (Join-Path (Split-Path $copie) "_internal\moteurs\placeur_routage.exe")
     $s = Join-Path $Travail "auto_test_sans_moteur.txt"; "" | Set-Content -LiteralPath ($s + ".vide")
