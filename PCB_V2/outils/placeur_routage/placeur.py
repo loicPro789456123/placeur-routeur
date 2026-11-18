@@ -163,7 +163,8 @@ def analyser_arguments(argv: list[str]) -> dict:
         raise ErreurEntree("--init CARTE s'emploie sans autre carte ni --donnees")
     if "--donnees" in o["valeurs"] and o["carte"]:
         raise ErreurEntree("donner soit une CARTE, soit --donnees, pas les deux")
-    if not seules and not o["carte"] and "--donnees" not in o["valeurs"] and "--init" not in o["valeurs"]:
+    if (not seules and not o["carte"] and "--donnees" not in o["valeurs"] and "--init" not in o["valeurs"]
+            and not isinstance(o["reprendre"], str)):          # --reprendre DOSSIER : la carte est celle du calcul
         raise ErreurEntree("carte manquante : placeur.py CARTE, ou --donnees donnees_placeur.json")
     if "--essais" in o["valeurs"]:
         v = o["valeurs"]["--essais"].strip()
@@ -2192,6 +2193,18 @@ def main(argv: list[str] | None = None, *, controles: Controles | None = None, o
             raise ErreurEntree("--analyser s'emploie avec une CARTE")
         if "--analyser" in o["drapeaux"] and o["reprendre"] is not None:
             raise ErreurEntree("--analyser et --reprendre ne s'emploient pas ensemble")
+        if isinstance(o["reprendre"], str) and not o["carte"] and "--donnees" not in o["valeurs"]:
+            # « --reprendre DOSSIER » seul : la carte est la copie gardée par le calcul (technique/entree/)
+            entree = os.path.join(o["reprendre"], "technique", "entree")
+            cartes = sorted(f for f in (os.listdir(entree) if os.path.isdir(entree) else [])
+                            if os.path.splitext(f)[1].lower() in (".pcbdoc", ".kicad_pcb"))
+            if not cartes:
+                donnees = os.path.join(o["reprendre"], "technique", "donnees_placeur.json")
+                if not os.path.isfile(donnees):
+                    raise ErreurEntree("--reprendre : dossier sans calcul à reprendre (carte d'entrée introuvable)")
+                o["valeurs"]["--donnees"] = donnees
+            else:
+                o["carte"] = os.path.join(entree, cartes[0])
         reglages = parametres.charger(o["valeurs"].get("--parametres") and
                                       os.path.abspath(o["valeurs"]["--parametres"]), options_ini(o),
                                       carte=o["carte"] and os.path.abspath(o["carte"]))
