@@ -102,6 +102,7 @@ function Lancement-En-Fond([string]$Carte, [string]$Parent, [string]$Nom) {
     $p = Start-Process -FilePath $Placeur -ArgumentList @((Citer $Carte), "--qualite", "normal", "--essais", "4",
         "--sortie", (Citer $Parent), "--evenements") -NoNewWindow -PassThru -RedirectStandardOutput $s `
         -RedirectStandardError ($s + ".err")
+    $null = $p.Handle   # garde le handle : sans lui, ExitCode reste vide après WaitForExit (Start-Process -PassThru)
     $limite = (Get-Date).AddSeconds(120)
     $dossier = $null
     while (-not $dossier -and (Get-Date) -lt $limite -and -not $p.HasExited) {
@@ -173,7 +174,7 @@ try {
         $s = Join-Path $Travail "reprise.txt"; "" | Set-Content -LiteralPath ($s + ".vide")
         $c = Lancer $Placeur @("--reprendre", (Citer $f.Dossier), "--evenements") $s
         $t = Get-Content -LiteralPath $s -Raw -Encoding UTF8
-        if ($c -eq 0 -and $t -match "repris") { Noter "reprise" "OK" "graines finies reprises" } else { Noter "reprise" "ÉCHEC" "code $c" }
+        if ($c -eq 0 -and $t -match "repris") { Noter "reprise" "OK" "graines finies reprises" } else { Noter "reprise" "ÉCHEC" ("code $c : " + ((@(Get-Content -LiteralPath $s, ($s + ".err") -ErrorAction SilentlyContinue) | Where-Object { $_ -match "rreur|refus" } | Select-Object -Last 2) -join " | ")) }
     } else { Noter "arret_lancements" "ÉCHEC" "dossier du calcul inconnu"; Noter "reprise" "ÉCHEC" "pas de calcul à reprendre" }
 
     $f = Lancement-En-Fond (Exemple-Kicad) (Join-Path $Travail "arret2") "arret2"
