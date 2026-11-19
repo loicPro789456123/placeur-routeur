@@ -1,0 +1,9 @@
+placeur 2.0.0+e7ceb59 : calcul donnees_placeur_20261119-025333 (données donnees_placeur.json)
+moteur : placeur_routage 2.0.0+e7ceb59
+étalonnage de la machine : score 5229793.0
+fichiers de paramètres lus : aucun
+1 graine(s), 1 en parallèle, 1 fil(s) par essai, niveau normal ; durée prévue 7200.0 s, au plus 10800 s
+graine 4009 lancée
+graine 4009 : non valide, coût 9949.63840518498, 1 liaisons ouvertes, 2773.941 s
+aucune graine valide ; graine à terminer : 4009 ; code 1 ; 2784.077 s
+placeur.py : code 1

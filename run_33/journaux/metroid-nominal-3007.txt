@@ -1,0 +1,8 @@
+placeur 2.0.0+e7ceb59 : calcul donnees_placeur_20261119-021734 (données donnees_placeur.json)
+moteur : placeur_routage 2.0.0+e7ceb59
+étalonnage de la machine : score 5804774.0
+fichiers de paramètres lus : aucun
+1 graine(s), 1 en parallèle, 1 fil(s) par essai, niveau normal ; durée prévue 7200.0 s, au plus 10800 s
+graine 3007 lancée
+graine 3007 : valide, coût 9149.462047340785, 0 liaisons ouvertes, 805.735 s
+graine retenue : 3007 (coût 9149.462047340785) ; code 0 ; 814.856 s
