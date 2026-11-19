@@ -145,8 +145,8 @@ pub struct Routeur<'a> {
 
 impl<'a> Routeur<'a> {
     pub fn new(m: &'a Modele, e: &Etat, pas: f64) -> Routeur<'a> {
-        let nx = (m.w / pas).ceil() as usize;
-        let ny = (m.h / pas).ceil() as usize;
+        let nx = (m.w / pas - 1e-3).ceil() as usize;
+        let ny = (m.h / pas - 1e-3).ceil() as usize;
         let nc = nx * ny;
         let nn = NCOUCHES * nc;
         let mut r = Routeur {

@@ -935,8 +935,8 @@ impl Rudy {
 
     pub fn new(m: &Modele, e: &Etat, cap_densite: f64, lambda: f64) -> Rudy {
         let c = 2.0;
-        let nx = (m.w / c).ceil() as usize;
-        let ny = (m.h / c).ceil() as usize;
+        let nx = (m.w / c - 1e-3).ceil() as usize;
+        let ny = (m.h / c - 1e-3).ceil() as usize;
         let mut r = Rudy { nx, ny, c, dem: vec![0.0; nx * ny], cap: cap_densite * c * c, lambda, bb: vec![None; m.nets.len()], pen: 0.0, marque: vec![0; nx * ny], tampon: 0 };
         r.recalculer(m, e);
         r

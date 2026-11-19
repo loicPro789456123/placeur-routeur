@@ -541,8 +541,26 @@ impl Modele {
             }
             let pv = self.comps[i].pose_v3;
             let np = self.comps[i].pads.len();
-            for k1 in 0..np {
-                for k2 in (k1 + 1)..np {
+            // ordre canonique des pastilles (nom au sens naturel, puis position locale) : le resultat ne depend pas de
+            // l'ordre des pastilles dans les donnees (l'ancien balayage glouton, dans l'ordre du fichier, laissait des
+            // pastilles voisines non pontees selon cet ordre : broches de plus a router sous les boitiers a pas fin)
+            let cle = |p: &Pad| (p.nom.parse::<u64>().unwrap_or(u64::MAX), p.nom.clone(), (p.lx * 1e4).round() as i64, (p.ly * 1e4).round() as i64);
+            let mut ordre: Vec<usize> = (0..np).collect();
+            ordre.sort_by_key(|&k| cle(&self.comps[i].pads[k]));
+            // aretes voisines (memes regles qu'avant), puis arbre couvrant de chaque groupe de pastilles reliees
+            let mut chef: Vec<usize> = (0..np).collect();
+            fn racine(c: &mut Vec<usize>, x: usize) -> usize {
+                let mut x = x;
+                while c[x] != x {
+                    c[x] = c[c[x]];
+                    x = c[x];
+                }
+                x
+            }
+            let mut aretes: Vec<(usize, usize, usize)> = Vec::new();
+            for a1 in 0..np {
+                for a2 in (a1 + 1)..np {
+                    let (k1, k2) = (ordre[a1], ordre[a2]);
                     let (a, b) = (&self.comps[i].pads[k1], &self.comps[i].pads[k2]);
                     if a.net.is_none() || a.net != b.net || a.th || b.th || a.nom == b.nom {
                         continue;
@@ -556,10 +574,36 @@ impl Modele {
                     let gx = (x2 - x1).abs() - w1 - w2;
                     let gy = (y2 - y1).abs() - h1 - h2;
                     let voisin = (gx.max(gy) < 0.5) && (gx.min(gy) < 0.0);
-                    if !voisin || self.ponts.iter().any(|p| p.1 == i && p.3 == k2) {
+                    if !voisin {
                         continue;
                     }
-                    self.ponts.push((n, i, k1, k2, 0.3));
+                    let (r1, r2) = (racine(&mut chef, a1), racine(&mut chef, a2));
+                    if r1 != r2 {
+                        // la racine d'un groupe est sa pastille de plus petit rang canonique
+                        chef[r1.max(r2)] = r1.min(r2);
+                        aretes.push((n, a1, a2));
+                    }
+                }
+            }
+            // orientation depuis la racine : chaque pastille pontee l'est une fois, depuis une pastille deja reliee
+            let mut relie: Vec<bool> = (0..np).map(|a| racine(&mut chef, a) == a).collect();
+            let mut restantes = aretes;
+            while !restantes.is_empty() {
+                let avant = restantes.len();
+                restantes.retain(|&(n, a1, a2)| {
+                    let (garde, pontee) = if relie[a1] && !relie[a2] {
+                        (a1, a2)
+                    } else if relie[a2] && !relie[a1] {
+                        (a2, a1)
+                    } else {
+                        return true;
+                    };
+                    relie[pontee] = true;
+                    self.ponts.push((n, i, ordre[garde], ordre[pontee], 0.3));
+                    false
+                });
+                if restantes.len() == avant {
+                    break;
                 }
             }
         }
@@ -1516,5 +1560,29 @@ pub fn dist_poly(px: f64, py: f64, pts: &[(f64, f64)]) -> f64 {
         -d
     } else {
         d
+    }
+}
+
+#[cfg(test)]
+mod tests_ponts {
+    use super::*;
+    use crate::globalr::tests::{comp, donnees, pad};
+
+    /// Pastilles voisines d'un meme reseau pontees quel que soit leur ordre dans les donnees : une seule broche reste
+    /// a router (l'ancien balayage glouton en laissait deux pour l'ordre 1, 3, 2 : M1.3 sur METROID).
+    fn broches_restantes(ordre: &[&str]) -> usize {
+        let pads: Vec<PadIn> = ordre.iter().map(|&n| pad(n, "S", n.parse::<f64>().unwrap() * 0.65, 0.0, false)).collect();
+        let mut c = comp("Q", 10.0, 5.0, false, pads);
+        c.statut = "mobile".into();
+        let mut m = Modele::new(&donnees(vec![c], vec![]), Parametres::defaut());
+        m.liberer_bloc();
+        m.nets[m.net_idx["S"]].pins.len()
+    }
+
+    #[test]
+    fn ponts_independants_de_l_ordre_des_pastilles() {
+        for ordre in [["1", "2", "3"], ["1", "3", "2"], ["3", "2", "1"], ["2", "3", "1"]] {
+            assert_eq!(broches_restantes(&ordre), 1, "ordre {:?}", ordre);
+        }
     }
 }

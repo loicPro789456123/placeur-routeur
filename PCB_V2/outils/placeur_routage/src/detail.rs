@@ -291,8 +291,8 @@ pub fn offsets(r: f64) -> Vec<(i32, i32)> {
 
 impl<'a> Detail<'a> {
     pub fn new(m: &'a Modele, e: &Etat) -> Detail<'a> {
-        let nx = (m.w / P).ceil() as usize;
-        let ny = (m.h / P).ceil() as usize;
+        let nx = (m.w / P - 1e-3).ceil() as usize; // tolerance : contour lu en mils (164,0000022 mm)
+        let ny = (m.h / P - 1e-3).ceil() as usize;
         let nc = nx * ny;
         let nn = NCOUCHES * nc;
         let mut d = Detail {
