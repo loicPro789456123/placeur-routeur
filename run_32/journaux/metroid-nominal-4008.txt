@@ -1,0 +1,4 @@
+placeur 2.0.0+80df8d0 : calcul donnees_placeur_20261119-020442 (données donnees_placeur.json)
+erreur : Version du moteur « placeur_routage 2.0.0+inconnu » différente de celle du lanceur « placeur_routage 2.0.0+80df8d0 » : moteur et lanceur doivent venir du même paquet.
+erreur : Version du moteur « placeur_routage 2.0.0+inconnu » différente de celle du lanceur « placeur_routage 2.0.0+80df8d0 » : moteur et lanceur doivent venir du même paquet.
+placeur.py : code 2
