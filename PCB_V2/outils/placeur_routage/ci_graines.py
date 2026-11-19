@@ -93,7 +93,7 @@ def cartes_chaine(corpus: str) -> list[dict]:
 def relire_kicad(chemin: str) -> None:
     """Relit le .kicad_pcb produit par l'importeur (lot B) ; exception si illisible."""
     import importer_carte
-    e = importer_carte.depuis_kicad(chemin)
+    e = importer_carte.importer(chemin)
     if not e:
         raise ValueError("lecture vide")
 

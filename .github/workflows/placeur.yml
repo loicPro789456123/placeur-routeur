@@ -108,8 +108,14 @@ jobs:
       - name: Tous les tests (avec olefile)
         working-directory: ${{ env.P }}
         run: |
-          python -m unittest discover -s . -p "test_*.py" -v
-          (cd corpus && python -m unittest discover -s . -p "test_*.py" -v)
+          # tests en échec en annotations (lisibles par l'API publique, sans journal)
+          annoter() { grep -E "^(FAIL|ERROR):|Error:|assert" "$1" | head -n 15 | sed 's/^/::error::/' ; }
+          c=0
+          python -m unittest discover -s . -p "test_*.py" -v > "$RUNNER_TEMP/t1.txt" 2>&1 || { c=1; annoter "$RUNNER_TEMP/t1.txt"; }
+          tail -n 5 "$RUNNER_TEMP/t1.txt"
+          (cd corpus && python -m unittest discover -s . -p "test_*.py" -v) > "$RUNNER_TEMP/t2.txt" 2>&1 || { c=1; annoter "$RUNNER_TEMP/t2.txt"; }
+          tail -n 5 "$RUNNER_TEMP/t2.txt"
+          exit $c
           (cd ../paquet && python -m unittest discover -s . -p "test_*.py" -v)
 
   contrat:
@@ -200,7 +206,8 @@ jobs:
           chmod +x "$GITHUB_WORKSPACE"/moteurs/*
           python placeur.py "${{ matrix.carte.carte }}" --qualite rapide --essais 2 \
             --moteurs "$GITHUB_WORKSPACE/moteurs" --sortie "$RUNNER_TEMP/synth" || echo "placeur.py : code $?"
-          python ci_graines.py controler "$RUNNER_TEMP/synth" --valides-min 1
+          python ci_graines.py controler "$RUNNER_TEMP/synth" --valides-min 1 > "$RUNNER_TEMP/ctl.txt" 2>&1             || { cat "$RUNNER_TEMP/ctl.txt"; grep -v "^ " "$RUNNER_TEMP/ctl.txt" | tail -n 6 | sed 's/^/::error::/'; exit 1; }
+          cat "$RUNNER_TEMP/ctl.txt"
 
   arret_posix:
     name: arret_posix
