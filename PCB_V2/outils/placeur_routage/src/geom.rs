@@ -136,6 +136,9 @@ pub enum Statut {
 pub enum FormePad {
     Rect,
     Rond,
+    /// rectangle chanfreine a 45 degres (octogone d'Altium, polygone convexe) : longueur du chanfrein le long d'un
+    /// axe ; le cuivre est contenu dans { rectangle } ∩ { |dx| + |dy| <= hw + hh - c }
+    Octo(f64),
 }
 
 #[derive(Clone)]
@@ -167,6 +170,13 @@ pub fn dist_pad(px: f64, py: f64, cx: f64, cy: f64, hw: f64, hh: f64, forme: For
             } else {
                 (dx.max(0.0).powi(2) + dy.max(0.0).powi(2)).sqrt()
             }
+        }
+        FormePad::Octo(c) => {
+            // max des distances signees aux demi-plans : exacte a l'interieur, minorant a l'exterieur (prudent
+            // pour l'isolement)
+            let dr = dist_pad(px, py, cx, cy, hw, hh, FormePad::Rect);
+            let dc = ((px - cx).abs() + (py - cy).abs() - (hw + hh - c)) / std::f64::consts::SQRT_2;
+            dr.max(dc)
         }
         FormePad::Rond => {
             let r = hw.min(hh);

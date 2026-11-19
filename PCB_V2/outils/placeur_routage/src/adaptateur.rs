@@ -359,7 +359,17 @@ pub fn construire(d: &Donnees, param: Parametres) -> Result<Adapte, String> {
             q.hh = p.hh;
             q.th = p.th;
             q.trou = p.trou.as_ref().map(|t| t.diametre.max(t.longueur)).unwrap_or(0.0);
-            q.forme = if matches!(p.forme.as_str(), "rond" | "oblong") { FormePad::Rond } else { FormePad::Rect };
+            q.forme = match p.forme.as_str() {
+                "rond" | "oblong" => FormePad::Rond,
+                // polygone (octogone d'Altium, chanfreins) : rectangle chanfreine qui le contient exactement quand
+                // c'est un octogone (chanfrein lu sur les sommets)
+                "polygone" if !p.points.is_empty() => {
+                    let k = p.points.iter().map(|q| (q[0] - p.lx).abs() + (q[1] - p.ly).abs()).fold(0.0f64, f64::max);
+                    let c = (p.hw + p.hh - k).max(0.0).min(p.hw.min(p.hh));
+                    if c > 1e-6 { FormePad::Octo(c) } else { FormePad::Rect }
+                }
+                _ => FormePad::Rect,
+            };
         }
         m.comps[i].has_th = m.comps[i].pads.iter().any(|p| p.th);
     }

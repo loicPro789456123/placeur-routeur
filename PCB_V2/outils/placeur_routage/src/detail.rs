@@ -2333,10 +2333,14 @@ impl<'a> Detail<'a> {
                     self.commit_geom(n, s, v, nd);
                     self.nets[n].ok += 1;
                 }
-                None if self.via_dans_pad && self.via_dans_pastille(n, &cells, &ctx) => {
+                // via dans la pastille : permis par une regle du fichier (ViasUnderSMD de la piece : pas une
+                // derogation), sinon seulement par la derogation via_dans_pastille_meme_reseau
+                None if (self.via_dans_pad || self.m.comps[i].via_sous_pad) && self.via_dans_pastille(n, &cells, &ctx) => {
                     self.nets[n].ok += 1;
-                    self.derogations.push(format!("via dans la pastille CMS {}.{} (reseau {}) : aucun emplacement de via a moins de {} mm",
-                        self.m.comps[i].nom, self.m.comps[i].pads[k].nom, self.m.nets[n].nom, R_VIA_PLAN));
+                    if !self.m.comps[i].via_sous_pad {
+                        self.derogations.push(format!("via dans la pastille CMS {}.{} (reseau {}) : aucun emplacement de via a moins de {} mm",
+                            self.m.comps[i].nom, self.m.comps[i].pads[k].nom, self.m.nets[n].nom, R_VIA_PLAN));
+                    }
                 }
                 None => {
                     self.nets[n].ko += 1;
@@ -2824,6 +2828,104 @@ impl<'a> Detail<'a> {
             self.scinder_segments();
             self.retirer_antennes();
         }
+    }
+
+    /// Reparation regionale bornee (lot F, avenant B.2) : pour une connexion encore en echec, tous les reseaux qui
+    /// passent dans une fenetre autour des pastilles du reseau fautif sont arraches avec lui ; le reseau fautif est
+    /// reroute le premier (son acces et son site de via sont ainsi reserves), puis les autres par priorite, avec une
+    /// passe d'arrachage cible. L'essai n'est garde que s'il diminue le nombre de connexions en echec, sinon il est
+    /// annule exactement. Au plus `etapes` essais ; fenetres de 1,5, 3 et 5 mm, ordre des victimes direct puis inverse.
+    pub fn reparer_regional(&mut self, etapes: usize, max_victimes: usize, journal: &mut dyn FnMut(String)) -> usize {
+        let avant = self.total_ko();
+        if avant == 0 || etapes == 0 {
+            return 0;
+        }
+        self.proteger_plans = true;
+        let rayons = [1.5f64, 3.0, 5.0];
+        let mut essais = 0usize;
+        let mut gardes = 0usize;
+        'tours: for tentative in 0..(rayons.len() * 2) {
+            let r = rayons[tentative % rayons.len()];
+            let inverse = tentative >= rayons.len();
+            let echecs: Vec<usize> = (0..self.nets.len()).filter(|&n| self.nets[n].ko > 0 && self.est_routable(n)).collect();
+            if echecs.is_empty() {
+                break;
+            }
+            for n in echecs {
+                if essais >= etapes {
+                    break 'tours;
+                }
+                if self.nets[n].ko == 0 {
+                    continue;
+                }
+                essais += 1;
+                // fenetre : disques de rayon r autour des pastilles du reseau fautif
+                let centres: Vec<(f64, f64)> = self.m.nets[n].pins.iter().map(|&(i, k)| {
+                    let (x, y, _, _) = self.m.pad_world(i, k, &self.e.poses[i]);
+                    (x, y)
+                }).collect();
+                let r2 = r * r;
+                let mut victimes: Vec<(f64, usize)> = Vec::new();
+                for o in 0..self.nets.len() {
+                    if o == n || !self.est_routable(o) || self.m.nets[o].plan || self.nets[o].noeuds.is_empty() {
+                        continue;
+                    }
+                    let mut dmin = f64::MAX;
+                    for &(nd, _) in &self.nets[o].noeuds {
+                        let (x, y) = self.node_xy(nd as usize);
+                        for &(cx, cy) in &centres {
+                            dmin = dmin.min((x - cx).powi(2) + (y - cy).powi(2));
+                        }
+                    }
+                    if dmin <= r2 {
+                        victimes.push((dmin, o));
+                    }
+                }
+                victimes.sort_by(|a, b| a.0.partial_cmp(&b.0).unwrap().then(a.1.cmp(&b.1)));
+                victimes.truncate(max_victimes);
+                let mut ordre: Vec<usize> = victimes.iter().map(|v| v.1).collect();
+                ordre.sort_by_key(|&o| (self.priorite(o), o));
+                if inverse {
+                    ordre.reverse();
+                }
+                let k0 = self.total_ko();
+                let mut olds: Vec<(usize, NetR)> = vec![(n, self.nets[n].clone())];
+                self.arracher(n);
+                for &o in &ordre {
+                    olds.push((o, self.nets[o].clone()));
+                    self.arracher(o);
+                }
+                self.router(n, Mode::Strict);
+                for &o in &ordre {
+                    self.router(o, Mode::Strict);
+                }
+                // passe d'arrachage cible sur les victimes restees en echec (sans toucher au reseau fautif)
+                let restes: Vec<usize> = ordre.iter().copied().filter(|&o| self.nets[o].ko > 0).collect();
+                if !restes.is_empty() {
+                    let (_, o2) = self.rerouter_opt(&restes, true);
+                    for x in o2 {
+                        if !olds.iter().any(|y| y.0 == x.0) {
+                            olds.push(x);
+                        }
+                    }
+                }
+                if self.total_ko() < k0 {
+                    gardes += 1;
+                    journal(format!("  reparation regionale : {} (fenetre {} mm, {} reseaux) : {} -> {} connexions en echec",
+                        self.m.nets[n].nom, r, ordre.len(), k0, self.total_ko()));
+                } else {
+                    self.annuler(olds);
+                }
+            }
+        }
+        self.proteger_plans = false;
+        if gardes > 0 {
+            self.scinder_segments();
+            self.retirer_antennes();
+        }
+        journal(format!("  reparation regionale : {} essai(s), {} garde(s) ; {} -> {} connexions en echec",
+            essais, gardes, avant, self.total_ko()));
+        gardes
     }
 
     /// Passes de finition : espacement, vias doubles, angles, elargissement, coupure aux jonctions, controle.

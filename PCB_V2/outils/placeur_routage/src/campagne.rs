@@ -15,6 +15,10 @@ use rayon::prelude::*;
 use serde_json::{json, Value};
 use std::time::Instant;
 
+/// Reparation regionale (lot F) : nombre maximal d'essais et de reseaux arraches par essai.
+const REPARATION_ETAPES: usize = 24;
+const REPARATION_VICTIMES: usize = 12;
+
 /// Iterations PathFinder du routeur global pour la mesure d'un candidat de la boucle.
 const ITERS_MESURE: usize = 12;
 
@@ -408,6 +412,11 @@ pub fn run_campagne<'a>(m: &'a Modele, graine: u64, cx: &mut Contexte) -> Bilan<
         d.reparer_echecs(&mut |s| println!("{}", s));
         cx.log(format!("finition ciblee : {} connexions en echec", d.total_ko()));
     }
+    // reste des echecs locaux : reparation regionale bornee (lot F)
+    if d.total_ko() > 0 && !(cx.arret)() {
+        d.reparer_regional(REPARATION_ETAPES, REPARATION_VICTIMES, &mut |s| println!("{}", s));
+        cx.log(format!("reparation regionale : {} connexions en echec", d.total_ko()));
+    }
     // toujours des echecs : routage detaille complet refait sur le placement final, negociation plus longue
     // (desactive par defaut : long et il a degrade le resultat sur plusieurs graines ; finition.routage_complet)
     if d.total_ko() > 0 && d.total_ko() <= 5 && pm.finition.routage_complet && bilan.fin != Fin::PlafondTemps {
@@ -462,6 +471,9 @@ pub fn run_router<'a>(m: &'a Modele, e: &Etat, cx: &mut Contexte) -> Bilan<'a> {
     d.finaliser(&param_esp(pm), &mut |s| println!("{}", s));
     if d.total_ko() > 0 {
         d.reparer_echecs(&mut |s| println!("{}", s));
+    }
+    if d.total_ko() > 0 && !(cx.arret)() {
+        d.reparer_regional(REPARATION_ETAPES, REPARATION_VICTIMES, &mut |s| println!("{}", s));
     }
     cx.fin("finition");
     bilan.finition = json!({"antennes_retirees": 0, "fusions": 0, "descentes_reposees": 0, "ko_avant": ko_avant, "ko_apres": d.total_ko(),

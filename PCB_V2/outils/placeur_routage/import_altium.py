@@ -321,6 +321,10 @@ class _Importeur:
         """Pastille de ``entree_carte/2`` ; ``i`` = rang de la pièce (repère local) ou None (repère commun)."""
         formes = p["formes"]
         couches = [self.nom_v6[n] for n in p["couches"] if n in self.nom_v6]
+        if p["traversante"] and p.get("metallise", True):
+            # pastille traversante métallisée : cuivre sur toutes les couches, plans négatifs compris (le lecteur ne
+            # cite que les couches de signal de la pile ; la liaison au plan se fait par la pastille, §4.2)
+            couches = list(self.noms)
         dessous = self.poses[i][2] if i is not None else False
         if p["traversante"]:
             cote = "BOTTOM" if dessous else "TOP"
