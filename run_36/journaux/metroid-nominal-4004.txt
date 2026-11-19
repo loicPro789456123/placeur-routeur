@@ -1,0 +1,8 @@
+placeur 2.0.0+3c40732 : calcul donnees_placeur_20261119-073639 (données donnees_placeur.json)
+moteur : placeur_routage 2.0.0+3c40732
+étalonnage de la machine : score 5811701.0
+fichiers de paramètres lus : aucun
+1 graine(s), 1 en parallèle, 1 fil(s) par essai, niveau normal ; durée prévue 7200.0 s, au plus 10800 s
+graine 4004 lancée
+graine 4004 : valide, coût 10544.615118782922, 0 liaisons ouvertes, 2233.362 s
+graine retenue : 4004 (coût 10544.615118782922) ; code 0 ; 2242.567 s
