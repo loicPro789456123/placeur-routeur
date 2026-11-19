@@ -1,0 +1,9 @@
+placeur 2.0.0+4b968a5 : calcul donnees_placeur_9b5b5a3_20261119-192343 (données donnees_placeur_9b5b5a3.json)
+moteur : placeur_routage 2.0.0+4b968a5
+étalonnage de la machine : score 6971072.0
+fichiers de paramètres lus : aucun
+1 graine(s), 1 en parallèle, 1 fil(s) par essai, niveau normal ; durée prévue 7200.0 s, au plus 10800 s
+graine 4015 lancée
+graine 4015 : non valide, coût 12405.881321296833, 1 liaisons ouvertes, 2374.334 s
+aucune graine valide ; code 1 ; 2382.188 s
+placeur.py : code 1
