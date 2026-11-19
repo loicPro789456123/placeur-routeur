@@ -23,5 +23,5 @@
  },
  "corpus_graines": 10,
  "corpus_qualite": "normal",
- "lancement": "ponts de pastilles indépendants de l'ordre des données (régression de la vague 1)"
+ "lancement": "essai : ponts indépendants de l'ordre + pas de découplage générique sur les pièces du convertisseur"
 }

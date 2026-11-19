@@ -430,6 +430,11 @@ pub fn construire(d: &Donnees, param: Parametres) -> Result<Adapte, String> {
     }
     m.cfg = cfg;
     m.liberer_bloc();
+    // les pièces d'un convertisseur (groupe compact du hacheur) sont placées par ses termes dédiés (boucle chaude,
+    // découplage du pilote, bulk) : pas de terme de découplage générique en plus (9b5b5a3 n'en avait pas ; le double
+    // terme tirait C7, C15, C17, C16, C18 contre U10 et M1, là où le routage échoue)
+    let hacheur = m.hacheur.clone();
+    m.decaps.retain(|x| !hacheur.contains(&x.0));
 
     // ------------------------------------------------------------------ pièces fixes : obstacles de placement
     let e = m.etat_v3();
