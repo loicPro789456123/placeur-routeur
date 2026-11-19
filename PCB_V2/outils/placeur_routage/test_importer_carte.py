@@ -489,7 +489,7 @@ class TestLigneDeCommande(Base):
         for t in (texte, out, err):
             self.assertNotIn(self.dossier, t)
             self.assertNotIn(self.dossier.replace("\\", "\\\\"), t)
-        self.assertEqual(os.listdir(self.dossier), ["carte.kicad_pcb", "e.json"])
+        self.assertEqual(sorted(os.listdir(self.dossier)), ["carte.kicad_pcb", "e.json"])
         d = json.loads(texte)
         self.assertEqual(d["source"]["fichier"], "carte.kicad_pcb")
         self.assertEqual(formats.valider_entree_carte(d), [])

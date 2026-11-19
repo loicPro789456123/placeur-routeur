@@ -109,7 +109,7 @@ jobs:
         working-directory: ${{ env.P }}
         run: |
           # tests en échec en annotations (lisibles par l'API publique, sans journal)
-          annoter() { grep -E "^(FAIL|ERROR):|Error:|assert" "$1" | head -n 15 | sed 's/^/::error::/' ; }
+          annoter() { grep -E "^(FAIL|ERROR):|Error|assert|auto-test|moteur|quarantaine" "$1" | grep -v "^Traceback" | head -n 40 | sed 's/^/::error::/' ; }
           c=0
           python -m unittest discover -s . -p "test_*.py" -v > "$RUNNER_TEMP/t1.txt" 2>&1 || { c=1; annoter "$RUNNER_TEMP/t1.txt"; }
           tail -n 5 "$RUNNER_TEMP/t1.txt"
