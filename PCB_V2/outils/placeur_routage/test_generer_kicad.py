@@ -1,5 +1,5 @@
 """Tests de generer_kicad.py : lecteur et écrivain S-expression, contrôle d'un gabarit KiCad (controle_gabarit/1),
-refus explicite de la génération jusqu'à l'étape C8.
+génération d'une carte (étape C8) relue par l'importeur.
 
     python test_generer_kicad.py -v        (depuis ce dossier ; quelques secondes)
 
@@ -241,12 +241,17 @@ class TestLigneDeCommande(unittest.TestCase):
         self.assertEqual(code, 2)
         self.assertIn("--entree obligatoire", err)
 
-    def test_generation_refusee_jusqu_a_c8(self):
-        with self.assertRaises(K.GenerationNonDisponible):
-            K.generer(self.tmp, os.path.join(self.tmp, "s.kicad_pcb"), "g.kicad_pcb", None)
-        code, _, err = self.appeler(["graine", "s.kicad_pcb", "--gabarit", "g.kicad_pcb", "--entree", "e.json"])
-        self.assertEqual(code, 4)
-        self.assertIn("C8", err)
+    def test_generation_ligne_de_commande(self):
+        carte, ent, graine = preparer_generation(self.tmp, [("R1", "top", 0.0, 0.0, 0.0)])
+        e = os.path.join(self.tmp, "e.json")
+        with open(e, "w", encoding="utf-8") as f:
+            json.dump(ent, f)
+        code, out, err = self.appeler([graine, os.path.join(self.tmp, "s.kicad_pcb"), "--gabarit", carte,
+                                       "--entree", e])
+        self.assertEqual(code, 0, out + err)
+        code, _, err = self.appeler([graine, "s.kicad_pcb", "--gabarit", carte])
+        self.assertEqual(code, 2)
+        self.assertIn("--entree obligatoire", err)
         self.assertNotIn("Traceback", err)
 
     def test_arguments(self):
@@ -265,6 +270,97 @@ class TestLigneDeCommande(unittest.TestCase):
         self.assertEqual(r.returncode, 2)
         self.assertIn("--gabarit obligatoire", r.stderr)
         self.assertNotIn("Traceback", r.stderr + r.stdout)
+
+
+
+def preparer_generation(dossier, poses, pistes=(), vias=()):
+    """Carte minimale, son entrée (importeur du lot B) et un dossier de graine : ``poses`` = [(désignateur, side,
+    dx_mil, dy_mil, rotation)] relatives à la pose importée ; pistes et vias en mil (repère commun)."""
+    import import_kicad
+    carte = ecrire_carte(dossier)
+    ent = import_kicad.importer(carte)
+    par = {c["designateur"]: c for c in ent["composants"]}
+    pieces = []
+    for d, side, dx, dy, rot in poses:
+        c = par[d]
+        pieces.append({"designator": d, "side": side, "x": c["x"] / 0.0254 + dx, "y": c["y"] / 0.0254 + dy,
+                       "rotation": rot, "statut": "mobile"})
+    g = os.path.join(dossier, "graine_1")
+    os.makedirs(g, exist_ok=True)
+    with open(os.path.join(g, "placements_routage.json"), "w", encoding="utf-8") as f:
+        json.dump({"format": "placements/2", "unite": "mil", "origine": "coin", "pieces": pieces}, f)
+    with open(os.path.join(g, "routage_detaille.json"), "w", encoding="utf-8") as f:
+        json.dump({"format": "routage/2", "unite": "mil", "origine": "coin", "couches_routage": ["F.Cu", "B.Cu"],
+                   "pistes": list(pistes), "vias": list(vias), "surfaces": []}, f)
+    return carte, ent, g
+
+
+def pastilles_monde(chemin):
+    import import_kicad
+    e = import_kicad.importer(chemin)
+    ox, oy = e["source"]["origine_fichier_mm"]
+    return {(c["designateur"], p["nom"]): (round(p["x"] + ox, 6), round(oy - p["y"], 6), c["face"])
+            for c in e["composants"] for p in c["pastilles"]}, e
+
+
+class TestGeneration(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.mkdtemp(prefix="test_kicad_gen_")
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def test_pose_retournement_pistes_vias(self):
+        import import_kicad
+        haut = [c["nom"] for c in import_kicad.importer(ecrire_carte(self.tmp))["carte"]["couches"]
+                if c["rang"] == 0][0]
+        pistes = [{"x1": 100, "y1": 100, "x2": 300, "y2": 100, "width": 10, "layer": haut, "net_name": "N1"}]
+        vias = [{"x": 300, "y": 100, "size": 24, "hole_size": 12, "net": "N1", "de": haut, "a": haut}]
+        carte, ent, g = preparer_generation(self.tmp, [("R1", "bottom", 100.0, -50.0, 45.0),
+                                                       ("R2", "top", 0.0, 0.0, 180.0)], pistes, vias)
+        s = os.path.join(self.tmp, "sortie.kicad_pcb")
+        r = K.generer(g, s, carte, None, {"entree": ent})
+        self.assertEqual(r["controles"]["erreurs"], [])
+        self.assertEqual(r["format"], "rapport_pcbdoc/1")
+        arbre = K.lire_arbre(K.lire_octets(s), "s")
+        self.assertEqual(len(K.enfants(arbre, "segment")), 1)
+        self.assertEqual(len(K.enfants(arbre, "via")), 1)
+        fp = {K.designateur(f): f for f in K.empreintes(arbre)}
+        self.assertEqual(K.enfant(fp["R1"], "layer")[1], "B.Cu")
+        self.assertIn("B.Cu", K.enfant(K.enfants(fp["R1"], "pad")[0], "layers"))
+        self.assertEqual(K.enfant(fp["R2"], "layer")[1], "F.Cu")
+        # aller-retour : les pastilles reviennent à leur place d'origine (retournement et rotation réversibles)
+        avant, _ = pastilles_monde(carte)
+        ent2 = __import__("import_kicad").importer(s)
+        par = {c["designateur"]: c for c in ent["composants"]}
+        g2 = os.path.join(self.tmp, "graine_2")
+        os.makedirs(g2)
+        with open(os.path.join(g2, "placements_routage.json"), "w", encoding="utf-8") as f:
+            json.dump({"format": "placements/2", "unite": "mil", "origine": "coin", "pieces": [
+                {"designator": d, "side": "bottom" if par[d]["face"] == "dessous" else "top",
+                 "x": par[d]["x"] / 0.0254, "y": par[d]["y"] / 0.0254, "rotation": par[d]["rotation"], "statut": "mobile"}
+                for d in ("R1", "R2")]}, f)
+        with open(os.path.join(g2, "routage_detaille.json"), "w", encoding="utf-8") as f:
+            json.dump({"format": "routage/2", "unite": "mil", "origine": "coin", "pistes": [], "vias": []}, f)
+        s2 = os.path.join(self.tmp, "retour.kicad_pcb")
+        # le gabarit du retour est la carte produite, avec l'origine de la carte d'origine (même contour)
+        ent2["source"]["origine_fichier_mm"] = ent["source"]["origine_fichier_mm"]
+        r2 = K.generer(g2, s2, s, None, {"entree": ent2})
+        self.assertEqual(r2["controles"]["erreurs"], [])
+        apres, _ = pastilles_monde(s2)
+        for k, v in avant.items():
+            self.assertAlmostEqual(v[0], apres[k][0], places=5, msg=k)
+            self.assertAlmostEqual(v[1], apres[k][1], places=5, msg=k)
+            self.assertEqual(v[2], apres[k][2], k)
+
+    def test_refus(self):
+        carte, ent, g = preparer_generation(self.tmp, [("R1", "top", 0.0, 0.0, 0.0)],
+                                            [{"x1": 0, "y1": 0, "x2": 10, "y2": 0, "width": 10, "layer": "X",
+                                              "net_name": "N1"}])
+        with self.assertRaises(gc.ErreurEntree):
+            K.generer(g, os.path.join(self.tmp, "s.kicad_pcb"), carte, None, {"entree": ent})
+        with self.assertRaises(gc.ErreurEntree):
+            K.generer(g, carte, carte, None, {"entree": ent})
 
 
 if __name__ == "__main__":

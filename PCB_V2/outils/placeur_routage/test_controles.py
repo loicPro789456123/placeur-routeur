@@ -672,12 +672,13 @@ class TestCorpusPlacement(unittest.TestCase):
             def lire(f, dossier=dossier):
                 with open(os.path.join(dossier, f), encoding="utf-8") as fl:
                     return json.load(fl)
-            fic = lire("cas.json")["fichiers"]
+            cas = lire("cas.json")
+            fic = cas["fichiers"]
             attendu = lire(fic["attendu_strict"]).get("placement")
             if attendu is None:
                 continue
             n += 1
-            v = vp.verifier(lire(fic["placement"]), lire(fic["donnees"]))
+            v = vp.verifier(lire(fic["placement"]), lire(fic["donnees"]), grille=cas.get("grille", True))
             for champ in ("valide", "violations_par_type", "infos"):
                 if v[champ] != attendu[champ]:
                     ecarts.append("%s %s : %r au lieu de %r" % (nom, champ, v[champ], attendu[champ]))

@@ -399,6 +399,8 @@ class Controle:
         objs = self.sc.objets
         for k in self.sc.pistes:
             p = objs[k]
+            if self.sc.reseaux.get(p.reseau) is None:
+                continue   # piste de réseau inconnu : relève de reseau_inconnu seulement (convention 6, comme le lot A)
             t = self.touche.get(k, [False, False])
             for i in (0, 1):
                 if not t[i]:

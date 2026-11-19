@@ -378,7 +378,9 @@ class TestDepot(unittest.TestCase):
         for racine, dossiers, fichiers in os.walk(ICI):
             dossiers[:] = [d for d in dossiers if d not in ("target", "__pycache__")]
             self.assertFalse([d for d in dossiers if "essais" in d.lower()], racine)
-            self.assertFalse([f for f in fichiers if f.lower().endswith(".pcbdoc")], racine)
+            # seule exception : la carte de démonstration du jalon B3 (corpus/pcbdoc, chemins effacés)
+            if os.path.basename(racine) != "pcbdoc":
+                self.assertFalse([f for f in fichiers if f.lower().endswith(".pcbdoc")], racine)
 
 
 if __name__ == "__main__":

@@ -7,7 +7,8 @@ Contrôle du gabarit (``controle_gabarit/1``, §2.9) :
     codes : 0 gabarit utilisable, 1 inutilisable (erreurs listées), 2 entrée invalide, 4 erreur interne.
 
 Génération (§5.2, ``DOSSIER SORTIE.kicad_pcb --gabarit CARTE.kicad_pcb --entree E.json [--config C.json]``) :
-**écrite à l'étape C8 du lot C** ; d'ici là, ``generer`` est refusée explicitement (code 4).
+codes : 0 carte écrite et relue sans erreur, 1 erreurs de contrôle à la relecture, 2 entrée refusée,
+4 erreur interne.
 
 Le module contient le lecteur et l'écrivain S-expression du format KiCad (chaînes entre guillemets, échappements
 ``\\"``, ``\\\\``, ``\\n``) : ``lire_sexpr(texte)``, ``ecrire_sexpr(arbre)``, ``ecrire_fichier(chemin, arbre)``.
@@ -17,10 +18,12 @@ chaîne citée est un ``Chaine`` (sous-classe de ``str``), réécrite entre guil
 from __future__ import annotations
 
 import hashlib
+import math
 import os
 import re
 import sys
 import time
+import uuid
 
 ICI = os.path.dirname(os.path.abspath(__file__))
 if ICI not in sys.path:
@@ -370,14 +373,307 @@ def controler_gabarit(gabarit, entree):
 # Génération (étape C8)
 # ---------------------------------------------------------------------------------------------------------------------
 class GenerationNonDisponible(NotImplementedError):
-    """La génération KiCad n'est pas encore écrite (étape C8 du lot C)."""
+    """Gardée pour compatibilité (la génération est écrite depuis l'étape C8)."""
+
+
+class ErreurGeneration(gc.ErreurEntree):
+    """Entrée refusée par le générateur (code 2) : gabarit, entrée, placements ou routage incohérents."""
+
+
+FORMAT_RAPPORT = "rapport_pcbdoc/1"
+FORMAT_CONFIG = "config_pcbdoc/2"
+LIVRABLES = ("valide", "a_terminer", "apercu")
+MM_PAR_MIL = 0.0254
+TOL_POSE_MM = 0.001
+CUIVRE_LIBRE = ("segment", "arc", "via")
+_NS_UUID = uuid.UUID("6b1f3c9e-2d4a-4c7e-9a51-3f0e8d2b7c10")
+
+
+def charger_config(config):
+    """``config_pcbdoc/2`` (objet, chemin ou None) : seules ``livrable`` et ``vias_couture`` servent ici (la
+    sérigraphie n'est pas calculée pour KiCad : désignateurs laissés à leur place)."""
+    cfg = {"livrable": "valide", "vias_couture": True}
+    if config is None:
+        return cfg
+    if isinstance(config, (str, os.PathLike)):
+        lu = gc.charger_json(config, (FORMAT_CONFIG,))
+    else:
+        lu = gc.exiger_format(config, FORMAT_CONFIG, "config")
+    if "livrable" in lu:
+        v = gc.texte(lu["livrable"], "config.livrable")
+        if v not in LIVRABLES:
+            raise ErreurGeneration("config.livrable : « %s » invalide (%s)" % (v, ", ".join(LIVRABLES)))
+        cfg["livrable"] = v
+    if "vias_couture" in lu:
+        cfg["vias_couture"] = gc.booleen(lu["vias_couture"], "config.vias_couture")
+    return cfg
+
+
+def _n(v):
+    """Nombre KiCad (mm) : au plus 6 décimales, sans zéros inutiles."""
+    t = ("%.6f" % (0.0 if abs(v) < 5e-7 else v)).rstrip("0").rstrip(".")
+    return "0" if t in ("-0", "") else t
+
+
+def _f(a):
+    return float(str(a))
+
+
+def _pieces(placements):
+    if isinstance(placements, list):
+        return placements
+    return gc.liste(gc.exiger(placements, "pieces", "placement"), "placement.pieces")
+
+
+def _dessous(side):
+    return str(side or "top").lower().startswith("b")
+
+
+def _angle(a):
+    a = math.fmod(a, 360.0)
+    if a < 0:
+        a += 360.0
+    return 0.0 if abs(a) < 1e-9 or abs(a - 360.0) < 1e-9 else a
+
+
+def _couche_opposee(nom):
+    if nom.startswith("F."):
+        return "B." + nom[2:]
+    if nom.startswith("B."):
+        return "F." + nom[2:]
+    return nom
+
+
+def _miroir_y(noeud):
+    """Miroir en y des coordonnées locales d'un objet d'empreinte (start, end, mid, center, xy, offset)."""
+    for e in noeud:
+        if not isinstance(e, list) or not e:
+            continue
+        if e[0] in ("start", "end", "mid", "center", "xy", "offset") and len(e) >= 3:
+            e[2] = _n(-_f(e[2]))
+        elif e[0] == "pts":
+            _miroir_y(e)
+
+
+def _basculer_couches(noeud):
+    for n in _parcourir(noeud):
+        if n and n[0] in ("layer", "layers"):
+            for i in range(1, len(n)):
+                if not isinstance(n[i], list):
+                    n[i] = Chaine(_couche_opposee(str(n[i])))
+
+
+def _basculer_miroir_texte(t):
+    eff = enfant(t, "effects")
+    if eff is None:
+        eff = ["effects"]
+        t.append(eff)
+    j = enfant(eff, "justify")
+    if j is None:
+        eff.append(["justify", "mirror"])
+    elif "mirror" in j:
+        j.remove("mirror")
+        if len(j) == 1:
+            eff.remove(j)
+    else:
+        j.append("mirror")
+
+
+def _reangler(at, theta0, d0, theta1, d1):
+    """Angle absolu d'un enfant (pastille, texte) : la rotation relative à la pièce est gardée (§0.4 :
+    φ − θ dessus, θ − φ dessous)."""
+    phi = _f(at[3]) if len(at) > 3 else 0.0
+    rho = (theta0 - phi) if d0 else (phi - theta0)
+    nouveau = _angle((theta1 - rho) if d1 else (theta1 + rho))
+    if len(at) > 3:
+        at[3] = _n(nouveau)
+    elif nouveau:
+        at.append(_n(nouveau))
+
+
+def poser_empreinte(fp, x, y, theta1, d1):
+    """Repose une empreinte (position et angle du fichier, en mm et degrés ; face) ; rend la liste des anomalies.
+    Changement de face : miroir en y des objets locaux, couches F.* <-> B.*, textes miroités (convention de KiCad)."""
+    at = enfant(fp, "at")
+    theta0 = _f(at[3]) if len(at) > 3 else 0.0
+    lay = enfant(fp, "layer")
+    d0 = bool(lay) and str(lay[1]) == "B.Cu"
+    anomalies = []
+    retourner = d0 != d1
+    if retourner:
+        r = raison_non_retournable(fp)
+        if r:
+            anomalies.append("retournement non sûr (%s)" % r)
+    for e in fp[1:]:
+        if not isinstance(e, list) or not e:
+            continue
+        if e[0] in ("pad", "fp_text", "property"):
+            a = enfant(e, "at")
+            if a is not None:
+                if retourner and len(a) >= 3:
+                    a[2] = _n(-_f(a[2]))
+                _reangler(a, theta0, d0, theta1, d1)
+            if retourner:
+                if e[0] == "pad":
+                    _miroir_y(e)
+                    for pr in enfants(e, "primitives"):
+                        for g in pr[1:]:
+                            if isinstance(g, list):
+                                _miroir_y(g)
+                else:
+                    _basculer_miroir_texte(e)
+        elif retourner and str(e[0]).startswith("fp_"):
+            _miroir_y(e)
+        elif e[0] == "zone":
+            anomalies.append("zone d'empreinte laissée en place (non reposée)")
+    if retourner:
+        _basculer_couches(fp[1:])
+    at[1], at[2] = _n(x), _n(y)
+    if len(at) > 3:
+        at[3] = _n(theta1)
+    elif theta1:
+        at.append(_n(theta1))
+    return anomalies
+
+
+def _uuid(*parties):
+    return Chaine(str(uuid.uuid5(_NS_UUID, "/".join(str(p) for p in parties))))
+
+
+def _xy(x_mil, y_mil, x0, y0):
+    return _n(float(x_mil) * MM_PAR_MIL + x0), _n(y0 - float(y_mil) * MM_PAR_MIL)
 
 
 def generer(dossier_graine, sortie, gabarit, config, opts=None):
-    """Carte KiCad d'une graine (``rapport_pcbdoc/1``, §5.2). **Écrite à l'étape C8** : refusée explicitement d'ici
-    là (``GenerationNonDisponible``, code 4 en ligne de commande)."""
-    raise GenerationNonDisponible("generer_kicad.generer : génération KiCad écrite à l'étape %s du lot C"
-                                  % _ETAPE_GENERATION)
+    """Fabrique le .kicad_pcb ``sortie`` d'une graine ; rend ``rapport_pcbdoc/1`` (§2.9, §5.2).
+
+    ``opts`` (dictionnaire ou espace de noms) : ``entree`` (obligatoire : objet ou chemin ``entree_carte/2``),
+    ``rapport`` (chemin où écrire le rapport). Les empreintes sont reposées (position, angle, face avec retournement
+    de tous leurs objets selon la convention de KiCad), le cuivre libre du gabarit (pistes, arcs, vias) est retiré,
+    les pistes et vias de la graine sont ajoutés (réseaux par nom) ; zones et ``Edge.Cuts`` sont gardés (zones à
+    remplir dans KiCad). La carte écrite est relue par l'importeur : poses à 0,001 mm et face (contrôle §8.3-8)."""
+    t0 = time.time()
+    o = {} if opts is None else (dict(opts) if isinstance(opts, dict) else dict(vars(opts)))
+    if not gabarit:
+        raise ErreurGeneration("--gabarit obligatoire : copie de la carte importée (lue seulement)")
+    if os.path.abspath(gabarit) == os.path.abspath(sortie):
+        raise ErreurGeneration("la sortie ne peut pas être le gabarit (lecture seule)")
+    ent = charger_entree(o.get("entree"))
+    cfg = charger_config(config)
+    ctl = controler_gabarit(gabarit, ent)
+    if not ctl["utilisable"]:
+        raise ErreurGeneration("gabarit inutilisable : " + " ; ".join(ctl["erreurs"][:5]))
+    x0, y0 = (float(v) for v in ent["source"]["origine_fichier_mm"])
+    arbre = lire_arbre(lire_octets(gabarit), gc.nom_fichier(gabarit))
+    pieces = _pieces(gc.charger_json(os.path.join(dossier_graine, "placements_routage.json"),
+                                     ("placements/1", "placements/2")))
+    routage = gc.charger_json(os.path.join(dossier_graine, "routage_detaille.json"), ("routage/1", "routage/2"))
+    couture = []
+    ch_couture = os.path.join(dossier_graine, "vias_couture.json")
+    if cfg["vias_couture"] and os.path.exists(ch_couture):
+        couture = list(gc.charger_json(ch_couture, ("vias_couture/1", "vias_couture/2")).get("vias", []))
+    vias = list(routage["vias"]) + couture
+
+    # couches : nom de l'entrée -> nom du fichier (par rang, contrôlé par controler_gabarit)
+    gab = couches_cuivre(arbre)
+    par_couche = {e["nom"]: g["nom_fichier"] for e, g in zip(_couches_entree(ent), gab)}
+    hors = sorted({t["layer"] for t in routage["pistes"] if t["layer"] not in par_couche})
+    if hors:
+        raise ErreurGeneration("pistes sur des couches absentes du gabarit : %s (couches : %s)"
+                               % (hors, sorted(par_couche)))
+    num = {str(e[2]): str(e[1]) for e in enfants(arbre, "net") if len(e) >= 3}
+    manquants = sorted({t["net_name"] for t in routage["pistes"] if t.get("net_name") and t["net_name"] not in num}
+                       | {v["net"] for v in vias if v.get("net") and v["net"] not in num})
+    if manquants:
+        raise ErreurGeneration("réseaux absents du gabarit : %s" % manquants[:20])
+    fps = {}
+    for k, f in enumerate(empreintes(arbre)):
+        fps[designateur(f) or "__piece_%d" % k] = f
+    inconnus = [p["designator"] for p in pieces if p["designator"] not in fps]
+    if inconnus:
+        raise ErreurGeneration("%d composants des placements absents du gabarit : %s" % (len(inconnus), inconnus[:10]))
+    an, erreurs = [], []
+    non_places = sorted(set(fps) - {p["designator"] for p in pieces})
+    if non_places:
+        an.append("%d composants du gabarit absents des placements (laissés en place) : %s"
+                  % (len(non_places), non_places[:20]))
+
+    # 1. cuivre libre retiré (pistes, arcs, vias ; les zones restent)
+    avant = len(arbre)
+    arbre[:] = [e for e in arbre if not (isinstance(e, list) and e and e[0] in CUIVRE_LIBRE)]
+    retire = avant - len(arbre)
+
+    # 2. pose des empreintes (repère commun en mil, y vers le haut -> fichier en mm, y vers le bas)
+    attendu = {}
+    for p in pieces:
+        r = _angle(float(p["rotation"]))
+        d = _dessous(p.get("side"))
+        x, y = float(p["x"]) * MM_PAR_MIL, float(p["y"]) * MM_PAR_MIL
+        for a in poser_empreinte(fps[p["designator"]], x + x0, y0 - y, r, d):
+            an.append("%s : %s" % (p["designator"], a))
+        attendu[p["designator"]] = (x, y, r, d)
+
+    # 3. pistes, vias (dont couture) et surfaces
+    graine = gc.nom_fichier(os.path.abspath(dossier_graine))
+    ajouts = []
+    for k, t in enumerate(routage["pistes"]):
+        ajouts.append(["segment", ["start", *_xy(t["x1"], t["y1"], x0, y0)], ["end", *_xy(t["x2"], t["y2"], x0, y0)],
+                       ["width", _n(float(t["width"]) * MM_PAR_MIL)], ["layer", Chaine(par_couche[t["layer"]])],
+                       ["net", num.get(t.get("net_name") or "", "0")], ["uuid", _uuid(graine, "piste", k)]])
+    haut, bas = gab[0]["nom_fichier"], gab[-1]["nom_fichier"]
+    for k, v in enumerate(vias):
+        ajouts.append(["via", ["at", *_xy(v["x"], v["y"], x0, y0)], ["size", _n(float(v["size"]) * MM_PAR_MIL)],
+                       ["drill", _n(float(v["hole_size"]) * MM_PAR_MIL)], ["layers", Chaine(haut), Chaine(bas)],
+                       ["net", num.get(v.get("net") or "", "0")], ["uuid", _uuid(graine, "via", k)]])
+    for k, z in enumerate(routage.get("surfaces") or []):
+        if z["layer"] not in par_couche:
+            raise ErreurGeneration("surface sur une couche absente du gabarit : %s" % z["layer"])
+        pts = ["pts"] + [["xy", *_xy(x, y, x0, y0)] for x, y in z["contour"]]
+        ajouts.append(["zone", ["net", num.get(z.get("net") or "", "0")], ["net_name", Chaine(z.get("net") or "")],
+                       ["layer", Chaine(par_couche[z["layer"]])], ["uuid", _uuid(graine, "zone", k)],
+                       ["hatch", "edge", "0.5"], ["connect_pads", "yes", ["clearance", "0"]],
+                       ["min_thickness", "0.1"], ["polygon", pts]])
+        if z.get("trous"):
+            an.append("surface %d : trous non écrits (zone pleine, à reprendre dans KiCad)" % k)
+    arbre.extend(ajouts)
+    zones = len(enfants(arbre, "zone"))
+
+    # 4. écriture, relecture par l'importeur (poses, face, comptes)
+    os.makedirs(os.path.dirname(os.path.abspath(sortie)), exist_ok=True)
+    ecrire_fichier(sortie, arbre)
+    try:
+        import import_kicad  # noqa: PLC0415 - importeur du lot B, pour le contrôle de relecture seulement
+        relue = import_kicad.importer(sortie)
+        x2, y2 = (float(v) for v in relue["source"]["origine_fichier_mm"])
+        dx, dy = x2 - x0, y2 - y0
+        poses = {c["designateur"]: c for c in relue["composants"]}
+        for nom, (x, y, r, d) in attendu.items():
+            c = poses.get(nom)
+            if c is None:
+                erreurs.append("%s : absent de la carte relue" % nom)
+                continue
+            ex = math.hypot(float(c["x"]) + dx - x, float(c["y"]) - dy - y)
+            er = abs((float(c["rotation"]) - r + 180.0) % 360.0 - 180.0)
+            if ex > TOL_POSE_MM or er > 1e-6 or (c["face"] == "dessous") != d:
+                erreurs.append("%s : pose relue différente (écart %.4f mm, %.6f°, face %s)" % (nom, ex, er, c["face"]))
+        relu = lire_arbre(lire_octets(sortie), gc.nom_fichier(sortie))
+        ns, nv = len(enfants(relu, "segment")), len(enfants(relu, "via"))
+        if (ns, nv) != (len(routage["pistes"]), len(vias)):
+            erreurs.append("relecture : %d pistes et %d vias au lieu de %d et %d"
+                           % (ns, nv, len(routage["pistes"]), len(vias)))
+    except gc.ErreurEntree as e:
+        erreurs.append("relecture de la carte produite impossible : %s" % e)
+    an.append("cuivre libre du gabarit retiré : %d objet(s)" % retire)
+    an.append("sérigraphie non calculée pour KiCad : désignateurs laissés à leur place")
+    if zones:
+        an.append("%d zone(s) à remplir dans KiCad (Édition > Remplir toutes les zones, touche B)" % zones)
+    rapport = {"format": FORMAT_RAPPORT, "fichier": gc.nom_fichier(sortie), "livrable": cfg["livrable"],
+               "controles": {"erreurs": erreurs, "anomalies": an}, "conflits_isolement": 0,
+               "serigraphie": {"etat": "non_faite", "masques": 0}, "polygones_a_recouler": zones,
+               "chemins_effaces": True, "duree_s": round(time.time() - t0, 1)}
+    if o.get("rapport"):
+        gc.ecrire_json(o["rapport"], rapport)
+    return rapport
 
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -418,12 +714,13 @@ def _principal(a):
         raise gc.ErreurEntree("--gabarit obligatoire : copie de la carte importée (lue seulement)")
     if not a["entree"]:
         raise gc.ErreurEntree("--entree obligatoire : entrée entree_carte/2 de la carte")
-    try:
-        generer(a["dossier"], a["sortie_carte"], a["gabarit"], a["config"], a)
-    except GenerationNonDisponible as e:
-        gc.afficher("%s : %s" % (PROGRAMME, e), erreur=True)
-        return gc.CODE_INTERNE
-    return gc.CODE_SUCCES
+    r = generer(a["dossier"], a["sortie_carte"], a["gabarit"], a["config"], {"entree": a["entree"]})
+    gc.afficher("%s : %d erreur(s), %d anomalie(s), %d zone(s) à remplir"
+                % (r["fichier"], len(r["controles"]["erreurs"]), len(r["controles"]["anomalies"]),
+                   r["polygones_a_recouler"]))
+    for e in r["controles"]["erreurs"]:
+        gc.afficher("  ! " + e)
+    return gc.CODE_NEGATIF if r["controles"]["erreurs"] else gc.CODE_SUCCES
 
 
 def main(argv=None):

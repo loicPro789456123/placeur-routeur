@@ -721,7 +721,9 @@ def poses_des_pieces(donnees, placements=None):
         virtuel = booleen(c.get("virtuel", False), ch + ".virtuel")
         e = None if virtuel else entrees.get(nom)
         if e is None:
-            if placements is not None and not virtuel:
+            # forme v1 (liste nue) : les pièces fixes inchangées n'y figurent pas (comportement de 9b5b5a3, lot A)
+            fixe_v1 = isinstance(placements, list) and c.get("statut") == "fixe"
+            if placements is not None and not virtuel and not fixe_v1:
                 absentes.append(nom)
             e = cible
         poses[nom] = Pose(e[0], e[1], e[2], e[3], retournee=bool(e[3]) != bool(actuelle[3]))

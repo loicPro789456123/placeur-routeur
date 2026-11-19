@@ -1531,7 +1531,7 @@ class Outils:
         f = self._fonction(GENERATEURS[genre], "generer")
         if genre == "pcbdoc":
             return f(dossier_graine, sortie, gabarit, config, sans_serigraphie=sans_serigraphie, opts=opts)
-        return f(dossier_graine, sortie, gabarit, config)
+        return f(dossier_graine, sortie, gabarit, config, opts=opts)
 
 
 def _appel_api(etape: str, fmt: str | None, fonction):
