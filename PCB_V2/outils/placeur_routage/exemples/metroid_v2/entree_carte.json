@@ -3,7 +3,7 @@
  "source": {
   "fichier": "PCB_METROID_V2_rev3.PcbDoc",
   "type": "altium_pcbdoc",
-  "sha256": "69d1a45ab13e57512813a695a12f66c92b3f70892c6b1c97e890ffcac09cdaa8",
+  "sha256": "30f1d02f439c22bceb62a76f07cafb3a3a4d1e2c9c089c741084b3ce627edeb2",
   "version_fichier": "5.01",
   "origine_fichier_mil": [
    0.0,
@@ -99097,8 +99097,23 @@
  "regles_fichier": [
   {
    "type": "Width",
-   "nom": "W_CANAL_2A",
+   "nom": "W_PUISSANCE_8V",
    "priorite": 1,
+   "portee1": "InNetClass('PUISSANCE_8V')",
+   "portee2": "All",
+   "valeurs": {
+    "MAXLIMIT": "590.551mil",
+    "MINLIMIT": "19.685mil",
+    "PREFEREDWIDTH": "79mil",
+    "MINIMP": "50.000000",
+    "MAXIMP": "50.000000",
+    "FAVIMP": "50.000000"
+   }
+  },
+  {
+   "type": "Width",
+   "nom": "W_CANAL_2A",
+   "priorite": 2,
    "portee1": "InNetClass('CANAL_2A')",
    "portee2": "All",
    "valeurs": {
@@ -99160,25 +99175,13 @@
   {
    "type": "Width",
    "nom": "W_RAILS",
-   "priorite": 2,
+   "priorite": 3,
    "portee1": "InNetClass('RAILS')",
    "portee2": "All",
    "valeurs": {
     "MAXLIMIT": "196.85mil",
     "MINLIMIT": "10mil",
     "PREFEREDWIDTH": "20mil"
-   }
-  },
-  {
-   "type": "Width",
-   "nom": "W_PUISSANCE_8V",
-   "priorite": 3,
-   "portee1": "InNetClass('PUISSANCE_8V')",
-   "portee2": "All",
-   "valeurs": {
-    "MAXLIMIT": "590.551mil",
-    "MINLIMIT": "11.811mil",
-    "PREFEREDWIDTH": "79mil"
    }
   },
   {
@@ -107225,7 +107228,7 @@
    },
    "+8V": {
     "largeurs": [
-     0.2999994,
+     0.499999,
      2.0066,
      14.9999954
     ],

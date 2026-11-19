@@ -2,7 +2,7 @@
  "format": "donnees_placeur/2",
  "source": {
   "entree": "entree_carte.json",
-  "sha256_entree": "fac2b616487612deb349477dbf5cac135d93f2d69508a6b520830dc22fa8afef",
+  "sha256_entree": "089844328d0518b558181a72d7ef14bd80f8d0f3ce4678eb2e0b31307591ec94",
   "contraintes": "contraintes.json",
   "config": "config_carte.json",
   "controle_gabarit": null,
@@ -9281,8 +9281,8 @@
    "genre": "standard",
    "valeur": "2Meg lin",
    "hauteur": 5.09999996,
-   "statut": "mobile",
-   "raison_statut": "libre",
+   "statut": "fixe",
+   "raison_statut": "contrainte",
    "virtuel": false,
    "lbb": [
     -2.505146292,
@@ -9381,30 +9381,13 @@
     false
    ],
    "pose_cible": [
-    109.982,
-    64.77,
-    270.0,
+    151.0,
+    41.0,
+    0.0,
     false
    ],
-   "orientations": [
-    [
-     0,
-     false
-    ],
-    [
-     90,
-     false
-    ],
-    [
-     180,
-     false
-    ],
-    [
-     270,
-     false
-    ]
-   ],
-   "regle": "dessus seulement (contrainte)",
+   "orientations": [],
+   "regle": "fixe : contrainte",
    "pas_fin": false,
    "matrice": false,
    "pas_min_mm": 2.50000008
@@ -9916,8 +9899,8 @@
    "genre": "standard",
    "valeur": "10k lin",
    "hauteur": 5.09999996,
-   "statut": "mobile",
-   "raison_statut": "libre",
+   "statut": "fixe",
+   "raison_statut": "contrainte",
    "virtuel": false,
    "lbb": [
     -2.505146292,
@@ -10016,30 +9999,13 @@
     false
    ],
    "pose_cible": [
-    99.441,
-    79.121,
-    180.0,
+    158.0,
+    41.0,
+    0.0,
     false
    ],
-   "orientations": [
-    [
-     0,
-     false
-    ],
-    [
-     90,
-     false
-    ],
-    [
-     180,
-     false
-    ],
-    [
-     270,
-     false
-    ]
-   ],
-   "regle": "dessus seulement (contrainte)",
+   "orientations": [],
+   "regle": "fixe : contrainte",
    "pas_fin": false,
    "matrice": false,
    "pas_min_mm": 2.50000008
@@ -10301,8 +10267,8 @@
    "genre": "standard",
    "valeur": "10k lin",
    "hauteur": 5.09999996,
-   "statut": "mobile",
-   "raison_statut": "libre",
+   "statut": "fixe",
+   "raison_statut": "contrainte",
    "virtuel": false,
    "lbb": [
     -2.505146292,
@@ -10401,30 +10367,13 @@
     false
    ],
    "pose_cible": [
-    95.504,
-    84.963,
-    90.0,
+    151.0,
+    46.5,
+    0.0,
     false
    ],
-   "orientations": [
-    [
-     0,
-     false
-    ],
-    [
-     90,
-     false
-    ],
-    [
-     180,
-     false
-    ],
-    [
-     270,
-     false
-    ]
-   ],
-   "regle": "dessus seulement (contrainte)",
+   "orientations": [],
+   "regle": "fixe : contrainte",
    "pas_fin": false,
    "matrice": false,
    "pas_min_mm": 2.50000008
@@ -11186,8 +11135,8 @@
    "genre": "standard",
    "valeur": "10k lin",
    "hauteur": 5.09999996,
-   "statut": "mobile",
-   "raison_statut": "libre",
+   "statut": "fixe",
+   "raison_statut": "contrainte",
    "virtuel": false,
    "lbb": [
     -2.505146292,
@@ -11286,30 +11235,13 @@
     false
    ],
    "pose_cible": [
-    101.6,
-    59.817,
+    158.0,
+    46.5,
     0.0,
     false
    ],
-   "orientations": [
-    [
-     0,
-     false
-    ],
-    [
-     90,
-     false
-    ],
-    [
-     180,
-     false
-    ],
-    [
-     270,
-     false
-    ]
-   ],
-   "regle": "dessus seulement (contrainte)",
+   "orientations": [],
+   "regle": "fixe : contrainte",
    "pas_fin": false,
    "matrice": false,
    "pas_min_mm": 2.50000008
@@ -29407,8 +29339,8 @@
    "genre": "standard",
    "valeur": "2k multitour",
    "hauteur": 5.09999996,
-   "statut": "mobile",
-   "raison_statut": "libre",
+   "statut": "fixe",
+   "raison_statut": "contrainte",
    "virtuel": false,
    "lbb": [
     -2.505146292,
@@ -29507,30 +29439,13 @@
     false
    ],
    "pose_cible": [
-    102.235,
-    53.848,
-    180.0,
+    151.0,
+    35.5,
+    0.0,
     false
    ],
-   "orientations": [
-    [
-     0,
-     false
-    ],
-    [
-     90,
-     false
-    ],
-    [
-     180,
-     false
-    ],
-    [
-     270,
-     false
-    ]
-   ],
-   "regle": "dessus seulement (contrainte)",
+   "orientations": [],
+   "regle": "fixe : contrainte",
    "pas_fin": false,
    "matrice": false,
    "pas_min_mm": 2.50000008
@@ -29542,8 +29457,8 @@
    "genre": "standard",
    "valeur": "2k multitour",
    "hauteur": 5.09999996,
-   "statut": "mobile",
-   "raison_statut": "libre",
+   "statut": "fixe",
+   "raison_statut": "contrainte",
    "virtuel": false,
    "lbb": [
     -2.505146292,
@@ -29642,30 +29557,13 @@
     false
    ],
    "pose_cible": [
-    7.112,
-    45.466,
-    90.0,
+    13.0,
+    35.5,
+    0.0,
     false
    ],
-   "orientations": [
-    [
-     0,
-     false
-    ],
-    [
-     90,
-     false
-    ],
-    [
-     180,
-     false
-    ],
-    [
-     270,
-     false
-    ]
-   ],
-   "regle": "dessus seulement (contrainte)",
+   "orientations": [],
+   "regle": "fixe : contrainte",
    "pas_fin": false,
    "matrice": false,
    "pas_min_mm": 2.50000008
@@ -31427,8 +31325,8 @@
    "genre": "standard",
    "valeur": "2Meg lin",
    "hauteur": 5.09999996,
-   "statut": "mobile",
-   "raison_statut": "libre",
+   "statut": "fixe",
+   "raison_statut": "contrainte",
    "virtuel": false,
    "lbb": [
     -2.505146292,
@@ -31527,30 +31425,13 @@
     false
    ],
    "pose_cible": [
-    58.166,
-    66.167,
+    13.0,
+    41.0,
     0.0,
     false
    ],
-   "orientations": [
-    [
-     0,
-     false
-    ],
-    [
-     90,
-     false
-    ],
-    [
-     180,
-     false
-    ],
-    [
-     270,
-     false
-    ]
-   ],
-   "regle": "dessus seulement (contrainte)",
+   "orientations": [],
+   "regle": "fixe : contrainte",
    "pas_fin": false,
    "matrice": false,
    "pas_min_mm": 2.50000008
@@ -32062,8 +31943,8 @@
    "genre": "standard",
    "valeur": "10k lin",
    "hauteur": 5.09999996,
-   "statut": "mobile",
-   "raison_statut": "libre",
+   "statut": "fixe",
+   "raison_statut": "contrainte",
    "virtuel": false,
    "lbb": [
     -2.505146292,
@@ -32162,30 +32043,13 @@
     false
    ],
    "pose_cible": [
-    95.123,
-    91.313,
-    90.0,
+    6.0,
+    41.0,
+    0.0,
     false
    ],
-   "orientations": [
-    [
-     0,
-     false
-    ],
-    [
-     90,
-     false
-    ],
-    [
-     180,
-     false
-    ],
-    [
-     270,
-     false
-    ]
-   ],
-   "regle": "dessus seulement (contrainte)",
+   "orientations": [],
+   "regle": "fixe : contrainte",
    "pas_fin": false,
    "matrice": false,
    "pas_min_mm": 2.50000008
@@ -32447,8 +32311,8 @@
    "genre": "standard",
    "valeur": "10k lin",
    "hauteur": 5.09999996,
-   "statut": "mobile",
-   "raison_statut": "libre",
+   "statut": "fixe",
+   "raison_statut": "contrainte",
    "virtuel": false,
    "lbb": [
     -2.505146292,
@@ -32547,30 +32411,13 @@
     false
    ],
    "pose_cible": [
-    100.838,
-    91.948,
-    270.0,
+    13.0,
+    46.5,
+    0.0,
     false
    ],
-   "orientations": [
-    [
-     0,
-     false
-    ],
-    [
-     90,
-     false
-    ],
-    [
-     180,
-     false
-    ],
-    [
-     270,
-     false
-    ]
-   ],
-   "regle": "dessus seulement (contrainte)",
+   "orientations": [],
+   "regle": "fixe : contrainte",
    "pas_fin": false,
    "matrice": false,
    "pas_min_mm": 2.50000008
@@ -33332,8 +33179,8 @@
    "genre": "standard",
    "valeur": "10k lin",
    "hauteur": 5.09999996,
-   "statut": "mobile",
-   "raison_statut": "libre",
+   "statut": "fixe",
+   "raison_statut": "contrainte",
    "virtuel": false,
    "lbb": [
     -2.505146292,
@@ -33432,30 +33279,13 @@
     false
    ],
    "pose_cible": [
-    13.081,
-    46.228,
-    90.0,
+    6.0,
+    46.5,
+    0.0,
     false
    ],
-   "orientations": [
-    [
-     0,
-     false
-    ],
-    [
-     90,
-     false
-    ],
-    [
-     180,
-     false
-    ],
-    [
-     270,
-     false
-    ]
-   ],
-   "regle": "dessus seulement (contrainte)",
+   "orientations": [],
+   "regle": "fixe : contrainte",
    "pas_fin": false,
    "matrice": false,
    "pas_min_mm": 2.50000008
@@ -64551,7 +64381,7 @@
    "masse": false,
    "sensibilite": "normale",
    "largeurs_mm": [
-    0.2999994,
+    0.499999,
     2.0066,
     14.9999954
    ],

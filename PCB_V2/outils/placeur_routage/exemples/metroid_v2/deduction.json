@@ -3828,10 +3828,10 @@
   {
    "objet": "piece:R85_ALIM2",
    "propriete": "statut",
-   "valeur": "mobile",
+   "valeur": "fixe",
    "regle": "R-P3",
-   "preuve": "libre",
-   "source": "deduit"
+   "preuve": "contrainte : contraintes.fixes_deplaces",
+   "source": "contrainte"
   },
   {
    "objet": "piece:R85_ALIM2",
@@ -3842,14 +3842,6 @@
    "source": "deduit"
   },
   {
-   "objet": "piece:R85_ALIM2",
-   "propriete": "orientations",
-   "valeur": 4,
-   "regle": "R-P5",
-   "preuve": "dessus seulement (contrainte)",
-   "source": "contrainte"
-  },
-  {
    "objet": "piece:R84_ALIM2",
    "propriete": "statut",
    "valeur": "mobile",
@@ -3948,10 +3940,10 @@
   {
    "objet": "piece:R80_ALIM2",
    "propriete": "statut",
-   "valeur": "mobile",
+   "valeur": "fixe",
    "regle": "R-P3",
-   "preuve": "libre",
-   "source": "deduit"
+   "preuve": "contrainte : contraintes.fixes_deplaces",
+   "source": "contrainte"
   },
   {
    "objet": "piece:R80_ALIM2",
@@ -3960,14 +3952,6 @@
    "regle": "R-P1",
    "preuve": "source : mots",
    "source": "deduit"
-  },
-  {
-   "objet": "piece:R80_ALIM2",
-   "propriete": "orientations",
-   "valeur": 4,
-   "regle": "R-P5",
-   "preuve": "dessus seulement (contrainte)",
-   "source": "contrainte"
   },
   {
    "objet": "piece:R79_ALIM2",
@@ -4020,10 +4004,10 @@
   {
    "objet": "piece:R77_ALIM2",
    "propriete": "statut",
-   "valeur": "mobile",
+   "valeur": "fixe",
    "regle": "R-P3",
-   "preuve": "libre",
-   "source": "deduit"
+   "preuve": "contrainte : contraintes.fixes_deplaces",
+   "source": "contrainte"
   },
   {
    "objet": "piece:R77_ALIM2",
@@ -4032,14 +4016,6 @@
    "regle": "R-P1",
    "preuve": "source : mots",
    "source": "deduit"
-  },
-  {
-   "objet": "piece:R77_ALIM2",
-   "propriete": "orientations",
-   "valeur": 4,
-   "regle": "R-P5",
-   "preuve": "dessus seulement (contrainte)",
-   "source": "contrainte"
   },
   {
    "objet": "piece:R76_ALIM2",
@@ -4188,10 +4164,10 @@
   {
    "objet": "piece:R70_ALIM2",
    "propriete": "statut",
-   "valeur": "mobile",
+   "valeur": "fixe",
    "regle": "R-P3",
-   "preuve": "libre",
-   "source": "deduit"
+   "preuve": "contrainte : contraintes.fixes_deplaces",
+   "source": "contrainte"
   },
   {
    "objet": "piece:R70_ALIM2",
@@ -4200,14 +4176,6 @@
    "regle": "R-P1",
    "preuve": "source : mots",
    "source": "deduit"
-  },
-  {
-   "objet": "piece:R70_ALIM2",
-   "propriete": "orientations",
-   "valeur": 4,
-   "regle": "R-P5",
-   "preuve": "dessus seulement (contrainte)",
-   "source": "contrainte"
   },
   {
    "objet": "piece:R69_ALIM2",
@@ -6644,10 +6612,10 @@
   {
    "objet": "piece:R95_VOLT2",
    "propriete": "statut",
-   "valeur": "mobile",
+   "valeur": "fixe",
    "regle": "R-P3",
-   "preuve": "libre",
-   "source": "deduit"
+   "preuve": "contrainte : contraintes.fixes_deplaces",
+   "source": "contrainte"
   },
   {
    "objet": "piece:R95_VOLT2",
@@ -6658,20 +6626,12 @@
    "source": "deduit"
   },
   {
-   "objet": "piece:R95_VOLT2",
-   "propriete": "orientations",
-   "valeur": 4,
-   "regle": "R-P5",
-   "preuve": "dessus seulement (contrainte)",
-   "source": "contrainte"
-  },
-  {
    "objet": "piece:R95_VOLT1",
    "propriete": "statut",
-   "valeur": "mobile",
+   "valeur": "fixe",
    "regle": "R-P3",
-   "preuve": "libre",
-   "source": "deduit"
+   "preuve": "contrainte : contraintes.fixes_deplaces",
+   "source": "contrainte"
   },
   {
    "objet": "piece:R95_VOLT1",
@@ -6680,14 +6640,6 @@
    "regle": "R-P1",
    "preuve": "source : mots",
    "source": "deduit"
-  },
-  {
-   "objet": "piece:R95_VOLT1",
-   "propriete": "orientations",
-   "valeur": 4,
-   "regle": "R-P5",
-   "preuve": "dessus seulement (contrainte)",
-   "source": "contrainte"
   },
   {
    "objet": "piece:R94_VOLT2",
@@ -7028,10 +6980,10 @@
   {
    "objet": "piece:R85_ALIM1",
    "propriete": "statut",
-   "valeur": "mobile",
+   "valeur": "fixe",
    "regle": "R-P3",
-   "preuve": "libre",
-   "source": "deduit"
+   "preuve": "contrainte : contraintes.fixes_deplaces",
+   "source": "contrainte"
   },
   {
    "objet": "piece:R85_ALIM1",
@@ -7042,14 +6994,6 @@
    "source": "deduit"
   },
   {
-   "objet": "piece:R85_ALIM1",
-   "propriete": "orientations",
-   "valeur": 4,
-   "regle": "R-P5",
-   "preuve": "dessus seulement (contrainte)",
-   "source": "contrainte"
-  },
-  {
    "objet": "piece:R84_ALIM1",
    "propriete": "statut",
    "valeur": "mobile",
@@ -7148,10 +7092,10 @@
   {
    "objet": "piece:R80_ALIM1",
    "propriete": "statut",
-   "valeur": "mobile",
+   "valeur": "fixe",
    "regle": "R-P3",
-   "preuve": "libre",
-   "source": "deduit"
+   "preuve": "contrainte : contraintes.fixes_deplaces",
+   "source": "contrainte"
   },
   {
    "objet": "piece:R80_ALIM1",
@@ -7160,14 +7104,6 @@
    "regle": "R-P1",
    "preuve": "source : mots",
    "source": "deduit"
-  },
-  {
-   "objet": "piece:R80_ALIM1",
-   "propriete": "orientations",
-   "valeur": 4,
-   "regle": "R-P5",
-   "preuve": "dessus seulement (contrainte)",
-   "source": "contrainte"
   },
   {
    "objet": "piece:R79_ALIM1",
@@ -7220,10 +7156,10 @@
   {
    "objet": "piece:R77_ALIM1",
    "propriete": "statut",
-   "valeur": "mobile",
+   "valeur": "fixe",
    "regle": "R-P3",
-   "preuve": "libre",
-   "source": "deduit"
+   "preuve": "contrainte : contraintes.fixes_deplaces",
+   "source": "contrainte"
   },
   {
    "objet": "piece:R77_ALIM1",
@@ -7232,14 +7168,6 @@
    "regle": "R-P1",
    "preuve": "source : mots",
    "source": "deduit"
-  },
-  {
-   "objet": "piece:R77_ALIM1",
-   "propriete": "orientations",
-   "valeur": 4,
-   "regle": "R-P5",
-   "preuve": "dessus seulement (contrainte)",
-   "source": "contrainte"
   },
   {
    "objet": "piece:R76_ALIM1",
@@ -7388,10 +7316,10 @@
   {
    "objet": "piece:R70_ALIM1",
    "propriete": "statut",
-   "valeur": "mobile",
+   "valeur": "fixe",
    "regle": "R-P3",
-   "preuve": "libre",
-   "source": "deduit"
+   "preuve": "contrainte : contraintes.fixes_deplaces",
+   "source": "contrainte"
   },
   {
    "objet": "piece:R70_ALIM1",
@@ -7400,14 +7328,6 @@
    "regle": "R-P1",
    "preuve": "source : mots",
    "source": "deduit"
-  },
-  {
-   "objet": "piece:R70_ALIM1",
-   "propriete": "orientations",
-   "valeur": 4,
-   "regle": "R-P5",
-   "preuve": "dessus seulement (contrainte)",
-   "source": "contrainte"
   },
   {
    "objet": "piece:R69_ALIM1",
@@ -11517,6 +11437,136 @@
    "repere_carte": [
     82.0,
     97.0
+   ]
+  },
+  {
+   "piece": "R70_ALIM1",
+   "repere_fichier": {
+    "x": 6.0,
+    "y": 46.5,
+    "rotation": 0,
+    "face": "dessus"
+   },
+   "repere_carte": [
+    6.0,
+    46.5
+   ]
+  },
+  {
+   "piece": "R77_ALIM1",
+   "repere_fichier": {
+    "x": 13.0,
+    "y": 46.5,
+    "rotation": 0,
+    "face": "dessus"
+   },
+   "repere_carte": [
+    13.0,
+    46.5
+   ]
+  },
+  {
+   "piece": "R80_ALIM1",
+   "repere_fichier": {
+    "x": 6.0,
+    "y": 41.0,
+    "rotation": 0,
+    "face": "dessus"
+   },
+   "repere_carte": [
+    6.0,
+    41.0
+   ]
+  },
+  {
+   "piece": "R85_ALIM1",
+   "repere_fichier": {
+    "x": 13.0,
+    "y": 41.0,
+    "rotation": 0,
+    "face": "dessus"
+   },
+   "repere_carte": [
+    13.0,
+    41.0
+   ]
+  },
+  {
+   "piece": "R95_VOLT1",
+   "repere_fichier": {
+    "x": 13.0,
+    "y": 35.5,
+    "rotation": 0,
+    "face": "dessus"
+   },
+   "repere_carte": [
+    13.0,
+    35.5
+   ]
+  },
+  {
+   "piece": "R70_ALIM2",
+   "repere_fichier": {
+    "x": 158.0,
+    "y": 46.5,
+    "rotation": 0,
+    "face": "dessus"
+   },
+   "repere_carte": [
+    158.0,
+    46.5
+   ]
+  },
+  {
+   "piece": "R77_ALIM2",
+   "repere_fichier": {
+    "x": 151.0,
+    "y": 46.5,
+    "rotation": 0,
+    "face": "dessus"
+   },
+   "repere_carte": [
+    151.0,
+    46.5
+   ]
+  },
+  {
+   "piece": "R80_ALIM2",
+   "repere_fichier": {
+    "x": 158.0,
+    "y": 41.0,
+    "rotation": 0,
+    "face": "dessus"
+   },
+   "repere_carte": [
+    158.0,
+    41.0
+   ]
+  },
+  {
+   "piece": "R85_ALIM2",
+   "repere_fichier": {
+    "x": 151.0,
+    "y": 41.0,
+    "rotation": 0,
+    "face": "dessus"
+   },
+   "repere_carte": [
+    151.0,
+    41.0
+   ]
+  },
+  {
+   "piece": "R95_VOLT2",
+   "repere_fichier": {
+    "x": 151.0,
+    "y": 35.5,
+    "rotation": 0,
+    "face": "dessus"
+   },
+   "repere_carte": [
+    151.0,
+    35.5
    ]
   }
  ]

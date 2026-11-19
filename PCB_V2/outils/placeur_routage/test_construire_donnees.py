@@ -908,7 +908,9 @@ class TestMetroid(unittest.TestCase):
                if g["type"] == "repete"}
         self.assertEqual(rep, {"_ALIM": [119, 119], "_VOLT": [18, 18]})
         st = [c["statut"] for c in d["composants"]]
-        self.assertEqual((st.count("fixe"), st.count("mobile")), (45, 314))
+        self.assertEqual((st.count("fixe"), st.count("mobile")), (55, 304))   # 45 + les 10 trimmers 3224W figés (18/11/2026)
+        for n in ("R70_ALIM1", "R95_VOLT2", "D1", "D2", "D3"):
+            self.assertEqual(cs[n]["statut"], "fixe", n)
         self.assertEqual([e["type"] for e in d["eloignements"]], ["souple", "dure"])
         self.assertEqual([c["courant_a"] for c in d["charges"]], [2.0, 2.0])
 
@@ -947,7 +949,7 @@ class TestExempleMetroid(unittest.TestCase):
     def test_donnees_nominales(self):
         d = _lire("donnees_placeur.json")
         st = [c["statut"] for c in d["composants"]]
-        self.assertEqual((len(st), st.count("fixe"), st.count("mobile")), (359, 45, 314))
+        self.assertEqual((len(st), st.count("fixe"), st.count("mobile")), (359, 55, 304))
         self.assertEqual(sorted(g["nom"] for g in d["groupes"] if g["type"] == "repete"), ["_ALIM", "_VOLT"])
         self.assertEqual(formats.valider_donnees_placeur(d), [])
         self.assertEqual(formats.valider_donnees_placeur(_lire("donnees_placeur_9b5b5a3.json")), [])

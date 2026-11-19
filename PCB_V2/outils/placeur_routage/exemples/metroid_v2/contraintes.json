@@ -1,6 +1,6 @@
 {
  "format": "contraintes/2",
- "_doc": "Contraintes de la carte METROID V2 (exemple) : conversion de contraintes_carte.json (version 1) par formats.lire_contraintes, complétée des choix de l utilisateur (trou central, roles, charges, couches).",
+ "_doc": "Contraintes de la carte METROID V2 (exemple) : conversion de contraintes_carte.json (version 1) par formats.lire_contraintes, complétée des choix de l utilisateur (trou central, roles, charges, couches). Les 10 trimmers 3224W sont figés (fixes_deplaces, face dessus, rotation 0) à la demande de l utilisateur du 18/11/2026.",
  "repere": "carte",
  "unite": "mm",
  "fixes": [
@@ -65,7 +65,67 @@
   "P1": [
    82.0,
    97.0
-  ]
+  ],
+  "R70_ALIM1": {
+   "x": 6.0,
+   "y": 46.5,
+   "rotation": 0,
+   "face": "dessus"
+  },
+  "R77_ALIM1": {
+   "x": 13.0,
+   "y": 46.5,
+   "rotation": 0,
+   "face": "dessus"
+  },
+  "R80_ALIM1": {
+   "x": 6.0,
+   "y": 41.0,
+   "rotation": 0,
+   "face": "dessus"
+  },
+  "R85_ALIM1": {
+   "x": 13.0,
+   "y": 41.0,
+   "rotation": 0,
+   "face": "dessus"
+  },
+  "R95_VOLT1": {
+   "x": 13.0,
+   "y": 35.5,
+   "rotation": 0,
+   "face": "dessus"
+  },
+  "R70_ALIM2": {
+   "x": 158.0,
+   "y": 46.5,
+   "rotation": 0,
+   "face": "dessus"
+  },
+  "R77_ALIM2": {
+   "x": 151.0,
+   "y": 46.5,
+   "rotation": 0,
+   "face": "dessus"
+  },
+  "R80_ALIM2": {
+   "x": 158.0,
+   "y": 41.0,
+   "rotation": 0,
+   "face": "dessus"
+  },
+  "R85_ALIM2": {
+   "x": 151.0,
+   "y": 41.0,
+   "rotation": 0,
+   "face": "dessus"
+  },
+  "R95_VOLT2": {
+   "x": 151.0,
+   "y": 35.5,
+   "rotation": 0,
+   "face": "dessus"
+  }
  },
  "dessus_seulement": [
   "empreinte:BOURNS TRIMPOT 3224W",

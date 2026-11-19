@@ -612,10 +612,10 @@ class TestMetroidRev3(AssertionsProches, unittest.TestCase):
     MATRICE = [[0.25, 0.25, 0.25], [0.25, 0.12446, 0.2], [0.25, 0.2, 0.2]]
     PAS_FIN = {"M1", "M2", "U10"}
     LARGEURS_MIL = {"CANAL_2A": (19.685, 59.0551, 590.551), "RAILS": (10, 20, 196.85),
-                    "PUISSANCE_8V": (11.811, 79, 590.551), "ENTREE_12V": (11.811, 98, 590.551),
+                    "PUISSANCE_8V": (19.685, 79, 590.551), "ENTREE_12V": (11.811, 98, 590.551),
                     "TRIG_50R": (13.78, 14, 15.748), "SENSE": (11.811, 12, 19.685),
                     "COMMUTATION": (10, 11.811, 118.1102)}          # COMMUTATION : règle Width par défaut (All)
-    LARGEURS_MM = {"CANAL_2A": (0.5, 1.5, 15.0), "RAILS": (0.254, 0.508, 5.0), "PUISSANCE_8V": (0.3, 2.0066, 15.0),
+    LARGEURS_MM = {"CANAL_2A": (0.5, 1.5, 15.0), "RAILS": (0.254, 0.508, 5.0), "PUISSANCE_8V": (0.5, 2.0066, 15.0),
                    "ENTREE_12V": (0.3, 2.4892, 15.0), "TRIG_50R": (0.35, 0.3556, 0.4), "SENSE": (0.3, 0.3048, 0.5),
                    "COMMUTATION": (0.254, 0.3, 3.0)}   # §3.9 et valeurs saisies en mm (le fichier les garde en mil,
     #                                                      arrondies à 0,01 mil près : 13,78 mil = 0,350012 mm)
