@@ -2,7 +2,7 @@
 # placeur.py, jamais les étapes une à une (§1.1).
 # - À chaque poussée sur PCB_V2/outils/** : rust (deux systèmes, deux moteurs), python (tous les tests), contrat,
 #   synthetiques (cartes « chaîne » du corpus) et arret_posix.
-# - En lancement manuel et chaque nuit : campagne_metroid (liste de graines de ci_campagne.json, jeux nominal et
+# - À chaque poussée qui modifie ci_campagne.json, en lancement manuel et chaque nuit : campagne_metroid (liste de graines de ci_campagne.json, jeux nominal et
 #   compatibilité, une graine par machine, --qualite normal --sans-pcbdoc), campagne_corpus, puis fusion publiée sur
 #   la branche ci-resultats-placeur (dossier run_<numéro>, sans chemin).
 # - La nuit ne tourne que si la variable du dépôt CAMPAGNE_NUIT vaut « oui » (décision §8.9-6 : fréquence et budget de
@@ -143,10 +143,23 @@ jobs:
     outputs:
       matrice: ${{ steps.l.outputs.matrice }}
       cartes: ${{ steps.l.outputs.cartes }}
+      campagne: ${{ steps.c.outputs.campagne }}
     steps:
       - name: Fins de ligne intactes (fichiers d'exemple compares octet pour octet)
         run: git config --global core.autocrlf false
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - id: c
+        name: ci_campagne.json modifié par la poussée ?
+        run: |
+          B="${{ github.event.before }}"
+          if [ "${{ github.event_name }}" != "push" ]; then echo "campagne=non" >> "$GITHUB_OUTPUT"; exit 0; fi
+          if [ -z "$B" ] || [ "$B" = "0000000000000000000000000000000000000000" ] || ! git cat-file -e "$B^{commit}" 2>/dev/null              || git diff --name-only "$B" "${{ github.sha }}" | grep -qx "$P/ci_campagne.json"; then
+            echo "campagne=oui" >> "$GITHUB_OUTPUT"
+          else
+            echo "campagne=non" >> "$GITHUB_OUTPUT"
+          fi
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -212,6 +225,7 @@ jobs:
     needs: [rust, liste]
     if: >-
       (github.event_name == 'workflow_dispatch' && (inputs.campagnes == 'toutes' || inputs.campagnes == 'metroid'))
+      || (github.event_name == 'push' && needs.liste.outputs.campagne == 'oui')
       || (github.event_name == 'schedule' && vars.CAMPAGNE_NUIT == 'oui')
     runs-on: ubuntu-24.04
     timeout-minutes: 300
