@@ -249,9 +249,12 @@ jobs:
         run: |
           chmod +x "$GITHUB_WORKSPACE"/moteurs/*
           echo "machine : $(nproc) fils"
+          mkdir -p "$RUNNER_TEMP/sortie"
           python placeur.py --donnees "${{ matrix.donnees }}" --graine-depart ${{ matrix.graine }} --essais 1 \
             --qualite normal --sans-pcbdoc --moteurs "$GITHUB_WORKSPACE/moteurs" \
-            --sortie "$RUNNER_TEMP/sortie" || echo "placeur.py : code $?"
+            --sortie "$RUNNER_TEMP/sortie" > "$RUNNER_TEMP/journal_ci.txt" 2>&1 || echo "placeur.py : code $?" >> "$RUNNER_TEMP/journal_ci.txt"
+          tail -n 60 "$RUNNER_TEMP/journal_ci.txt"
+          cp "$RUNNER_TEMP/journal_ci.txt" "$RUNNER_TEMP/sortie/"
           # artefact : rapport et fichiers de graine, sans la copie des données
           find "$RUNNER_TEMP/sortie" -name donnees_placeur.json -delete
       - uses: actions/upload-artifact@v4
@@ -344,6 +347,12 @@ jobs:
             n=$(basename "$c")
             python ci_fusion.py "$c" --sortie "$F/$n" || echo "fusion $n : code $?"
             [ -f "$F/$n/resume.md" ] && cat "$F/$n/resume.md" >> "$GITHUB_STEP_SUMMARY"
+          done
+          # fin des journaux de placeur.py (lisibles sur la branche publique ; chemins de machine hébergée seulement)
+          mkdir -p "$F/journaux"
+          for j in "$A"/*/journal_ci.txt; do
+            [ -f "$j" ] || continue
+            tail -n 40 "$j" > "$F/journaux/$(basename "$(dirname "$j")").txt"
           done
           cp ci_campagne.json "$F/"
           echo "${{ github.sha }}" > "$F/commit.txt"
