@@ -1,0 +1,153 @@
+{
+ "format": "attendu_deduction/1",
+ "carte": "multiphase_filtre",
+ "famille": "deduction",
+ "couches": [
+  {
+   "nom": "TopLayer",
+   "role": "routage",
+   "plans": []
+  },
+  {
+   "nom": "BottomLayer",
+   "role": "routage",
+   "plans": []
+  }
+ ],
+ "sans_piste_dessous": [
+  "L1",
+  "L2",
+  "L3"
+ ],
+ "pas_fin": [],
+ "matrice": [],
+ "groupes": [],
+ "pieces_fixes": {
+  "J1": "suggestion",
+  "J2": "suggestion"
+ },
+ "convertisseurs": [
+  {
+   "reseau_commutation": "SW1",
+   "topologie": "abaisseur",
+   "commutation": "synchrone",
+   "haut": "Q1",
+   "bas": "Q2",
+   "pilote": "U1",
+   "inductance": "L1",
+   "reseau_entree": "+12V",
+   "reseau_sortie": "+5V",
+   "reseau_masse": "GND",
+   "cond_entree": [
+    "C2",
+    "C7"
+   ],
+   "cond_sortie": [
+    "C5"
+   ],
+   "cond_bulk": [
+    "C1"
+   ],
+   "cond_bootstrap": [
+    "C3"
+   ],
+   "boucle_chaude": {
+    "condensateurs": [
+     "C2",
+     "C7"
+    ],
+    "reseau_rail": "+12V",
+    "reseau_masse": "GND"
+   },
+   "cond_pilote": []
+  },
+  {
+   "reseau_commutation": "SW2",
+   "topologie": "abaisseur",
+   "commutation": "synchrone",
+   "haut": "Q3",
+   "bas": "Q4",
+   "pilote": "U2",
+   "inductance": "L2",
+   "reseau_entree": "+12V",
+   "reseau_sortie": "+5V",
+   "reseau_masse": "GND",
+   "cond_entree": [
+    "C2",
+    "C7"
+   ],
+   "cond_sortie": [
+    "C5"
+   ],
+   "cond_bulk": [
+    "C1"
+   ],
+   "cond_bootstrap": [
+    "C6"
+   ],
+   "boucle_chaude": {
+    "condensateurs": [
+     "C2",
+     "C7"
+    ],
+    "reseau_rail": "+12V",
+    "reseau_masse": "GND"
+   },
+   "cond_pilote": []
+  }
+ ],
+ "chaine": null,
+ "description": "Abaisseur à deux phases et inductance de filtre d'entrée.",
+ "regles": [
+  "R-V1",
+  "R-R4",
+  "R-R6",
+  "R-R7",
+  "R-P3"
+ ],
+ "masses": [
+  "GND"
+ ],
+ "roles": {
+  "puissance": [
+   "+12V",
+   "+12V_IN",
+   "+5V",
+   "GND"
+  ],
+  "commutation": [
+   "SW1",
+   "SW2"
+  ],
+  "signal": [
+   "GH1",
+   "GH2",
+   "GL1",
+   "GL2",
+   "HB1",
+   "HB2",
+   "PWM1",
+   "PWM2",
+   "VDRV"
+  ]
+ },
+ "largeurs": {
+  "+12V_IN": [
+   0.2,
+   1.0,
+   null
+  ]
+ },
+ "isolement": {
+  "defaut": 0.2,
+  "requis": [
+   {
+    "reseaux": [
+     "GND",
+     "SW2"
+    ],
+    "mm": 0.25
+   }
+  ]
+ }
+}

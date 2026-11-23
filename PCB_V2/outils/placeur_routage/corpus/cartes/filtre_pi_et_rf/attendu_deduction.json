@@ -1,0 +1,70 @@
+{
+ "format": "attendu_deduction/1",
+ "carte": "filtre_pi_et_rf",
+ "famille": "deduction",
+ "couches": [
+  {
+   "nom": "TopLayer",
+   "role": "routage",
+   "plans": []
+  },
+  {
+   "nom": "BottomLayer",
+   "role": "routage",
+   "plans": []
+  }
+ ],
+ "sans_piste_dessous": [],
+ "pas_fin": [],
+ "matrice": [],
+ "groupes": [],
+ "pieces_fixes": {
+  "J1": "suggestion",
+  "J2": "suggestion"
+ },
+ "convertisseurs": [],
+ "chaine": null,
+ "description": "Filtre en π à perle sur AVDD et adaptation RF à inductance série : aucun convertisseur.",
+ "regles": [
+  "R-V3",
+  "R-R6",
+  "R-R7",
+  "R-P3"
+ ],
+ "masses": [
+  "GND"
+ ],
+ "roles": {
+  "alimentation": [
+   "+3V3",
+   "AVDD",
+   "GND"
+  ],
+  "signal": [
+   "AIN",
+   "ANT",
+   "RF_OUT",
+   "SCL",
+   "SDA"
+  ]
+ },
+ "largeurs": {
+  "AVDD": [
+   0.2,
+   0.5,
+   null
+  ]
+ },
+ "isolement": {
+  "defaut": 0.2,
+  "requis": [
+   {
+    "reseaux": [
+     "ANT",
+     "SDA"
+    ],
+    "mm": 0.2
+   }
+  ]
+ }
+}

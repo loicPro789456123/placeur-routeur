@@ -1,0 +1,112 @@
+{
+ "format": "attendu_deduction/1",
+ "carte": "masses_multiples",
+ "famille": "deduction",
+ "couches": [
+  {
+   "nom": "TopLayer",
+   "role": "routage",
+   "plans": []
+  },
+  {
+   "nom": "BottomLayer",
+   "role": "routage",
+   "plans": []
+  }
+ ],
+ "sans_piste_dessous": [
+  "L1"
+ ],
+ "pas_fin": [],
+ "matrice": [],
+ "groupes": [],
+ "pieces_fixes": {
+  "J1": "suggestion"
+ },
+ "convertisseurs": [
+  {
+   "reseau_commutation": "SW",
+   "topologie": "abaisseur",
+   "commutation": "integre",
+   "haut": "U2",
+   "bas": "U2",
+   "pilote": "U2",
+   "inductance": "L1",
+   "reseau_entree": "+5V",
+   "reseau_sortie": "+3V3",
+   "reseau_masse": "PGND",
+   "cond_entree": [
+    "C7"
+   ],
+   "cond_sortie": [
+    "C8"
+   ],
+   "cond_bulk": [
+    "C6"
+   ],
+   "cond_bootstrap": [
+    "C9"
+   ],
+   "boucle_chaude": {
+    "condensateurs": [
+     "C7"
+    ],
+    "reseau_rail": "+5V",
+    "reseau_masse": "PGND"
+   }
+  }
+ ],
+ "chaine": null,
+ "description": "Masses DGND, AGND (liaison NT1) et PGND d'un convertisseur (liaison NT2).",
+ "regles": [
+  "R-M2",
+  "R-M3",
+  "R-V3",
+  "R-R7",
+  "R-P3"
+ ],
+ "masses": [
+  "DGND",
+  "PGND"
+ ],
+ "roles": {
+  "commutation": [
+   "SW"
+  ],
+  "puissance": [
+   "+3V3",
+   "+5V"
+  ],
+  "signal": [
+   "AGND",
+   "AIN",
+   "AVDD",
+   "BST",
+   "DGND",
+   "EN",
+   "FB",
+   "PGND",
+   "SCL",
+   "SDA"
+  ]
+ },
+ "largeurs": {
+  "SDA": [
+   0.2,
+   0.25,
+   null
+  ]
+ },
+ "isolement": {
+  "defaut": 0.2,
+  "requis": [
+   {
+    "reseaux": [
+     "AGND",
+     "DGND"
+    ],
+    "mm": 0.2
+   }
+  ]
+ }
+}

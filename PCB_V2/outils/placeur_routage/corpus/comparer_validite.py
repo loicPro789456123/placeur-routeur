@@ -142,6 +142,22 @@ def lister_cas(dossier):
     return liste
 
 
+def _couture_v2(chemin):
+    """``vias_couture.json`` lu tel quel s'il porte ``format`` ; sinon (version 1 des références figées, sans
+    ``format`` ni ``reseaux``), copie temporaire en ``vias_couture/2`` (réseaux des vias, aucun refus)."""
+    d = lire_json(chemin)
+    if not isinstance(d, dict) or "format" in d:
+        return chemin
+    vias = d.get("vias") or []
+    v2 = {"format": "vias_couture/2", "unite": d.get("unite", "mil"),
+          "reseaux": sorted({v["net"] for v in vias}), "pas_grille_mm": d.get("pas_grille_mm", 2.5),
+          "vias": [{k: v[k] for k in ("x", "y", "size", "hole_size", "net")} for v in vias], "refus": {}}
+    f = tempfile.NamedTemporaryFile("w", suffix="_vias_couture.json", delete=False, encoding="utf-8")
+    with f:
+        json.dump(v2, f)
+    return f.name
+
+
 def cas_graine(dossier, donnees):
     if not os.path.isdir(dossier):
         raise ErreurEntree("--graine : dossier introuvable")
@@ -154,7 +170,7 @@ def cas_graine(dossier, donnees):
             raise ErreurEntree(f"--graine : {os.path.basename(fichiers[cle])} absent")
     couture = os.path.join(dossier, "vias_couture.json")
     if os.path.isfile(couture):
-        fichiers["couture"] = couture
+        fichiers["couture"] = _couture_v2(couture)
     return [(os.path.basename(os.path.normpath(dossier)) or "graine", fichiers, True)]
 
 

@@ -53,7 +53,7 @@ donnent des fichiers identiques (SHA-256). `--verifier` compare sans rien écrir
 | `references/rev4/` | `sorties/conjoint/` (2421 pistes, 5393,0 mm, 470 vias, sans le cuivre du bloc) | **10328,5** (référence de qualité, citée par l'utilisateur) |
 | `references/ei_1038/` | essai ei_1038 | **12398,4** |
 | `references/rev3/` | `sorties/` | non publié (référence historique) |
-| `references/rev4_fichier/` | `PCB_METROID_V2_rev4.PcbDoc` (cuivre manuel du hacheur compris) | en information, mesuré par `mesures.py` (lot C) ; nouvelle valeur soumise à l'utilisateur (§8.9) |
+| `references/rev4_fichier/` | `PCB_METROID_V2_rev4.PcbDoc` (cuivre manuel du hacheur compris) | **10622,6** en information (`mesures.py`, 23/11/2026 : 5440,6 mm, 496 vias, rétréci 237,6 mm) ; mêmes mesures : rev4 = 10494,1 et ei_1038 = 12577,8 (+1,6 % et +1,45 % sur les valeurs de 9b5b5a3, terme rétréci) |
 
 La référence de qualité reste `references/rev4/` : le fichier rev4 contient aussi 6 régions de cuivre manuelles et
 les vias de couture, que la copie de `sorties/conjoint/` n'a pas.

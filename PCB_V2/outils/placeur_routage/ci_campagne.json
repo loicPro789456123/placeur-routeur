@@ -9,8 +9,7 @@
   "3001-3020"
  ],
  "jeux": {
-  "nominal": "exemples/metroid_v2/donnees_placeur.json",
-  "compatibilite": "exemples/metroid_v2/donnees_placeur_9b5b5a3.json"
+  "nominal": "exemples/metroid_v2/donnees_placeur.json"
  },
  "qualite": "normal",
  "reference_cout": 10328.5,
@@ -23,5 +22,6 @@
  },
  "corpus_graines": 10,
  "corpus_qualite": "normal",
- "lancement": "correctif de la régression run_40 : zone autour réduite par une pièce fixe déplacée ; largeurs jamais sous le minimum de la règle"
+ "lancement": "essai : recuit d'exploration 2,5 fois plus long (alpha 0,996), jeu nominal, mêmes 40 graines",
+ "parametres_moteur": "exemples/metroid_v2/recuit_long.json"
 }

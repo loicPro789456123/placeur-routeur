@@ -103,8 +103,17 @@ EMPREINTES = {
                                (-1.8, -1.8, 1.8, 9.42)),
     "PinHeader_1x05_P2.54mm": ("Barrette 1 x 5, pas 2,54 mm", "through_hole", _barrette(5),
                                (-1.8, -1.8, 1.8, 11.96)),
+    "PinHeader_1x06_P2.54mm": ("Barrette 1 x 6, pas 2,54 mm", "through_hole", _barrette(6),
+                               (-1.8, -1.8, 1.8, 14.5)),
     "PinHeader_1x07_P2.54mm": ("Barrette 1 x 7, pas 2,54 mm", "through_hole", _barrette(7),
                                (-1.8, -1.8, 1.8, 17.04)),
+    "FB_0603_1608Metric": ("Perle ferrite CMS 0603", "smd", _deux(0.775, 0.9, 0.95), (1.48, 0.73)),
+    "L_0402_1005Metric": ("Inductance CMS 0402", "smd", _deux(0.48, 0.56, 0.62), (0.91, 0.46)),
+    "NetTie-2_SMD_Pad0.5mm": ("Liaison de reseaux, 2 pastilles", "smd",
+                              [("1", "smd", "circle", -0.25, 0.0, 0.5, 0.5, None),
+                               ("2", "smd", "circle", 0.25, 0.0, 0.5, 0.5, None)], (0.6, 0.4)),
+    "MountingHole_3.2mm_M3_Pad": ("Trou de fixation M3, pastille metallisee", "through_hole exclude_from_bom",
+                                  [("1", "thru_hole", "circle", 0.0, 0.0, 6.4, 6.4, 3.2)], (3.45, 3.45)),
     "MountingHole_3.2mm_M3": ("Trou de fixation M3, non metallise", "exclude_from_pos_files exclude_from_bom",
                               [("", "np_thru_hole", "circle", 0.0, 0.0, 3.2, 3.2, 3.2)], (3.45, 3.45)),
 }
@@ -114,8 +123,11 @@ EMPREINTES = {
 # pièce : (désignateur, empreinte, valeur, x, y, rotation, face, {pastille: réseau}) ; coordonnées de la page KiCad
 # (mm, y vers le bas) ; la carte est le rectangle ``contour`` de la page.
 
-def _p(des, fp, val, x, y, rot=0, face="dessus", **nets):
-    return (des, fp, val, x, y, rot, face, {k.lstrip("_"): v for k, v in nets.items()})
+def _p(des, fp, val, x, y, rot=0, face="dessus", options=None, **nets):
+    """Pièce ; ``options`` : {"verrouillee": True} (empreinte locked), {"feuille": nom, "symbole": clé} (chemin
+    hiérarchique KiCad : deux pièces de feuilles différentes et de même clé de symbole sont deux instances)."""
+    t = (des, fp, val, x, y, rot, face, {k.lstrip("_"): v for k, v in nets.items()})
+    return t + (options,) if options else t
 
 
 def _r(des, x, y, a, b, rot=0, val="10k", fp="R_0603_1608Metric", face="dessus"):
@@ -394,6 +406,376 @@ CARTES.append({
         "chaine": None},
 })
 
+# --- Étape 8 : cartes de §7.3 ajoutées ---------------------------------------------------------------------------------
+# Listes des convertisseurs selon l'exemple de §2.4 (le lot B l'a suivi, voir ECARTS_SIGNALES_LOT_E) : le bulk (plus
+# gros condensateur de l'entrée) est dans cond_bulk et hors de cond_entree ; un abaisseur ne garde que le plus gros
+# condensateur de sortie ; un élévateur les garde tous, et sa boucle chaude est sur la sortie.
+
+COUCHES_2 = [{"nom": "TopLayer", "role": "routage", "plans": []},
+             {"nom": "BottomLayer", "role": "routage", "plans": []}]
+PUISSANCE = {"name": "Puissance", "clearance": 0.25, "track_width": 1.0, "via_diameter": 0.8, "via_drill": 0.4}
+ALIM = {"name": "Alim", "clearance": 0.2, "track_width": 0.5, "via_diameter": 0.6, "via_drill": 0.3}
+
+
+def _carte(nom, famille, pieces, attendu, contraintes=None, classes=(), motifs=(), affectations=None,
+           contour=(100.0, 100.0, 150.0, 140.0), defaut=None, **autres):
+    ct = {"format": "contraintes/2", "_doc": f"Carte synthétique {nom} : tout est déduit."}
+    ct.update(contraintes or {})
+    a = {"couches": COUCHES_2, "sans_piste_dessous": [], "pas_fin": [], "matrice": [], "groupes": [],
+         "pieces_fixes": {}, "convertisseurs": [], "chaine": None}
+    a.update(attendu)
+    c = {"nom": nom, "famille": famille, "contour": contour, "couches": ("F.Cu", "B.Cu"), "types": {}, "zones": [],
+         "classes": [defaut or CLASSE_DEFAUT] + list(classes), "motifs": list(motifs), "affectations": affectations,
+         "pieces": pieces, "contraintes": ct, "attendu": a}
+    c.update(autres)
+    CARTES.append(c)
+
+
+def _conv(sw, haut, bas, pilote, ind, e, s, ce, cs, bulk, boots, topo="abaisseur", comm="synchrone", m="GND",
+          cpil=None):
+    d = {"reseau_commutation": sw, "topologie": topo, "commutation": comm, "haut": haut, "bas": bas,
+         "pilote": pilote, "inductance": ind, "reseau_entree": e, "reseau_sortie": s, "reseau_masse": m,
+         "cond_entree": ce, "cond_sortie": cs, "cond_bulk": bulk, "cond_bootstrap": boots,
+         "boucle_chaude": {"condensateurs": cs if topo == "elevateur" else ce,
+                           "reseau_rail": s if topo == "elevateur" else e, "reseau_masse": m}}
+    if cpil is not None:
+        d["cond_pilote"] = cpil
+    return d
+
+
+# elevateur (déduction) — élévateur synchrone discret +5V → +12V : L1 de l'entrée au nœud SW, Q1 bas (SW-GND), Q2
+# haut (SW-+12V), pilote U1 alimenté par +5V. R-V1 : topologie élévateur (le côté de L1 hors du nœud alimente le
+# pilote, le rail de Q2 non) ; boucle chaude sur la sortie (C5, C6) ; cond_pilote C4 (céramique de l'entrée, pilote
+# alimenté par l'entrée).
+_carte("elevateur", "deduction", [
+    _barre("J1", 3, 105.0, 110.0, ["+5V", "GND", "PWM"]),
+    _p("U1", "SOIC-8_3.9x4.9mm_P1.27mm", "Pilote demi-pont", 118.0, 112.0, _1="+5V", _2="PWM", _3="EN", _4="GND",
+       _5="GL", _6="SW", _7="GH", _8="HB"),
+    _c("C4", 113.0, 107.0, "+5V", "GND", val="1u"),
+    _c("C1", 110.0, 120.0, "+5V", "GND", val="22u", fp="C_1210_3225Metric"),
+    _r("R1", 113.0, 117.0, "+5V", "EN", val="100k"),
+    _c("C3", 118.0, 106.0, "HB", "SW", val="100n"),
+    _p("L1", "L_4x4", "4.7uH", 126.0, 122.0, 90, _1="+5V", _2="SW"),
+    _p("Q1", "SOT-23", "MOSFET N", 129.0, 116.0, _1="GL", _2="GND", _3="SW"),
+    _p("Q2", "SOT-23", "MOSFET N", 129.0, 110.0, _1="GH", _2="SW", _3="+12V"),
+    _c("C5", 138.0, 108.0, "+12V", "GND", val="22u", fp="C_1210_3225Metric"),
+    _c("C6", 138.0, 116.0, "+12V", "GND", val="1u", fp="C_0805_2012Metric"),
+    _barre("J2", 2, 146.0, 124.0, ["+12V", "GND"]),
+], {"description": "Élévateur synchrone discret (+5V → +12V).",
+    "regles": ["R-V1", "R-R4", "R-R6", "R-R7", "R-P3"],
+    "masses": ["GND"],
+    "roles": {"puissance": ["+12V", "+5V", "GND"], "commutation": ["SW"],
+              "signal": ["EN", "GH", "GL", "HB", "PWM"]},
+    "largeurs": {"+12V": [0.2, 1.0, None], "EN": [0.2, 0.25, None]},
+    "convertisseurs": [_conv("SW", "Q2", "Q1", "U1", "L1", "+5V", "+12V", ["C4"], ["C5", "C6"], ["C1"], ["C3"],
+                             topo="elevateur", cpil=["C4"])],
+    "sans_piste_dessous": ["L1"],
+    "isolement": {"defaut": 0.2, "requis": [{"reseaux": ["GND", "SW"], "mm": 0.25},
+                                            {"reseaux": ["EN", "GH"], "mm": 0.2}]},
+    "pieces_fixes": {"J1": "suggestion", "J2": "suggestion"}},
+    classes=[PUISSANCE], motifs=[("Puissance", "SW*")],
+    affectations={"+12V": "Puissance", "+5V": "Puissance", "GND": "Puissance"})
+
+# demi_pont_resistances_grille (déduction) — abaisseur synchrone dont les deux grilles sont commandées par U1 à travers
+# R1 et R2 (R-V1 : commande directe ou à travers une pièce à deux pastilles) : un seul convertisseur.
+_carte("demi_pont_resistances_grille", "deduction", [
+    _barre("J1", 4, 105.0, 110.0, ["+12V", "GND", "VDRV", "PWM"]),
+    _p("U1", "SOIC-8_3.9x4.9mm_P1.27mm", "Pilote demi-pont", 118.0, 114.0, _1="VDRV", _2="PWM", _3="EN", _4="GND",
+       _5="GL_U", _6="SW", _7="GH_U", _8="HB"),
+    _c("C4", 113.0, 109.0, "VDRV", "GND", val="1u"),
+    _r("R3", 113.0, 119.0, "VDRV", "EN", val="100k"),
+    _c("C3", 118.0, 108.0, "HB", "SW", val="100n"),
+    _r("R1", 124.0, 110.0, "GH_U", "GH", val="4R7"),
+    _r("R2", 124.0, 118.0, "GL_U", "GL", val="2R2"),
+    _p("Q1", "SOT-23", "MOSFET N", 129.0, 110.0, _1="GH", _2="SW", _3="+12V"),
+    _p("Q2", "SOT-23", "MOSFET N", 129.0, 117.0, _1="GL", _2="GND", _3="SW"),
+    _p("L1", "L_4x4", "10uH", 136.0, 114.0, 90, _1="SW", _2="+5V"),
+    _c("C1", 122.0, 103.5, "+12V", "GND", val="22u", fp="C_1210_3225Metric"),
+    _c("C2", 129.0, 103.5, "+12V", "GND", val="1u", fp="C_0805_2012Metric"),
+    _c("C5", 142.0, 122.0, "+5V", "GND", rot=90, val="22u", fp="C_1210_3225Metric"),
+    _barre("J2", 2, 146.0, 128.0, ["+5V", "GND"]),
+], {"description": "Abaisseur synchrone, grilles commandées à travers des résistances.",
+    "regles": ["R-V1", "R-R4", "R-R6", "R-R7", "R-P3"],
+    "masses": ["GND"],
+    "roles": {"puissance": ["+12V", "+5V", "GND"], "commutation": ["SW"],
+              "signal": ["EN", "GH", "GH_U", "GL", "GL_U", "HB", "PWM", "VDRV"]},
+    "largeurs": {"+12V": [0.2, 1.0, None]},
+    "convertisseurs": [_conv("SW", "Q1", "Q2", "U1", "L1", "+12V", "+5V", ["C2"], ["C5"], ["C1"], ["C3"],
+                             cpil=[])],
+    "sans_piste_dessous": ["L1"],
+    "isolement": {"defaut": 0.2, "requis": [{"reseaux": ["GND", "SW"], "mm": 0.25}]},
+    "pieces_fixes": {"J1": "suggestion", "J2": "suggestion"}},
+    classes=[PUISSANCE], motifs=[("Puissance", "SW*")],
+    affectations={"+12V": "Puissance", "+5V": "Puissance", "GND": "Puissance"})
+
+# multiphase_filtre (déduction) — deux phases abaisseuses (SW1 : Q1, Q2, L1, U1 ; SW2 : Q3, Q4, L2, U2) en parallèle
+# sur +5V, et une inductance de filtre d'entrée L3 entre +12V_IN et +12V : +12V porte des condensateurs vers la masse,
+# ce n'est pas un nœud de commutation (aucun convertisseur sur L3).
+_carte("multiphase_filtre", "deduction", [
+    _barre("J1", 5, 104.0, 108.0, ["+12V_IN", "GND", "VDRV", "PWM1", "PWM2"]),
+    _p("L3", "L_4x4", "1uH", 110.0, 124.0, 0, _1="+12V_IN", _2="+12V"),
+    _c("C9", 104.0, 124.0, "+12V_IN", "GND", rot=90, val="1u", fp="C_0805_2012Metric"),
+    _c("C1", 116.0, 130.0, "+12V", "GND", val="22u", fp="C_1210_3225Metric"),
+    _c("C2", 124.0, 104.0, "+12V", "GND", val="1u", fp="C_0805_2012Metric"),
+    _c("C7", 124.0, 136.0, "+12V", "GND", val="1u", fp="C_0805_2012Metric"),
+    _p("U1", "SOIC-8_3.9x4.9mm_P1.27mm", "Pilote demi-pont", 117.0, 110.0, _1="VDRV", _2="PWM1", _3="VDRV",
+       _4="GND", _5="GL1", _6="SW1", _7="GH1", _8="HB1"),
+    _c("C4", 112.0, 115.5, "VDRV", "GND", val="1u"),
+    _c("C3", 117.0, 104.5, "HB1", "SW1", val="100n"),
+    _p("Q1", "SOT-23", "MOSFET N", 129.0, 107.0, _1="GH1", _2="SW1", _3="+12V"),
+    _p("Q2", "SOT-23", "MOSFET N", 129.0, 113.0, _1="GL1", _2="GND", _3="SW1"),
+    _p("L1", "L_4x4", "4.7uH", 137.0, 110.0, 90, _1="SW1", _2="+5V"),
+    _p("U2", "SOIC-8_3.9x4.9mm_P1.27mm", "Pilote demi-pont", 117.0, 124.0, _1="VDRV", _2="PWM2", _3="VDRV",
+       _4="GND", _5="GL2", _6="SW2", _7="GH2", _8="HB2"),
+    _c("C10", 112.0, 118.5, "VDRV", "GND", val="1u"),
+    _c("C6", 120.0, 118.5, "HB2", "SW2", val="100n"),
+    _p("Q3", "SOT-23", "MOSFET N", 129.0, 121.0, _1="GH2", _2="SW2", _3="+12V"),
+    _p("Q4", "SOT-23", "MOSFET N", 129.0, 127.0, _1="GL2", _2="GND", _3="SW2"),
+    _p("L2", "L_4x4", "4.7uH", 137.0, 124.0, 90, _1="SW2", _2="+5V"),
+    _c("C5", 143.0, 117.0, "+5V", "GND", rot=90, val="22u", fp="C_1210_3225Metric"),
+    _c("C8", 143.0, 131.0, "+5V", "GND", rot=90, val="4u7", fp="C_0805_2012Metric"),
+    _barre("J2", 2, 147.0, 104.0, ["+5V", "GND"]),
+], {"description": "Abaisseur à deux phases et inductance de filtre d'entrée.",
+    "regles": ["R-V1", "R-R4", "R-R6", "R-R7", "R-P3"],
+    "masses": ["GND"],
+    "roles": {"puissance": ["+12V", "+12V_IN", "+5V", "GND"], "commutation": ["SW1", "SW2"],
+              "signal": ["GH1", "GH2", "GL1", "GL2", "HB1", "HB2", "PWM1", "PWM2", "VDRV"]},
+    "largeurs": {"+12V_IN": [0.2, 1.0, None]},
+    "convertisseurs": [
+        _conv("SW1", "Q1", "Q2", "U1", "L1", "+12V", "+5V", ["C2", "C7"], ["C5"], ["C1"], ["C3"], cpil=[]),
+        _conv("SW2", "Q3", "Q4", "U2", "L2", "+12V", "+5V", ["C2", "C7"], ["C5"], ["C1"], ["C6"], cpil=[])],
+    "sans_piste_dessous": ["L1", "L2", "L3"],
+    "isolement": {"defaut": 0.2, "requis": [{"reseaux": ["GND", "SW2"], "mm": 0.25}]},
+    "pieces_fixes": {"J1": "suggestion", "J2": "suggestion"}},
+    classes=[PUISSANCE], motifs=[("Puissance", "SW*")],
+    affectations={"+12V": "Puissance", "+12V_IN": "Puissance", "+5V": "Puissance", "GND": "Puissance"})
+
+# double_abaisseur_integre (déduction) — régulateur double U1 à interrupteurs intégrés (R-V3) : SW1 → L1 → +5V et
+# SW2 → L2 → +3V3, rail +12V commun ; deux convertisseurs aux clés reseau_commutation distinctes.
+_carte("double_abaisseur_integre", "deduction", [
+    _barre("J1", 2, 104.0, 112.0, ["+12V", "GND"]),
+    _p("U1", "SOIC-8_3.9x4.9mm_P1.27mm", "Abaisseur double integre", 120.0, 118.0, _1="+12V", _2="SW1", _3="BST1",
+       _4="GND", _5="FB1", _6="SW2", _7="BST2", _8="FB2"),
+    _c("C1", 110.0, 106.0, "+12V", "GND", val="22u", fp="C_1210_3225Metric"),
+    _c("C2", 112.0, 118.0, "+12V", "GND", rot=90, val="1u", fp="C_0805_2012Metric"),
+    _c("C3", 116.0, 110.0, "BST1", "SW1", val="100n"),
+    _c("C6", 125.0, 110.0, "BST2", "SW2", val="100n"),
+    _p("L1", "L_4x4", "4.7uH", 128.0, 126.0, 0, _1="SW1", _2="+5V"),
+    _p("L2", "L_4x4", "2.2uH", 136.0, 112.0, 90, _1="SW2", _2="+3V3"),
+    _c("C5", 136.0, 132.0, "+5V", "GND", val="22u", fp="C_1210_3225Metric"),
+    _c("C7", 143.0, 118.0, "+3V3", "GND", rot=90, val="10u", fp="C_0805_2012Metric"),
+    _r("R1", 114.0, 128.0, "+5V", "FB1", val="52k3"),
+    _r("R2", 114.0, 132.0, "FB1", "GND", val="10k"),
+    _r("R3", 128.0, 104.0, "+3V3", "FB2", val="31k6"),
+    _r("R4", 134.0, 104.0, "FB2", "GND", val="10k"),
+    _barre("J2", 3, 146.0, 126.0, ["+5V", "+3V3", "GND"]),
+], {"description": "Régulateur double à interrupteurs intégrés (+12V → +5V et +3V3).",
+    "regles": ["R-V3", "R-R4", "R-R6", "R-R7", "R-P3"],
+    "masses": ["GND"],
+    "roles": {"puissance": ["+12V", "+5V", "GND"], "alimentation": ["+3V3"], "commutation": ["SW1", "SW2"],
+              "signal": ["BST1", "BST2", "FB1", "FB2"]},
+    "largeurs": {"+12V": [0.2, 1.0, None], "+3V3": [0.2, 0.5, None]},
+    "convertisseurs": [
+        _conv("SW1", "U1", "U1", "U1", "L1", "+12V", "+5V", ["C2"], ["C5"], ["C1"], ["C3"], comm="integre"),
+        _conv("SW2", "U1", "U1", "U1", "L2", "+12V", "+3V3", ["C2"], ["C7"], ["C1"], ["C6"], comm="integre")],
+    "sans_piste_dessous": ["L1", "L2"],
+    "isolement": {"defaut": 0.2, "requis": [{"reseaux": ["GND", "SW1"], "mm": 0.25}]},
+    "pieces_fixes": {"J1": "suggestion", "J2": "suggestion"}},
+    classes=[PUISSANCE, ALIM], motifs=[("Puissance", "SW*"), ("Alim", "+3V3")],
+    affectations={"+12V": "Puissance", "+5V": "Puissance", "GND": "Puissance"})
+
+# filtre_pi_et_rf (déduction) — filtre en π C1-FB1-C2 sur AVDD (FB1 : perle, nature ferrite) et adaptation RF par une
+# inductance série L1 (0402, 2,2 nH) et un condensateur parallèle C4 : aucun convertisseur (L1 trop petite pour R-V3,
+# la perle n'est pas une inductance).
+_carte("filtre_pi_et_rf", "deduction", [
+    _barre("J1", 5, 104.0, 108.0, ["+3V3", "GND", "SDA", "SCL", "AIN"]),
+    _p("U1", "SOIC-8_3.9x4.9mm_P1.27mm", "Emetteur radio", 122.0, 118.0, _1="+3V3", _2="AVDD", _3="RF_OUT",
+       _4="GND", _5="SDA", _6="SCL", _7="AIN", _8="GND"),
+    _c("C1", 112.0, 112.0, "+3V3", "GND", val="1u"),
+    _p("FB1", "FB_0603_1608Metric", "Perle ferrite 600R", 112.0, 118.0, _1="+3V3", _2="AVDD"),
+    _c("C2", 112.0, 124.0, "AVDD", "GND", val="1u"),
+    _c("C3", 116.0, 128.0, "AVDD", "GND", val="100n"),
+    _p("L1", "L_0402_1005Metric", "2.2nH", 132.0, 120.0, _1="RF_OUT", _2="ANT"),
+    _c("C4", 136.0, 124.0, "ANT", "GND", val="1p", fp="C_0402_1005Metric"),
+    _barre("J2", 2, 144.0, 116.0, ["ANT", "GND"]),
+], {"description": "Filtre en π à perle sur AVDD et adaptation RF à inductance série : aucun convertisseur.",
+    "regles": ["R-V3", "R-R6", "R-R7", "R-P3"],
+    "masses": ["GND"],
+    "roles": {"alimentation": ["+3V3", "AVDD", "GND"], "signal": ["AIN", "ANT", "RF_OUT", "SCL", "SDA"]},
+    "largeurs": {"AVDD": [0.2, 0.5, None]},
+    "isolement": {"defaut": 0.2, "requis": [{"reseaux": ["ANT", "SDA"], "mm": 0.2}]},
+    "pieces_fixes": {"J1": "suggestion", "J2": "suggestion"}},
+    classes=[ALIM], motifs=[("Alim", "+3V3"), ("Alim", "AVDD"), ("Alim", "GND")])
+
+# masses_multiples (déduction) — DGND (masse principale, le plus de condensateurs), AGND reliée à DGND par la liaison
+# de réseaux NT1, PGND d'un abaisseur intégré U2 reliée à DGND par NT2.
+_carte("masses_multiples", "deduction", [
+    _barre("J1", 5, 104.0, 108.0, ["+5V", "DGND", "SDA", "SCL", "AIN"]),
+    _p("U1", "SOIC-8_3.9x4.9mm_P1.27mm", "Microcontroleur", 124.0, 112.0, _1="+3V3", _2="SDA", _3="SCL",
+       _4="DGND", _5="AIN", _6="AGND", _7="AVDD", _8="DGND"),
+    _c("C1", 118.0, 106.0, "+3V3", "DGND"),
+    _c("C2", 124.0, 106.0, "+3V3", "DGND"),
+    _c("C3", 130.0, 106.0, "+3V3", "DGND", val="1u"),
+    _c("C10", 136.0, 106.0, "+3V3", "DGND", val="10u", fp="C_0805_2012Metric"),
+    _c("C11", 104.0, 122.0, "+5V", "DGND", val="1u"),
+    _c("C12", 104.0, 128.0, "+5V", "DGND", val="10u", fp="C_0805_2012Metric"),
+    _p("FB1", "FB_0603_1608Metric", "Perle ferrite 600R", 132.0, 112.0, 90, _1="+3V3", _2="AVDD"),
+    _c("C4", 136.0, 114.0, "AVDD", "AGND"),
+    _c("C5", 130.0, 118.0, "AIN", "AGND", val="10n"),
+    _p("NT1", "NetTie-2_SMD_Pad0.5mm", "Liaison", 140.0, 120.0, _1="AGND", _2="DGND"),
+    _p("U2", "SOT-23-6", "Abaisseur integre", 116.0, 126.0, _1="BST", _2="PGND", _3="FB", _4="EN", _5="+5V",
+       _6="SW"),
+    _c("C6", 110.0, 122.0, "+5V", "PGND", val="10u", fp="C_0805_2012Metric"),
+    _c("C7", 110.0, 128.0, "+5V", "PGND", val="1u"),
+    _c("C9", 116.0, 121.0, "BST", "SW", val="100n"),
+    _r("R3", 110.0, 133.0, "+5V", "EN", val="100k"),
+    _p("L1", "L_4x4", "4.7uH", 124.0, 126.0, 90, _1="SW", _2="+3V3"),
+    _c("C8", 130.0, 128.0, "+3V3", "PGND", rot=90, val="22u", fp="C_1210_3225Metric"),
+    _r("R1", 120.0, 132.0, "+3V3", "FB", val="31k6"),
+    _r("R2", 116.0, 132.0, "FB", "PGND", val="10k"),
+    _p("NT2", "NetTie-2_SMD_Pad0.5mm", "Liaison", 136.0, 132.0, _1="PGND", _2="DGND"),
+], {"description": "Masses DGND, AGND (liaison NT1) et PGND d'un convertisseur (liaison NT2).",
+    "regles": ["R-M2", "R-M3", "R-V3", "R-R7", "R-P3"],
+    "masses": ["DGND", "PGND"],
+    "roles": {"commutation": ["SW"], "puissance": ["+3V3", "+5V"],
+              "signal": ["AGND", "AIN", "AVDD", "BST", "DGND", "EN", "FB", "PGND", "SCL", "SDA"]},
+    "largeurs": {"SDA": [0.2, 0.25, None]},
+    "convertisseurs": [_conv("SW", "U2", "U2", "U2", "L1", "+5V", "+3V3", ["C7"], ["C8"], ["C6"], ["C9"],
+                             comm="integre", m="PGND")],
+    "sans_piste_dessous": ["L1"],
+    "isolement": {"defaut": 0.2, "requis": [{"reseaux": ["AGND", "DGND"], "mm": 0.2}]},
+    "pieces_fixes": {"J1": "suggestion"}})
+
+
+# canaux_repetes (déduction, trois variantes) — deux canaux identiques (amplificateur U1, R1 à R3, C1) : suffixes
+# _CH1/_CH2 (motif par défaut), feuilles hiérarchiques KiCad (R101/R201, même symbole dans deux feuilles), lettres
+# R1A/R1B (motif des contraintes). Attendu : le même groupe répété de deux exemplaires dans les trois cas (pièces des
+# deux exemplaires).
+def _canal(nom, x, des, nets, options=None):
+    o = (lambda k: dict(options, symbole=k)) if options else (lambda k: None)
+    return [
+        _p(des("U1"), "SOIC-8_3.9x4.9mm_P1.27mm", "Amplificateur", x, 116.0, options=o("U1"), _1=nets("OUT"),
+           _2=nets("INN"), _3=nets("INP"), _4="GND", _8="+5V"),
+        _r(des("R1"), x - 6.0, 122.0, nets("IN"), nets("INP"), val="1k") + ((o("R1"),) if options else ()),
+        _r(des("R2"), x, 124.0, nets("INN"), nets("OUT"), val="10k") + ((o("R2"),) if options else ()),
+        _r(des("R3"), x - 6.0, 110.0, nets("INN"), "GND", val="1k") + ((o("R3"),) if options else ()),
+        _c(des("C1"), x, 108.0, "+5V", "GND") + ((o("C1"),) if options else ())]
+
+
+def _canaux(nom, des1, des2, nets1, nets2, opt1=None, opt2=None, contraintes=None):
+    n1 = [nets1(k) for k in ("IN", "OUT")]
+    n2 = [nets2(k) for k in ("IN", "OUT")]
+    pieces = ([_barre("J1", 6, 104.0, 106.0, ["+5V", "GND"] + n1 + n2)]
+              + _canal(nom, 120.0, des1, nets1, opt1) + _canal(nom, 138.0, des2, nets2, opt2))
+    ex = sorted(p[0] for p in pieces[1:])
+    sig = sorted(nets1(k) for k in ("IN", "INN", "INP", "OUT")) + sorted(nets2(k) for k in ("IN", "INN", "INP", "OUT"))
+    _carte(nom, "deduction", pieces, {
+        "description": "Deux canaux répétés identiques.", "regles": ["§3.6 répétés", "R-R7", "R-P3"],
+        "masses": ["GND"], "roles": {"signal": sorted(["+5V", "GND"] + sig)},
+        "largeurs": {"GND": [0.2, 0.25, None]},
+        "isolement": {"defaut": 0.2, "requis": []},
+        "pieces_fixes": {"J1": "suggestion"},
+        "groupes": [{"type": "repete", "pieces": ex}]}, contraintes=contraintes)
+
+
+_canaux("canaux_repetes_suffixes", lambda d: d + "_CH1", lambda d: d + "_CH2",
+        lambda n: n + "_CH1", lambda n: n + "_CH2")
+_canaux("canaux_repetes_feuilles", lambda d: d[0] + str(100 + int(d[1:])), lambda d: d[0] + str(200 + int(d[1:])),
+        lambda n: "/canal1/" + n, lambda n: "/canal2/" + n, {"feuille": "canal1"}, {"feuille": "canal2"})
+_canaux("canaux_repetes_lettres", lambda d: d + "A", lambda d: d + "B", lambda n: n + "A", lambda n: n + "B",
+        contraintes={"motif_canaux": "^(.+?[0-9])([A-Z])$"})
+
+
+# simple_face, pieces_verrouillees, trous_avec_reseau (déduction) — même petit circuit logique (U1, découplage, voyant),
+# toutes les CMS dessus ; pieces_verrouillees : U1 et J1 verrouillées (raison « verrouillee ») ; trous_avec_reseau :
+# quatre trous de fixation à pastille reliée à GND (raison « mecanique »).
+def _petit(verrous=False, trous=False):
+    v = {"verrouillee": True} if verrous else None
+    L = [_p("J1", "PinHeader_1x03_P2.54mm", "Barrette", 106.0, 112.0, options=v, _1="+5V", _2="GND", _3="IN"),
+         _p("U1", "SOIC-8_3.9x4.9mm_P1.27mm", "Microcontroleur", 120.0, 114.0, options=v, _1="+5V", _2="IN",
+            _3="LED", _4="GND", _5="SCL", _6="SDA", _7="GND", _8="GND"),
+         _c("C1", 120.0, 108.0, "+5V", "GND"),
+         _c("C2", 114.0, 120.0, "+5V", "GND", val="1u", fp="C_0805_2012Metric"),
+         _r("R1", 126.0, 120.0, "LED", "LED_A", val="330"),
+         _p("D1", "LED_0603_1608Metric", "Verte", 130.0, 120.0, _1="GND", _2="LED_A"),
+         _r("R2", 128.0, 110.0, "+5V", "SCL", val="4k7"),
+         _r("R3", 128.0, 114.0, "+5V", "SDA", val="4k7")]
+    if trous:
+        L += [_p(h, "MountingHole_3.2mm_M3_Pad", "Trou M3", x, y, _1="GND")
+              for h, x, y in (("H1", 104.5, 104.5), ("H2", 135.5, 104.5), ("H3", 104.5, 125.5),
+                              ("H4", 135.5, 125.5))]
+    return L
+
+
+def _attendu_petit(fixes, desc, groupe):
+    return {"description": desc, "regles": ["R-P3", "R-R7", "§3.6 fonctionnel"], "masses": ["GND"],
+            "roles": {"signal": ["+5V", "GND", "IN", "LED", "LED_A", "SCL", "SDA"]},
+            "largeurs": {"+5V": [0.2, 0.25, None]},
+            "isolement": {"defaut": 0.2, "requis": [{"reseaux": ["SCL", "SDA"], "mm": 0.2}]},
+            "pieces_fixes": fixes,
+            "groupes": [{"type": "fonctionnel", "pieces": groupe}] if groupe else []}
+
+
+_carte("simple_face", "deduction", _petit(),
+       _attendu_petit({"J1": "suggestion"}, "Toutes les CMS dessus : faces actuelles.",
+                      ["C1", "C2", "D1", "R1", "R2", "R3", "U1"]),
+       contour=(100.0, 100.0, 140.0, 130.0))
+_carte("pieces_verrouillees", "deduction", _petit(verrous=True),
+       _attendu_petit({"J1": "verrouillee", "U1": "verrouillee"}, "Empreintes verrouillées : pièces fixes "
+                      "(U1 fixe : aucun groupe fonctionnel).", None),
+       contour=(100.0, 100.0, 140.0, 130.0))
+_carte("trous_avec_reseau", "deduction", _petit(trous=True),
+       _attendu_petit({"J1": "suggestion", "H1": "mecanique", "H2": "mecanique", "H3": "mecanique",
+                       "H4": "mecanique"}, "Trous de fixation à pastille reliée à GND : pièces mécaniques "
+                      "(GND, plus de 8 broches, ne lie plus D1).", ["C1", "C2", "R1", "R2", "R3", "U1"]),
+       contour=(100.0, 100.0, 140.0, 130.0))
+
+
+# sans_convertisseur, regles_atypiques_fines, regles_atypiques_larges (chaîne) — logique simple routée par la CI ;
+# classe Alim (piste 0,5 mm) pour l'alimentation ; règles KiCad atypiques (isolement, piste, via) pour les deux autres.
+def _logique(alim_classe=True):
+    return [
+        _barre("J1", 4, 106.0, 110.0, ["+3V3", "GND", "IN", "OUT"]),
+        _p("U1", "SOIC-8_3.9x4.9mm_P1.27mm", "Porte logique", 120.0, 114.0, _1="IN", _2="A", _3="Y", _4="GND",
+           _5="B", _6="Z", _7="OUT", _8="+3V3"),
+        _c("C1", 120.0, 108.0, "+3V3", "GND"),
+        _c("C2", 126.0, 120.0, "+3V3", "GND", val="1u", fp="C_0805_2012Metric"),
+        _r("R1", 114.0, 120.0, "Y", "B", val="1k"),
+        _r("R2", 126.0, 110.0, "Z", "A", val="1k"),
+        _c("C3", 114.0, 108.0, "B", "GND", val="1n"),
+        _barre("J2", 2, 134.0, 112.0, ["+3V3", "GND"])]
+
+
+def _chaine_logique(nom, desc, classes, motifs, regles_kicad, largeurs, iso, defaut=None):
+    _carte(nom, "chaine", _logique(), {
+        "description": desc, "regles": ["R-R6", "R-R7", "R-P3"], "masses": ["GND"],
+        "roles": ({"alimentation": ["+3V3", "GND"], "signal": ["A", "B", "IN", "OUT", "Y", "Z"]} if classes else
+                  {"signal": ["+3V3", "A", "B", "GND", "IN", "OUT", "Y", "Z"]}),
+        "largeurs": largeurs, "isolement": iso, "pieces_fixes": {"J1": "suggestion", "J2": "suggestion"},
+        "chaine": {"niveau": "rapide", "graines": 10, "graines_valides_min": 1,
+                   "couches_pistes": ["TopLayer", "BottomLayer"], "couches_sans_piste": [],
+                   "descentes_par_vias": []}},
+        classes=classes, motifs=motifs, regles_kicad=regles_kicad, contour=(100.0, 100.0, 140.0, 130.0),
+        defaut=defaut)
+
+
+_chaine_logique("sans_convertisseur", "Logique simple, classe d'alimentation à 0,5 mm : aucun convertisseur.",
+                [ALIM], [("Alim", "+3V3"), ("Alim", "GND")], {},
+                {"+3V3": [0.2, 0.5, None], "A": [0.2, 0.25, None]},
+                {"defaut": 0.2, "requis": [{"reseaux": ["A", "B"], "mm": 0.2}]})
+_chaine_logique("regles_atypiques_fines", "Règles fines : isolement 0,1, piste 0,1, via 0,45 / 0,2.",
+                [], [], {"min_clearance": 0.1, "min_track_width": 0.1, "min_via_diameter": 0.45,
+                         "min_through_hole_diameter": 0.2}, {"A": [0.1, 0.1, None]},
+                {"defaut": 0.1, "requis": [{"reseaux": ["A", "B"], "mm": 0.1}]},
+                defaut={"name": "Default", "clearance": 0.1, "track_width": 0.1, "via_diameter": 0.45,
+                        "via_drill": 0.2})
+_chaine_logique("regles_atypiques_larges", "Règles larges : isolement 0,3, piste 0,5, via 1,0 / 0,6.",
+                [], [], {"min_clearance": 0.3, "min_track_width": 0.5, "min_via_diameter": 1.0,
+                         "min_through_hole_diameter": 0.6}, {"A": [0.5, 0.5, None]},
+                {"defaut": 0.3, "requis": [{"reseaux": ["A", "B"], "mm": 0.3}]},
+                defaut={"name": "Default", "clearance": 0.3, "track_width": 0.5, "via_diameter": 1.0,
+                        "via_drill": 0.6})
+
 
 # --- Écriture KiCad 8 -------------------------------------------------------------------------------------------------
 
@@ -418,13 +800,16 @@ def _couches_pastille(type_, dessous):
 
 
 def _empreinte(S, piece, codes):
-    des, fp, val, x, y, rot, face, nets = piece
+    des, fp, val, x, y, rot, face, nets = piece[:8]
+    opt = piece[8] if len(piece) > 8 else {}
     descr, attr, pastilles, cy = EMPREINTES[fp]
     dessous = face == "dessous"
     f = "B" if dessous else "F"
     a = f" {n(rot)}" if rot else ""
     L = [f'\t(footprint "Corpus:{fp}"', f'\t\t(layer "{f}.Cu")', f"\t\t(uuid {S.uuid(des)})",
          f"\t\t(at {n(x)} {n(y)}{a})"]
+    if opt.get("verrouillee"):
+        L.insert(2, "\t\t(locked yes)")
     boite = cy if len(cy) == 4 else (-cy[0], -cy[1], cy[0], cy[1])
     if dessous:
         boite = (boite[0], -boite[3], boite[2], -boite[1])
@@ -435,8 +820,14 @@ def _empreinte(S, piece, codes):
     L.append(f'\t\t(property "Footprint" "Corpus:{fp}" (at 0 0{a}) (layer "{f}.Fab") (hide yes) '
              f"(uuid {S.uuid(des + '/fp')}) {_effets(dessous)})")
     L.append(f"\t\t(descr {q(descr)})")
-    L.append(f'\t\t(path "/{uuid.uuid5(ESPACE_UUID, S.carte + "/symbole/" + des)}")')
+    if opt.get("feuille"):
+        L.append(f'\t\t(path "/{uuid.uuid5(ESPACE_UUID, S.carte + "/feuille/" + opt["feuille"])}/'
+                 f'{uuid.uuid5(ESPACE_UUID, S.carte + "/symbole/" + opt["symbole"])}")')
+    else:
+        L.append(f'\t\t(path "/{uuid.uuid5(ESPACE_UUID, S.carte + "/symbole/" + des)}")')
     L.append(f"\t\t(attr {attr})")
+    if fp.startswith("NetTie"):
+        L.append('\t\t(net_tie_pad_groups "1, 2")')
     L.append(f"\t\t(fp_rect (start {n(boite[0])} {n(boite[1])}) (end {n(boite[2])} {n(boite[3])}) "
              f'(stroke (width 0.05) (type solid)) (fill none) (layer "{f}.CrtYd") (uuid {S.uuid(des + "/cy")}))')
     for nom, type_, forme, px, py, w, h, perc in pastilles:
@@ -520,7 +911,7 @@ def doc_kicad_pro(c):
         classes.append(d)
     return {
         "board": {"design_settings": {"defaults": {"board_outline_line_width": 0.05},
-                                      "rules": dict(REGLES_KICAD), "track_widths": [0.0],
+                                      "rules": dict(REGLES_KICAD, **c.get("regles_kicad", {})), "track_widths": [0.0],
                                       "via_dimensions": [{"diameter": 0.0, "drill": 0.0}]},
                   "layer_presets": [], "viewports": []},
         "meta": {"filename": c["nom"] + ".kicad_pro", "version": 1},

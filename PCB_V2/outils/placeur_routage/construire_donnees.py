@@ -1612,7 +1612,9 @@ class _Construction:
             if not mt or len(mt.groups()) < 2:
                 continue
             base, suffixe = mt.group(1), mt.group(2)
-            par_famille[re.sub(r"\d+$", "", suffixe)][suffixe].append((base, d))
+            # indice de l'instance : chiffres finaux (_CH1, _CH2), sinon dernière lettre (A, B ; _CHA, _CHB)
+            fam = re.sub(r"\d+$", "", suffixe) if suffixe[-1:].isdigit() else suffixe[:-1]
+            par_famille[fam][suffixe].append((base, d))
         for fam in sorted(par_famille):
             sfx = par_famille[fam]
             signatures = collections.defaultdict(list)
@@ -1623,7 +1625,7 @@ class _Construction:
             suff = sorted(suff, key=_cle_naturelle)
             if len(suff) < 2 or any(len(sfx[s]) < PIECES_EXEMPLAIRE for s in suff):
                 continue
-            nom = fam  # nom = famille (D-B72) : groupes_exclus agit par le nom
+            nom = fam or "_" + "".join(suff)  # nom = famille (D-B72) : groupes_exclus agit par le nom
             par_base = [dict(sfx[s]) for s in suff]
             corr = [[pb[b] for pb in par_base] for b, _ in sfx[suff[0]] if all(b in pb for pb in par_base)
                     and all(list(x[0] for x in sfx[s]).count(b) == 1 for s in suff)]

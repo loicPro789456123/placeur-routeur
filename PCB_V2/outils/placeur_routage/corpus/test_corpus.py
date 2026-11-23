@@ -264,8 +264,14 @@ class TestCartes(unittest.TestCase):
         self.assertEqual(a1, arbre(self.suivi), "corpus suivi ≠ sortie du générateur (régénérer)")
         self.assertTrue(all(b"\r" not in v for v in a1.values()), "fin de ligne CRLF")
 
-    def test_quatre_cartes(self):
-        self.assertEqual(self.noms, ["deux_convertisseurs", "deux_couches", "quatre_couches", "sans_classes"])
+    def test_cartes_de_7_3(self):
+        # cartes de §7.3 écrites à l'étape 8 (les 7 cartes chaîne restantes sont au journal du lot E, non faites)
+        self.assertEqual(self.noms, sorted([
+            "deux_couches", "quatre_couches", "sans_convertisseur", "regles_atypiques_fines", "regles_atypiques_larges",
+            "deux_convertisseurs", "elevateur", "demi_pont_resistances_grille", "multiphase_filtre",
+            "double_abaisseur_integre", "filtre_pi_et_rf", "masses_multiples", "canaux_repetes_suffixes",
+            "canaux_repetes_feuilles", "canaux_repetes_lettres", "sans_classes", "simple_face", "pieces_verrouillees",
+            "trous_avec_reseau"]))
 
     def test_syntaxe_kicad_et_attendus(self):
         for nom in self.noms:
@@ -339,7 +345,8 @@ class TestCartes(unittest.TestCase):
                 ch = att["chaine"]
                 self.assertEqual((ch["niveau"], ch["graines"]), ("rapide", 10), nom)
                 self.assertGreaterEqual(ch["graines_valides_min"], 1, nom)
-        self.assertEqual(chaines, ["deux_couches", "quatre_couches"])
+        self.assertEqual(chaines, ["deux_couches", "quatre_couches", "regles_atypiques_fines", "regles_atypiques_larges",
+                                   "sans_convertisseur"])
         att = lire(os.path.join(self.k1, "deux_couches", "attendu_deduction.json"))
         pieces, reseaux, couches = set(), set(), ["TopLayer", "BottomLayer"]
         for k, v in (("graines_valides_min", 0), ("graines", 0), ("graines", True)):

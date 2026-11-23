@@ -1,0 +1,78 @@
+{
+ "format": "attendu_deduction/1",
+ "carte": "simple_face",
+ "famille": "deduction",
+ "couches": [
+  {
+   "nom": "TopLayer",
+   "role": "routage",
+   "plans": []
+  },
+  {
+   "nom": "BottomLayer",
+   "role": "routage",
+   "plans": []
+  }
+ ],
+ "sans_piste_dessous": [],
+ "pas_fin": [],
+ "matrice": [],
+ "groupes": [
+  {
+   "type": "fonctionnel",
+   "pieces": [
+    "C1",
+    "C2",
+    "D1",
+    "R1",
+    "R2",
+    "R3",
+    "U1"
+   ]
+  }
+ ],
+ "pieces_fixes": {
+  "J1": "suggestion"
+ },
+ "convertisseurs": [],
+ "chaine": null,
+ "description": "Toutes les CMS dessus : faces actuelles.",
+ "regles": [
+  "R-P3",
+  "R-R7",
+  "§3.6 fonctionnel"
+ ],
+ "masses": [
+  "GND"
+ ],
+ "roles": {
+  "signal": [
+   "+5V",
+   "GND",
+   "IN",
+   "LED",
+   "LED_A",
+   "SCL",
+   "SDA"
+  ]
+ },
+ "largeurs": {
+  "+5V": [
+   0.2,
+   0.25,
+   null
+  ]
+ },
+ "isolement": {
+  "defaut": 0.2,
+  "requis": [
+   {
+    "reseaux": [
+     "SCL",
+     "SDA"
+    ],
+    "mm": 0.2
+   }
+  ]
+ }
+}

@@ -741,10 +741,19 @@ def _convertisseurs(K, masses_):
                  if K.nat[c] == "condensateur" and len(K.nets[c]) == 2 and (K.nets[c] - {sw}) <= K.nets[u]}
         rails = sorted((n for n in K.nets[u] - propres - ms - boots if K.caps_entre(n, ms)),
                        key=lambda n: (-len(K.caps_entre(n, ms)), -K.taille[n], n))
-        masses_u = [m for m in masses_ if m in K.nets[u]] or list(masses_)
+        masses_u = [m for m in masses_ if m in K.nets[u]]
+        ms_u = ms
+        if not masses_u:
+            # masse propre du circuit (PGND) reliée à une masse par une liaison de réseaux : c'est la masse du
+            # convertisseur, et ses condensateurs sont ceux qui vont vers elle
+            lies = sorted(n for n in K.nets[u] - ms for t in K.ordre if K.nat[t] == "liaison"
+                          and n in K.nets[t] and K.nets[t] & ms)
+            masses_u, ms_u = (lies[:1], set(lies[:1])) if lies else (list(masses_), ms)
+            rails = sorted((n for n in K.nets[u] - propres - ms_u - boots if K.caps_entre(n, ms_u)),
+                           key=lambda n: (-len(K.caps_entre(n, ms_u)), -K.taille[n], n))
         if not rails or not masses_u:
             continue
-        conv = _convertisseur(K, ms, haut=u, bas=u, pilote=u, pilotes={u}, ind=ind, sw=sw, rail=rails[0],
+        conv = _convertisseur(K, ms_u, haut=u, bas=u, pilote=u, pilotes={u}, ind=ind, sw=sw, rail=rails[0],
                               masse=masses_u[0], commutation="integre", topologie="abaisseur",
                               autres=propres - {sw, autre})
         retenir(conv, (ind,))

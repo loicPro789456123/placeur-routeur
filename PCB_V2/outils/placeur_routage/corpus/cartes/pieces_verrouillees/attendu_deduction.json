@@ -1,0 +1,66 @@
+{
+ "format": "attendu_deduction/1",
+ "carte": "pieces_verrouillees",
+ "famille": "deduction",
+ "couches": [
+  {
+   "nom": "TopLayer",
+   "role": "routage",
+   "plans": []
+  },
+  {
+   "nom": "BottomLayer",
+   "role": "routage",
+   "plans": []
+  }
+ ],
+ "sans_piste_dessous": [],
+ "pas_fin": [],
+ "matrice": [],
+ "groupes": [],
+ "pieces_fixes": {
+  "J1": "verrouillee",
+  "U1": "verrouillee"
+ },
+ "convertisseurs": [],
+ "chaine": null,
+ "description": "Empreintes verrouillées : pièces fixes (U1 fixe : aucun groupe fonctionnel).",
+ "regles": [
+  "R-P3",
+  "R-R7",
+  "§3.6 fonctionnel"
+ ],
+ "masses": [
+  "GND"
+ ],
+ "roles": {
+  "signal": [
+   "+5V",
+   "GND",
+   "IN",
+   "LED",
+   "LED_A",
+   "SCL",
+   "SDA"
+  ]
+ },
+ "largeurs": {
+  "+5V": [
+   0.2,
+   0.25,
+   null
+  ]
+ },
+ "isolement": {
+  "defaut": 0.2,
+  "requis": [
+   {
+    "reseaux": [
+     "SCL",
+     "SDA"
+    ],
+    "mm": 0.2
+   }
+  ]
+ }
+}

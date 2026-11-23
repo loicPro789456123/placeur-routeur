@@ -1,0 +1,76 @@
+{
+ "format": "attendu_deduction/1",
+ "carte": "canaux_repetes_lettres",
+ "famille": "deduction",
+ "couches": [
+  {
+   "nom": "TopLayer",
+   "role": "routage",
+   "plans": []
+  },
+  {
+   "nom": "BottomLayer",
+   "role": "routage",
+   "plans": []
+  }
+ ],
+ "sans_piste_dessous": [],
+ "pas_fin": [],
+ "matrice": [],
+ "groupes": [
+  {
+   "type": "repete",
+   "pieces": [
+    "C1A",
+    "C1B",
+    "R1A",
+    "R1B",
+    "R2A",
+    "R2B",
+    "R3A",
+    "R3B",
+    "U1A",
+    "U1B"
+   ]
+  }
+ ],
+ "pieces_fixes": {
+  "J1": "suggestion"
+ },
+ "convertisseurs": [],
+ "chaine": null,
+ "description": "Deux canaux répétés identiques.",
+ "regles": [
+  "§3.6 répétés",
+  "R-R7",
+  "R-P3"
+ ],
+ "masses": [
+  "GND"
+ ],
+ "roles": {
+  "signal": [
+   "+5V",
+   "GND",
+   "INA",
+   "INB",
+   "INNA",
+   "INNB",
+   "INPA",
+   "INPB",
+   "OUTA",
+   "OUTB"
+  ]
+ },
+ "largeurs": {
+  "GND": [
+   0.2,
+   0.25,
+   null
+  ]
+ },
+ "isolement": {
+  "defaut": 0.2,
+  "requis": []
+ }
+}

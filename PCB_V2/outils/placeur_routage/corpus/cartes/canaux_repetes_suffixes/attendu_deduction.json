@@ -1,0 +1,76 @@
+{
+ "format": "attendu_deduction/1",
+ "carte": "canaux_repetes_suffixes",
+ "famille": "deduction",
+ "couches": [
+  {
+   "nom": "TopLayer",
+   "role": "routage",
+   "plans": []
+  },
+  {
+   "nom": "BottomLayer",
+   "role": "routage",
+   "plans": []
+  }
+ ],
+ "sans_piste_dessous": [],
+ "pas_fin": [],
+ "matrice": [],
+ "groupes": [
+  {
+   "type": "repete",
+   "pieces": [
+    "C1_CH1",
+    "C1_CH2",
+    "R1_CH1",
+    "R1_CH2",
+    "R2_CH1",
+    "R2_CH2",
+    "R3_CH1",
+    "R3_CH2",
+    "U1_CH1",
+    "U1_CH2"
+   ]
+  }
+ ],
+ "pieces_fixes": {
+  "J1": "suggestion"
+ },
+ "convertisseurs": [],
+ "chaine": null,
+ "description": "Deux canaux répétés identiques.",
+ "regles": [
+  "§3.6 répétés",
+  "R-R7",
+  "R-P3"
+ ],
+ "masses": [
+  "GND"
+ ],
+ "roles": {
+  "signal": [
+   "+5V",
+   "GND",
+   "INN_CH1",
+   "INN_CH2",
+   "INP_CH1",
+   "INP_CH2",
+   "IN_CH1",
+   "IN_CH2",
+   "OUT_CH1",
+   "OUT_CH2"
+  ]
+ },
+ "largeurs": {
+  "GND": [
+   0.2,
+   0.25,
+   null
+  ]
+ },
+ "isolement": {
+  "defaut": 0.2,
+  "requis": []
+ }
+}

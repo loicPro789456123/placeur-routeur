@@ -1,0 +1,148 @@
+{
+ "format": "attendu_deduction/1",
+ "carte": "double_abaisseur_integre",
+ "famille": "deduction",
+ "couches": [
+  {
+   "nom": "TopLayer",
+   "role": "routage",
+   "plans": []
+  },
+  {
+   "nom": "BottomLayer",
+   "role": "routage",
+   "plans": []
+  }
+ ],
+ "sans_piste_dessous": [
+  "L1",
+  "L2"
+ ],
+ "pas_fin": [],
+ "matrice": [],
+ "groupes": [],
+ "pieces_fixes": {
+  "J1": "suggestion",
+  "J2": "suggestion"
+ },
+ "convertisseurs": [
+  {
+   "reseau_commutation": "SW1",
+   "topologie": "abaisseur",
+   "commutation": "integre",
+   "haut": "U1",
+   "bas": "U1",
+   "pilote": "U1",
+   "inductance": "L1",
+   "reseau_entree": "+12V",
+   "reseau_sortie": "+5V",
+   "reseau_masse": "GND",
+   "cond_entree": [
+    "C2"
+   ],
+   "cond_sortie": [
+    "C5"
+   ],
+   "cond_bulk": [
+    "C1"
+   ],
+   "cond_bootstrap": [
+    "C3"
+   ],
+   "boucle_chaude": {
+    "condensateurs": [
+     "C2"
+    ],
+    "reseau_rail": "+12V",
+    "reseau_masse": "GND"
+   }
+  },
+  {
+   "reseau_commutation": "SW2",
+   "topologie": "abaisseur",
+   "commutation": "integre",
+   "haut": "U1",
+   "bas": "U1",
+   "pilote": "U1",
+   "inductance": "L2",
+   "reseau_entree": "+12V",
+   "reseau_sortie": "+3V3",
+   "reseau_masse": "GND",
+   "cond_entree": [
+    "C2"
+   ],
+   "cond_sortie": [
+    "C7"
+   ],
+   "cond_bulk": [
+    "C1"
+   ],
+   "cond_bootstrap": [
+    "C6"
+   ],
+   "boucle_chaude": {
+    "condensateurs": [
+     "C2"
+    ],
+    "reseau_rail": "+12V",
+    "reseau_masse": "GND"
+   }
+  }
+ ],
+ "chaine": null,
+ "description": "Régulateur double à interrupteurs intégrés (+12V → +5V et +3V3).",
+ "regles": [
+  "R-V3",
+  "R-R4",
+  "R-R6",
+  "R-R7",
+  "R-P3"
+ ],
+ "masses": [
+  "GND"
+ ],
+ "roles": {
+  "puissance": [
+   "+12V",
+   "+5V",
+   "GND"
+  ],
+  "alimentation": [
+   "+3V3"
+  ],
+  "commutation": [
+   "SW1",
+   "SW2"
+  ],
+  "signal": [
+   "BST1",
+   "BST2",
+   "FB1",
+   "FB2"
+  ]
+ },
+ "largeurs": {
+  "+12V": [
+   0.2,
+   1.0,
+   null
+  ],
+  "+3V3": [
+   0.2,
+   0.5,
+   null
+  ]
+ },
+ "isolement": {
+  "defaut": 0.2,
+  "requis": [
+   {
+    "reseaux": [
+     "GND",
+     "SW1"
+    ],
+    "mm": 0.25
+   }
+  ]
+ }
+}

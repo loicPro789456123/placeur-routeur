@@ -1,0 +1,6 @@
+{
+ "format": "parametres_moteur/1",
+ "_doc": "Essai « recuit d'exploration 2 à 3 fois plus long » (demande de l'utilisateur) : alpha 0,99 -> 0,996 (2,5 fois plus de paliers), arrêt sans progrès 150 -> 375 paliers, plafond de mouvements et durée relevés.",
+ "campagne": {"duree_max_s": 14400},
+ "recuit": {"alpha": 0.996, "arret_paliers_sans_progres": 375, "mouvements_max": 250000000}
+}
