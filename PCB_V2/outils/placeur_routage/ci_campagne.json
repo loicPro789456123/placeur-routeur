@@ -23,5 +23,9 @@
  },
  "corpus_graines": 10,
  "corpus_qualite": "normal",
+<<<<<<< HEAD
  "lancement": "correctif de la régression run_40 : zone autour réduite par une pièce fixe déplacée ; largeurs jamais sous le minimum de la règle"
+=======
+ "lancement": "ponts de pastilles indépendants de l'ordre des données (régression de la vague 1)"
+>>>>>>> parent of 24a57d3 (Adaptateur : pas de terme de découplage générique sur les pièces du convertisseur)
 }
