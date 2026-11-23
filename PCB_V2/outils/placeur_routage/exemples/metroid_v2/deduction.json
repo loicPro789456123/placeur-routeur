@@ -11381,7 +11381,9 @@
  "suggestions": [],
  "a_confirmer": [],
  "avertissements": [
-  "pièces classées par leur seul préfixe (R-P1) : M4_ALIM2, M4_ALIM1, U7"
+  "pièces classées par leur seul préfixe (R-P1) : M4_ALIM2, M4_ALIM1, U7",
+  "contraintes.zones_autour[0] : zone autour de SENSE2 réduite de 1.451 mm (pièce fixe R95_VOLT2)",
+  "contraintes.zones_autour[0] : zone autour de SENSE1 réduite de 1.451 mm (pièce fixe R95_VOLT1)"
  ],
  "positions_imposees": [
   {

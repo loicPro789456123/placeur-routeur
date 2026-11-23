@@ -1442,11 +1442,20 @@ impl<'a> Detail<'a> {
     /// Largeurs essayees noeud par noeud, de la preferee a la mini de la classe (>= 0,254).
     pub fn larg(&self, n: usize) -> Larg {
         let net = &self.m.nets[n];
+        let l = self.m.regles.largeurs.get(&net.classe).or_else(|| self.m.regles.largeurs.get("defaut")).copied().unwrap_or([0.254, 0.3, 3.0]);
+        // aucune largeur sous le minimum de la regle du reseau (sinon violation de largeur au controle)
+        let borner = |w: Vec<f64>, mini: f64| -> Larg {
+            let mn = l[0].max(mini);
+            let mut v: Vec<f64> = w.into_iter().filter(|&x| x >= mn - 1e-9).collect();
+            if v.is_empty() {
+                v.push(mn);
+            }
+            Larg { w: v, mini_regle: mn }
+        };
         if net.plan {
             // descentes vers les plans : 0,5 mm pour +8V (choix dans [0,3 ; 15]), 0,3 mm pour GND
-            return if net.classe == "PUISSANCE_8V" { Larg { w: vec![0.5, 0.3], mini_regle: 0.3 } } else { Larg { w: vec![0.3, 0.254], mini_regle: 0.254 } };
+            return if net.classe == "PUISSANCE_8V" { borner(vec![0.5, 0.3], 0.3) } else { borner(vec![0.3, 0.254], 0.254) };
         }
-        let l = self.m.regles.largeurs.get(&net.classe).or_else(|| self.m.regles.largeurs.get("defaut")).copied().unwrap_or([0.254, 0.3, 3.0]);
         let (mn, pf) = (l[0], l[1]);
         let pref = pf.max(mn);
         let w = match net.classe.as_str() {
@@ -1464,7 +1473,7 @@ impl<'a> Detail<'a> {
                 v
             }
         };
-        Larg { w, mini_regle: mn }
+        borner(w, 0.0)
     }
 
     fn via_cout(&self, n: usize) -> f32 {

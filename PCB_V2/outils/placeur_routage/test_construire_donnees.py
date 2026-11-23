@@ -673,6 +673,19 @@ class TestGroupes(Base):
         self.assertEqual(d["zones_imposees"][0]["pieces"], ["R1", "R2"] + [f"RX{k}" for k in range(6)])
         valides(self, d, x)
 
+    def test_zone_autour_reduite_par_piece_fixe_deplacee(self):
+        # R1 figée (fixes_deplaces) dans la zone autour de R2 : la zone est réduite, sinon toute graine est invalide
+        ct = {"repere": "carte", "fixes": ["R2"], "fixes_deplaces": {"R1": [12.0, 16.0]},
+              "zones_autour": [{"designateurs": ["R2"], "face": "dessus", "demi_cote_mm": 5}]}
+        d, x = construire(entree(base()), ct)
+        z = [o for o in d["obstacles_placement"] if o["etiquette"] == "zone autour de R2"][0]["rect"]
+        r1 = [c for c in d["composants"] if c["nom"] == "R1"][0]
+        haut_r1 = min(r1["pose_cible"][1] + v for v in (r1["lbb"][1], -r1["lbb"][3]))
+        self.assertLess(z[3], haut_r1 - 2 * d["regles"]["placement"]["marge_piece_mm"])
+        self.assertEqual((z[0], z[1], z[2]), (7.5, 5.0, 17.5))
+        self.assertTrue(any("réduite" in a for a in x["avertissements"]))
+        valides(self, d, x)
+
 
 # ---------------------------------------------------------------------------------------------------------------------
 # Cartes KiCad d'essai (importées par importer_carte) et ligne de commande

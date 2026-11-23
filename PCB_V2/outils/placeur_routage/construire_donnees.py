@@ -1392,7 +1392,31 @@ class _Construction:
                     continue
                 b = G.boite(_boite_monde(m["lbb"], m["pose_cible"]))
                 cx, cy = (b[0] + b[2]) / 2, (b[1] + b[3]) / 2
-                self.obstacles.append({"faces": [face], "rect": [_r(cx - s), _r(cy - s), _r(cx + s), _r(cy + s)],
+                rect = [cx - s, cy - s, cx + s, cy + s]
+                # une pièce fixe déplacée de la même face ne peut pas quitter la zone : la zone est réduite (côté qui perd
+                # le moins de surface) pour ne pas couvrir sa boîte élargie de la marge de pièce (des deux côtés),
+                # sinon chaque graine serait invalide par construction
+                eps = 2 * self.marge_piece + 1e-3
+                for o in self.composants:
+                    if o is m or o["statut"] != "fixe" or (o["pose_cible"][3] != (face == "dessous")):
+                        continue
+                    if all(abs(u - v) <= 1e-6 for u, v in zip(o["pose_cible"], o.get("pose_actuelle") or [])):
+                        continue  # pièce à sa pose d'entrée : dispensée d'obstacle par le contrôle (§4.5)
+                    bo = G.boite(_boite_monde(o["lbb"], o["pose_cible"]))
+                    if not (bo[0] - eps < rect[2] and rect[0] < bo[2] + eps
+                            and bo[1] - eps < rect[3] and rect[1] < bo[3] + eps):
+                        continue
+                    if bo[0] <= cx <= bo[2] and bo[1] <= cy <= bo[3]:
+                        continue  # pièce au centre de la zone : rien à réduire
+                    choix = [(rect[2] - (bo[0] - eps), 2), (bo[2] + eps - rect[0], 0),
+                             (rect[3] - (bo[1] - eps), 3), (bo[3] + eps - rect[1], 1)]
+                    surf = [(d * ((rect[3] - rect[1]) if k in (0, 2) else (rect[2] - rect[0])), k, d)
+                            for d, k in choix if d > 0]
+                    _, k, d = min(surf)
+                    rect[k] += -d if k >= 2 else d
+                    self.avert.append(f"contraintes.{ch} : zone autour de {m['nom']} réduite de {d:.3f} mm "
+                                      f"(pièce fixe {o['nom']})")
+                self.obstacles.append({"faces": [face], "rect": [_r(v) for v in rect],
                                        "etiquette": f"zone autour de {m['nom']}"})
                 n += 1
             if not n:

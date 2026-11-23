@@ -599,7 +599,8 @@ impl Modele {
                         return true;
                     };
                     relie[pontee] = true;
-                    self.ponts.push((n, i, ordre[garde], ordre[pontee], 0.3));
+                    let wmin = self.regles.largeurs.get(&self.nets[n].classe).or_else(|| self.regles.largeurs.get("defaut")).map_or(0.0, |l| l[0]);
+                    self.ponts.push((n, i, ordre[garde], ordre[pontee], wmin.max(0.3)));
                     false
                 });
                 if restantes.len() == avant {
