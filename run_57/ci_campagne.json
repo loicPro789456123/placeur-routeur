@@ -1,0 +1,21 @@
+{
+ "_commentaire": "Campagnes de placeur.yml (lancement manuel et nuit, une graine par machine). graines : mesure d'acceptation de l'avenant 2.2, A.7 (40 graines appariées) ; graines_nuit : campagne de nuit (20 graines suffisent, A.8). jeux : données METROID (B2) ; reference_cout : rev4 (§4.7) ; comparer : campagnes de référence de 9b5b5a3 sur la branche ci-resultats-placeur (run_4 : 3001-3020 ; run_6 : 4001-4040). Une poussée qui modifie ce fichier lance aussi campagne_metroid (champ lancement : motif du dernier lancement).",
+ "format": "ci_campagne/2",
+ "graines": [
+  "3001-3020"
+ ],
+ "graines_nuit": [
+  "3001-3020"
+ ],
+ "jeux": {
+  "nominal": "exemples/metroid_v2/donnees_placeur.json"
+ },
+ "qualite": "normal",
+ "reference_cout": 10328.5,
+ "marge_cout": 0.04,
+ "comparer": {},
+ "corpus_graines": 10,
+ "corpus_qualite": "normal",
+ "lancement": "essai recuit alpha 0.9995 (arrêt 3000 paliers), jeu nominal, graines 3001-3020, moteur 2071ec4 (reroutage local)",
+ "parametres_moteur": "exemples/metroid_v2/recuit_09995.json"
+}
