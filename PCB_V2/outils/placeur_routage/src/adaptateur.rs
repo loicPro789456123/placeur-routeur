@@ -480,6 +480,7 @@ pub fn construire(d: &Donnees, param: Parametres) -> Result<Adapte, String> {
         })
         .collect();
     m.longueurs_bornees = bornees;
+    m.remplir_cache_rects();
     Ok(Adapte { modele: m, avertissements: av })
 }
 

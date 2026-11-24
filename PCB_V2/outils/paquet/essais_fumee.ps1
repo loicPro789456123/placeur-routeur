@@ -166,7 +166,7 @@ try {
             New-Item -ItemType Directory -Force -Path $parent | Out-Null
             $s = Join-Path $Travail ($m.Nom + ".txt")
             "" | Set-Content -LiteralPath ($s + ".vide")
-            $code = Lancer $Placeur @((Citer (Exemple-Pcbdoc)), "--qualite", "apercu", "--essais", "1", "--mode-calcul", $m.Mode, "--sortie", (Citer $parent)) $s
+            $code = Lancer $Placeur @((Citer (Exemple-Pcbdoc)), "--qualite", "apercu", "--essais", "1", "--mode-calcul", $m.Mode, "--sortie", (Citer $parent), "--evenements") $s
             $d = Dossier-Du-Calcul $s
             $produite = $d -and @(Get-ChildItem -LiteralPath $d -Filter ("*" + $m.Motif + "*.PcbDoc") -ErrorAction SilentlyContinue).Count -gt 0
             if ($code -eq 0 -and $produite) { Noter $m.Nom "OK" ("code 0, carte " + $m.Motif + " produite") } else { Noter $m.Nom "ÉCHEC" "code $code, carte produite : $produite" }

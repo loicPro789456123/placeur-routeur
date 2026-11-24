@@ -41,7 +41,7 @@
   "rayon_pieces_mm": 4.0,
   "t0_facteur": 0.15,
   "sigma_mm": 2.5,
-  "reroutage_local": true
+  "reroutage_local": false
  },
  "routage": {
   "iters_negociation": 40,

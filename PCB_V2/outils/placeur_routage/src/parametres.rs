@@ -203,7 +203,7 @@ const BOUCLE: &[Cle] = &[
     c("rayon_pieces_mm", nb(LONGUEUR_MM_0), "4.0"),
     c("t0_facteur", nb(STRICT_POSITIF), "0.15"),
     c("sigma_mm", nb(LONGUEUR_MM), "2.5"),
-    c("reroutage_local", BOOL, "true"),
+    c("reroutage_local", BOOL, "false"),
 ];
 
 const ESPACEMENT: &[Cle] = &[
@@ -1389,7 +1389,7 @@ pub(crate) mod tests {
             "affinage": {"fraction_mouvements": 0.05, "acceptation": 0.03, "t_fin_relative": 0.01, "alpha": 0.85,
                          "palier_par_piece": 25}},
  "boucle": {"tours": 4, "mouvements_locaux": 60000, "rayon_zone_mm": 3.5, "poids_initial": 30, "rayon_pieces_mm": 4.0,
-            "t0_facteur": 0.15, "sigma_mm": 2.5, "reroutage_local": true},
+            "t0_facteur": 0.15, "sigma_mm": 2.5, "reroutage_local": false},
  "routage": {"iters_negociation": 40, "tours_arrachage": 4, "arret_si_aggravation": false, "ordre_pas_fin_d_abord": true,
              "pas_grille_detail_mm": "auto", "largeur_plancher_mm": 0.254, "eventail_auto": true,
              "eventail_pas_sortie_mm": "auto", "eventail_longueur_mm": 0.3, "amorce_eventail_paires": false,

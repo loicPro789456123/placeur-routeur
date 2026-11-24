@@ -536,7 +536,11 @@ pub fn run_router<'a>(m: &'a Modele, e: &Etat, cx: &mut Contexte) -> Bilan<'a> {
         return bilan;
     }
     cx.debut("routage_detaille");
+    let tn = Instant::now();
     let mut d = detail::Detail::new(m, e);
+    if std::env::var_os("PLACEUR_PROFIL").is_some() {
+        cx.log(format!("profil : construction des grilles du routage detaille {:.2} s", tn.elapsed().as_secs_f64()));
+    }
     d.via_dans_pad = m.via_dans_pad;
     d.router_tout(pm.routage.iters_negociation, pm.routage.tours_arrachage, &mut |s| println!("{}", s));
     cx.fin("routage_detaille");

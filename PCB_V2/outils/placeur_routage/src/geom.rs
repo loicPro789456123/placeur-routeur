@@ -333,6 +333,8 @@ pub struct Modele {
     pub longueurs_bornees: Vec<(usize, f64, f64)>,
     /// paires différentielles (positif, négatif, écart bord à bord en mm) : routage couplé
     pub paires: Vec<(usize, usize, f64)>,
+    /// cache des rectangles occupes par piece et orientation (rects_of), a l'origine
+    pub rects_rel: Vec<Vec<Vec<(u8, Rect)>>>,
 }
 
 #[derive(Clone)]
@@ -484,6 +486,7 @@ impl Modele {
             groupes_longueur: Vec::new(),
             longueurs_bornees: Vec::new(),
             paires: Vec::new(),
+            rects_rel: Vec::new(),
         };
         m.calculer_attentes();
         m
@@ -1196,6 +1199,30 @@ impl Modele {
 
     /// Rectangles occupes : boite gonflee sur sa face, pastilles traversantes +0,6 sur l'autre face.
     pub fn rects_of(&self, i: usize, p: &Pose) -> Vec<(u8, Rect)> {
+        // cache des 8 orientations (4 rotations x 2 faces), calcule une fois a l'origine puis translate
+        if let Some(c) = self.rects_rel.get(i) {
+            if p.rot.rem_euclid(90) == 0 {
+                let k = (p.rot.rem_euclid(360) / 90) as usize * 2 + p.bot as usize;
+                return c[k].iter().map(|&(f, r)| (f, [r[0] + p.x, r[1] + p.y, r[2] + p.x, r[3] + p.y])).collect();
+            }
+        }
+        self.rects_of_calcul(i, p)
+    }
+
+    /// Remplit le cache de `rects_of` (a appeler quand le modele est complet).
+    pub fn remplir_cache_rects(&mut self) {
+        let mut c = Vec::with_capacity(self.comps.len());
+        for i in 0..self.comps.len() {
+            let mut v = Vec::with_capacity(8);
+            for k in 0..8 {
+                v.push(self.rects_of_calcul(i, &Pose { x: 0.0, y: 0.0, rot: (k / 2) as i32 * 90, bot: k % 2 == 1 }));
+            }
+            c.push(v);
+        }
+        self.rects_rel = c;
+    }
+
+    fn rects_of_calcul(&self, i: usize, p: &Pose) -> Vec<(u8, Rect)> {
         let b = self.bbox(i, p);
         // convertisseur libere : degagement autour des boitiers a pas fin (U10, M1, M2) pour que leurs broches au pas
         // de 0,5 / 0,65 mm puissent sortir en eventail (sinon les voisins colles bouchent les sorties) ; reglage
