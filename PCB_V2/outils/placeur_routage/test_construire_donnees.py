@@ -1122,7 +1122,9 @@ def ecarts_attendu(att, c, d):
                 gv = {kk: sorted(vv) if isinstance(vv, list) else vv for kk, vv in (gv or {}).items() if kk in v}
             if v != gv:
                 ec.append(f"convertisseur {a['reseau_commutation']}.{k} : {gv} au lieu de {v}")
-    groupes = [(g["type"], sorted(g.get("pieces") or [])) for g in d["groupes"]]
+    # groupe répété : pièces de tous ses exemplaires
+    groupes = [(g["type"], sorted(g.get("pieces") or [p for x in g.get("exemplaires") or [] for p in x["pieces"]]))
+               for g in d["groupes"]]
     for g in att["groupes"]:
         if (g["type"], sorted(g["pieces"])) not in groupes:
             ec.append(f"groupe {g['type']} {sorted(g['pieces'])} absent")

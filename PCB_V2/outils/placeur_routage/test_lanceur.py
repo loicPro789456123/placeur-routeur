@@ -1006,6 +1006,42 @@ class TestFenetre(unittest.TestCase):
                                                       "contraintes.fixes"})
         os.remove(opts[opts.index("--parametres") + 1])
 
+    def test_regles_apercu_et_mode_de_routage(self):
+        """Carte choisie : règles lues et modifiables, aperçu avec pièces verrouillées ; règles modifiées et mode
+        de routage transmis par les options, le fichier de la carte restant intact."""
+        import formats
+        import hashlib
+        demo = os.path.join(ICI, "corpus", "pcbdoc", "demonstration.PcbDoc")
+        with open(demo, "rb") as fh:
+            avant = hashlib.sha256(fh.read()).hexdigest()
+        f = self.fenetre()
+        f.v_carte.set(demo)
+        self.assertTrue(self.pomper(f, lambda: f.entree is not None, 30))
+        self.assertGreater(len(f.regles), 10)
+        self.assertGreater(len(f.regles_arbre.get_children()), 3)
+        r = f.resume()
+        self.assertEqual((r["pieces"], r["verrouillees"]), (17, 1))
+        self.assertNotIn("--contraintes", f.options())
+        self.assertFalse(f.modifier_regle("via.diametre", "abc"))
+        self.assertIn("via.diametre", f.erreurs_regles)
+        self.assertTrue(f.modifier_regle("via.diametre", "0,7"))
+        self.assertIn("via.diametre_max", f.erreurs_regles)          # 0,7 > diamètre max du fichier
+        self.assertTrue(f.modifier_regle("via.diametre_max", "0,8"))
+        self.assertTrue(f.modifier_regle("largeur_defaut.1", "0,254"))
+        self.assertEqual(f.erreurs_regles, {})
+        f.v_mode_routage.set("Comparer les modes")
+        opts = f.options()
+        self.assertEqual(opts[opts.index("--mode-routage") + 1], "comparer")
+        ct, _ = formats.lire_contraintes(opts[opts.index("--contraintes") + 1])
+        self.assertEqual(ct["regles"]["via"]["diametre"], 0.7)
+        self.assertIn("calcul.mode_routage", f.valeurs_modifiees())
+        f.reinitialiser_regles()
+        self.assertNotIn("--contraintes", f.options())
+        f.basculer_theme()
+        self.assertEqual(f.nom_theme, "sombre")
+        with open(demo, "rb") as fh:
+            self.assertEqual(hashlib.sha256(fh.read()).hexdigest(), avant)
+
     def test_bout_en_bout_tableau_barre_fin(self):
         f = self.fenetre({"defaut": {"duree_s": 0.3}, "2": {"cout": 900.0}})
         f.b_lancer.invoke()

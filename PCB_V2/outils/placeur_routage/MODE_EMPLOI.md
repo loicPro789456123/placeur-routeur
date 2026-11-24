@@ -64,7 +64,12 @@ sont pas livrés, il s'arrête avec le code 2 et un message « … impossible : 
 
 ### 3.0 La fenêtre
 
-`PlaceurRouteur.exe` (paquet) ou, en mode développeur, `python lanceur.py --fenetre` ouvre un seul écran :
+`PlaceurRouteur.exe` (paquet) ou, en mode développeur, `python lanceur.py --fenetre` ouvre un seul écran : en
+haut, la barre des boutons (Lancer, Analyser la carte, Arrêter, Reprendre, Ouvrir les résultats, Enregistrer les
+paramètres), le bouton **Thème sombre / Thème clair** et le menu **Aide** ; à gauche, les réglages ; à droite, trois
+onglets : **Aperçu**, **Règles** et **Calcul**.
+
+Captures d'écran : `Documentation/Interface_placeur_*.png` du dépôt privé.
 
 | Élément | Rôle |
 |---|---|
@@ -73,7 +78,8 @@ sont pas livrés, il s'arrête avec le code 2 et un message « … impossible : 
 | **Pièces à garder en place** | désignateurs séparés par des virgules, laissés à leur place ; prérempli par « Analyser la carte » (pièces verrouillées et suggestions) quand le champ est vide |
 | **Dossier de sortie** | dossier parent des résultats ; vide : `<nom>_resultats` à côté de la carte |
 | **Qualité** | Aperçu, Rapide, Normal ou Soigné (section 3.1) |
-| **Durée maximale**, **Essais**, **Processeurs** | 0 : valeur du niveau (processeurs : tous sauf un) |
+| **Durée maximale**, **Essais**, **Processeurs** | 0 : valeur du niveau (processeurs : tous sauf un). Chaque essai part d'une graine différente ; « Processeurs » est le nombre d'essais simultanés ; le meilleur essai valide est gardé |
+| **Mode de routage** | Automatique (réglage habituel du moteur), Manhattan (horizontal et vertical seulement), Plus court (toutes directions), Diagonales 45° (horizontal, vertical et 45°) ou Comparer les modes (les essais se partagent les trois modes, la meilleure carte valide est gardée ; la colonne « Mode » du tableau dit lequel). Si le moteur installé ne connaît pas encore ce choix, le journal le dit et le calcul se fait avec le routage habituel |
 | Cases **Carte produite**, **Sérigraphie**, **Vias de couture**, **Ouvrir à la fin** | décocher pour ne pas produire la carte, ne pas placer la sérigraphie, ne pas ajouter de vias de couture, ne pas ouvrir le dossier à la fin |
 | **Réglages avancés** | « S'arrêter après K graines valides » (0 : jamais) ; « Priorité normale » (le PC répond moins vite) |
 
@@ -93,8 +99,29 @@ Boutons :
 - Menu **Aide** : **Mode d'emploi** (ce document), **Vérifier l'installation** (`--auto-test`, section 8),
   **Copier le diagnostic** (`--diagnostic`, dans le presse-papiers, à joindre à une demande d'aide).
 
-Pendant le calcul, un tableau donne par graine l'état (en_attente, lancee, terminee, abandonnee, plantee), la phase
-en cours, la durée, le coût et les liaisons ouvertes ; la barre d'avancement indique la part des essais finis (en %),
+**Onglet Aperçu.** Dès qu'une carte `.PcbDoc` ou `.kicad_pcb` est choisie, elle est lue (sans être modifiée) et
+dessinée : contour, cuivre du dessus (rouge) et du dessous (bleu), pièces (contour plein dessus, en tirets dessous).
+Les pièces **verrouillées** dans le fichier (cadenas d'Altium, attribut Locked ; `locked` de KiCad) sont tracées
+en ambre avec un cadenas : elles restent en place pendant le calcul (`fixer_verrouilles`, section 4). Molette :
+zoom autour du pointeur ; glisser : déplacer ; double-clic ou « Vue entière » : toute la carte. À la fin d'un
+calcul, le bouton **Résultat** montre la carte calculée (meilleure graine, sinon la graine à terminer) : pièces
+à leur nouvelle place, pistes, vias et vias de couture ; **Carte d'origine** revient à la carte lue.
+
+**Onglet Règles.** Les règles lues dans la carte y sont rangées par groupe : pistes (largeurs min, préférée, max),
+dégagements (défaut et matrice des classes), vias (diamètre, trou et leurs bornes), carte (trou à trou, garde au
+bord, écart entre pièces, sérigraphie, hauteurs), plans, paires différentielles (écart, largeur), longueurs
+(tolérance d'appariement), réseaux à règle propre (largeurs, avec leur classe) ; les classes de réseaux et les
+règles du fichier non interprétées sont listées pour information. Double-clic (ou Entrée, F2) sur une ligne pour
+changer sa valeur en mm (virgule acceptée ; « — » : aucune valeur quand c'est permis). Une valeur invalide ou
+incohérente (largeur min > préférée, trou ≥ diamètre…) s'affiche en rouge et empêche de lancer ; une valeur changée
+s'affiche en couleur. « Valeur du fichier » rétablit la ligne choisie, « Tout réinitialiser » toutes. Au lancement,
+les valeurs changées sont écrites dans un fichier de contraintes temporaire (clé `regles`, et `paires` pour les
+paires différentielles, ajoutées à votre fichier de contraintes s'il y en a un) : **la carte d'origine et votre
+fichier de contraintes ne sont jamais modifiés**. Changer la largeur ou le via par défaut change aussi les réseaux
+qui n'ont pas de règle propre.
+
+**Onglet Calcul.** Pendant le calcul, un tableau donne par graine l'état (en_attente, lancee, terminee, abandonnee, plantee), la phase
+en cours, la durée, le coût, les liaisons ouvertes et le mode de routage ; la barre d'avancement indique la part des essais finis (en %),
 le journal défile et « Temps restant estimé » est recalculé. À la fin, la ligne d'état affiche « Fin : code N »
 (codes de la section 3.3) et la meilleure graine.
 
@@ -243,6 +270,7 @@ développeur.
 | `--moteurs DOSSIER` | dossier qui contient `placeur_routage(.exe)` |
 | `--priorite-normale` | moteurs en priorité normale (défaut : « inférieure à la normale », le PC reste utilisable) |
 | `--garder-graines toutes` | garder tous les fichiers de tous les essais (défaut `meilleure`, section 5) |
+| `--mode-routage M` | `auto` (défaut), `manhattan`, `plus_court`, `diagonale_45` ou `comparer` (un mode par essai, tour à tour) ; ignoré avec un avertissement si le moteur ne connaît pas ce réglage |
 | `--evenements` | lignes `EVT {json}` sur la sortie standard, pour un programme qui suit le calcul |
 
 Chaque calcul crée un **nouveau** dossier `<parent>/<nom>_<AAAAMMJJ-HHMMSS>/` ; un dossier existant n'est jamais
@@ -304,7 +332,7 @@ donne la position actuelle de chaque pièce, sans effet). Un fichier qui existe 
 votre logiciel : Altium, coordonnées relatives à l'origine de la carte, y vers le haut (passez Altium en mm, ou
 écrivez `"unite": "mil"`) ; KiCad, coordonnées de la page en mm, y vers le **bas**.
 
-Dix cas types (à mettre dans `ma_carte_contraintes.json`, en gardant `"format": "contraintes/2"`) :
+Onze cas types (à mettre dans `ma_carte_contraintes.json`, en gardant `"format": "contraintes/2"`) :
 
 | Besoin | Contrainte |
 |---|---|
@@ -318,6 +346,7 @@ Dix cas types (à mettre dans `ma_carte_contraintes.json`, en gardant `"format":
 | déclarer un plan | `"couches": {"plans": {"MidLayer1": "GND"}}` |
 | ajouter un trou absent du fichier | `"trous_supplementaires": [{"x": 82.0, "y": 49.5, "diametre": 3.2, "diametre_cuivre": 6.35, "metallise": true}]` |
 | éloigner des pièces d'une autre | `"eloignements": [{"type": "dure", "objets": ["U25"], "reference": ["M1"], "distance_mm": 30.0}]` |
+| changer des règles du fichier (mm, sans toucher la carte) | `"regles": {"largeur_defaut": [0.2, 0.25, null], "isolement": {"defaut": 0.15}, "via": {"diametre": 0.6, "trou": 0.3}, "reseaux": {"+5V": {"largeurs": [0.4, 0.5, null]}}}` (c'est ce qu'écrit l'onglet Règles de la fenêtre) |
 
 Le fichier est lu strictement : une clé mal écrite est refusée avec la clé la plus proche. Les valeurs de la section
 `[contraintes]` du `.ini` complètent ce fichier (listes ajoutées ; une valeur simple remplace celle du fichier, et le

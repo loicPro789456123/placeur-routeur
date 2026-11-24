@@ -80,8 +80,14 @@ options : --sortie PARENT  --parametres F.ini  --qualite apercu|rapide|normal|so
           --graine-depart G  --processeurs P  --duree-max-min M  --valides-voulues K  --contraintes C.json
           --config U.json  --parametres-moteur M.json  --moteurs DOSSIER  --sans-pcbdoc  --sans-serigraphie
           --sans-couture  --reprendre [DOSSIER]  --analyser  --priorite-normale  --garder-graines meilleure|toutes
-          --evenements
+          --mode-routage auto|manhattan|plus_court|diagonale_45|comparer  --evenements
 (mode d'emploi, section 3)"""
+
+# Mode de routage (fenêtre, [calcul] mode_routage) : clé des paramètres du moteur et valeurs écrites ; le mode est
+# ignoré (avertissement) si les défauts du moteur n'ont pas cette clé (moteur antérieur aux modes de routage).
+MODE_ROUTAGE_MOTEUR = ("routage", "mode")
+VALEURS_MODE_MOTEUR = {"manhattan": "manhattan", "plus_court": "plus_court", "diagonale_45": "diagonale_45"}
+MODES_COMPARES = ("manhattan", "plus_court", "diagonale_45")
 
 # option -> clé du .ini (§5.4) ; None : traitée à part
 OPTIONS_VALEUR = {
@@ -90,6 +96,7 @@ OPTIONS_VALEUR = {
     "--duree-max-min": "calcul.duree_max_min", "--valides-voulues": "calcul.valides_voulues",
     "--contraintes": "carte.contraintes", "--config": "carte.config_convertisseurs",
     "--parametres-moteur": "avance.parametres_moteur", "--moteurs": None, "--garder-graines": "sortie.garder_graines",
+    "--mode-routage": "calcul.mode_routage",
     "--donnees": None, "--init": None,
 }
 OPTIONS_DRAPEAU = {
@@ -848,6 +855,7 @@ class Calcul:
             raise ErreurEntree(e.texte_complet()) from None
         self.estimation["plafond_graine_s"] = plafond
         self.chemin_params = os.path.join(self.technique, "parametres_moteur.json")
+        self.params_par_mode = self.modes_routage(r)
         chemins.ecrire_json(self.chemin_params, self.params)
         parametres.ecrire_parametres_utilises(
             os.path.join(self.technique, "parametres_utilises.ini"), r,
@@ -903,6 +911,44 @@ class Calcul:
             self.estimation["duree_graine_prevue_s"] = graine["total_s"]
         except parametres.EstimationInvalide as ex:
             self.avertir(f"durée inconnue : {ex}")
+
+    # ------------------------------------------------------------------------------------------ mode de routage
+    def modes_routage(self, r) -> list[str]:
+        """Mode de routage choisi ([calcul] mode_routage, fenêtre) écrit dans les paramètres du moteur, s'il connaît la
+        clé (MODE_ROUTAGE_MOTEUR, lue dans ses défauts) ; sinon le calcul garde le routage du moteur (avertissement).
+        « comparer » : un fichier de paramètres par mode, les graines se partagent les modes. Rend les fichiers."""
+        mode = r.valeur("calcul", "mode_routage") or "auto"
+        self.estimation["mode_routage"] = mode
+        if mode == "auto":
+            return []
+        section, cle = MODE_ROUTAGE_MOTEUR
+        connus = self.params.get(section) if isinstance(self.params.get(section), dict) else {}
+        if cle not in connus:
+            self.avertir(f"mode de routage « {mode} » ignoré : ce moteur ne connaît pas {section}.{cle} ; routage "
+                         f"par défaut du moteur")
+            self.estimation["mode_routage"] = "auto (non pris en charge)"
+            return []
+        modes = list(MODES_COMPARES) if mode == "comparer" else [mode]
+        fichiers = []
+        for m in modes:
+            p = json.loads(json.dumps(self.params))
+            p[section][cle] = VALEURS_MODE_MOTEUR.get(m, m)
+            chemin = os.path.join(self.technique, f"parametres_moteur_{m}.json")
+            chemins.ecrire_json(chemin, p)
+            fichiers.append(chemin)
+        if len(modes) == 1:
+            self.params[section][cle] = VALEURS_MODE_MOTEUR.get(mode, mode)
+        self.journal("mode de routage : " + (", ".join(modes) + " (un par graine, la meilleure est gardée)"
+                                             if len(modes) > 1 else mode))
+        return fichiers
+
+    def parametres_de(self, g: int) -> str:
+        """Paramètres du moteur pour la graine g (mode « comparer » : modes pris tour à tour)."""
+        f = getattr(self, "params_par_mode", None)
+        if not f or len(f) == 1:
+            return self.chemin_params
+        depart = self.reglages.valeur("calcul", "graine_depart")
+        return f[(g - depart) % len(f)]
 
     # ------------------------------------------------------------------------------------------ ressources
     def paralleles(self) -> int:
@@ -1002,7 +1048,7 @@ class Calcul:
                 return
             vider_dossier(dossier)
             cmd = self.base + ["campagne", "--donnees", self.chemin_donnees, "--sortie", dossier, "--graine", str(g),
-                               "--parametres", self.chemin_params, "--threads", str(self.fils), "--evenements",
+                               "--parametres", self.parametres_de(g), "--threads", str(self.fils), "--evenements",
                                "--arret", os.path.join(self.sortie, ARRET_DEMANDE)]
             t_lancement = time.time()
             t0 = time.monotonic()
@@ -1471,6 +1517,8 @@ MODELE_DEPENDANTS = {
     "garde_trou_mm": "= garde_decoupe_mm",
     "marge_piece_mm": "max(0,25 ; isolement_pieces / 2)",
     "grille_placement_mm": "0,127 (Altium), 0,05 (KiCad)",
+    "regles": "règles du fichier ; surcharge en mm (largeur_defaut, isolement, via, garde_bord, reseaux…), écrite "
+              "par l'onglet Règles de la fenêtre",
 }
 
 

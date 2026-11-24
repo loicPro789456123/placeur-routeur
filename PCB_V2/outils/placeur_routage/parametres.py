@@ -46,6 +46,8 @@ import chemins  # noqa: E402
 FORMAT_MOTEUR = "parametres_moteur/1"
 FORMAT_CONTRAINTES = "contraintes/2"
 QUALITES = ("apercu", "rapide", "normal", "soigne")
+MODES_ROUTAGE = ("auto", "manhattan", "plus_court", "diagonale_45", "comparer")
+"""Modes de routage demandés au moteur (placeur.MODE_ROUTAGE_MOTEUR) ; « comparer » : un mode par graine."""
 
 # Lignes de la table des niveaux de §2.6 propres à l'orchestrateur (les autres viennent du moteur).
 NIVEAUX = {
@@ -117,6 +119,7 @@ SCHEMA = {
         "graine_depart": Cle("entier", 1, minimum=0),
         "processeurs": Cle("entier", 0, minimum=0),
         "priorite_normale": Cle("bool", False),
+        "mode_routage": Cle(MODES_ROUTAGE, "auto"),
     },
     "pcbdoc": {
         "produire": Cle("bool", True),
@@ -217,6 +220,9 @@ graine_depart =
 processeurs =
 ; oui : calcul en priorité normale (le PC répond moins vite) ; non : priorité basse, conseillée (défaut : non)
 priorite_normale =
+; mode de routage : auto (celui du moteur), manhattan, plus_court, diagonale_45 ou comparer (les graines
+;   se partagent les modes, la meilleure est gardée) ; ignoré si le moteur ne le connaît pas (défaut : auto)
+mode_routage =
 
 [pcbdoc]
 ; produire la carte placée et routée (.PcbDoc ou .kicad_pcb, comme la carte d'entrée) (défaut : oui)

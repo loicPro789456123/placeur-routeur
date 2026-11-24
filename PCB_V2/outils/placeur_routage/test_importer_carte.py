@@ -834,6 +834,91 @@ class CasCartesLocales(VerifsAltium):
             self.assertEqual(x["diametre_cuivre"], 0.0)
 
 
+class TestCorpusPcbDoc(unittest.TestCase):
+    """Cartes ``.PcbDoc`` publiées du corpus (B-ET8, jalon B3) : chaîne complète, aller-retour des pastilles par
+    ``pose``, modification attendue de chaque carte dérivée, anonymat."""
+    DOSSIER = os.path.join(ICI, "corpus", "pcbdoc")
+    NOMS = ["demonstration", "dessous_45", "flux_vides", "trou_decale"]
+
+    @classmethod
+    def setUpClass(cls):
+        sys.path.insert(0, os.path.join(DEPOT, "PCB_V2", "outils", "format_altium"))
+        from altium_fichier import PcbDoc, pose
+        cls.PcbDoc, cls.pose = PcbDoc, pose
+        cls.docs = {n: PcbDoc.ouvrir(os.path.join(cls.DOSSIER, n + ".PcbDoc")) for n in cls.NOMS}
+
+    def test_cartes_presentes(self):
+        self.assertEqual(sorted(f[:-7] for f in os.listdir(self.DOSSIER) if f.endswith(".PcbDoc")), self.NOMS)
+
+    def test_chaine_complete(self):
+        import deduire_config as DC
+        import construire_donnees as CD
+        for n in self.NOMS:
+            with self.subTest(carte=n), tempfile.TemporaryDirectory() as tmp:
+                j = lambda x: os.path.join(tmp, x)  # noqa: E731
+                with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
+                    self.assertEqual(IC.main([os.path.join(self.DOSSIER, n + ".PcbDoc"), "--entree", j("e.json")]), 0)
+                    self.assertEqual(DC.main([j("e.json"), "--sortie", j("c.json")]), 0)
+                    self.assertEqual(CD.main([j("e.json"), "--config", j("c.json"), "--sortie", j("d.json"),
+                                              "--deduction", j("x.json")]), 0)
+                    for f in ("e.json", "c.json", "d.json", "x.json"):
+                        self.assertEqual(formats.main(["valider", j(f)]), 0, f)
+                with open(j("d.json"), encoding="utf-8") as f:
+                    d = json.load(f)
+                if n == "demonstration":
+                    self.assertEqual(len(d["composants"]), 17)
+                    fixes = {c["nom"]: c["raison_statut"] for c in d["composants"] if c["statut"] == "fixe"}
+                    self.assertTrue({"J1", "H1", "H2"} <= set(fixes), fixes)
+                    plans = {x["nom"]: [z["reseau"] for z in x["zones_plan"]] for x in d["couches"]}
+                    self.assertEqual(plans["InternalPlane1"], ["GND"])
+                    self.assertEqual(plans["InternalPlane2"][0], "3V3")
+                    self.assertIn("VIN", plans["InternalPlane2"])
+
+    def test_aller_retour_des_pastilles(self):
+        # monde -> local -> monde exact à 0,001 mm (en mil : 0,001 / 0,0254) et rotation relative à 1e-6 degré
+        for n, doc in self.docs.items():
+            comps = {c["index"]: c for c in doc.composants()}
+            for p in doc.pastilles():
+                c = comps.get(p["composant"])
+                if c is None:
+                    continue
+                dessous = c["face"] == "BOTTOM"
+                o = (c["x_mil"], c["y_mil"])
+                loc = self.pose.monde_vers_local((p["x"], p["y"]), o, c["rotation"], dessous)
+                x, y = self.pose.local_vers_monde(loc, o, c["rotation"], dessous)
+                self.assertLess(math.hypot(x - p["x"], y - p["y"]), 0.001 / 0.0254, (n, p["index"]))
+                r = self.pose.rotation_relative(p["rotation"], c["rotation"], dessous)
+                ra = self.pose.rotation_absolue(r, c["rotation"], dessous)
+                self.assertLess(abs((ra - p["rotation"] + 180.0) % 360.0 - 180.0), 1e-6, (n, p["index"]))
+
+    def test_modifications(self):
+        d45 = [c for c in self.docs["dessous_45"].composants() if c["face"] == "BOTTOM"]
+        self.assertIn(45.0, [c["rotation"] for c in d45])
+        dec = [p["percage"]["decalage"] for p in self.docs["trou_decale"].pastilles() if p.get("percage")]
+        self.assertIn((5.0, -3.0), [tuple(round(v, 4) for v in x) for x in dec])
+        v = self.docs["flux_vides"]
+        self.assertEqual([len(v.arcs()), len(v.regions()), len(v.remplissages()), len(v.textes()), len(v.vias())],
+                         [0, 0, 0, 0, 0])
+        self.assertEqual(sorted(c["designateur"] for c in v.composants()),
+                         sorted(c["designateur"] for c in self.docs["demonstration"].composants()))
+
+    def test_anonymat(self):
+        motif = re.compile(rb"(?<![A-Za-z0-9])[A-Z]:[\x5c/][A-Za-z]{3,}|Users[\x5c/]|AppData")  # lecteur suivi d'un nom
+        for n, doc in self.docs.items():
+            b = doc.board
+            self.assertFalse(b.get("FILENAME"), n)
+            # 2DCONFIGFULLFILENAME : nom de fichier seul (effacer_chemins garde le nom de la configuration 2D)
+            self.assertFalse(any(ch in (b.get("2DCONFIGFULLFILENAME") or "") for ch in ("/", ":", chr(92))), n)
+            for c in doc.composants():
+                self.assertFalse(c["bibliotheque"], (n, c["designateur"]))
+            with open(os.path.join(self.DOSSIER, n + ".PcbDoc"), "rb") as f:
+                brut = f.read()
+            for texte in (brut, brut.decode("utf-16-le", "ignore").encode("utf-8", "ignore")):
+                self.assertIsNone(motif.search(texte), n)
+            for chemin in doc.flux:
+                self.assertIsNone(motif.search(doc.octets_flux(chemin)), (n, chemin))
+
+
 def load_tests(loader, tests, pattern):
     """Ajoute les tests des cartes d'exemple quand --cartes-locales est donné ; sinon le dit."""
     if CARTES_LOCALES:

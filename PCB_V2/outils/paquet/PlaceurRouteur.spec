@@ -80,7 +80,8 @@ a = Analysis(                                            # noqa: F821
               (os.path.join(_a.moteurs, "serigraphie.exe"), "moteurs")],
     datas=[(os.path.join(OUTILS, "VERSION"), "."), (os.path.join(_travail, "COMMIT"), "."),
            (os.path.join(SOURCES, "natures.json"), ".")],   # table de la déduction (chemins.ressource)
-    hiddenimports=["placeur", "interface", "parametres", "chemins", "olefile", "altium_fichier"]
+    hiddenimports=["placeur", "interface", "parametres", "chemins", "olefile", "altium_fichier", "apercu",
+                   "regles_utilisateur", "importer_carte", "geom_commune"]
                   + collect_submodules("altium_fichier")
                   + _modules_presents(),
     hookspath=[],

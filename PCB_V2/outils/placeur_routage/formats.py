@@ -102,7 +102,7 @@ CLES_CONTRAINTES = (
     "zones_autour", "marge_bord_mm", "marge_decoupe_mm", "garde_bord_mm", "garde_decoupe_mm", "garde_trou_mm",
     "marge_piece_mm", "marge_traversante_mm", "grille_placement_mm", "rayon_interdit_trou_mm",
     "trous_supplementaires", "cuivre_a_garder", "couches", "couche_preferee_par_nom", "roles", "reseaux", "paires",
-    "eloignements", "charges", "convertisseurs",
+    "eloignements", "charges", "convertisseurs", "regles",
 )
 """Clés de premier niveau de contraintes/2 (§2.3)."""
 
@@ -1259,6 +1259,8 @@ facultatifs (B les complète, calcule la boucle chaude et note l'origine « impo
 CONVERTISSEUR_MODIFIE = _M({k: (s if k == "reseau_commutation" else Fac(s)) for k, s in _CHAMPS_CONVERTISSEUR.items()})
 """Surcharge d'un convertisseur déduit, désigné par son réseau de commutation (§2.4, §3.4 R-V4)."""
 
+_VIA_PARTIEL = _M({k: Fac(Nul(NBP) if k.endswith("_max") else NBP) for k in ("diametre", "trou", "diametre_min", "diametre_max", "trou_min", "trou_max")})
+
 _CHAMPS_CONTRAINTES = {
     "format": TXT, "repere": Enum("fichier", "carte"), "unite": Enum("mm", "mil"),
     "fixes": LISTE_DES,
@@ -1319,6 +1321,13 @@ _CHAMPS_CONTRAINTES = {
     "charges": Liste(_M({"broche": Motif(r"[^.]+\..+", "« PIECE.BROCHE »"), "courant_a": NBP})),
     "convertisseurs": _M({"ajouter": Fac(Liste(CONVERTISSEUR_AJOUTE)), "modifier": Fac(Liste(CONVERTISSEUR_MODIFIE)),
                           "supprimer": Fac(Liste(_M({"reseau_commutation": TXT})))}),
+    "regles": _M({                           # surcharge des règles du fichier (fenêtre, regles_utilisateur.py), en mm
+        "largeur_defaut": Fac(LARGEURS), "via": Fac(_VIA_PARTIEL),
+        "isolement": Fac(_M({"defaut": Fac(NBP), "matrice": Fac(Liste(Liste(NBP)))})),
+        "trou_trou": Fac(Nul(NBP)), "garde_bord": Fac(Nul(NBP)), "isolement_pieces": Fac(Nul(NBP)),
+        "masque_serigraphie": Fac(Nul(NBP)), "hauteurs": Fac(_M({"dessus": Fac(Nul(NBP)), "dessous": Fac(Nul(NBP))})),
+        "connexion_plans": Fac(_M({"isolement": NBP})), "tolerances_longueur": Fac(Dico(NBP)),
+        "reseaux": Fac(Dico(_M({"largeurs": Fac(LARGEURS), "via": Fac(_VIA_PARTIEL)})))}),
 }
 CONTRAINTES = Obj({k: Fac(s) for k, s in _CHAMPS_CONTRAINTES.items()}, strict="contraintes")
 """contraintes/2 (§2.3), et contraintes_effectives.json (même format, §2.9) : toutes les clés facultatives."""

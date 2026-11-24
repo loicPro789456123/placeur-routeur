@@ -34,7 +34,8 @@ $Essais = @(
     @{ Nom = "chemin_non_latin";   Bloquant = $true;  Texte = "paquet et carte sous un dossier au nom non latin" },
     @{ Nom = "chemin_unc";         Bloquant = $true;  Texte = "paquet lancé par un partage UNC (\\localhost\<lecteur>$\...)" },
     @{ Nom = "sortie_redirigee";   Bloquant = $true;  Texte = "sortie redirigée, message accentué lisible en UTF-8, pour chaque outil de la liste blanche (--outil NOM --help)" },
-    @{ Nom = "fenetre";            Bloquant = $false; Texte = "PlaceurRouteur.exe --essai-fenetre 8000 : capture, fin sans blocage (non bloquant tant que l'affichage des machines hébergées n'est pas confirmé)" }
+    @{ Nom = "fenetre";            Bloquant = $false; Texte = "PlaceurRouteur.exe --essai-fenetre 8000 : capture, fin sans blocage (non bloquant tant que l'affichage des machines hébergées n'est pas confirmé)" },
+    @{ Nom = "fenetre_carte";      Bloquant = $false; Texte = "PlaceurRouteur.exe --carte demonstration.PcbDoc --rapport R.json : règles lues, aperçu (pièces, pièce verrouillée), carte d'origine inchangée (non bloquant, comme fenetre)" }
 )
 
 if ($Simuler) {
@@ -229,6 +230,24 @@ try {
         if (-not $p.HasExited) { Stop-Process -Id $p.Id -Force }
         Noter "fenetre" "ÉCHEC (non bloquant)" "pas de fin propre en 60 s"
     }
+
+    # 16. fenêtre sur la carte de démonstration : règles, aperçu, carte inchangée
+    $demo = Exemple-Pcbdoc
+    if (Test-Path -LiteralPath $demo) {
+        $avant = (Get-FileHash -LiteralPath $demo -Algorithm SHA256).Hash
+        $rapport = Join-Path $Travail "fenetre_carte.json"
+        $p = Start-Process -FilePath $Fenetre -ArgumentList @("--essai-fenetre", "12000", "--carte", (Citer $demo), "--rapport", (Citer $rapport)) -PassThru
+        if ($p.WaitForExit(90000) -and $p.ExitCode -eq 0 -and (Test-Path -LiteralPath $rapport)) {
+            $r = Get-Content -LiteralPath $rapport -Raw -Encoding UTF8 | ConvertFrom-Json
+            $apres = (Get-FileHash -LiteralPath $demo -Algorithm SHA256).Hash
+            if ($r.regles -gt 0 -and $r.pieces -gt 0 -and $r.verrouillees -ge 1 -and $avant -eq $apres) {
+                Noter "fenetre_carte" "OK" ("{0} règles, {1} pièces dont {2} verrouillée(s)" -f $r.regles, $r.pieces, $r.verrouillees)
+            } else { Noter "fenetre_carte" "ÉCHEC (non bloquant)" ("règles {0}, pièces {1}, verrouillées {2}, carte inchangée {3}" -f $r.regles, $r.pieces, $r.verrouillees, ($avant -eq $apres)) }
+        } else {
+            if (-not $p.HasExited) { Stop-Process -Id $p.Id -Force }
+            Noter "fenetre_carte" "ÉCHEC (non bloquant)" "pas de rapport ni de fin propre en 90 s"
+        }
+    } else { Noter "fenetre_carte" "SAUTÉ" "carte de démonstration absente" }
 }
 catch {
     Noter "script" "ÉCHEC" ($_.Exception.Message)

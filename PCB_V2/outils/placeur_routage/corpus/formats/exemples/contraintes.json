@@ -62,5 +62,7 @@
                "reseau_masse": "GND", "reseau_commutation": "SW5"}],
   "modifier": [{"reseau_commutation": "NetC19_1", "cond_bulk": ["C17"], "reseaux_sensibles": ["NetC21_1", "NetC22_2", "NetR25_2"]}],
   "supprimer": [{"reseau_commutation": "SW_ANCIEN"}]
- }
+ },
+ "regles": {"largeur_defaut": [0.2, 0.25, null], "isolement": {"defaut": 0.15}, "via": {"diametre": 0.6, "trou": 0.3},
+            "garde_bord": 0.5, "tolerances_longueur": {"USB": 0.5}, "reseaux": {"+5V": {"largeurs": [0.4, 0.5, null]}}}
 }

@@ -1,0 +1,84 @@
+{
+ "format": "attendu_deduction/1",
+ "carte": "sans_convertisseur",
+ "famille": "chaine",
+ "couches": [
+  {
+   "nom": "TopLayer",
+   "role": "routage",
+   "plans": []
+  },
+  {
+   "nom": "BottomLayer",
+   "role": "routage",
+   "plans": []
+  }
+ ],
+ "sans_piste_dessous": [],
+ "pas_fin": [],
+ "matrice": [],
+ "groupes": [],
+ "pieces_fixes": {
+  "J1": "suggestion",
+  "J2": "suggestion"
+ },
+ "convertisseurs": [],
+ "chaine": {
+  "niveau": "rapide",
+  "graines": 10,
+  "graines_valides_min": 1,
+  "couches_pistes": [
+   "TopLayer",
+   "BottomLayer"
+  ],
+  "couches_sans_piste": [],
+  "descentes_par_vias": []
+ },
+ "description": "Logique simple, classe d'alimentation à 0,5 mm : aucun convertisseur.",
+ "regles": [
+  "R-R6",
+  "R-R7",
+  "R-P3"
+ ],
+ "masses": [
+  "GND"
+ ],
+ "roles": {
+  "alimentation": [
+   "+3V3",
+   "GND"
+  ],
+  "signal": [
+   "A",
+   "B",
+   "IN",
+   "OUT",
+   "Y",
+   "Z"
+  ]
+ },
+ "largeurs": {
+  "+3V3": [
+   0.2,
+   0.5,
+   null
+  ],
+  "A": [
+   0.2,
+   0.25,
+   null
+  ]
+ },
+ "isolement": {
+  "defaut": 0.2,
+  "requis": [
+   {
+    "reseaux": [
+     "A",
+     "B"
+    ],
+    "mm": 0.2
+   }
+  ]
+ }
+}

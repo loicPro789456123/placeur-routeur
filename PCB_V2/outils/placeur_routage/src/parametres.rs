@@ -51,8 +51,8 @@ pub fn cles_du_niveau(niveau: Niveau) -> [(&'static str, Value); 6] {
     let (mouvements, iterations, tours, essais, plafond, duree) = match niveau {
         Niveau::Apercu => (json!(20000000), json!(30), json!(0), json!(0.0), json!(0), json!(900)),
         Niveau::Rapide => (json!(20000000), json!(30), json!(1), json!(0.48), json!(600), json!(2700)),
-        Niveau::Normal => (json!(100000000), json!(40), json!(4), json!(6.0), json!(1800), json!(7200)),
-        Niveau::Soigne => (json!(100000000), json!(40), json!(6), json!(6.37), json!(5400), json!(14400)),
+        Niveau::Normal => (json!(250000000), json!(40), json!(4), json!(6.0), json!(1800), json!(7200)),
+        Niveau::Soigne => (json!(250000000), json!(40), json!(6), json!(6.37), json!(5400), json!(14400)),
     };
     [
         ("recuit.mouvements_max", mouvements),
@@ -177,15 +177,15 @@ const AFFINAGE: &[Cle] = &[
 ];
 
 const RECUIT: &[Cle] = &[
-    c("mouvements_max", ent(0, GRAND), "100000000"),
-    c("alpha", nb(OUVERT_0_1), "0.99"),
+    c("mouvements_max", ent(0, GRAND), "250000000"),
+    c("alpha", nb(OUVERT_0_1), "0.996"),
     c("palier_par_piece", ent(1, GRAND), "100"),
     c("acceptation_initiale", nb(OUVERT_0_1), "0.85"),
     c("t_fin_relative", nb(DEMI_OUVERT_0_1), "1e-06"),
     c("rudy_capacite", nb(STRICT_POSITIF), "2.0"),
     c("rudy_lambda", nb(POSITIF), "2.0"),
     c("rechauffes", ent(0, 1000), "0"),
-    c("arret_paliers_sans_progres", ent(1, GRAND), "150"),
+    c("arret_paliers_sans_progres", ent(1, GRAND), "375"),
     c("periode_reroutage", ent(0, GRAND), "3000"),
     c("pas_grille_globale_mm", nb(PAS_GLOBAL_MM), "0.5"),
     objet("affinage", AFFINAGE),
@@ -1375,9 +1375,9 @@ pub(crate) mod tests {
  "campagne": {"threads": 0, "chaines": 4, "duree_max_s": 7200, "arret_apres": "complet",
               "seuil_abandon_echecs": 10, "seuil_abandon_part": 0.005, "memoire_max_mo": 0},
  "placement": {"degagement_pas_fin_mm": 0.8, "copier_motifs": false},
- "recuit": {"mouvements_max": 100000000, "alpha": 0.99, "palier_par_piece": 100, "acceptation_initiale": 0.85,
+ "recuit": {"mouvements_max": 250000000, "alpha": 0.996, "palier_par_piece": 100, "acceptation_initiale": 0.85,
             "t_fin_relative": 1e-06, "rudy_capacite": 2.0, "rudy_lambda": 2.0, "rechauffes": 0,
-            "arret_paliers_sans_progres": 150, "periode_reroutage": 3000, "pas_grille_globale_mm": 0.5,
+            "arret_paliers_sans_progres": 375, "periode_reroutage": 3000, "pas_grille_globale_mm": 0.5,
             "affinage": {"fraction_mouvements": 0.05, "acceptation": 0.03, "t_fin_relative": 0.01, "alpha": 0.85,
                          "palier_par_piece": 25}},
  "boucle": {"tours": 4, "mouvements_locaux": 60000, "rayon_zone_mm": 3.5, "poids_initial": 30, "rayon_pieces_mm": 4.0,
@@ -1464,7 +1464,7 @@ pub(crate) mod tests {
     fn niveaux_ne_different_que_par_les_six_cles() {
         let normal = feuilles(&defauts(Niveau::Normal));
         let attendus: [(&str, [Value; 4]); 6] = [
-            ("recuit.mouvements_max", [json!(20000000), json!(20000000), json!(100000000), json!(100000000)]),
+            ("recuit.mouvements_max", [json!(20000000), json!(20000000), json!(250000000), json!(250000000)]),
             ("routage.iters_negociation", [json!(30), json!(30), json!(40), json!(40)]),
             ("boucle.tours", [json!(0), json!(1), json!(4), json!(6)]),
             ("conjointe.essais_par_piece_mobile", [json!(0.0), json!(0.48), json!(6.0), json!(6.37)]),
@@ -1493,7 +1493,7 @@ pub(crate) mod tests {
         let p = Parametres::defaut();
         assert_eq!(p.campagne.chaines, 4);
         assert_eq!(p.campagne.arret_apres, ArretApres::Complet);
-        assert_eq!(p.recuit.mouvements_max, 100_000_000);
+        assert_eq!(p.recuit.mouvements_max, 250_000_000);
         assert_eq!(p.routage.pas_grille_detail_mm, AutoOuNombre::Texte("auto".into()));
         assert_eq!(p.routage.pas_grille_detail_mm.valeur(), None);
         assert_eq!(p.conjointe.essais, None);

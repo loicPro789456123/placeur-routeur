@@ -1280,7 +1280,8 @@ pub fn lire(v: &Value) -> R<Donnees> {
                 negatif: e.f("negatif")?.txt()?,
                 ecart_mm: e.f("ecart_mm")?.nb_ou_null()?,
                 largeur_mm: e.f("largeur_mm")?.nb_ou_null()?,
-                tolerance_longueur_mm: e.f("tolerance_longueur_mm")?.pos()?,
+                // null admis (formats.py : Nul(NBP)) : tolérance par défaut de validite.rs (1 mm)
+                tolerance_longueur_mm: e.f("tolerance_longueur_mm")?.nb_ou_null()?.unwrap_or(1.0).max(0.0),
             })
         })?,
         au_bord: liste_de(&r, "au_bord", |e| {

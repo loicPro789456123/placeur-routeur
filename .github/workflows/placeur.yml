@@ -259,7 +259,10 @@ jobs:
           chmod +x "$GITHUB_WORKSPACE"/moteurs/*
           echo "machine : $(nproc) fils"
           mkdir -p "$RUNNER_TEMP/sortie"
-          python placeur.py --donnees "${{ matrix.donnees }}" --graine-depart ${{ matrix.graine }} --essais 1 \
+          # réglages du moteur facultatifs : champ parametres_moteur de ci_campagne.json (chemin relatif)
+          PM=$(python -c "import json; print(json.load(open('ci_campagne.json', encoding='utf-8')).get('parametres_moteur') or '')")
+          EXTRA=""; if [ -n "$PM" ]; then EXTRA="--parametres-moteur $PM"; fi
+          python placeur.py --donnees "${{ matrix.donnees }}" --graine-depart ${{ matrix.graine }} --essais 1 $EXTRA \
             --qualite normal --sans-pcbdoc --moteurs "$GITHUB_WORKSPACE/moteurs" \
             --sortie "$RUNNER_TEMP/sortie" > "$RUNNER_TEMP/journal_ci.txt" 2>&1 || echo "placeur.py : code $?" >> "$RUNNER_TEMP/journal_ci.txt"
           tail -n 60 "$RUNNER_TEMP/journal_ci.txt"

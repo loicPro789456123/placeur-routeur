@@ -14,15 +14,15 @@
   "copier_motifs": false
  },
  "recuit": {
-  "mouvements_max": 100000000,
-  "alpha": 0.99,
+  "mouvements_max": 250000000,
+  "alpha": 0.996,
   "palier_par_piece": 100,
   "acceptation_initiale": 0.85,
   "t_fin_relative": 1e-06,
   "rudy_capacite": 2.0,
   "rudy_lambda": 2.0,
   "rechauffes": 0,
-  "arret_paliers_sans_progres": 150,
+  "arret_paliers_sans_progres": 375,
   "periode_reroutage": 3000,
   "pas_grille_globale_mm": 0.5,
   "affinage": {
