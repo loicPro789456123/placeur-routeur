@@ -221,6 +221,8 @@ class _Importeur:
         self.classes = {c["nom"]: [self.net(m) for m in c["membres"]] for c in cl
                         if c["type"] == 0 and not c["superclasse"]}
         self.classes_composants = {c["nom"]: list(c["membres"]) for c in cl if c["type"] == 1 and not c["superclasse"]}
+        # classes de paires différentielles (Classes6 KIND 6), lues par les portées InDifferentialPairClass
+        self.classes_paires = {c["nom"]: list(c["membres"]) for c in cl if c["type"] == 6}
         self.paires = [{"nom": p["nom"], "positif": self.net(p["positif"]), "negatif": self.net(p["negatif"])}
                        for p in self.doc.paires_differentielles()]
 
@@ -710,6 +712,7 @@ class _Importeur:
         for e in self.cuivre_existant:
             ajouter(e, {"type": e["type"], "reseau": e["reseau"], "piece": None, "couches": e["couches"]})
         contexte = {"reseaux": self.reseaux, "classes": self.classes, "classes_composants": self.classes_composants,
+                    "classes_paires": self.classes_paires,
                     "paires": self.paires, "couches": self.noms,
                     "noms_couches_fichier": {c["nom"]: c["nom_fichier"] for c in self.cu},
                     "pieces": [{"designateur": c["designateur"], "empreinte": c["empreinte"], "face": c["face"]}

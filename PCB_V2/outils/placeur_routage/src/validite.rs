@@ -1128,6 +1128,9 @@ struct Donnees {
     isolement_defaut_mm: f64,
     grille_mm: f64,
     paires: Vec<Paire>,
+    /// Longueurs appariées hors paires (réseaux, tolérance mm) et longueurs bornées (réseau, min, max) : champs
+    /// facultatifs du 24/11/2026 ; `None` s'ils sont absents (avertissement `longueurs_hors_tolerance` non écrit).
+    longueurs: Option<(Vec<(Vec<String>, f64)>, Vec<(String, f64, f64)>)>,
     regles_non_couvertes: u64,
     cuivre_fixe: Vec<CuivreFixe>,
     zones: Vec<ZonePlan>,
@@ -1564,7 +1567,34 @@ fn lire_donnees(v: &Value) -> Result<Donnees, String> {
         None => 0,
     };
 
+    let longueurs = if o.contains_key("longueurs_appariees") || o.contains_key("longueurs") {
+        let mut groupes = Vec::new();
+        if o.contains_key("longueurs_appariees") {
+            for (i, g) in champ_liste(o, "longueurs_appariees", racine)?.iter().enumerate() {
+                let ch = format!("donnees.longueurs_appariees[{i}]");
+                let go = objet(g, &ch)?;
+                let rs: Vec<String> = champ_liste(go, "reseaux", &ch)?.iter().filter_map(|v| v.as_str().map(String::from)).collect();
+                let tol = champ_nombre_ou_nul(go, "tolerance_mm", &ch)?.unwrap_or(TOLERANCE_PAIRE_DEFAUT_MM);
+                groupes.push((rs, tol));
+            }
+        }
+        let mut bornes = Vec::new();
+        if o.contains_key("longueurs") {
+            for (i, b) in champ_liste(o, "longueurs", racine)?.iter().enumerate() {
+                let ch = format!("donnees.longueurs[{i}]");
+                let bo = objet(b, &ch)?;
+                let r = champ_texte(bo, "reseau", &ch)?.to_string();
+                let mn = champ_nombre_ou_nul(bo, "min_mm", &ch)?.unwrap_or(0.0);
+                let mx = champ_nombre_ou_nul(bo, "max_mm", &ch)?.unwrap_or(f64::INFINITY);
+                bornes.push((r, mn, mx));
+            }
+        }
+        Some((groupes, bornes))
+    } else {
+        None
+    };
     Ok(Donnees {
+        longueurs,
         couches,
         index_couches,
         reseaux,
@@ -2819,6 +2849,33 @@ fn controler_sans_geometrie(d: &Donnees, r: &Routage, couture: &[Via], violation
     }
 }
 
+/// Longueurs hors tolérance (avertissement facultatif, 24/11/2026) : groupes de `longueurs_appariees` dont l'écart
+/// max − min des longueurs de pistes dépasse la tolérance, et réseaux de `longueurs` hors de [min, max]. `None` si les
+/// données ne portent aucun des deux champs.
+fn compter_longueurs_hors_tolerance(d: &Donnees, r: &Routage) -> Option<u64> {
+    let (groupes, bornes) = d.longueurs.as_ref()?;
+    let mut longueurs: BTreeMap<&str, f64> = BTreeMap::new();
+    for p in &r.pistes {
+        *longueurs.entry(p.reseau.as_str()).or_insert(0.0) += p.longueur_mm();
+    }
+    let l = |n: &str| longueurs.get(n).copied().unwrap_or(0.0);
+    let mut n = 0u64;
+    for (rs, tol) in groupes {
+        let v: Vec<f64> = rs.iter().map(|x| l(x)).collect();
+        let (mn, mx) = v.iter().fold((f64::MAX, f64::MIN), |a, &x| (a.0.min(x), a.1.max(x)));
+        if !v.is_empty() && mx - mn > *tol {
+            n += 1;
+        }
+    }
+    for (rs, mn, mx) in bornes {
+        let x = l(rs);
+        if x < *mn || x > *mx {
+            n += 1;
+        }
+    }
+    Some(n)
+}
+
 /// Paires différentielles déséquilibrées (avertissement, §4.4) : écart de longueur des deux réseaux >
 /// `tolerance_longueur_mm`, ou nombres de vias différents (vias du routage).
 fn compter_paires_desequilibrees(d: &Donnees, r: &Routage) -> u64 {
@@ -3346,6 +3403,9 @@ pub fn verifier_routage(
     let mut avertissements = compteurs_a_zero(&AVERTISSEMENTS);
     avertissements.insert("angles_aigus".into(), angles_aigus);
     avertissements.insert("paires_desequilibrees".into(), compter_paires_desequilibrees(&d, &r));
+    if let Some(n) = compter_longueurs_hors_tolerance(&d, &r) {
+        avertissements.insert("longueurs_hors_tolerance".into(), n);
+    }
     avertissements.insert("regles_non_couvertes".into(), d.regles_non_couvertes);
     avertissements.insert("pistes_sous_pieces_sans_piste_dessous".into(), pistes_sous_pieces(&d, &objets, &poses));
 

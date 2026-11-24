@@ -18,6 +18,7 @@ use crate::verification::{Reference, Verificateur};
 use serde_json::{json, Value};
 use std::path::{Path, PathBuf};
 use std::time::Instant;
+use rayon::prelude::*;
 
 /// Phases de `stats.execution.temps_phases_s` (§2.7), toutes présentes.
 const PHASES: [&str; 9] =
@@ -35,6 +36,8 @@ pub struct Entrees<'e> {
     pub connexions: u64,
     pub evenements: bool,
     pub arret: Option<PathBuf>,
+    /// `router --routage-initial` : routage existant chargé tel quel (post-traitement et vérification seulement)
+    pub routage_initial: Option<PathBuf>,
 }
 
 fn ecrire(dir: &Path, nom: &str, v: &Value) -> Result<(), String> {
@@ -109,11 +112,106 @@ fn verifier(en: &Entrees, placements: &Value, routage: &Value) -> Result<Verific
     Ok(Verification { verdict: j, valide: cause.is_empty(), cause, cout: if cout.is_finite() { Some(cout) } else { None } })
 }
 
+impl Clone for Verification {
+    fn clone(&self) -> Self {
+        Verification { verdict: self.verdict.clone(), valide: self.valide, cause: self.cause, cout: self.cout }
+    }
+}
+
+/// Nom d'un style de pistes (`detail::MODE_*`).
+pub fn nom_mode(m: u8) -> &'static str {
+    match m {
+        crate::detail::MODE_MANHATTAN => "manhattan",
+        crate::detail::MODE_LIBRE => "libre",
+        _ => "octogonal",
+    }
+}
+
+/// Routage final candidat : géométrie écrite, vérification, mesures.
+#[derive(Clone)]
+struct Variante {
+    mode: &'static str,
+    routage: Value,
+    verif: Verification,
+    mesures: Value,
+    ko: usize,
+    echecs: Vec<String>,
+}
+
+impl Variante {
+    fn defauts(&self) -> usize {
+        let n = |k: &str| {
+            let v = self.verif.verdict.get(k);
+            v.and_then(Value::as_u64).map(|x| x as usize).or_else(|| v.and_then(Value::as_array).map(|a| a.len())).unwrap_or(0)
+        };
+        n("violations") + n("liaisons_ouvertes")
+    }
+    /// Clé d'ordre (la plus petite gagne) : valide d'abord, puis moins de défauts, puis coût commun.
+    fn cle(&self) -> (bool, usize, u64) {
+        (!self.verif.valide, self.defauts(), (self.verif.cout.unwrap_or(1e15).max(0.0) * 1000.0) as u64)
+    }
+    fn resume(&self) -> String {
+        format!("valide {}{}, {} défaut(s), coût {}", self.verif.valide,
+            if self.verif.cause.is_empty() { String::new() } else { format!(" ({})", self.verif.cause) }, self.defauts(),
+            self.verif.cout.map(|c| format!("{:.1}", c)).unwrap_or_else(|| "-".into()))
+    }
+}
+
+/// Post-traitement du routage final (lissage des marches, accord des longueurs) ; rend des lignes de journal.
+fn post_traiter(d: &mut Detail) -> (Vec<String>, bool) {
+    let m = d.m;
+    let mut j = Vec::new();
+    let mut accord = false;
+    if m.param.finition.lissage_marches {
+        let (nb, gain, dseg) = d.lisser(m.mode_routage);
+        j.push(format!("  lissage ({}) : {} chaînes raccourcies, {:.1} mm de piste en moins, {} segments en moins", nom_mode(m.mode_routage), nb, gain, dseg));
+    }
+    if !m.groupes_longueur.is_empty() || !m.longueurs_bornees.is_empty() {
+        let (a, r) = d.accorder();
+        accord = a > 0;
+        j.push(format!("  accord des longueurs : {} réseau(x) allongé(s) par méandres, {} groupe(s) ou borne(s) encore hors tolérance", a, r));
+    }
+    (j, accord)
+}
+
+/// Variante du routage final de `d` : post-traitement gardé seulement s'il ne dégrade pas la vérification.
+fn variante(en: &Entrees, d: &mut Detail, placements: &Value, mode: &'static str, journal: &mut dyn FnMut(String)) -> Result<Variante, String> {
+    let faire = |d: &Detail| -> Result<Variante, String> {
+        let r = sortie::routage_json(d);
+        let verif = verifier(en, placements, &r)?;
+        Ok(Variante { mode, routage: r, verif, mesures: mesures(Some(d)), ko: d.total_ko(),
+            echecs: d.nets.iter().flat_map(|r| r.diag.iter().cloned()).collect() })
+    };
+    let brut = d.nets.clone();
+    finition_exacte::appliquer(&mut d.nets);
+    let v0 = faire(d)?;
+    let (lignes, accord) = post_traiter(d);
+    if lignes.is_empty() {
+        return Ok(v0);
+    }
+    for l in lignes {
+        journal(l);
+    }
+    finition_exacte::appliquer(&mut d.nets);
+    let v1 = faire(d)?;
+    // gardé s'il ne dégrade ni la validité ni les défauts, ni le coût commun (sauf accord des longueurs, qui allonge)
+    let cout_ok = accord || v1.verif.cout.unwrap_or(f64::MAX) <= v0.verif.cout.unwrap_or(f64::MAX) + 1e-6;
+    if cout_ok && (v1.verif.valide, std::cmp::Reverse(v1.defauts())) >= (v0.verif.valide, std::cmp::Reverse(v0.defauts())) {
+        journal(format!("  post-traitement gardé : {} -> {}", v0.resume(), v1.resume()));
+        Ok(v1)
+    } else {
+        journal(format!("  post-traitement refusé par la vérification ({} -> {}) : routage d'origine gardé", v0.resume(), v1.resume()));
+        d.nets = brut;
+        Ok(v0)
+    }
+}
+
 /// Exécute `campagne` (graine donnée) ou `router` (poses données) ; rend 0, ou 3 sur arrêt demandé.
 pub fn executer(en: &Entrees, graine: Option<u64>, poses: Option<Vec<donnees::Pose>>, dir: &Path) -> Result<i32, String> {
     let t0 = Instant::now();
     std::fs::create_dir_all(dir).map_err(|e| format!("dossier de sortie : {}", fichiers::texte_erreur_es(&e)))?;
     let fichier_arret = en.arret.clone();
+    campagne::fixer_fichier_arret(fichier_arret.clone());
     let arret = move || fichier_arret.as_ref().map(|f| f.exists()).unwrap_or(false);
     let mut journal = |s: String| println!("{}", s);
     let connexions = en.connexions as f64;
@@ -139,20 +237,58 @@ pub fn executer(en: &Entrees, graine: Option<u64>, poses: Option<Vec<donnees::Po
         None => campagne::run_campagne(&m, graine.unwrap_or(0), &mut cx),
         Some(p) => {
             let e = adaptateur::etat_depuis(&m, p);
-            campagne::run_router(&m, &e, &mut cx)
+            match &en.routage_initial {
+                Some(r) => campagne::run_charge(&m, &e, &r.to_string_lossy(), &mut cx)?,
+                None => campagne::run_router(&m, &e, &mut cx),
+            }
         }
     };
-    if let Some(d) = bilan.detail.as_mut() {
-        finition_exacte::appliquer(&mut d.nets);
-    }
-    // vérification finale sur la géométrie telle qu'elle est écrite
-    cx.debut("verification");
     let placements = bilan.etat.as_ref().map(|e| sortie::placement_json(&m, e));
-    let routage = bilan.detail.as_ref().map(sortie::routage_json);
-    let verif = match (&placements, &routage) {
-        (Some(p), Some(r)) => Some(verifier(en, p, r)?),
-        _ => None,
-    };
+    // post-traitement du routage final (lissage, accord des longueurs), gardé seulement si la vérification ne le
+    // juge pas moins bon ; puis, en mode multi, les autres styles de pistes sur le même placement (le meilleur gagne)
+    let mut choix: Option<Variante> = None;
+    if let (Some(d), Some(p)) = (bilan.detail.as_mut(), &placements) {
+        cx.debut("finition");
+        let v = variante(en, d, p, nom_mode(m.mode_routage), &mut |s| println!("{}", s))?;
+        cx.fin("finition");
+        choix = Some(v);
+    }
+    if m.param.routage.mode == "multi" && !arret() {
+        if let (Some(e), Some(p), Some(base)) = (bilan.etat.clone(), &placements, choix.as_ref()) {
+            cx.debut("finition");
+            let autres: Vec<String> = m.param.routage.modes_multi.iter().skip(1).cloned().collect();
+            let res: Vec<Result<Variante, String>> = autres
+                .par_iter()
+                .map(|mode| {
+                    let mut m2 = m.clone();
+                    m2.mode_routage = adaptateur::mode_routage(mode, &[], None);
+                    let mut lignes = |s: String| println!("[{}] {}", mode, s);
+                    let jamais = || false;
+                    let mut cx2 = Contexte::new(&mut lignes, &jamais, false, Instant::now(), usize::MAX);
+                    let mut b2 = campagne::run_router(&m2, &e, &mut cx2);
+                    match b2.detail.as_mut() {
+                        Some(d2) => variante(en, d2, p, nom_mode(m2.mode_routage), &mut |s| println!("[{}] {}", mode, s)),
+                        None => Err(format!("mode {} : pas de routage", mode)),
+                    }
+                })
+                .collect();
+            let mut meilleur = base.clone();
+            let mut bilan_modes = vec![format!("{} : {}", base.mode, base.resume())];
+            for r in res {
+                let v = r?;
+                bilan_modes.push(format!("{} : {}", v.mode, v.resume()));
+                if v.cle() < meilleur.cle() {
+                    meilleur = v;
+                }
+            }
+            cx.log(format!("mode multi : {} ; retenu : {}", bilan_modes.join(" ; "), meilleur.mode));
+            choix = Some(meilleur);
+            cx.fin("finition");
+        }
+    }
+    cx.debut("verification");
+    let routage = choix.as_ref().map(|v| v.routage.clone());
+    let verif = choix.as_ref().map(|v| v.verif.clone());
     cx.fin("verification");
     cx.debut("ecriture");
     let _ = std::fs::remove_file(dir.join("stats.json"));
@@ -171,7 +307,7 @@ pub fn executer(en: &Entrees, graine: Option<u64>, poses: Option<Vec<donnees::Po
         }
         None => (false, if bilan.cause.is_empty() { "non route" } else { bilan.cause }, Value::Null, None),
     };
-    let echecs: Vec<String> = bilan.detail.as_ref().map(|d| d.nets.iter().flat_map(|r| r.diag.iter().cloned()).collect()).unwrap_or_default();
+    let echecs: Vec<String> = choix.as_ref().map(|v| v.echecs.clone()).unwrap_or_default();
     // paramètres effectifs : sans `campagne.threads` (§2.7 : le nombre de fils est dans `execution.fils`)
     let mut effectifs = en.lus.valeur.clone();
     if let Some(c) = effectifs.get_mut("campagne").and_then(Value::as_object_mut) {
@@ -186,9 +322,10 @@ pub fn executer(en: &Entrees, graine: Option<u64>, poses: Option<Vec<donnees::Po
         "format": "stats/2", "version_moteur": crate::version_moteur(), "graine": graine.unwrap_or(0),
         "fin": bilan.fin.nom(), "valide": valide, "cause": cause, "piece": null, "raison": null,
         "validite": validite_json, "cout_commun": cout,
-        "connexions_echouees_routeur": bilan.detail.as_ref().map(|d| d.total_ko()).unwrap_or(0),
+        "connexions_echouees_routeur": choix.as_ref().map(|v| v.ko).unwrap_or(0),
+        "mode_routage": choix.as_ref().map(|v| v.mode).unwrap_or(nom_mode(m.mode_routage)),
         "echecs": echecs, "recuit": bilan.recuit, "boucle": bilan.boucle, "conjointe": bilan.conjointe, "finition": bilan.finition,
-        "convertisseurs": bilan.convertisseurs, "mesures": mesures(bilan.detail.as_ref()),
+        "convertisseurs": bilan.convertisseurs, "mesures": choix.as_ref().map(|v| v.mesures.clone()).unwrap_or_else(|| mesures(None)),
         "empreintes": {"donnees_sha256": en.sha_donnees, "parametres_sha256": en.sha_parametres},
         "parametres_effectifs": effectifs,
         "execution": {"temps_phases_s": tp, "temps_total_s": (t0.elapsed().as_secs_f64() * 1000.0).round() / 1000.0,

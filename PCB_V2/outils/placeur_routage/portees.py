@@ -72,7 +72,7 @@ GENRES_ROUTEUR = ("piste", "via", "surface")   # objets que le routeur peut cré
 
 # Liste d'ignorés documentée (§3.7), comparée sans tenir compte de la casse.
 IGNORES = ("FanoutControl", "*Testpoint*", "SilkToSilkClearance", "SilkToBoardRegion*", "PasteMaskExpansion",
-           "RoutingCorners", "RoutingTopology", "PolygonConnect", "ShortCircuit", "UnRoutedNet", "UnconnectedPin",
+           "RoutingTopology", "PolygonConnect", "ShortCircuit", "UnRoutedNet", "UnconnectedPin",
            "NetAntennae", "SMDToCorner", "SMDToPlane", "SMDNeckDown", "MinimumAnnularRing", "HoleSize",
            "LayerPairs", "AcuteAngle")
 
@@ -80,7 +80,7 @@ TYPES_BINAIRES = ("Clearance", "HoleToHoleClearance", "ComponentClearance")
 TYPES_UNAIRES = ("Width", "RoutingVias", "ViasUnderSMD", "SolderMaskExpansion", "RoutingLayers", "RoutingPriority",
                  "SupplyNets", "Height", "PermittedLayers", "ComponentOrientations")
 TYPES_AUTRES = ("BoardOutlineClearance", "PlaneClearance", "PlaneConnect", "SilkToSolderMaskClearance",
-                "RoomDefinition", "DiffPairsRouting", "MatchedLengths")
+                "RoomDefinition", "DiffPairsRouting", "MatchedLengths", "Length", "RoutingCorners")
 TYPES_PRIS = {t.casefold(): t for t in TYPES_BINAIRES + TYPES_UNAIRES + TYPES_AUTRES}
 
 PREDICATS_COUCHE = frozenset({"onlayer", "ontoplayer", "onbottomlayer"})
@@ -169,6 +169,7 @@ _PREDICATS = {
     "ispolygon": ("IsPolygon", 0), "inpolygon": ("InPolygon", 0), "innamedpolygon": ("InNamedPolygon", 1),
     "onlayer": ("OnLayer", 1), "ontoplayer": ("OnTopLayer", 0), "onbottomlayer": ("OnBottomLayer", 0),
     "indifferentialpair": ("InDifferentialPair", 1), "inanydifferentialpair": ("InAnyDifferentialPair", 0),
+    "indifferentialpairclass": ("InDifferentialPairClass", 1),
 }
 _MOTS_CLES = {"and": "ET", "or": "OU", "not": "NON"}
 
@@ -310,6 +311,8 @@ class _Analyseur:
             if self.lex.voir()[0] != ")":
                 while True:
                     a = self.lex.prendre()
+                    if a[0] == "NOM":
+                        a = ("CHAINE", a[1], a[2])   # nom sans apostrophes (« InNet (GND) »), admis par Altium
                     if a[0] not in ("CHAINE", "NOMBRE"):
                         raise ErreurPortee("argument attendu (chaîne entre apostrophes ou nombre), "
                                            f"{_decrire(a)} trouvé", a[2])
@@ -390,6 +393,7 @@ _EVALUATION = {
     "onbottomlayer": lambda a, f: _sur_couche(f, "bottomlayer"),
     "indifferentialpair": lambda a, f: _dans(a, f.get("paires")),
     "inanydifferentialpair": lambda a, f: bool(f.get("paires")),
+    "indifferentialpairclass": lambda a, f: _dans(a, f.get("classes_paire")),
 }
 
 
@@ -621,9 +625,17 @@ def index_contexte(contexte):
     for c, membres in (contexte.get("classes_composants") or {}).items():
         for d in membres or ():
             classes_piece.setdefault(d, []).append(c)
+    # classes de paires différentielles (InDifferentialPairClass) : classes des paires de chaque réseau
+    classes_de_paire = {}
+    for c, membres in (contexte.get("classes_paires") or {}).items():
+        for pn in membres or ():
+            classes_de_paire.setdefault(pn, []).append(c)
+    classes_paire_reseau = {n: sorted({c for pn in ps for c in classes_de_paire.get(pn, ())})
+                            for n, ps in paires_reseau.items()}
     for p in contexte.get("pieces") or ():
         empreintes[p.get("designateur")] = p.get("empreinte") or ""
     return {"classes_reseau": classes_reseau, "paires": paires_reseau, "classes_piece": classes_piece,
+            "classes_paire": classes_paire_reseau,
             "empreintes": empreintes, "noms_fichier": dict(contexte.get("noms_couches_fichier") or {})}
 
 
@@ -642,6 +654,8 @@ def completer_profil(profil, index=None):
         f["classes_reseau"] = list(index["classes_reseau"].get(f["reseau"], ())) if f["reseau"] else []
     if "paires" not in f:
         f["paires"] = list(index["paires"].get(f["reseau"], ())) if f["reseau"] else []
+    if "classes_paire" not in f:
+        f["classes_paire"] = list(index.get("classes_paire", {}).get(f["reseau"], ())) if f["reseau"] else []
     if "classes_piece" not in f:
         f["classes_piece"] = list(index["classes_piece"].get(f["piece"], ())) if f["piece"] is not None else []
     if "empreinte" not in f:
@@ -1071,6 +1085,12 @@ def interpreter(regles, objets, contexte):
         "non_interpretees": non_int,
         "ignorees": ignorees,
     }
+    # champs facultatifs (24/11/2026) : écrits seulement s'ils portent quelque chose (entrées existantes inchangées)
+    for cle in ("longueurs_appariees", "longueurs"):
+        if autres[cle]:
+            regles_out[cle] = autres[cle]
+    if autres["mode_routage"] not in (None, "octogonal"):
+        regles_out["mode_routage"] = autres["mode_routage"]
     return {"regles": regles_out, "objets": res_objets, "couches": couches_res, "paires": paires,
             "avertissements": avert, "informations": info}
 
@@ -1119,7 +1139,8 @@ _LECTEURS_GLOBAUX = {
 
 def _autres_regles(par_type, ref, couches, pieces, index, contexte, non_int, avert):
     res = {"trou_trou": None, "garde_bord": None, "isolement_pieces": None, "connexion_plans": None,
-           "masque_serigraphie": None, "salles": [], "tolerances_longueur": {}}
+           "masque_serigraphie": None, "salles": [], "tolerances_longueur": {}, "longueurs_appariees": [],
+           "longueurs": [], "mode_routage": None}
     # All × All (contrôlé dans preparer_regles) : la plus prioritaire
     for t, cle in (("HoleToHoleClearance", "trou_trou"), ("ComponentClearance", "isolement_pieces")):
         ok = _lire_valeurs(par_type.get(t), lambda v: (_longueur_exigee(v.get("GAP"), "GAP"), None), non_int, avert)
@@ -1200,6 +1221,32 @@ def _regles_paires(par_type, contexte, index, couches, reseaux, non_int, avert, 
             if all(evaluer(r["arbre1"], profil_routeur(p.get(s), "piste", index, couches))
                    for s in ("positif", "negatif")):
                 autres["tolerances_longueur"].setdefault(p.get("nom"), r["valeur"])
-        if any(evaluer(r["arbre1"], profil_routeur(n, "piste", index, couches)) for n in reseaux if n not in dans_paire):
-            non_int.append(_non_interpretee(r, "longueurs appariées hors paires différentielles non prises en charge"))
+        # longueurs appariées hors paires (bus, horloges) : un groupe par règle, égalisé à la tolérance près
+        hors = [n for n in reseaux if n not in dans_paire
+                and evaluer(r["arbre1"], profil_routeur(n, "piste", index, couches))]
+        if len(hors) >= 2:
+            autres["longueurs_appariees"].append({"nom": r.get("nom") or "MatchedLengths", "reseaux": hors,
+                                                  "tolerance_mm": r["valeur"]})
+    # Length : longueur bornée par réseau (règle la plus prioritaire)
+    lr = _lire_valeurs(par_type.get("Length"),
+                       lambda v: ((longueur_mm(v.get("MINLIMIT")), longueur_mm(v.get("MAXLIMIT"))), None), non_int,
+                       avert)
+    for n in reseaux:
+        r = premiere_regle(lr, profil_routeur(n, "piste", index, couches))
+        if r is None:
+            continue
+        mn, mx = r["valeur"]
+        if (mn or 0.0) > 0.0 or (mx is not None and mx < 1e5):
+            autres["longueurs"].append({"reseau": n, "min_mm": mn if mn else None, "max_mm": mx})
+    # RoutingCorners : style des pistes de la carte (règle « All » la plus prioritaire ; arrondi non pris en charge)
+    rc = _lire_valeurs(par_type.get("RoutingCorners"), lambda v: (str(v.get("CORNERSTYLE") or ""), None), non_int, avert)
+    if rc:
+        style = rc[0]["valeur"].casefold()
+        if style.startswith("90"):
+            autres["mode_routage"] = "manhattan"
+        elif style.startswith("45"):
+            autres["mode_routage"] = "octogonal"
+        else:
+            autres["mode_routage"] = "octogonal"
+            avert.append(f"RoutingCorners {rc[0]['valeur']!r} : coins arrondis non pris en charge, pistes à 45°")
     return out

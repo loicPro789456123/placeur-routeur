@@ -550,6 +550,20 @@ pub struct Reseau {
 }
 
 #[derive(Clone, Debug)]
+pub struct LongueursAppariees {
+    pub nom: String,
+    pub reseaux: Vec<String>,
+    pub tolerance_mm: f64,
+}
+
+#[derive(Clone, Debug)]
+pub struct LongueurBornee {
+    pub reseau: String,
+    pub min_mm: Option<f64>,
+    pub max_mm: Option<f64>,
+}
+
+#[derive(Clone, Debug)]
 pub struct Isolement {
     pub defaut: f64,
     pub classes: Vec<String>,
@@ -577,6 +591,8 @@ pub struct Regles {
     pub plans_isolement_mm: f64,
     /// `relief` ou `direct`
     pub plans_connexion: String,
+    /// style des pistes demande par les regles de la carte (facultatif) : octogonal, manhattan ou libre
+    pub mode_routage: Option<String>,
 }
 
 #[derive(Clone, Debug)]
@@ -694,6 +710,10 @@ pub struct Donnees {
     pub charges: Vec<Charge>,
     pub groupes: Vec<Groupe>,
     pub paires: Vec<Paire>,
+    /// longueurs appariées hors paires (facultatif) : reseaux d'un groupe a egaliser a tolerance_mm pres
+    pub longueurs_appariees: Vec<LongueursAppariees>,
+    /// longueurs bornées par reseau (facultatif) : min_mm / max_mm (null = sans borne)
+    pub longueurs: Vec<LongueurBornee>,
     pub au_bord: Vec<AuBord>,
     pub masses: Vec<String>,
     pub parametres_deduction: Value,
@@ -1092,6 +1112,11 @@ fn lire_regles(c: &C) -> R<Regles> {
         via_dans_pastille_meme_reseau: c.f("via_dans_pastille_meme_reseau")?.booleen()?,
         plans_isolement_mm: cp.f("isolement")?.pos()?,
         plans_connexion: cp.f("connexion")?.parmi(&["relief", "direct"])?,
+        mode_routage: if c.a("mode_routage") && !c.f("mode_routage")?.null() {
+            Some(c.f("mode_routage")?.parmi(&["octogonal", "manhattan", "libre"])?)
+        } else {
+            None
+        },
     })
 }
 
@@ -1284,6 +1309,20 @@ pub fn lire(v: &Value) -> R<Donnees> {
                 tolerance_longueur_mm: e.f("tolerance_longueur_mm")?.nb_ou_null()?.unwrap_or(1.0).max(0.0),
             })
         })?,
+        longueurs_appariees: if r.a("longueurs_appariees") {
+            liste_de(&r, "longueurs_appariees", |e| {
+                Ok(LongueursAppariees { nom: e.f("nom")?.txt()?, reseaux: e.f("reseaux")?.textes()?, tolerance_mm: e.f("tolerance_mm")?.pos()? })
+            })?
+        } else {
+            Vec::new()
+        },
+        longueurs: if r.a("longueurs") {
+            liste_de(&r, "longueurs", |e| {
+                Ok(LongueurBornee { reseau: e.f("reseau")?.txt()?, min_mm: e.f("min_mm")?.nb_ou_null()?, max_mm: e.f("max_mm")?.nb_ou_null()? })
+            })?
+        } else {
+            Vec::new()
+        },
         au_bord: liste_de(&r, "au_bord", |e| {
             Ok(AuBord { piece: e.f("piece")?.txt()?, cote: e.f("cote")?.parmi(COTES)?, debord_mm: e.f("debord_mm")?.nb()? })
         })?,
@@ -1580,6 +1619,12 @@ fn references_croisees(mut d: Donnees) -> R<Donnees> {
     for (i, p) in d.paires.iter().enumerate() {
         r.reseau(&p.positif, false, || format!("donnees.paires[{}].positif", i))?;
         r.reseau(&p.negatif, false, || format!("donnees.paires[{}].negatif", i))?;
+    }
+    for (i, g) in d.longueurs_appariees.iter().enumerate() {
+        r.reseaux(&g.reseaux, &format!("donnees.longueurs_appariees[{}].reseaux", i))?;
+    }
+    for (i, l) in d.longueurs.iter().enumerate() {
+        r.reseau(&l.reseau, false, || format!("donnees.longueurs[{}].reseau", i))?;
     }
     for (i, a) in d.au_bord.iter().enumerate() {
         r.piece(&a.piece, || format!("donnees.au_bord[{}].piece", i))?;

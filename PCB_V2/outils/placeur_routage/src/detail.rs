@@ -23,12 +23,23 @@
 //! Bloc hacheur fige : son cuivre existant (cuivre_bloc_hacheur.json) est un obstacle pour les autres reseaux et
 //! une cible pour le sien ; un reseau qui touche le bloc est relie a n'importe quel cuivre du bloc du meme reseau.
 //! Couche dessus interdite sous le corps de L1 (regle du noeud SW).
+mod lissage;
+
 use crate::geom::*;
 use crate::globalr::{couche_mult, NCOUCHES};
 use std::cmp::Ordering;
 use std::collections::BinaryHeap;
 
 pub const P: f64 = 0.1;
+/// Style des pistes (`Modele::mode_routage`) : 0 octogonal (45°), 1 manhattan (90° seulement), 2 libre (tout angle au lissage).
+pub const MODE_OCTOGONAL: u8 = 0;
+/// Négociation : reroutage partiel des réseaux de plan en conflit (désactivé : mesure du 24/11/2026 sur 4005 et 3001,
+/// passe stricte 129 -> 150 s, connexions en échec 1 -> 5) ; descentes à moins de RAYON_CONFLIT_PLAN mm d'un
+/// noeud en conflit).
+const REROUTAGE_PLAN_PARTIEL: bool = false;
+const RAYON_CONFLIT_PLAN: f64 = 0.6;
+pub const MODE_MANHATTAN: u8 = 1;
+pub const MODE_LIBRE: u8 = 2;
 pub const H_DEF: f64 = 0.127;
 pub const DELTA: f64 = 0.02;
 /// marge ajoutee a tous les isolements (iteration 5 : un ecart de 0,199 mm a ete refuse par Altium)
@@ -137,6 +148,21 @@ impl KMap {
         let c = self.cnt[n] as u32;
         c == 0 || (self.s1[n] == c * k && self.s2[n] == (c as u64) * (k as u64) * (k as u64))
     }
+    /// Cellule libre pour `k`, ou occupée seulement par `k` et `j` (partenaire d'une paire différentielle).
+    #[inline]
+    fn ok2(&self, n: usize, k: u32, j: u32) -> bool {
+        if self.ok(n, k) || self.ok(n, j) {
+            return true;
+        }
+        let (c, s1, s2) = (self.cnt[n] as i64, self.s1[n] as i64, self.s2[n] as i128);
+        let (k, j) = (k as i64, j as i64);
+        if k == j || (s1 - c * k) % (j - k) != 0 {
+            return false;
+        }
+        let cj = (s1 - c * k) / (j - k);
+        let ck = c - cj;
+        ck >= 0 && cj >= 0 && (ck as i128) * (k as i128) * (k as i128) + (cj as i128) * (j as i128) * (j as i128) == s2
+    }
     #[inline]
     fn owner(&self, n: usize) -> Option<u32> {
         let c = self.cnt[n] as u32;
@@ -177,6 +203,8 @@ struct Ctx {
     coude: f32,
     /// multiplicateur de cout par couche (sensibilite / preference de couche)
     mult: [f32; 3],
+    /// pas diagonaux permis (faux en mode manhattan : pistes orthogonales seulement)
+    diag: bool,
 }
 
 /// Parametres de la passe d'espacement.
@@ -748,6 +776,13 @@ impl<'a> Detail<'a> {
     /// Reroutage partiel d'un reseau de plan : retire les descentes des pastilles donnees (et celles qui passent a
     /// moins de `rayon` des points donnes), garde les autres, reroute les pastilles concernees. Renvoie (succes, ancien).
     pub fn rerouter_plan_partiel(&mut self, g: usize, pads: &[(usize, usize)], zones: &[(f64, f64, f64)]) -> (bool, NetR) {
+        let old = self.rerouter_plan_zones(g, pads, zones, Mode::Strict);
+        let ok = self.nets[g].ko == 0;
+        (ok, old)
+    }
+
+    /// Corps de `rerouter_plan_partiel`, au mode de recherche donné ; rend l'ancien état du réseau.
+    fn rerouter_plan_zones(&mut self, g: usize, pads: &[(usize, usize)], zones: &[(f64, f64, f64)], mode: Mode) -> NetR {
         let old = self.nets[g].clone();
         let comps = self.composantes_plan(g);
         let mut a_router: Vec<(usize, usize)> = pads.to_vec();
@@ -795,9 +830,8 @@ impl<'a> Detail<'a> {
         self.nets[g] = base;
         self.commit_geom(g, gs, gv, Vec::new());
         a_router.retain(|&(i, k)| !self.m.comps[i].pads[k].th);
-        self.router_plan_pins(g, Mode::Strict, a_router);
-        let ok = self.nets[g].ko == 0;
-        (ok, old)
+        self.router_plan_pins(g, mode, a_router);
+        old
     }
 
     /// Annule un reroutage : remet exactement les anciens etats des reseaux.
@@ -818,22 +852,29 @@ impl<'a> Detail<'a> {
         let mut segs: Vec<Vec<SegD>> = vec![Vec::new(); self.m.nets.len()];
         let mut vias: Vec<Vec<ViaD>> = vec![Vec::new(); self.m.nets.len()];
         let mm = |x: &serde_json::Value| x.as_f64().unwrap_or(0.0) * MIL;
+        let [ox, oy] = self.m.origine;
+        let mx = |x: &serde_json::Value| mm(x) - ox;
+        let my = |x: &serde_json::Value| mm(x) - oy;
         for p in v["pistes"].as_array().cloned().unwrap_or_default() {
             let n = *idx.get(p["net_name"].as_str().unwrap_or("")).ok_or(format!("reseau inconnu {}", p["net_name"]))?;
-            let couche = match p["layer"].as_str() {
-                Some("TopLayer") => 0u8,
-                Some("BottomLayer") => 1,
-                _ => 2,
+            let nom_couche = p["layer"].as_str().unwrap_or("");
+            let couche = match self.m.noms_couches.iter().position(|c| c == nom_couche) {
+                Some(l) => l as u8,
+                None => match nom_couche {
+                    "TopLayer" => 0u8,
+                    "BottomLayer" => 1,
+                    _ => 2,
+                },
             };
             // largeur : valeur de classe la plus proche (les largeurs ecrites sont arrondies vers le haut au 1/1000 mil)
             let w = mm(&p["width"]);
             let lg = self.larg(n);
             let wq = lg.w.iter().copied().find(|c| (c - w).abs() < 0.001).unwrap_or(w);
-            segs[n].push(SegD { x1: mm(&p["x1"]), y1: mm(&p["y1"]), x2: mm(&p["x2"]), y2: mm(&p["y2"]), w: wq, couche });
+            segs[n].push(SegD { x1: mx(&p["x1"]), y1: my(&p["y1"]), x2: mx(&p["x2"]), y2: my(&p["y2"]), w: wq, couche });
         }
         for q in v["vias"].as_array().cloned().unwrap_or_default() {
             let n = *idx.get(q["net"].as_str().unwrap_or("")).ok_or(format!("reseau inconnu {}", q["net"]))?;
-            vias[n].push(ViaD { x: mm(&q["x"]), y: mm(&q["y"]) });
+            vias[n].push(ViaD { x: mx(&q["x"]), y: my(&q["y"]) });
         }
         // les amorces eventuelles du constructeur sont deja dans le routage charge
         self.amorces.clear();
@@ -1499,6 +1540,7 @@ impl<'a> Detail<'a> {
             prox: 0.0,
             coude: 0.0,
             mult: couche_mult(&self.m.nets[n]),
+            diag: self.m.mode_routage != MODE_MANHATTAN,
         }
     }
 
@@ -1767,6 +1809,9 @@ impl<'a> Detail<'a> {
                     let (x, y) = (c % s.nx, c / s.nx);
                     let dx = if x < bb[0] { bb[0] - x } else if x > bb[2] { x - bb[2] } else { 0 } as f32;
                     let dy = if y < bb[1] { bb[1] - y } else if y > bb[3] { y - bb[3] } else { 0 } as f32;
+                    if !ctx.diag {
+                        return (dx + dy) * pf;
+                    }
                     let (a, b) = if dx > dy { (dx, dy) } else { (dy, dx) };
                     (a - b + std::f32::consts::SQRT_2 * b) * pf
                 }
@@ -1832,6 +1877,9 @@ impl<'a> Detail<'a> {
             }
             let di = self.din[n];
             for (d, &(dx, dy)) in DIRS.iter().enumerate() {
+                if !ctx.diag && d % 2 == 1 {
+                    continue;
+                }
                 let (u, v) = (x + dx, y + dy);
                 if u < 0 || v < 0 || u >= nx || v >= ny {
                     continue;
@@ -2507,12 +2555,24 @@ impl<'a> Detail<'a> {
         let t0 = std::time::Instant::now();
         let ordre = self.a_router();
         let mut en_conflit: Vec<usize> = ordre.clone();
+        // reseaux de plan en conflit : seules les descentes proches des noeuds en conflit sont rerouees (lot
+        // « vitesse » du 24/11/2026 : le plan entier etait reroute a chaque conflit, la moitie des recherches)
+        let mut zones_plan: std::collections::BTreeMap<usize, Vec<(f64, f64, f64)>> = std::collections::BTreeMap::new();
         for it in 0..iters_pf {
+            if crate::campagne::arret_global() {
+                break;
+            }
             self.pres = (0.5 * 1.25f32.powi(it as i32)).min(100.0);
             for &n in &en_conflit {
+                if let Some(z) = zones_plan.get(&n).filter(|z| REROUTAGE_PLAN_PARTIEL && !z.is_empty()) {
+                    let z = z.clone();
+                    self.rerouter_plan_zones(n, &[], &z, Mode::Negocie);
+                    continue;
+                }
                 self.arracher(n);
                 self.router(n, Mode::Negocie);
             }
+            zones_plan.clear();
             en_conflit.clear();
             let mut noeuds_conf = 0usize;
             for &n in &ordre {
@@ -2521,6 +2581,13 @@ impl<'a> Detail<'a> {
                     noeuds_conf += c.len();
                     for &nd in &c {
                         self.hist[nd as usize] += HINC;
+                    }
+                    if self.m.nets[n].plan {
+                        let z: Vec<(f64, f64, f64)> = c.iter().map(|&nd| {
+                            let (x, y) = self.node_xy(nd as usize);
+                            (x, y, RAYON_CONFLIT_PLAN)
+                        }).collect();
+                        zones_plan.insert(n, z);
                     }
                     if !en_conflit.contains(&n) {
                         en_conflit.push(n);
@@ -2553,6 +2620,9 @@ impl<'a> Detail<'a> {
         journal(format!("  passe stricte : {} connexions en echec ({:.0} s depuis le debut)", self.total_ko(), t0.elapsed().as_secs_f64()));
         let mut meilleur = (self.total_ko(), self.instantane());
         for tour in 0..tours {
+            if crate::campagne::arret_global() {
+                break;
+            }
             let echecs: Vec<usize> = ordre.iter().copied().filter(|&n| self.nets[n].ko > 0 && self.rips[n] < RIPS_MAX).collect();
             if echecs.is_empty() {
                 break;
@@ -2813,6 +2883,9 @@ impl<'a> Detail<'a> {
         let avant = self.total_ko();
         self.proteger_plans = true;
         for tour in 0..4 {
+            if crate::campagne::arret_global() {
+                break;
+            }
             let echecs: Vec<usize> = (0..self.nets.len()).filter(|&n| self.nets[n].ko > 0 && !self.m.nets[n].plan).collect();
             if echecs.is_empty() {
                 break;
@@ -3558,6 +3631,48 @@ pub(crate) mod tests {
             d.regles.isolement.pieces_pas_fin = vec!["A".into(), "B".into()];
         }
         d
+    }
+
+    /// Lot du 24/11/2026 : accord des longueurs (méandres), lissage et mode manhattan sur la carte croisée.
+    #[test]
+    fn accord_lissage_et_manhattan() {
+        let d = carte_croisee(1.0, 0.3, false, false);
+        let mut m = Modele::new(&d, Parametres::defaut());
+        let e = m.etat_v3();
+        let (a, b) = (m.nets.iter().position(|n| n.nom == "S0").unwrap(), m.nets.iter().position(|n| n.nom == "S1").unwrap());
+        // accord : S0 et S1 a 0,1 mm pres (le plus court recoit des meandres), sans aucun recouvrement
+        m.groupes_longueur = vec![(vec![a, b], 0.1, false)];
+        let mut dt = Detail::new(&m, &e);
+        dt.tout(5, 1, &esp_off(), &mut |_| {});
+        assert_eq!(dt.total_ko(), 0);
+        let (la, lb) = (dt.longueur_pistes(a), dt.longueur_pistes(b));
+        let (allonges, restants) = dt.accorder();
+        let (la2, lb2) = (dt.longueur_pistes(a), dt.longueur_pistes(b));
+        eprintln!("accord : S0 {:.2} -> {:.2}, S1 {:.2} -> {:.2}", la, la2, lb, lb2);
+        if (la - lb).abs() > 0.1 {
+            assert!(allonges >= 1 && restants == 0, "accord : {} -> {} / {} -> {} ({} {})", la, la2, lb, lb2, allonges, restants);
+            assert!((la2 - lb2).abs() <= 0.1 + 1e-9);
+        }
+        let ordre = dt.a_router();
+        assert_eq!(ordre.iter().map(|&n| dt.conflits(n).0.len()).sum::<usize>(), 0, "meandres en recouvrement");
+        // lissage : jamais plus long, jamais de recouvrement
+        let avant: f64 = (0..dt.nets.len()).map(|n| dt.longueur_pistes(n)).sum();
+        dt.lisser(MODE_OCTOGONAL);
+        let apres: f64 = (0..dt.nets.len()).map(|n| dt.longueur_pistes(n)).sum();
+        assert!(apres <= avant + 1e-9);
+        assert_eq!(ordre.iter().map(|&n| dt.conflits(n).0.len()).sum::<usize>(), 0, "lissage en recouvrement");
+        // manhattan : aucun segment diagonal
+        let mut m2 = Modele::new(&d, Parametres::defaut());
+        m2.mode_routage = MODE_MANHATTAN;
+        let mut d2 = Detail::new(&m2, &e);
+        d2.tout(5, 1, &esp_off(), &mut |_| {});
+        d2.lisser(MODE_MANHATTAN);
+        assert_eq!(d2.total_ko(), 0);
+        for r in &d2.nets {
+            for s in &r.segs {
+                assert!((s.x1 - s.x2).abs() < 1e-6 || (s.y1 - s.y2).abs() < 1e-6, "segment diagonal en manhattan");
+            }
+        }
     }
 
     fn router_carte(d: &crate::donnees_v1::Donnees, cache: bool) -> (serde_json::Value, usize, usize) {

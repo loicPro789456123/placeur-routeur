@@ -147,15 +147,18 @@ const OPTS_CAMPAGNE: &[SpecOption] = &[
     opt("--threads", true),
     opt("--evenements", false),
     opt("--arret", true),
+    opt("--mode-routage", true),
 ];
 const OPTS_ROUTER: &[SpecOption] = &[
     opt("--donnees", true),
     opt("--placement", true),
+    opt("--routage-initial", true),
     opt("--sortie", true),
     opt("--parametres", true),
     opt("--threads", true),
     opt("--evenements", false),
     opt("--arret", true),
+    opt("--mode-routage", true),
 ];
 const OPTS_VERIFIER: &[SpecOption] = &[
     opt("--donnees", true),
@@ -215,15 +218,16 @@ const SUPPRIMEES: &[(&str, &str)] = &[
 
 const USAGE: &str = "\
 Usage :
-  placeur_routage campagne --donnees F --sortie D --graine N [--parametres P] [--threads T] [--evenements] [--arret FICHIER]
-  placeur_routage router   --donnees F --placement F --sortie D [--parametres P] [--threads T] [--evenements] [--arret FICHIER]
+  placeur_routage campagne --donnees F --sortie D --graine N [--parametres P] [--threads T] [--evenements] [--arret FICHIER] [--mode-routage M]
+  placeur_routage router   --donnees F --placement F --sortie D [--parametres P] [--threads T] [--evenements] [--arret FICHIER] [--mode-routage M] [--routage-initial F]
   placeur_routage verifier --donnees F --placement F --routage F [--couture F] [--mode strict|altium] [--sans-grille] --sortie F
   placeur_routage parametres-defaut [--qualite apercu|rapide|normal|soigne]
   placeur_routage estimer --donnees F [--parametres P]
   placeur_routage etalonner
   placeur_routage --version
 Tout le réglage du moteur est dans le fichier --parametres (format parametres_moteur/1) ;
-« placeur_routage parametres-defaut » en donne le contenu complet.";
+« placeur_routage parametres-defaut » en donne le contenu complet.
+--mode-routage M (auto, octogonal, manhattan, libre, multi) remplace routage.mode du fichier --parametres.";
 
 /// Texte sûr à recopier dans un message (jamais un chemin) : court, lettres, chiffres et `-_.+` seulement.
 fn sur(s: &str) -> Option<&str> {
@@ -477,7 +481,16 @@ fn commande(args: &[String], out: &mut dyn Write, err: &mut dyn Write, crochets:
             let graine = entier(&o, "--graine", u32::MAX as u64)?;
             let threads = entier(&o, "--threads", FILS_MAX as u64)?;
             // paramètres d'abord (le nombre de fils peut en venir), puis les entrées, lues dans le pool
-            let (lus, sha_parametres, nom_parametres) = lire_parametres(&o)?;
+            let (mut lus, sha_parametres, nom_parametres) = lire_parametres(&o)?;
+            if let Some(mode) = valeur(&o, "--mode-routage") {
+                if !parametres::MODES_ROUTAGE.contains(&mode) {
+                    return Err(format!("--mode-routage : « {} » inconnu ; modes : {}", sur(mode).unwrap_or("?"), parametres::MODES_ROUTAGE.join(", ")).into());
+                }
+                lus.parametres.routage.mode = mode.to_string();
+                if let Some(r) = lus.valeur.get_mut("routage").and_then(Value::as_object_mut) {
+                    r.insert("mode".to_string(), Value::String(mode.to_string()));
+                }
+            }
             for a in &lus.avertissements {
                 let _ = writeln!(err, "avertissement : {}", a);
             }
@@ -531,6 +544,7 @@ fn commande(args: &[String], out: &mut dyn Write, err: &mut dyn Write, crochets:
                     connexions: estimation::connexions(&d),
                     evenements: o.contains_key("--evenements"),
                     arret: valeur(&o, "--arret").map(std::path::PathBuf::from),
+                    routage_initial: valeur(&o, "--routage-initial").map(std::path::PathBuf::from),
                 };
                 let code = moteur::executer(&en, graine, poses, Path::new(valeur(&o, "--sortie").unwrap_or_default()))?;
                 Ok((Value::String(texte), Vec::new(), code))

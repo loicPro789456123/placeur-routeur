@@ -669,11 +669,11 @@ class _Construction:
                                  "ecart_mm": p.get("ecart"), "largeur_mm": p.get("largeur")}
         for i, p in enumerate(C.liste("paires", C.ct.get("paires", []))):
             ch = f"paires[{i}]"
-            C.cles(ch, p, ("nom", "positif", "negatif", "ecart_mm", "largeur_mm"), ("nom",))
+            C.cles(ch, p, ("nom", "positif", "negatif", "ecart_mm", "largeur_mm", "tolerance_longueur_mm"), ("nom",))
             nom = C.texte(f"{ch}.nom", p["nom"])
             x = par_nom.get(nom)
             if x is None:
-                C.cles(ch, p, ("nom", "positif", "negatif", "ecart_mm", "largeur_mm"), ("nom", "positif", "negatif"))
+                C.cles(ch, p, ("nom", "positif", "negatif", "ecart_mm", "largeur_mm", "tolerance_longueur_mm"), ("nom", "positif", "negatif"))
                 x = par_nom[nom] = {"nom": nom, "positif": "", "negatif": "", "ecart_mm": None, "largeur_mm": None}
             for k in ("positif", "negatif"):
                 if k in p:
@@ -681,8 +681,29 @@ class _Construction:
             for k in ("ecart_mm", "largeur_mm"):
                 if k in p:
                     x[k] = C.nombre(f"{ch}.{k}", p[k], 0.0, strict=True)
-        tol = self.rg.get("tolerances_longueur") or {}
+        tol = dict(self.rg.get("tolerances_longueur") or {})
+        for i, p in enumerate(C.ct.get("paires", []) or []):
+            if isinstance(p, dict) and "tolerance_longueur_mm" in p:
+                tol[p.get("nom")] = C.nombre(f"paires[{i}].tolerance_longueur_mm", p["tolerance_longueur_mm"], 0.0)
         self.paires = [dict(x, tolerance_longueur_mm=tol.get(x["nom"])) for x in par_nom.values()]
+        # longueurs appariées hors paires et longueurs bornées : règles de la carte, puis contraintes (par nom /
+        # par réseau, la contrainte remplace la règle)
+        groupes = {g["nom"]: dict(g) for g in (self.rg.get("longueurs_appariees") or [])}
+        for i, g in enumerate(C.liste("longueurs_appariees", C.ct.get("longueurs_appariees", []))):
+            ch = f"longueurs_appariees[{i}]"
+            C.cles(ch, g, ("nom", "reseaux", "tolerance_mm"), ("nom", "reseaux", "tolerance_mm"))
+            groupes[C.texte(f"{ch}.nom", g["nom"])] = {
+                "nom": g["nom"], "reseaux": [C.reseau(f"{ch}.reseaux", n) for n in g["reseaux"]],
+                "tolerance_mm": C.nombre(f"{ch}.tolerance_mm", g["tolerance_mm"], 0.0)}
+        self.longueurs_appariees = list(groupes.values())
+        bornes = {b["reseau"]: dict(b) for b in (self.rg.get("longueurs") or [])}
+        for i, b in enumerate(C.liste("longueurs", C.ct.get("longueurs", []))):
+            ch = f"longueurs[{i}]"
+            C.cles(ch, b, ("reseau", "min_mm", "max_mm"), ("reseau",))
+            n = C.reseau(f"{ch}.reseau", b["reseau"])
+            bornes[n] = {"reseau": n, "min_mm": b.get("min_mm"), "max_mm": b.get("max_mm")}
+        self.longueurs = list(bornes.values())
+        self.mode_routage = C.ct.get("mode_routage") or self.rg.get("mode_routage")
         self.paire_de = {}
         for x in self.paires:
             self.paire_de.setdefault(x["positif"], x["nom"])
@@ -1803,10 +1824,13 @@ class _Construction:
                        "placement": {"grille_mm": self.grille, "marge_piece_mm": self.marge_piece,
                                      "marge_traversante_mm": self.marge_traversante},
                        "via_dans_pastille_meme_reseau": self.via_meme_reseau,
-                       "connexion_plans": {"isolement": cp.get("isolement"), "connexion": cp.get("connexion")}},
+                       "connexion_plans": {"isolement": cp.get("isolement"), "connexion": cp.get("connexion")},
+                       **({"mode_routage": self.mode_routage} if self.mode_routage else {})},
             "convertisseurs": self.convs, "sans_piste_dessous": self.sans_piste, "decouplages": self.decouplages,
             "eloignements": self.eloignements, "charges": self.charges, "groupes": self.groupes,
             "paires": self.paires, "au_bord": self.au_bord, "masses": self.masses,
+            **({"longueurs_appariees": self.longueurs_appariees} if self.longueurs_appariees else {}),
+            **({"longueurs": self.longueurs} if self.longueurs else {}),
             "parametres_deduction": {
                 "pas_fin_mm": self.pas_fin, "faces_par_defaut": self.faces_defaut,
                 "faces_par_defaut_effectif": self.faces_effectif, "hauteur_max_dessus_mm": self.hmax[False],
@@ -1887,7 +1911,10 @@ _REGLES = {
     "connexion_plans": ("?", {"isolement": "positif", "connexion": ("choix", ("relief", "direct"))}),
     "salles": ("liste", {"nom": "texte", "pieces": ("liste", "texte"), "polygone": ("liste", "point"),
                          "face": ("?", "texte")}),
-    "tolerances_longueur": ("dict", "positif")}
+    "tolerances_longueur": ("dict", "positif"),
+    "~longueurs_appariees": ("liste", {"nom": "texte", "reseaux": ("liste", "texte"), "tolerance_mm": "positif"}),
+    "~longueurs": ("liste", {"reseau": "texte", "min_mm": ("?", "positif"), "max_mm": ("?", "positif")}),
+    "~mode_routage": ("?", ("choix", ("octogonal", "manhattan", "libre")))}
 _ENTREE = {
     "source": {"type": ("choix", ("altium_pcbdoc", "kicad_pcb")), "origine_fichier_mil": ("?", "point"),
                "origine_fichier_mm": ("?", "point"), "origine_cao_mil": ("?", "point")},

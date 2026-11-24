@@ -1502,12 +1502,15 @@ MODELE_CONTRAINTES = {
     "couche_preferee_par_nom": (False, "active la règle R-C6"),
     "roles": ({}, "surcharges des rôles des réseaux (motifs)"),
     "reseaux": ({}, "surcharges par réseau (role, largeurs_mm, couche_preferee…)"),
-    "paires": ([], "paires différentielles"),
+    "paires": ([], "paires différentielles (tolerance_longueur_mm : écart de longueur admis)"),
+    "longueurs_appariees": ([], "groupes de réseaux à longueurs égales : [{\"nom\", \"reseaux\", \"tolerance_mm\"}]"),
+    "longueurs": ([], "longueurs bornées : [{\"reseau\", \"min_mm\", \"max_mm\"}]"),
     "eloignements": ([], "distances minimales à un point de référence"),
     "charges": ([], "charges des chutes de tension : [{\"broche\", \"courant_a\"}]"),
     "convertisseurs": ({}, "surcharges des convertisseurs : {\"ajouter\", \"modifier\", \"supprimer\"}"),
 }
 MODELE_DEPENDANTS = {
+    "mode_routage": "règle RoutingCorners de la carte, sinon octogonal (octogonal, manhattan ou libre)",
     "hauteur_max_dessus_mm": "règle Height du fichier, sinon aucune",
     "hauteur_max_dessous_mm": "règle Height du fichier, sinon 3,0",
     "via_sous_cms_permis": "règle ViasUnderSMD du fichier",

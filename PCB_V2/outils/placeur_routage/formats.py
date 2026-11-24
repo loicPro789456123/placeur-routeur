@@ -102,7 +102,7 @@ CLES_CONTRAINTES = (
     "zones_autour", "marge_bord_mm", "marge_decoupe_mm", "garde_bord_mm", "garde_decoupe_mm", "garde_trou_mm",
     "marge_piece_mm", "marge_traversante_mm", "grille_placement_mm", "rayon_interdit_trou_mm",
     "trous_supplementaires", "cuivre_a_garder", "couches", "couche_preferee_par_nom", "roles", "reseaux", "paires",
-    "eloignements", "charges", "convertisseurs", "regles",
+    "longueurs_appariees", "longueurs", "mode_routage", "eloignements", "charges", "convertisseurs", "regles",
 )
 """Clés de premier niveau de contraintes/2 (§2.3)."""
 
@@ -905,6 +905,9 @@ ENTREE_CARTE = Obj({
         "salles": Liste(Obj({"nom": TXT, "pieces": Liste(PIECE), "polygone": POLY,
                              "face": Enum("dessus", "dessous", "toutes")})),
         "tolerances_longueur": Dico(NBP, cle=PAIRE),
+        "longueurs_appariees": Fac(Liste(Obj({"nom": TXT, "reseaux": Liste(RESEAU), "tolerance_mm": NBP}))),
+        "longueurs": Fac(Liste(Obj({"reseau": RESEAU, "min_mm": Nul(NBP), "max_mm": Nul(NBP)}))),
+        "mode_routage": Fac(Nul(Enum("octogonal", "manhattan", "libre"))),
         "non_interpretees": Liste(Obj({"type": TXT, "nom": TXT, "portee1": TXT, "portee2": TXT, "cause": TXT})),
         "ignorees": Liste(TXT)}),
     "avertissements": Liste(TXT)})
@@ -965,7 +968,8 @@ DONNEES_PLACEUR = Obj({
     "regles": Obj({"isolement": ISOLEMENT, "via": VIA_REGLE, "trou_trou_mm": NBP, "garde_trou_mm": NBP,
                    "placement": Obj({"grille_mm": NB, "marge_piece_mm": NBP, "marge_traversante_mm": NBP}),
                    "via_dans_pastille_meme_reseau": BOOL,
-                   "connexion_plans": Obj({"isolement": NBP, "connexion": Enum("relief", "direct")})},
+                   "connexion_plans": Obj({"isolement": NBP, "connexion": Enum("relief", "direct")}),
+                   "mode_routage": Fac(Nul(Enum("octogonal", "manhattan", "libre")))},
                   supprimes=("rayon_trou_m3", "largeurs", "via_sous_cms_permis")),
     "convertisseurs": Liste(CONVERTISSEUR),
     "sans_piste_dessous": Liste(PIECE),
@@ -984,6 +988,8 @@ DONNEES_PLACEUR = Obj({
                                         "correspondance_reseaux": Liste(Liste(RESEAU))}}))),
     "paires": Liste(Obj({"nom": TXT, "positif": RESEAU, "negatif": RESEAU, "ecart_mm": Nul(NBP),
                          "largeur_mm": Nul(NBP), "tolerance_longueur_mm": Nul(NBP)})),
+    "longueurs_appariees": Fac(Liste(Obj({"nom": TXT, "reseaux": Liste(RESEAU), "tolerance_mm": NBP}))),
+    "longueurs": Fac(Liste(Obj({"reseau": RESEAU, "min_mm": Nul(NBP), "max_mm": Nul(NBP)}))),
     "au_bord": Liste(Obj({"piece": PIECE, "cote": Enum("gauche", "droite", "haut", "bas", "quelconque"),
                           "debord_mm": NBP})),
     "masses": Liste(RESEAU),
@@ -1047,7 +1053,7 @@ def _schema_verdict(dans_stats):
         "derogations": Obj({"via_dans_pastille_meme_reseau": N}),
         "avertissements": Obj({"pistes_sous_pieces_sans_piste_dessous": N, "angles_aigus": N,
                                "paires_desequilibrees": N, "regles_non_couvertes": N,
-                               "zones_plan_isolees": Fac(N)}),
+                               "zones_plan_isolees": Fac(N), "longueurs_hors_tolerance": Fac(N)}),
         "reseaux_a_router": N, "reseaux_complets": N, "marge_isolement_min_mm": Nul(NB),
         "marge_isolement_min_paire": TXT,
         "mesures": Obj({"ecart_moyen_mm": NB, "ecart_min_mm": Nul(NB), "coudes": N, "coudes_90": N,
@@ -1065,7 +1071,8 @@ def _schema_parametres(complet):
     clé la plus proche. Les valeurs par défaut ne sont pas ici : elles viennent du moteur (« parametres-defaut ») et
     de corpus/schemas/parametres_moteur.defaut.json, extrait du contrat (corpus/schemas/extraire_parametres.py)."""
     def S(champs, facultatifs=()):
-        return Obj({k: (Fac(s) if not complet or k in facultatifs else s) for k, s in champs.items()},
+        return Obj({k: (Fac(s) if (not complet or k in facultatifs) and not isinstance(s, Fac) else s)
+                    for k, s in champs.items()},
                    strict=None if complet else "parametres")
 
     auto_ou_mm = Ou("« auto » ou nombre ≥ 0", Enum("auto"), NBP)
@@ -1096,6 +1103,8 @@ def _schema_parametres(complet):
                       "eventail_auto": BOOL, "eventail_pas_sortie_mm": auto_ou_mm, "eventail_longueur_mm": NBP,
                       "amorce_eventail_paires": BOOL, "amorce_moyenne": BOOL, "ponts_plans": BOOL,
                       "rayon_via_plan_mm": NBP, "fenetre_mm": NBP,
+                      "mode": Fac(Enum("auto", "octogonal", "manhattan", "libre", "multi", "plus_court", "diagonale_45")),
+                      "modes_multi": Fac(Liste(Enum("octogonal", "manhattan", "libre"))),
                       "espacement": S({"actif": BOOL, "prox": NBP, "coude": NBP, "allongement_max": NBP}),
                       "sens_par_couche": S({"actif": BOOL, "penalite": NBP}), "copier_motifs": BOOL,
                       "global": S({"cout_via": NBP, "penalite_via": NBP, "penalite_debordement": NBP,
@@ -1134,6 +1143,7 @@ STATS = Obj({
                   "placement invalide", "non route", "non verifie"),
     "piece": Nul(TXT), "raison": Nul(TXT), "validite": Nul(_schema_verdict(True)), "cout_commun": Nul(NB),
     "connexions_echouees_routeur": N, "echecs": Liste(TXT),
+    "mode_routage": Fac(Enum("octogonal", "manhattan", "libre")),
     "recuit": Obj({"cout_depart": NB, "cout": NB, "t0": NBP, "acceptation_initiale": PART, "paliers": N,
                    "rechauffes": N, "mouvements": N, "hpwl_depart": NBP, "hpwl": NBP,
                    "exploration": Fac(Obj({"paliers": N, "mouvements": N, "hpwl": NBP, "cout": NB}))}),
@@ -1314,7 +1324,10 @@ _CHAMPS_CONTRAINTES = {
                         "couche_preferee": Fac(TXT), "couches_permises": Fac(Liste(TXT, mini=1)),
                         "descente_large": Fac(BOOL)})),
     "paires": Liste(_M({"nom": TXT, "positif": TXT, "negatif": TXT, "ecart_mm": Fac(NBP),
-                        "largeur_mm": Fac(NBP)})),
+                        "largeur_mm": Fac(NBP), "tolerance_longueur_mm": Fac(NBP)})),
+    "longueurs_appariees": Liste(_M({"nom": TXT, "reseaux": Liste(TXT, mini=2), "tolerance_mm": NBP})),
+    "longueurs": Liste(_M({"reseau": TXT, "min_mm": Fac(Nul(NBP)), "max_mm": Fac(Nul(NBP))})),
+    "mode_routage": Enum("octogonal", "manhattan", "libre"),
     "eloignements": Liste(_M({"type": Enum("dure", "souple"), "objets": Liste(TXT, mini=1),
                               "reference": Liste(DES, mini=1), "distance_mm": NBP, "poids_par_mm": Fac(NBP),
                               "marge_mm": Fac(NBP)})),

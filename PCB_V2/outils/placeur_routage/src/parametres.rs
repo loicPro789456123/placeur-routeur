@@ -152,6 +152,10 @@ const BOOL: Genre = Genre::Booleen;
 pub const ROLES: &[&str] = &["signal", "alimentation", "puissance", "commutation", "plan"];
 pub const CONDITIONS: &[&str] = &["preferee_puissance", "adjacente_plan", "face_convertisseur", "externe", "interne"];
 pub const ARRET_APRES: &[&str] = &["recuit", "routage", "complet"];
+/// `routage.mode` : style des pistes (auto = règle `regles.mode_routage` des données, sinon octogonal).
+pub const MODES_ROUTAGE: &[&str] = &["auto", "octogonal", "manhattan", "libre", "multi", "plus_court", "diagonale_45"];
+/// Modes essayés par `routage.mode` = multi.
+pub const MODES_SIMPLES: &[&str] = &["octogonal", "manhattan", "libre"];
 pub const DEBUG: &[&str] = &["marge", "amorces", "conjointe"];
 /// Niveaux du journal (décision du lot A : l'annexe C ne montre que « normal »).
 pub const NIVEAUX_JOURNAL: &[&str] = &["normal", "detaille"];
@@ -235,6 +239,8 @@ const ROUTAGE: &[Cle] = &[
     c("ponts_plans", BOOL, "false"),
     c("rayon_via_plan_mm", nb(LONGUEUR_MM), "6.0"),
     c("fenetre_mm", nb(LONGUEUR_MM), "15.0"),
+    c("mode", Genre::Choix(MODES_ROUTAGE), "\"auto\""),
+    c("modes_multi", Genre::ListeChoix(MODES_SIMPLES), "[\"octogonal\", \"manhattan\", \"libre\"]"),
     objet("espacement", ESPACEMENT),
     objet_res("sens_par_couche", SENS_PAR_COUCHE),
     c_res("copier_motifs", BOOL, "false"),
@@ -254,7 +260,7 @@ const FINITION: &[Cle] = &[
     c("routage_complet_iters", ent(0, 10000), "80"),
     c("routage_complet_tours", ent(0, 10000), "8"),
     c("verification_reparer_tours", ent(0, 10000), "2"),
-    c_res("lissage_marches", BOOL, "false"),
+    c("lissage_marches", BOOL, "true"),
     objet_res("surfaces_puissance", SURFACES_PUISSANCE),
 ];
 
@@ -1139,6 +1145,8 @@ pub struct Routage {
     pub ponts_plans: bool,
     pub rayon_via_plan_mm: f64,
     pub fenetre_mm: f64,
+    pub mode: String,
+    pub modes_multi: Vec<String>,
     pub espacement: Espacement,
     pub sens_par_couche: SensParCouche,
     pub copier_motifs: bool,
@@ -1386,12 +1394,13 @@ pub(crate) mod tests {
              "pas_grille_detail_mm": "auto", "largeur_plancher_mm": 0.254, "eventail_auto": true,
              "eventail_pas_sortie_mm": "auto", "eventail_longueur_mm": 0.3, "amorce_eventail_paires": false,
              "amorce_moyenne": false, "ponts_plans": false, "rayon_via_plan_mm": 6.0, "fenetre_mm": 15.0,
+             "mode": "auto", "modes_multi": ["octogonal", "manhattan", "libre"],
              "espacement": {"actif": true, "prox": 1.0, "coude": 0.3, "allongement_max": 0.15},
              "sens_par_couche": {"actif": false, "penalite": 0.2}, "copier_motifs": false,
              "global": {"cout_via": 2.0, "penalite_via": 2.0, "penalite_debordement": 5.0, "penalite_echec": 100.0,
                         "max_expansions": 250000, "rayon_echappement_cellules": 8}},
  "finition": {"reparer_tours": 4, "reparer_si_echecs_max": null, "routage_complet": false, "routage_complet_iters": 80,
-              "routage_complet_tours": 8, "verification_reparer_tours": 2, "lissage_marches": false,
+              "routage_complet_tours": 8, "verification_reparer_tours": 2, "lissage_marches": true,
               "surfaces_puissance": {"actif": false, "roles": ["puissance", "commutation"], "largeur_min_mm": 1.0}},
  "conjointe": {"essais": null, "essais_par_piece_mobile": 6.0, "plafond_s": 1800, "t0": 3.0, "t_fin": 0.05,
                "sigma_mm": 1.5, "poids_proximite": 1.0, "periode_zone": 40, "max_expansions": 200000},

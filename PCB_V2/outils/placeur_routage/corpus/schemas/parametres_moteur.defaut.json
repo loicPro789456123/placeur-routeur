@@ -58,6 +58,12 @@
   "ponts_plans": false,
   "rayon_via_plan_mm": 6.0,
   "fenetre_mm": 15.0,
+  "mode": "auto",
+  "modes_multi": [
+   "octogonal",
+   "manhattan",
+   "libre"
+  ],
   "espacement": {
    "actif": true,
    "prox": 1.0,
@@ -85,7 +91,7 @@
   "routage_complet_iters": 80,
   "routage_complet_tours": 8,
   "verification_reparer_tours": 2,
-  "lissage_marches": false,
+  "lissage_marches": true,
   "surfaces_puissance": {
    "actif": false,
    "roles": [

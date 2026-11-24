@@ -103,7 +103,7 @@ pub fn chaine(base: &Detail, graine: u64, p: &ParamConj, journal: &(dyn Fn(Strin
     loop {
         let el = t_start.elapsed().as_secs_f64();
         // budget en essais ; la duree n'est qu'un plafond (avenant 2.2, A.1)
-        if essais >= p.essais || el > p.budget_s || mobiles.is_empty() {
+        if essais >= p.essais || el > p.budget_s || mobiles.is_empty() || crate::campagne::arret_global() {
             break;
         }
         // temperature indexee sur les essais

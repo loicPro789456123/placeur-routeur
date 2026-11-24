@@ -23,5 +23,5 @@
  },
  "corpus_graines": 10,
  "corpus_qualite": "normal",
- "lancement": "correctif de la régression run_40 : zone autour réduite par une pièce fixe déplacée ; largeurs jamais sous le minimum de la règle"
+ "lancement": "moteur du 24/11 : recuit long par défaut (alpha 0,996), lissage des marches, styles de pistes, accord des longueurs"
 }

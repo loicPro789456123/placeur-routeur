@@ -94,6 +94,19 @@ impl Fin {
     }
 }
 
+/// Fichier d'arret de l'execution (`--arret`), vu aussi a l'interieur des phases longues (recuit, negociation,
+/// phase conjointe) : sans lui, un arret demande attendait la fin de la phase (recuit long : plusieurs minutes).
+static FICHIER_ARRET: std::sync::OnceLock<Option<std::path::PathBuf>> = std::sync::OnceLock::new();
+
+pub fn fixer_fichier_arret(f: Option<std::path::PathBuf>) {
+    let _ = FICHIER_ARRET.set(f);
+}
+
+/// Arret demande (fichier `--arret` present).
+pub fn arret_global() -> bool {
+    FICHIER_ARRET.get().and_then(|f| f.as_ref()).map(|f| f.exists()).unwrap_or(false)
+}
+
 /// Contexte d'execution : journal, demande d'arret, evenements, chronometre.
 pub struct Contexte<'c> {
     pub journal: &'c mut dyn FnMut(String),
@@ -437,6 +450,22 @@ pub fn run_campagne<'a>(m: &'a Modele, graine: u64, cx: &mut Contexte) -> Bilan<
     bilan.etat = Some(d.e.clone());
     bilan.detail = Some(d);
     bilan
+}
+
+/// Routage existant d'un placement donne (sous-commande `router --routage-initial`) : charge tel quel (pas de
+/// routage), pour le post-traitement (lissage, accord des longueurs) et la verification.
+pub fn run_charge<'a>(m: &'a Modele, e: &Etat, chemin: &str, cx: &mut Contexte) -> Result<Bilan<'a>, String> {
+    let mut bilan = bilan_vide(Fin::Normale, "");
+    bilan.etat = Some(e.clone());
+    cx.debut("routage_detaille");
+    let mut d = detail::Detail::new(m, e);
+    d.via_dans_pad = m.via_dans_pad;
+    let nb = d.charger_routage_json(chemin)?;
+    cx.fin("routage_detaille");
+    cx.log(format!("routage initial charge : {} pistes et vias", nb));
+    bilan.routage_initial = Some(0);
+    bilan.detail = Some(d);
+    Ok(bilan)
 }
 
 /// Routage seul d'un placement donne (sous-commande `router`) : routage detaille complet puis finition.

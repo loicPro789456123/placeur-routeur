@@ -454,7 +454,40 @@ pub fn construire(d: &Donnees, param: Parametres) -> Result<Adapte, String> {
     m.couches_actives = actives;
     m.via_de_a = via_de_a;
     m.via_dans_pad = d.regles.via_dans_pastille_meme_reseau;
+    m.mode_routage = mode_routage(&m.param.routage.mode, &m.param.routage.modes_multi, d.regles.mode_routage.as_deref());
+    let idx = |nom: &str| m.nets.iter().position(|n| n.nom == nom);
+    let mut groupes = Vec::new();
+    for p in &d.paires {
+        if let (Some(a), Some(b)) = (idx(&p.positif), idx(&p.negatif)) {
+            groupes.push((vec![a, b], p.tolerance_longueur_mm, true));
+        }
+    }
+    for g in &d.longueurs_appariees {
+        let v: Vec<usize> = g.reseaux.iter().filter_map(|n| idx(n)).collect();
+        if v.len() >= 2 {
+            groupes.push((v, g.tolerance_mm, false));
+        }
+    }
+    let bornees: Vec<(usize, f64, f64)> =
+        d.longueurs.iter().filter_map(|l| idx(&l.reseau).map(|n| (n, l.min_mm.unwrap_or(0.0), l.max_mm.unwrap_or(f64::INFINITY)))).collect();
+    m.groupes_longueur = groupes;
+    m.longueurs_bornees = bornees;
     Ok(Adapte { modele: m, avertissements: av })
+}
+
+/// Style des pistes (detail::MODE_*) : `routage.mode` ; « auto » = `regles.mode_routage` des données, sinon
+/// octogonal ; « multi » = premier mode de `routage.modes_multi` (les autres sont essayés à la fin par moteur.rs).
+pub fn mode_routage(mode: &str, multi: &[String], regle: Option<&str>) -> u8 {
+    let code = |s: &str| match s {
+        "manhattan" => crate::detail::MODE_MANHATTAN,
+        "libre" | "plus_court" => crate::detail::MODE_LIBRE,
+        _ => crate::detail::MODE_OCTOGONAL,
+    };
+    match mode {
+        "auto" => code(regle.unwrap_or("octogonal")),
+        "multi" => code(multi.first().map(|s| s.as_str()).unwrap_or("octogonal")),
+        m => code(m),
+    }
 }
 
 /// État du cœur depuis des poses des données (repère des données ; une par composant).

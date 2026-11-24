@@ -325,6 +325,12 @@ pub struct Modele {
     pub poses_donnees: Vec<Option<(f64, f64, f64, bool)>>,
     /// derogation des donnees : via dans une pastille CMS du meme reseau (`regles.via_dans_pastille_meme_reseau`)
     pub via_dans_pad: bool,
+    /// style des pistes (detail::MODE_*) : routage.mode, sinon regles.mode_routage des donnees
+    pub mode_routage: u8,
+    /// groupes de longueurs appariees (paires differentielles et longueurs_appariees des donnees) : reseaux, tolerance (mm)
+    pub groupes_longueur: Vec<(Vec<usize>, f64, bool)>,
+    /// longueurs bornees (reseau, min, max en mm) : longueurs des donnees
+    pub longueurs_bornees: Vec<(usize, f64, f64)>,
 }
 
 #[derive(Clone)]
@@ -472,6 +478,9 @@ impl Modele {
             via_de_a: ["TopLayer".to_string(), "BottomLayer".to_string()],
             poses_donnees: Vec::new(),
             via_dans_pad: false,
+            mode_routage: 0,
+            groupes_longueur: Vec::new(),
+            longueurs_bornees: Vec::new(),
         };
         m.calculer_attentes();
         m

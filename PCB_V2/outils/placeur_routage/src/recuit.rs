@@ -785,6 +785,11 @@ pub fn chaine_campagne(m: &Modele, depart: &Etat, graine: u64, p: &ParamCampagne
                 m.sw_net().map(|n| m.hpwl_net(n, &ch.etat)).unwrap_or(0.0)));
         }
     }
+    if crate::campagne::arret_global() {
+        let (t0, acc_init) = (s1.0, s1.1);
+        return ResCampagne { etat: b1.1, cout: b1.0, cout_depart, t0, acc_initiale_mesuree: acc_init, paliers: s1.2, rechauffes: s1.3,
+            mouvements: s1.4, temps: t_start.elapsed().as_secs_f64(), exploration, noeuds_exploration };
+    }
     // phase 2 : affinage avec le routeur global (capacite, vias, debordement)
     ch.hpwl_mode = false;
     ch.rt = Routeur::new(m, &ch.etat, p.pas);
@@ -828,7 +833,10 @@ fn recuire(ch: &mut Chaine, groupes: &[Vec<usize>], budget: usize, acc_cible: f6
     let mut gel = 0usize;
     while mouvements < budget && temp > t0 * t_fin_rel && gel < 5 {
         let (mut legaux, mut acc) = (0usize, 0usize);
-        for _ in 0..palier {
+        for q in 0..palier {
+            if q % 2048 == 2047 && crate::campagne::arret_global() {
+                break;
+            }
             if periode > 0 && mouvements % periode == periode - 1 {
                 let e = ch.etat.clone();
                 ch.rt.route_tout(&e, 4);
@@ -877,6 +885,9 @@ fn recuire(ch: &mut Chaine, groupes: &[Vec<usize>], budget: usize, acc_cible: f6
         }
         // arret des que le meilleur ne progresse plus depuis recuit.arret_paliers_sans_progres paliers (150 par defaut ;
         // 40 degradait le recuit) et qu'il n'y a plus de rechauffe a faire
+        if crate::campagne::arret_global() {
+            break;
+        }
         if stagn >= ch.m.param.recuit.arret_paliers_sans_progres && rechauffes >= rech_max {
             journal(format!("  {} : arret, meilleur inchange depuis {} paliers ({} paliers, {:.0} s)", nom, stagn, paliers, t_start.elapsed().as_secs_f64()));
             break;
