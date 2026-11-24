@@ -157,11 +157,18 @@ impl Variante {
     }
 }
 
+/// Largeur uniforme par connexion des réseaux de puissance : 0 non, 1 sans rétrécir, 2 en égalisant (essai).
+const UNIFORMISER: u8 = 2;
+
 /// Post-traitement du routage final (lissage des marches, accord des longueurs) ; rend des lignes de journal.
 fn post_traiter(d: &mut Detail) -> (Vec<String>, bool) {
     let m = d.m;
     let mut j = Vec::new();
     let mut accord = false;
+    if UNIFORMISER != 0 {
+        let (nb, mm) = d.uniformiser_largeurs(UNIFORMISER == 2);
+        j.push(format!("  largeur uniforme par connexion : {} chaînes, {:.1} mm élargis", nb, mm));
+    }
     if m.param.finition.lissage_marches {
         let (nb, gain, dseg) = d.lisser(m.mode_routage);
         j.push(format!("  lissage ({}) : {} chaînes raccourcies, {:.1} mm de piste en moins, {} segments en moins", nom_mode(m.mode_routage), nb, gain, dseg));

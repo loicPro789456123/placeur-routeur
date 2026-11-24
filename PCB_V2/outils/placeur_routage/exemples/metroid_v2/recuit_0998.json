@@ -1,0 +1,12 @@
+{
+ "format": "parametres_moteur/1",
+ "_doc": "Essai du 24/11/2026 : recuit d'exploration alpha 0.998, arrêt après 750 paliers sans progrès, plafond 300000000 mouvements.",
+ "campagne": {
+  "duree_max_s": 14400
+ },
+ "recuit": {
+  "alpha": 0.998,
+  "arret_paliers_sans_progres": 750,
+  "mouvements_max": 300000000
+ }
+}
