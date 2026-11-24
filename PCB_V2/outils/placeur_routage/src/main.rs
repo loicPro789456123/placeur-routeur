@@ -56,6 +56,7 @@ mod recuit;
 mod regles;
 #[allow(dead_code)]
 mod sortie;
+mod suivi;
 // `src/validite.rs` (lot E, jalon E0), jamais modifié ici ; `cout_commun` est appelé par le cœur à l'étape 4.
 #[allow(dead_code)]
 mod validite;
@@ -148,6 +149,10 @@ const OPTS_CAMPAGNE: &[SpecOption] = &[
     opt("--evenements", false),
     opt("--arret", true),
     opt("--mode-routage", true),
+    opt("--mode-calcul", true),
+    opt("--suivi", true),
+    opt("--suivi-periode", true),
+    opt("--timelapse", false),
 ];
 const OPTS_ROUTER: &[SpecOption] = &[
     opt("--donnees", true),
@@ -218,7 +223,7 @@ const SUPPRIMEES: &[(&str, &str)] = &[
 
 const USAGE: &str = "\
 Usage :
-  placeur_routage campagne --donnees F --sortie D --graine N [--parametres P] [--threads T] [--evenements] [--arret FICHIER] [--mode-routage M]
+  placeur_routage campagne --donnees F --sortie D --graine N [--parametres P] [--threads T] [--evenements] [--arret FICHIER] [--mode-routage M] [--mode-calcul C] [--suivi D [--suivi-periode S] [--timelapse]]
   placeur_routage router   --donnees F --placement F --sortie D [--parametres P] [--threads T] [--evenements] [--arret FICHIER] [--mode-routage M] [--routage-initial F]
   placeur_routage verifier --donnees F --placement F --routage F [--couture F] [--mode strict|altium] [--sans-grille] --sortie F
   placeur_routage parametres-defaut [--qualite apercu|rapide|normal|soigne]
@@ -227,7 +232,8 @@ Usage :
   placeur_routage --version
 Tout le réglage du moteur est dans le fichier --parametres (format parametres_moteur/1) ;
 « placeur_routage parametres-defaut » en donne le contenu complet.
---mode-routage M (auto, octogonal, manhattan, libre, multi) remplace routage.mode du fichier --parametres.";
+--mode-routage M (auto, octogonal, manhattan, libre, multi) remplace routage.mode du fichier --parametres.
+--mode-calcul placement|conjoint (campagne) : placement seul (recuit, sans routage) ou placement et routage (défaut).";
 
 /// Texte sûr à recopier dans un message (jamais un chemin) : court, lettres, chiffres et `-_.+` seulement.
 fn sur(s: &str) -> Option<&str> {
@@ -482,6 +488,17 @@ fn commande(args: &[String], out: &mut dyn Write, err: &mut dyn Write, crochets:
             let threads = entier(&o, "--threads", FILS_MAX as u64)?;
             // paramètres d'abord (le nombre de fils peut en venir), puis les entrées, lues dans le pool
             let (mut lus, sha_parametres, nom_parametres) = lire_parametres(&o)?;
+            if let Some(mc) = valeur(&o, "--mode-calcul") {
+                let a = match mc {
+                    "placement" => parametres::ArretApres::Recuit,
+                    "conjoint" => parametres::ArretApres::Complet,
+                    _ => return Err(format!("--mode-calcul : « {} » inconnu ; modes : placement, conjoint", sur(mc).unwrap_or("?")).into()),
+                };
+                lus.parametres.campagne.arret_apres = a;
+                if let Some(c) = lus.valeur.get_mut("campagne").and_then(Value::as_object_mut) {
+                    c.insert("arret_apres".to_string(), Value::String(if mc == "placement" { "recuit" } else { "complet" }.to_string()));
+                }
+            }
             if let Some(mode) = valeur(&o, "--mode-routage") {
                 if !parametres::MODES_ROUTAGE.contains(&mode) {
                     return Err(format!("--mode-routage : « {} » inconnu ; modes : {}", sur(mode).unwrap_or("?"), parametres::MODES_ROUTAGE.join(", ")).into());
@@ -545,6 +562,9 @@ fn commande(args: &[String], out: &mut dyn Write, err: &mut dyn Write, crochets:
                     evenements: o.contains_key("--evenements"),
                     arret: valeur(&o, "--arret").map(std::path::PathBuf::from),
                     routage_initial: valeur(&o, "--routage-initial").map(std::path::PathBuf::from),
+                    suivi: valeur(&o, "--suivi").map(std::path::PathBuf::from),
+                    suivi_periode_s: valeur(&o, "--suivi-periode").and_then(|v| v.parse().ok()).unwrap_or(2.0),
+                    timelapse: o.contains_key("--timelapse"),
                 };
                 let code = moteur::executer(&en, graine, poses, Path::new(valeur(&o, "--sortie").unwrap_or_default()))?;
                 Ok((Value::String(texte), Vec::new(), code))

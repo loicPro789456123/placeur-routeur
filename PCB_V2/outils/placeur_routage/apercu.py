@@ -150,6 +150,45 @@ def depuis_resultat(dossier_calcul: str, entree: dict | None = None) -> Scene | 
     couture = _lire(os.path.join(d, "vias_couture.json"))
     if donnees is None or placements is None:
         return None
+    sc = _scene(donnees, placements, routage, couture, entree)
+    sc.titre = f"Résultat : graine {g}"
+    return sc.finir()
+
+
+def depuis_instantane(dossier_calcul: str, entree: dict | None = None):
+    """Suivi en direct : (scène, courbe) du dernier instantané écrit par un moteur (``graine_N/suivi``), courbe =
+    [(t, coût)] de sa graine ; (None, []) s'il n'y en a pas encore."""
+    technique = os.path.join(dossier_calcul, "technique")
+    cands = []
+    for g in os.listdir(technique) if os.path.isdir(technique) else []:
+        f = os.path.join(technique, g, "suivi", "instantane.json")
+        if g.startswith("graine_") and os.path.isfile(f):
+            cands.append((os.path.getmtime(f), g, f))
+    if not cands:
+        return None, []
+    _, g, f = max(cands)
+    inst = _lire(f)
+    donnees = _lire(os.path.join(technique, "donnees_placeur.json"))
+    if inst is None or donnees is None or not inst.get("placements"):
+        return None, []
+    courbe = []
+    try:
+        with open(os.path.join(technique, g, "suivi", "courbe.jsonl"), encoding="utf-8") as fc:
+            for ligne in fc:
+                try:
+                    v = json.loads(ligne)
+                except ValueError:
+                    continue
+                if isinstance(v.get("cout"), (int, float)) and v["cout"] >= 0 and v.get("phase") != "boucle":
+                    courbe.append((v["t"], v["cout"]))
+    except OSError:
+        pass
+    sc = _scene(donnees, inst["placements"], inst.get("routage"), None, entree)
+    sc.titre = f"En direct : {g.replace('_', ' ')}, {inst.get('phase', '')}, {inst.get('t', 0):.0f} s"
+    return sc.finir(), courbe
+
+
+def _scene(donnees, placements, routage, couture, entree):
     s = gc.poser(donnees, placements, routage, couture)
     sc = Scene()
     n = s.n
@@ -179,5 +218,4 @@ def depuis_resultat(dossier_calcul: str, entree: dict | None = None) -> Scene | 
         if not isinstance(pose, gc.Pose):
             pose = gc.Pose(*pose[:4])
         sc.pieces.append(_piece(nom, pose, c.get("lbb"), verrous.get(nom, False), c.get("statut") == "fixe"))
-    sc.titre = f"Résultat : graine {g}"
-    return sc.finir()
+    return sc

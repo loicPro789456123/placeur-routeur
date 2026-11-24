@@ -615,7 +615,13 @@ def generer_detaille(dossier_graine, sortie, gabarit, config, sans_serigraphie=F
     placements = gc.charger_json(os.path.join(dossier_graine, "placements_routage.json"),
                                  ("placements/1", "placements/2"))
     pieces = _pieces(placements)
-    routage = gc.charger_json(os.path.join(dossier_graine, "routage_detaille.json"), ("routage/1", "routage/2"))
+    ch_routage = os.path.join(dossier_graine, "routage_detaille.json")
+    if os.path.exists(ch_routage):
+        routage = gc.charger_json(ch_routage, ("routage/1", "routage/2"))
+    else:
+        # mode « placement seul » : carte placée, non routée (cuivre libre retiré, aucune piste posée)
+        routage = {"format": "routage/2", "unite": "mil", "pistes": [], "vias": [], "surfaces": []}
+        journal.append("routage absent : carte placée, non routée")
     ch_couture = os.path.join(dossier_graine, "vias_couture.json")
     couture = []
     if cfg["vias_couture"] and os.path.exists(ch_couture):

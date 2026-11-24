@@ -106,6 +106,9 @@ pub fn chaine(base: &Detail, graine: u64, p: &ParamConj, journal: &(dyn Fn(Strin
         if essais >= p.essais || el > p.budget_s || mobiles.is_empty() || crate::campagne::arret_global() {
             break;
         }
+        if crate::suivi::du() {
+            crate::suivi::noter(m, &d.e, "conjointe", cout, Some(&d), false);
+        }
         // temperature indexee sur les essais
         let frac = essais as f64 / p.essais as f64;
         let temp = p.t0 * (p.t_fin / p.t0).powf(frac);

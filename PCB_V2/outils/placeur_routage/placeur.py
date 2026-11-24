@@ -80,6 +80,7 @@ options : --sortie PARENT  --parametres F.ini  --qualite apercu|rapide|normal|so
           --graine-depart G  --processeurs P  --duree-max-min M  --valides-voulues K  --contraintes C.json
           --config U.json  --parametres-moteur M.json  --moteurs DOSSIER  --sans-pcbdoc  --sans-serigraphie
           --sans-couture  --reprendre [DOSSIER]  --analyser  --priorite-normale  --garder-graines meilleure|toutes
+          --mode-calcul conjoint|placement|serigraphie  --suivi  --timelapse
           --mode-routage auto|manhattan|plus_court|diagonale_45|comparer  --evenements
 (mode d'emploi, section 3)"""
 
@@ -96,12 +97,13 @@ OPTIONS_VALEUR = {
     "--duree-max-min": "calcul.duree_max_min", "--valides-voulues": "calcul.valides_voulues",
     "--contraintes": "carte.contraintes", "--config": "carte.config_convertisseurs",
     "--parametres-moteur": "avance.parametres_moteur", "--moteurs": None, "--garder-graines": "sortie.garder_graines",
-    "--mode-routage": "calcul.mode_routage",
+    "--mode-routage": "calcul.mode_routage", "--mode-calcul": "calcul.mode_calcul",
     "--donnees": None, "--init": None,
 }
 OPTIONS_DRAPEAU = {
     "--sans-pcbdoc": ("pcbdoc.produire", "non"), "--sans-serigraphie": ("pcbdoc.serigraphie", "non"),
     "--sans-couture": ("pcbdoc.vias_couture", "non"), "--priorite-normale": ("calcul.priorite_normale", "oui"),
+    "--suivi": ("calcul.suivi", "oui"), "--timelapse": ("sortie.timelapse", "oui"),
     "--analyser": None, "--evenements": None, "--version": None, "--auto-test": None, "--diagnostic": None,
 }
 OPTIONS_CHEMIN = ("--sortie", "--parametres", "--contraintes", "--config", "--parametres-moteur", "--moteurs",
@@ -305,6 +307,23 @@ class Controles:
         res = {"avertissements": []}
         cp = os.path.join(dossier, "placements_routage.json")
         cr = os.path.join(dossier, "routage_detaille.json")
+        if os.path.isfile(cp) and not os.path.exists(cr):
+            # mode « placement seul » : pas de routage, seul le placement est contrôlé
+            try:
+                placements = formats.charger(cp, "placements")
+                p = self.verifier_placement(placements, donnees)
+                erreurs = formats.VALIDATEURS["controle_placement"](p)
+                if erreurs:
+                    raise formats.ErreurFormat(erreurs)
+                chemins.ecrire_json(os.path.join(dossier, "controle_placement.json"), p)
+                res["placement"] = p
+            except Exception as e:  # noqa: BLE001 - refus noté
+                res["placement"] = {"valide": False, "erreur": chemins.anonymiser(_texte_erreur(e), sortie)}
+            for cle in ("drc_strict", "drc_altium"):
+                res[cle] = {"valide": True, "liaisons_ouvertes": 0, "violations": 0, "sans_routage": True}
+            for cle in ("mesures", "proprete", "convertisseurs"):
+                res[cle] = None
+            return res
         try:
             placements = formats.charger(cp, "placements")
             routage = formats.charger(cr, "routage")
@@ -855,6 +874,10 @@ class Calcul:
             raise ErreurEntree(e.texte_complet()) from None
         self.estimation["plafond_graine_s"] = plafond
         self.chemin_params = os.path.join(self.technique, "parametres_moteur.json")
+        self.estimation["mode_calcul"] = self.mode_calcul()
+        if self.mode_calcul() == "placement":
+            self.params["campagne"]["arret_apres"] = "recuit"
+            self.journal("mode de calcul : placement seul (recuit, sans routage)")
         self.params_par_mode = self.modes_routage(r)
         chemins.ecrire_json(self.chemin_params, self.params)
         parametres.ecrire_parametres_utilises(
@@ -913,6 +936,11 @@ class Calcul:
             self.avertir(f"durée inconnue : {ex}")
 
     # ------------------------------------------------------------------------------------------ mode de routage
+    def mode_calcul(self) -> str:
+        """Mode de calcul : clé « mode_calcul » des contraintes, sinon [calcul] mode_calcul (défaut conjoint)."""
+        m = getattr(self, "mode_calcul_contraintes", None) or self.reglages.valeur("calcul", "mode_calcul")
+        return m if m in parametres.MODES_CALCUL else "conjoint"
+
     def modes_routage(self, r) -> list[str]:
         """Mode de routage choisi ([calcul] mode_routage, fenêtre) écrit dans les paramètres du moteur, s'il connaît la
         clé (MODE_ROUTAGE_MOTEUR, lue dans ses défauts) ; sinon le calcul garde le routage du moteur (avertissement).
@@ -1050,6 +1078,11 @@ class Calcul:
             cmd = self.base + ["campagne", "--donnees", self.chemin_donnees, "--sortie", dossier, "--graine", str(g),
                                "--parametres", self.parametres_de(g), "--threads", str(self.fils), "--evenements",
                                "--arret", os.path.join(self.sortie, ARRET_DEMANDE)]
+            suivi, timelapse = self.reglages.valeur("calcul", "suivi"), self.reglages.valeur("sortie", "timelapse")
+            if suivi or timelapse:
+                cmd += ["--suivi", os.path.join(dossier, "suivi"), "--suivi-periode", "2"]
+                if timelapse:
+                    cmd.append("--timelapse")
             t_lancement = time.time()
             t0 = time.monotonic()
             try:
@@ -1453,8 +1486,12 @@ GENERATEURS = {"pcbdoc": "generer_pcbdoc", "kicad": "generer_kicad"}
 EXTENSIONS = {"pcbdoc": ".PcbDoc", "kicad": ".kicad_pcb"}
 LOGICIEL = {"pcbdoc": "Altium", "kicad": "KiCad"}
 MAX_CARTES = 3                    # §5.3 « Échecs » : au plus 3 graines essayées pour la carte produite
-SUFFIXES = {"valide": "", "a_terminer": "_A_TERMINER", "apercu": "_APERCU"}
-NOMS_LIVRABLE = {"valide": "valide", "a_terminer": "à terminer", "apercu": "aperçu"}
+SUFFIXES = {"valide": "", "a_terminer": "_A_TERMINER", "apercu": "_APERCU", "placement": "_PLACEMENT",
+            "serigraphie": "_SERIGRAPHIE"}
+NOMS_LIVRABLE = {"valide": "valide", "a_terminer": "à terminer", "apercu": "aperçu", "placement": "placée, non routée",
+                 "serigraphie": "sérigraphie replacée"}
+# livrable de config_pcbdoc/2 pour les types propres aux modes de calcul
+LIVRABLE_CONFIG = {"placement": "a_terminer", "serigraphie": "valide"}
 TAILLE_TRANCHE = 1 << 20
 
 # Défauts de contraintes/2 (§2.3) pour le modèle de --init ; les clés dont le défaut dépend des règles du fichier
@@ -1511,6 +1548,7 @@ MODELE_CONTRAINTES = {
 }
 MODELE_DEPENDANTS = {
     "mode_routage": "règle RoutingCorners de la carte, sinon octogonal (octogonal, manhattan ou libre)",
+    "mode_calcul": "[calcul] mode_calcul, sinon conjoint (conjoint, placement ou serigraphie)",
     "hauteur_max_dessus_mm": "règle Height du fichier, sinon aucune",
     "hauteur_max_dessous_mm": "règle Height du fichier, sinon 3,0",
     "via_sous_cms_permis": "règle ViasUnderSMD du fichier",
@@ -1614,6 +1652,19 @@ def _nb(v) -> str:
     return str(v).replace(".", ",")
 
 
+def mode_calcul_des_contraintes(reglages) -> str | None:
+    """Clé « mode_calcul » du fichier de contraintes (lecture simple ; le fichier est contrôlé plus tard)."""
+    chemin = reglages.valeur("carte", "contraintes")
+    if not chemin:
+        return None
+    try:
+        with open(chemin, encoding="utf-8-sig") as f:
+            m = json.load(f).get("mode_calcul")
+        return m if m in parametres.MODES_CALCUL else None
+    except (OSError, ValueError, AttributeError):
+        return None
+
+
 def contraintes_utilisateur(reglages) -> tuple:
     chemin = reglages.valeur("carte", "contraintes")
     if not chemin:
@@ -1637,7 +1688,8 @@ class CalculCarte(Calcul):
         self.carte = os.path.abspath(carte)
         self.outils = outils
         self.mode = "analyse" if analyser else "carte"
-        self.sans_graine = analyser
+        self.mode_calcul_contraintes = mode_calcul_des_contraintes(reglages)
+        self.sans_graine = analyser or self.mode_calcul() == "serigraphie"
         self.entree = self.config = self.deduction = self.gabarit = None
         self.copie = None
         try:
@@ -1757,6 +1809,8 @@ class CalculCarte(Calcul):
 
     # ------------------------------------------------------------------------------------------ analyse
     def executer(self) -> int:
+        if self.mode_calcul() == "serigraphie" and self.mode != "analyse":
+            return self.serigraphie_seule()
         if not self.sans_graine:
             return super().executer()
         self.creer_dossier()
@@ -1782,9 +1836,55 @@ class CalculCarte(Calcul):
         self.evt("fin", code=0, meilleure=None, livrable=None, texte="analyse terminée")
         return 0
 
+    def serigraphie_seule(self) -> int:
+        """Mode « sérigraphie seule » : la carte d'entrée, déjà placée et routée, est reprise telle quelle (placement
+        et cuivre libre extraits) ; seuls les textes de sérigraphie sont replacés par le moteur de sérigraphie."""
+        self.creer_dossier()
+        self.effacer_arrets()
+        self.job = chemins.Job()
+        self.journal(f"placeur {self.version} : sérigraphie seule de {os.path.basename(self.carte)}")
+        self.preparer()
+        self.evt("debut", version=self.version, essais=0, paralleles=0, fils_par_essai=getattr(self, "fils", 1),
+                 qualite=self.reglages.qualite, sortie=self.sortie, duree_prevue_s=None,
+                 duree_max_s=self.estimation.get("duree_max_s"), t=self.temps())
+        dossier = os.path.join(self.technique, "graine_0")
+        ok = False
+        try:
+            res = self.outils.extraire_reference(self.copie, self.entree)
+            os.makedirs(dossier, exist_ok=True)
+            chemins.ecrire_json(os.path.join(dossier, "placements_routage.json"), res[0])
+            chemins.ecrire_json(os.path.join(dossier, "routage_detaille.json"), res[1])
+            self.evt("etape", etape="carte", etat="debut", texte="sérigraphie")
+            ok = self.produire_carte(0, "serigraphie")
+            self.evt("etape", etape="carte", etat="fin", texte="carte produite" if ok else "aucune carte")
+        except Exception as e:  # noqa: BLE001 - noté au rapport
+            self.avertir(f"sérigraphie seule impossible ({_texte_erreur(e)})")
+        self.termine, self.code = True, 0 if ok else 1
+        self.ecrire_rapport()
+        self.ecrire_rapport_txt()
+        self.journal(f"sérigraphie seule terminée ; code {self.code} ; {self.temps()} s")
+        self.evt("fin", code=self.code, meilleure=None, livrable=self.livrable.get("fichier") if self.livrable else None,
+                 texte="sérigraphie replacée" if ok else "échec")
+        return self.code
+
     # ------------------------------------------------------------------------------------------ après le choix
+    def timelapse(self) -> None:
+        """Vidéo GIF de la graine retenue (images du moteur), si demandée ([sortie] timelapse)."""
+        g = self.meilleure if self.meilleure is not None else self.a_terminer
+        if not self.reglages.valeur("sortie", "timelapse") or g is None:
+            return
+        import timelapse
+        nom = f"{self.nom}_timelapse_g{g}.gif"
+        try:
+            n = timelapse.fabriquer(os.path.join(self.technique, f"graine_{g}"), self.chemin_donnees,
+                                    os.path.join(self.sortie, nom))
+            self.journal(f"timelapse : {nom} ({n} images)" if n else "timelapse : aucune image du moteur")
+        except Exception as e:  # noqa: BLE001 - la vidéo est facultative
+            self.avertir(f"timelapse impossible ({_texte_erreur(e)})")
+
     def apres_choix(self) -> None:
         """Référence existante, couture, carte produite (repli sur 3 graines au plus) (§5.3)."""
+        self.timelapse()
         self.reference_existante()
         r = self.reglages
         if not r.valeur("pcbdoc", "produire"):
@@ -1797,6 +1897,8 @@ class CalculCarte(Calcul):
         valides = sorted((e for e in self.graines.values() if e["valide"]), key=lambda e: (cout(e), e["graine"]))
         if valides:
             type_, candidats = ("apercu" if apercu else "valide"), [e["graine"] for e in valides][:MAX_CARTES]
+            if self.mode_calcul() == "placement":
+                type_ = "placement"
         elif self.a_terminer is not None and (apercu or r.valeur("pcbdoc", "produire_si_invalide")):
             type_, candidats = ("apercu" if apercu else "a_terminer"), [self.a_terminer]
         else:
@@ -1872,7 +1974,7 @@ class CalculCarte(Calcul):
                 continue
             d = max(float(t.get("diametre_cuivre") or 0.0), float((t.get("trou") or {}).get("diametre") or 0.0))
             trous.append([t["x"], t["y"], round(d / 2, 6)])
-        return {"format": "config_pcbdoc/2", "livrable": type_,
+        return {"format": "config_pcbdoc/2", "livrable": LIVRABLE_CONFIG.get(type_, type_),
                 "serigraphie": {"graine": 1, "chaines": 16, "mouvements": 20000000, "threads": self.processeurs,
                                 "tailles_mm": "auto", "garde_masque_mm": None, "trous_supplementaires_mm": trous,
                                 "options": []},
@@ -1886,10 +1988,15 @@ class CalculCarte(Calcul):
         couture = bool(r.valeur("pcbdoc", "vias_couture"))
         try:
             placements = formats.charger(os.path.join(dossier, "placements_routage.json"), "placements")
-            routage = formats.charger(os.path.join(dossier, "routage_detaille.json"), "routage")
+            routage = None
+            if os.path.exists(os.path.join(dossier, "routage_detaille.json")):
+                routage = formats.charger(os.path.join(dossier, "routage_detaille.json"), "routage")
+            elif type_ != "placement":
+                raise OSError(2, "routage absent", "routage_detaille.json")
         except (formats.ErreurFormat, OSError) as e:
             self.cartes_echouees.append({"graine": g, "raison": _texte_erreur(e)})
             return False
+        couture = couture and routage is not None and type_ != "serigraphie"
         if couture:
             self.coudre(g, dossier, placements, routage)
             couture = self.couture is not None and "erreur" not in self.couture
@@ -1927,7 +2034,7 @@ class CalculCarte(Calcul):
                          "anomalies": list(rapport["controles"]["anomalies"]),
                          "serigraphie": rapport["serigraphie"]["etat"],
                          "polygones_a_recouler": rapport["polygones_a_recouler"]}
-        if type_ != "valide":
+        if type_ not in ("valide", "placement", "serigraphie"):
             self.liaisons_a_finir = self.liaisons_ouvertes(g)
         self.journal(f"carte produite : {nom}")
         return True

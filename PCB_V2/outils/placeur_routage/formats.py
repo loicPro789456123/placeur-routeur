@@ -102,7 +102,7 @@ CLES_CONTRAINTES = (
     "zones_autour", "marge_bord_mm", "marge_decoupe_mm", "garde_bord_mm", "garde_decoupe_mm", "garde_trou_mm",
     "marge_piece_mm", "marge_traversante_mm", "grille_placement_mm", "rayon_interdit_trou_mm",
     "trous_supplementaires", "cuivre_a_garder", "couches", "couche_preferee_par_nom", "roles", "reseaux", "paires",
-    "longueurs_appariees", "longueurs", "mode_routage", "eloignements", "charges", "convertisseurs", "regles",
+    "longueurs_appariees", "longueurs", "mode_routage", "mode_calcul", "eloignements", "charges", "convertisseurs", "regles",
 )
 """Clés de premier niveau de contraintes/2 (§2.3)."""
 
@@ -1053,7 +1053,7 @@ def _schema_verdict(dans_stats):
         "derogations": Obj({"via_dans_pastille_meme_reseau": N}),
         "avertissements": Obj({"pistes_sous_pieces_sans_piste_dessous": N, "angles_aigus": N,
                                "paires_desequilibrees": N, "regles_non_couvertes": N,
-                               "zones_plan_isolees": Fac(N), "longueurs_hors_tolerance": Fac(N)}),
+                               "zones_plan_isolees": Fac(N), "longueurs_hors_tolerance": Fac(N), "paires_non_couplees": Fac(N)}),
         "reseaux_a_router": N, "reseaux_complets": N, "marge_isolement_min_mm": Nul(NB),
         "marge_isolement_min_paire": TXT,
         "mesures": Obj({"ecart_moyen_mm": NB, "ecart_min_mm": Nul(NB), "coudes": N, "coudes_90": N,
@@ -1328,6 +1328,7 @@ _CHAMPS_CONTRAINTES = {
     "longueurs_appariees": Liste(_M({"nom": TXT, "reseaux": Liste(TXT, mini=2), "tolerance_mm": NBP})),
     "longueurs": Liste(_M({"reseau": TXT, "min_mm": Fac(Nul(NBP)), "max_mm": Fac(Nul(NBP))})),
     "mode_routage": Enum("octogonal", "manhattan", "libre"),
+    "mode_calcul": Enum("conjoint", "placement", "serigraphie"),
     "eloignements": Liste(_M({"type": Enum("dure", "souple"), "objets": Liste(TXT, mini=1),
                               "reference": Liste(DES, mini=1), "distance_mm": NBP, "poids_par_mm": Fac(NBP),
                               "marge_mm": Fac(NBP)})),
@@ -1653,7 +1654,8 @@ def _coherence_stats(d, ctx):
                 ctx.erreur(champ, "texte attendu avec la cause « placement impossible » (§2.7), null trouvé")
     v = d["validite"]
     if v is None:
-        if d["cause"] != "non verifie":
+        # mode « placement seul » (fin arret_apres, 24/11/2026) : pas de routage, pas de verdict de routage
+        if d["cause"] != "non verifie" and d.get("fin") != "arret_apres":
             ctx.erreur("validite", "null seulement pour la cause « non verifie »")
     else:
         _coherence_verdict(v, ctx, "validite")

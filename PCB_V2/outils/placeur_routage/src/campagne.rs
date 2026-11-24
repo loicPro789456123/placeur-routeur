@@ -352,11 +352,29 @@ pub fn run_campagne<'a>(m: &'a Modele, graine: u64, cx: &mut Contexte) -> Bilan<
         }).collect();
         mes.sort_by(|a, b| a.0.partial_cmp(&b.0).unwrap_or(std::cmp::Ordering::Equal).then(a.1.cmp(&b.1)));
         let cand = res[mes[0].1].etat.clone();
-        let mut d2 = detail::Detail::new(m, &cand);
-        d2.via_dans_pad = m.via_dans_pad;
-        d2.router_tout(pm.routage.iters_negociation, pm.routage.tours_arrachage, &mut |s| println!("{}", s));
+        // reroutage local (avenant 2.2, B.2 H) : le routage de base, pieces deplacees, seuls les reseaux touches
+        // rerouts ; garde s'il fait mieux, sinon routage complet du candidat comme avant
+        let mut local = None;
+        if pm.boucle.reroutage_local {
+            let tl = Instant::now();
+            let d2 = reroutage_local(&base, &cand);
+            cx.log(format!("boucle {} : reroutage local {} -> {} connexions en echec ({:.0} s)", tour + 1, ko, d2.total_ko(), tl.elapsed().as_secs_f64()));
+            if d2.total_ko() < ko {
+                local = Some(d2);
+            }
+        }
+        let d2 = match local {
+            Some(d2) => d2,
+            None => {
+                let mut d2 = detail::Detail::new(m, &cand);
+                d2.via_dans_pad = m.via_dans_pad;
+                d2.router_tout(pm.routage.iters_negociation, pm.routage.tours_arrachage, &mut |s| println!("{}", s));
+                d2
+            }
+        };
         let kn = d2.total_ko();
         cx.fin("boucle");
+        crate::suivi::noter(m, &d2.e, "boucle", kn as f64, Some(&d2), true);
         cx.log(format!("boucle {} : {} zones, {} pieces deplacables ; echecs {} -> {} ({}) ({:.0} s)", tour + 1, zones.len(), movers.len(), ko, kn,
             if kn < ko { "retenu" } else { "rejete, poids x2" }, t.elapsed().as_secs_f64()));
         detail_boucle.push(json!({"tour": tour + 1, "zones": zones.len(), "pieces": movers.len(), "ko_avant": ko, "ko_apres": kn, "retenu": kn < ko}));
@@ -450,6 +468,45 @@ pub fn run_campagne<'a>(m: &'a Modele, graine: u64, cx: &mut Contexte) -> Bilan<
     bilan.etat = Some(d.e.clone());
     bilan.detail = Some(d);
     bilan
+}
+
+/// Reroutage local d'un candidat de la boucle : copie du routage de `base`, pieces deplacees vers `cand`, reseaux
+/// des pieces deplacees et reseaux genes rerouts (descentes de plan concernees seulement), reparation ciblee.
+fn reroutage_local<'a>(base: &detail::Detail<'a>, cand: &Etat) -> detail::Detail<'a> {
+    let m = base.m;
+    let mut d = base.clone();
+    let bouges: Vec<usize> = (0..m.comps.len()).filter(|&i| d.e.poses[i] != cand.poses[i]).collect();
+    for &i in &bouges {
+        d.deplacer(i, cand.poses[i]);
+    }
+    let mut nets: Vec<usize> = Vec::new();
+    for &i in &bouges {
+        nets.extend(m.comp_nets[i].iter().copied());
+        nets.extend(d.reseaux_genes(i));
+    }
+    nets.sort();
+    nets.dedup();
+    let plans: Vec<usize> = nets.iter().copied().filter(|&n| m.nets[n].plan).collect();
+    nets.retain(|&n| !m.nets[n].plan);
+    for g in plans {
+        let mut pads = Vec::new();
+        let mut zones = Vec::new();
+        for &i in &bouges {
+            for (k, pd) in m.comps[i].pads.iter().enumerate() {
+                if pd.net == Some(g) && !pd.th {
+                    pads.push((i, k));
+                }
+                let (x, y, hw, hh) = m.pad_world(i, k, &cand.poses[i]);
+                zones.push((x, y, hw.max(hh) + 0.8));
+            }
+        }
+        d.rerouter_plan_partiel(g, &pads, &zones);
+    }
+    d.rerouter_opt(&nets, true);
+    if d.total_ko() > 0 {
+        d.reparer_echecs(&mut |_| {});
+    }
+    d
 }
 
 /// Routage existant d'un placement donne (sous-commande `router --routage-initial`) : charge tel quel (pas de

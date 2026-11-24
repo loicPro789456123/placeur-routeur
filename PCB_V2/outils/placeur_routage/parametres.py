@@ -47,6 +47,9 @@ FORMAT_MOTEUR = "parametres_moteur/1"
 FORMAT_CONTRAINTES = "contraintes/2"
 QUALITES = ("apercu", "rapide", "normal", "soigne")
 MODES_ROUTAGE = ("auto", "manhattan", "plus_court", "diagonale_45", "comparer")
+MODES_CALCUL = ("conjoint", "placement", "serigraphie")
+"""Modes de calcul : placement et routage (défaut), placement seul (carte placée non routée), sérigraphie seule
+(carte déjà placée et routée : seuls les textes de sérigraphie sont replacés)."""
 """Modes de routage demandés au moteur (placeur.MODE_ROUTAGE_MOTEUR) ; « comparer » : un mode par graine."""
 
 # Lignes de la table des niveaux de §2.6 propres à l'orchestrateur (les autres viennent du moteur).
@@ -110,6 +113,7 @@ SCHEMA = {
         "dossier": Cle("chemin"),
         "ouvrir_a_la_fin": Cle("bool", True),
         "garder_graines": Cle(("meilleure", "toutes"), "meilleure"),
+        "timelapse": Cle("bool", False),
     },
     "calcul": {
         "qualite": Cle(QUALITES, "normal"),
@@ -120,6 +124,8 @@ SCHEMA = {
         "processeurs": Cle("entier", 0, minimum=0),
         "priorite_normale": Cle("bool", False),
         "mode_routage": Cle(MODES_ROUTAGE, "auto"),
+        "mode_calcul": Cle(MODES_CALCUL, "conjoint"),
+        "suivi": Cle("bool", False),
     },
     "pcbdoc": {
         "produire": Cle("bool", True),
@@ -201,6 +207,8 @@ config_convertisseurs =
 dossier =
 ; ouvrir le dossier des résultats à la fin du calcul (fenêtre) : oui ou non (défaut : oui)
 ouvrir_a_la_fin =
+; timelapse : vidéo GIF de 10 à 20 s de la graine retenue, faite après le calcul (défaut : non)
+timelapse =
 ; essais dont tous les fichiers sont gardés : meilleure ou toutes (défaut : meilleure)
 garder_graines =
 
@@ -223,6 +231,12 @@ priorite_normale =
 ; mode de routage : auto (celui du moteur), manhattan, plus_court, diagonale_45 ou comparer (les graines
 ;   se partagent les modes, la meilleure est gardée) ; ignoré si le moteur ne le connaît pas (défaut : auto)
 mode_routage =
+; mode de calcul : conjoint (placement et routage), placement (placement seul, carte non routée) ou serigraphie
+;   (sérigraphie seule d'une carte déjà placée et routée) (défaut : conjoint)
+mode_calcul =
+; suivi en direct : le moteur écrit un instantané léger toutes les 2 s (placement, routage, coût), lu par l'aperçu
+;   de la fenêtre (défaut : non)
+suivi =
 
 [pcbdoc]
 ; produire la carte placée et routée (.PcbDoc ou .kicad_pcb, comme la carte d'entrée) (défaut : oui)

@@ -1115,6 +1115,8 @@ struct Paire {
     positif: String,
     negatif: String,
     tolerance_mm: f64,
+    /// écart bord à bord voulu (`ecart_mm`) ; `None` : couplage non contrôlé
+    ecart_mm: Option<f64>,
 }
 
 #[derive(Debug, Clone)]
@@ -1550,11 +1552,13 @@ fn lire_donnees(v: &Value) -> Result<Donnees, String> {
         }
         let tolerance_mm =
             champ_nombre_ou_nul(po, "tolerance_longueur_mm", &ch)?.unwrap_or(TOLERANCE_PAIRE_DEFAUT_MM);
+        let ecart_mm = champ_nombre_ou_nul(po, "ecart_mm", &ch).ok().flatten();
         paires.push(Paire {
             nom: nom.to_string(),
             positif: positif.to_string(),
             negatif: negatif.to_string(),
             tolerance_mm,
+            ecart_mm,
         });
     }
 
@@ -2849,6 +2853,45 @@ fn controler_sans_geometrie(d: &Donnees, r: &Routage, couture: &[Via], violation
     }
 }
 
+/// Paires non couplées (avertissement facultatif, 24/11/2026 ; paires à `ecart_mm` donné seulement) : moins de la
+/// moitié de la longueur de piste du positif court à l'écart voulu (à 50 % près, bord à bord) d'une piste du négatif
+/// sur la même couche.
+fn compter_paires_non_couplees(d: &Donnees, r: &Routage) -> u64 {
+    let dist = |px: f64, py: f64, q: &Piste| -> f64 {
+        let (dx, dy) = (q.x2 - q.x1, q.y2 - q.y1);
+        let l2 = dx * dx + dy * dy;
+        let t = if l2 > 0.0 { (((px - q.x1) * dx + (py - q.y1) * dy) / l2).clamp(0.0, 1.0) } else { 0.0 };
+        ((px - q.x1 - t * dx).powi(2) + (py - q.y1 - t * dy).powi(2)).sqrt()
+    };
+    let mut n = 0u64;
+    for p in &d.paires {
+        let Some(e) = p.ecart_mm else { continue };
+        let pos: Vec<&Piste> = r.pistes.iter().filter(|x| x.reseau == p.positif).collect();
+        let neg: Vec<&Piste> = r.pistes.iter().filter(|x| x.reseau == p.negatif).collect();
+        let (mut total, mut couple) = (0.0, 0.0);
+        for s in &pos {
+            let l = s.longueur_mm();
+            let k = ((l / 0.1).ceil() as usize).max(1);
+            for t in 0..k {
+                let u = (t as f64 + 0.5) / k as f64;
+                let (x, y) = (s.x1 + u * (s.x2 - s.x1), s.y1 + u * (s.y2 - s.y1));
+                total += l / k as f64;
+                let ok = neg.iter().filter(|q| q.couche == s.couche).any(|q| {
+                    let bord = dist(x, y, q) * MIL - (s.largeur + q.largeur) * MIL / 2.0;
+                    bord >= 0.5 * e - 1e-6 && bord <= 1.5 * e + 0.05
+                });
+                if ok {
+                    couple += l / k as f64;
+                }
+            }
+        }
+        if total > 0.0 && couple < 0.5 * total {
+            n += 1;
+        }
+    }
+    n
+}
+
 /// Longueurs hors tolérance (avertissement facultatif, 24/11/2026) : groupes de `longueurs_appariees` dont l'écart
 /// max − min des longueurs de pistes dépasse la tolérance, et réseaux de `longueurs` hors de [min, max]. `None` si les
 /// données ne portent aucun des deux champs.
@@ -3403,6 +3446,9 @@ pub fn verifier_routage(
     let mut avertissements = compteurs_a_zero(&AVERTISSEMENTS);
     avertissements.insert("angles_aigus".into(), angles_aigus);
     avertissements.insert("paires_desequilibrees".into(), compter_paires_desequilibrees(&d, &r));
+    if d.paires.iter().any(|p| p.ecart_mm.is_some()) {
+        avertissements.insert("paires_non_couplees".into(), compter_paires_non_couplees(&d, &r));
+    }
     if let Some(n) = compter_longueurs_hors_tolerance(&d, &r) {
         avertissements.insert("longueurs_hors_tolerance".into(), n);
     }

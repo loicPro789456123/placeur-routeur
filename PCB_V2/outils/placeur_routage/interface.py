@@ -50,6 +50,19 @@ MODES_ROUTAGE = (
     ("Comparer les modes", "comparer", "Les essais se partagent les trois modes ; la meilleure carte valide est "
                                        "gardée."),
 )
+MODES_CALCUL = (
+    ("conjoint", "Placer et router", "Placement et routage ensemble (mode habituel) : carte placée et routée."),
+    ("placement", "Placer seulement", "Recuit du placement seul, sans routage : carte placée, non routée, plus vite."),
+    ("serigraphie", "Sérigraphie", "Carte déjà placée et routée : seuls les textes de sérigraphie sont replacés."),
+)
+# surcoût mesuré (24/11/2026, METROID niveau aperçu, une graine ; voir MODE_EMPLOI.md)
+AIDE_SUIVI = ("Suivi en direct : le moteur écrit un instantané léger toutes les 2 s (placement, routage, coût) ; "
+              "l'onglet Aperçu le montre avec la courbe du coût. Surcoût mesuré : SURCOUT_SUIVI du temps de calcul.")
+AIDE_TIMELAPSE = ("Timelapse : garde une image toutes les 2 s et fabrique à la fin une vidéo GIF de 10 à 20 s de la "
+                  "graine retenue. Surcoût mesuré : SURCOUT_TIMELAPSE du temps de calcul, plus quelques secondes "
+                  "pour la vidéo.")
+SURCOUT_SUIVI, SURCOUT_TIMELAPSE = "≈ 4 %", "≈ 4 %"
+PAS_DIRECT_MS = 2000
 TEXTE_ESSAIS = ("Chaque essai part d'une graine différente. Plusieurs essais tournent en même temps (un par "
                 "processeur) ; le meilleur résultat valide est gardé.")
 COLONNES = (("graine", "Graine", 60), ("etat", "État", 90), ("phase", "Phase", 150), ("duree", "Durée (s)", 80),
@@ -63,6 +76,56 @@ NOTE_KICAD = ".kicad_pcb, sans repositionnement de la sérigraphie"
 NOM_ERREURS = "erreurs.txt"
 PAS_LECTURE_MS = 100
 EXTENSIONS_CARTE = (".pcbdoc", ".kicad_pcb")
+
+class TuilesMode:
+    """Sélecteur du mode de calcul : trois tuiles dessinées sur des canevas (vignette et nom), une seule choisie."""
+
+    L, H = 104, 74
+
+    def __init__(self, parent, variable, palette, police):
+        import tkinter as tk
+        self.var, self.p, self.police = variable, palette, police
+        self.cadre = tk.Frame(parent, borderwidth=0, highlightthickness=0)
+        self.toiles = {}
+        for i, (code, nom, _) in enumerate(MODES_CALCUL):
+            c = tk.Canvas(self.cadre, width=self.L, height=self.H, highlightthickness=0, borderwidth=0,
+                          cursor="hand2")
+            c.grid(row=0, column=i, padx=(0 if i == 0 else 6, 0))
+            c.bind("<Button-1>", lambda _e, k=code: self.var.set(k))
+            self.toiles[code] = (c, nom)
+        self.var.trace_add("write", lambda *_: self.dessiner())
+        self.dessiner()
+
+    def theme(self, palette) -> None:
+        self.p = palette
+        self.dessiner()
+
+    def dessiner(self) -> None:
+        p = self.p
+        self.cadre.configure(background=p["surface"])
+        for code, (c, nom) in self.toiles.items():
+            choisi = self.var.get() == code
+            c.delete("all")
+            c.configure(background=p["surface"])
+            c.create_rectangle(1, 1, self.L - 2, self.H - 2, outline=p["accent"] if choisi else p["bord"],
+                               width=2 if choisi else 1, fill=p["selection"] if choisi else p["surface"])
+            # vignette : carte (contour), pièces, pistes ou textes selon le mode
+            x0, y0, x1, y1 = 22, 8, self.L - 22, 44
+            c.create_rectangle(x0, y0, x1, y1, outline=p["contour"], fill=p["carte"])
+            pieces = ((28, 14, 40, 22), (52, 14, 64, 20), (66, 28, 78, 38), (30, 30, 42, 38))
+            if code in ("conjoint", "serigraphie"):
+                for xa, ya, xb, yb in ((40, 18, 52, 17), (64, 17, 72, 28), (42, 34, 66, 33)):
+                    c.create_line(xa, ya, (xa + xb) / 2, ya, xb, yb, fill=p["dessus"], width=2)
+                c.create_line(36, 22, 36, 30, fill=p["dessous"], width=2)
+            for r in pieces:
+                c.create_rectangle(*r, outline="", fill=p["piece"])
+            if code == "serigraphie":
+                for k, (x, y) in enumerate(((34, 11), (58, 11), (72, 41), (36, 41))):
+                    c.create_text(x, y, text=("R1", "C2", "U3", "D4")[k], fill=p["texte_toile"],
+                                  font=(self.police[0], 6, "bold"))
+            c.create_text(self.L / 2, 59, text=nom, fill=p["texte"], font=(self.police[0], 8,
+                                                                         "bold" if choisi else "normal"))
+
 
 # Palettes (thème clair, thème sombre) : interface sobre, une seule couleur d'accent.
 THEMES = {
@@ -225,6 +288,77 @@ def _lire_sortie(proc, file) -> None:
     file.put(("termine", proc.wait()))
 
 
+def _lire_direct(dossier: str, entree, file) -> None:
+    with _SansRamasseMiettes():
+        try:
+            import apercu
+            s, courbe = apercu.depuis_instantane(dossier, entree)
+        except Exception:  # noqa: BLE001 - le suivi est facultatif
+            s, courbe = None, []
+        file.put(("direct", (dossier, s, courbe)))
+
+
+class Infobulle:
+    """Petite bulle d'aide au survol (texte simple, couleurs système)."""
+
+    def __init__(self, widget, texte):
+        self.w, self.texte, self.t = widget, texte, None
+        widget.bind("<Enter>", self.montrer)
+        widget.bind("<Leave>", self.cacher)
+
+    def montrer(self, _e=None):
+        import tkinter as tk
+        if self.t is not None:
+            return
+        x, y = self.w.winfo_rootx() + 12, self.w.winfo_rooty() + self.w.winfo_height() + 4
+        self.t = tk.Toplevel(self.w)
+        self.t.wm_overrideredirect(True)
+        self.t.wm_geometry(f"+{x}+{y}")
+        tk.Label(self.t, text=self.texte, justify="left", wraplength=320, background="#fffbe6", foreground="#1c232b",
+                 relief="solid", borderwidth=1, padx=6, pady=4).pack()
+
+    def cacher(self, _e=None):
+        if self.t is not None:
+            self.t.destroy()
+            self.t = None
+
+
+class Courbe:
+    """Courbe du coût du suivi en direct (toile basse, axes implicites, dernier coût écrit à droite)."""
+
+    def __init__(self, parent, tk, palette):
+        self.c = tk.Canvas(parent, height=70, highlightthickness=0, borderwidth=0)
+        self.p, self.points = palette, []
+        self.c.bind("<Configure>", lambda e: self.dessiner())
+
+    def theme(self, palette):
+        self.p = palette
+        self.dessiner()
+
+    def montrer(self, points):
+        self.points = list(points)
+        self.dessiner()
+
+    def dessiner(self):
+        p, c = self.p, self.c
+        c.delete("all")
+        c.configure(background=p["surface"])
+        w, h = max(c.winfo_width(), 60), max(c.winfo_height(), 40)
+        c.create_rectangle(0, 0, w - 1, h - 1, outline=p["bord"])
+        if len(self.points) < 2:
+            c.create_text(8, h / 2, text="Courbe du coût : en attente des instantanés", anchor="w", fill=p["discret"])
+            return
+        t0, t1 = self.points[0][0], max(self.points[-1][0], self.points[0][0] + 1e-6)
+        cs = [q[1] for q in self.points]
+        c0, c1 = min(cs), max(max(cs), min(cs) + 1e-6)
+        xy = []
+        for t, v in self.points:
+            xy += [6 + (t - t0) / (t1 - t0) * (w - 90), 6 + (c1 - v) / (c1 - c0) * (h - 12)]
+        c.create_line(*xy, fill=p["accent"], width=2)
+        c.create_text(w - 6, 8, text=f"coût {cs[-1]:.0f}", anchor="ne", fill=p["texte"])
+        c.create_text(w - 6, h - 6, text=f"{self.points[-1][0]:.0f} s", anchor="se", fill=p["discret"])
+
+
 def _lire_resultat(dossier: str, entree, file) -> None:
     with _SansRamasseMiettes():
         try:
@@ -259,6 +393,11 @@ class Apercu:
 
     def theme(self, palette):
         self.p = palette
+        self.dessiner()
+
+    def remplacer(self, scene):
+        """Nouvelle scène à la même vue (zoom et déplacement gardés) : suivi en direct."""
+        self.scene, self.message = scene, scene.titre
         self.dessiner()
 
     def montrer(self, scene, message=""):
@@ -539,6 +678,8 @@ class Fenetre:
                                  activeforeground=p["texte"], relief="flat", borderwidth=1)
         barre_titre_sombre(self.racine, self.nom_theme == "sombre")
         self.apercu.theme(p)
+        self.tuiles_mode.theme(p)
+        self.courbe.theme(p)
 
     def basculer_theme(self) -> None:
         self.nom_theme = "sombre" if self.nom_theme == "clair" else "clair"
@@ -573,6 +714,11 @@ class Fenetre:
         self.v_processeurs = self._var("calcul.processeurs", valeur="0")
         self.v_valides = self._var("calcul.valides_voulues", valeur="0")
         self.v_mode_routage = self._var("calcul.mode_routage", valeur=MODES_ROUTAGE[0][0])
+        self.v_mode_calcul = self._var("calcul.mode_calcul", valeur=MODES_CALCUL[0][0])
+        self.v_suivi = self._var("calcul.suivi", "bool", False)
+        self.v_timelapse = self._var("sortie.timelapse", "bool", False)
+        self._direct_t = 0.0
+        self._direct_en_cours = False
         self.v_pcbdoc = self._var("pcbdoc.produire", "bool", True)
         self.v_serigraphie = self._var("pcbdoc.serigraphie", "bool", True)
         self.v_couture = self._var("pcbdoc.vias_couture", "bool", True)
@@ -668,6 +814,17 @@ class Fenetre:
             row=self._ligne, column=0, columnspan=3, sticky="w")
         self._ligne += 1
 
+        section("Mode de calcul")
+        self.tuiles_mode = TuilesMode(gauche, self.v_mode_calcul, THEMES[self.nom_theme], self.police)
+        self.tuiles_mode.cadre.grid(row=self._ligne, column=0, columnspan=3, sticky="w", pady=(1, 2))
+        self._ligne += 1
+        self.l_mode_calcul = ttk.Label(gauche, text=MODES_CALCUL[0][2], style="Aide.TLabel", wraplength=320,
+                                       justify="left")
+        self.l_mode_calcul.grid(row=self._ligne, column=0, columnspan=3, sticky="w")
+        self._ligne += 1
+        self.v_mode_calcul.trace_add("write", lambda *_: self.l_mode_calcul.configure(
+            text=next((t for c, _, t in MODES_CALCUL if c == self.v_mode_calcul.get()), "")))
+
         section("Routage")
         ttk.Label(gauche, text="Mode de routage", style="Panneau.TLabel").grid(row=self._ligne, column=0,
                                                                              columnspan=3, sticky="w")
@@ -687,9 +844,14 @@ class Fenetre:
         self.case_pcbdoc = ttk.Checkbutton(cases, text="Carte produite", variable=self.v_pcbdoc)
         self.case_pcbdoc.grid(row=0, column=0, columnspan=2, sticky="w")
         for i, (texte, var) in enumerate((("Sérigraphie", self.v_serigraphie), ("Vias de couture", self.v_couture),
-                                          ("Ouvrir à la fin", self.v_ouvrir))):
-            ttk.Checkbutton(cases, text=texte, variable=var).grid(row=1 + i // 2, column=i % 2, sticky="w",
-                                                                   padx=(0, 12))
+                                          ("Ouvrir à la fin", self.v_ouvrir), ("Suivi en direct", self.v_suivi),
+                                          ("Timelapse (GIF)", self.v_timelapse))):
+            b = ttk.Checkbutton(cases, text=texte, variable=var)
+            b.grid(row=1 + i // 2, column=i % 2, sticky="w", padx=(0, 12))
+            if var is self.v_suivi:
+                Infobulle(b, AIDE_SUIVI.replace("SURCOUT_SUIVI", SURCOUT_SUIVI))
+            elif var is self.v_timelapse:
+                Infobulle(b, AIDE_TIMELAPSE.replace("SURCOUT_TIMELAPSE", SURCOUT_TIMELAPSE))
 
         section("Réglages avancés")
         ttk.Label(gauche, text="S'arrêter après K graines valides (0 : jamais)", style="Panneau.TLabel").grid(
@@ -731,6 +893,10 @@ class Fenetre:
                   style="Discret.TLabel").pack(side="right")
         self.apercu = Apercu(o_apercu, tk, THEMES[self.nom_theme])
         self.apercu.c.grid(row=1, column=0, sticky="nsew")
+        # courbe du coût du suivi en direct (montrée seulement pendant un calcul suivi)
+        self.courbe = Courbe(o_apercu, tk, THEMES[self.nom_theme])
+        self.courbe.c.grid(row=2, column=0, sticky="ew", pady=(6, 0))
+        self.courbe.c.grid_remove()
 
         # règles
         o_regles.columnconfigure(0, weight=1)
@@ -1123,6 +1289,12 @@ class Fenetre:
                 a += [opt, str(_nombre(var.get()))]
         if self.mode_routage() != "auto":
             a += ["--mode-routage", self.mode_routage()]
+        if self.v_mode_calcul.get() != "conjoint":
+            a += ["--mode-calcul", self.v_mode_calcul.get()]
+        if self.v_suivi.get():
+            a.append("--suivi")
+        if self.v_timelapse.get():
+            a.append("--timelapse")
         for var, opt in ((self.v_pcbdoc, "--sans-pcbdoc"), (self.v_serigraphie, "--sans-serigraphie"),
                          (self.v_couture, "--sans-couture")):
             if not var.get():
@@ -1150,6 +1322,8 @@ class Fenetre:
             "calcul.processeurs": lambda: _nombre(self.v_processeurs.get()),
             "calcul.valides_voulues": lambda: _nombre(self.v_valides.get()),
             "calcul.mode_routage": self.mode_routage,
+            "calcul.mode_calcul": self.v_mode_calcul.get,
+            "calcul.suivi": self.v_suivi.get, "sortie.timelapse": self.v_timelapse.get,
             "pcbdoc.produire": self.v_pcbdoc.get, "pcbdoc.serigraphie": self.v_serigraphie.get,
             "pcbdoc.vias_couture": self.v_couture.get, "sortie.ouvrir_a_la_fin": self.v_ouvrir.get,
             "calcul.priorite_normale": self.v_priorite.get,
@@ -1227,6 +1401,28 @@ class Fenetre:
             except (TypeError, ValueError):
                 return ""
         return m
+
+    def sonder_direct(self) -> None:
+        """Suivi en direct : toutes les 2 s pendant un calcul suivi, lecture (fil à part) du dernier instantané."""
+        import time
+        if not self.v_suivi.get() or self.sortie_calcul is None or self.fin is not None or self._direct_en_cours:
+            return
+        if time.monotonic() - self._direct_t < PAS_DIRECT_MS / 1000:
+            return
+        self._direct_t, self._direct_en_cours = time.monotonic(), True
+        threading.Thread(target=_lire_direct, args=(self.sortie_calcul, self.entree, self.file), daemon=True).start()
+
+    def direct_pret(self, valeur) -> None:
+        self._direct_en_cours = False
+        dossier, scene, courbe = valeur
+        if dossier != self.sortie_calcul or scene is None or self.fin is not None:
+            return
+        if self.apercu.scene is not None and str(getattr(self.apercu.scene, "titre", "")).startswith("En direct"):
+            self.apercu.remplacer(scene)
+        else:
+            self.apercu.montrer(scene, scene.titre)
+        self.courbe.c.grid()
+        self.courbe.montrer(courbe)
 
     def resultat_pret(self, valeur) -> None:
         dossier, scene = valeur
@@ -1351,11 +1547,14 @@ class Fenetre:
                     self.carte_lue_ok(valeur)
                 elif genre == "resultat":
                     self.resultat_pret(valeur)
+                elif genre == "direct":
+                    self.direct_pret(valeur)
                 else:
                     self.processus_termine(valeur)
         except queue.Empty:
             pass
         self.restant()
+        self.sonder_direct()
         if not self.ferme:
             self._apres = self.racine.after(PAS_LECTURE_MS, self.pomper)
 

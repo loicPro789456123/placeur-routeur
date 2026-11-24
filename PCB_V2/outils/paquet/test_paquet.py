@@ -437,7 +437,8 @@ class TestStatique(unittest.TestCase):
         self.assertIn("$env:SystemDrive", texte)
         for essai in ("version", "auto_test", "chaine_kicad", "chaine_pcbdoc", "donnees_metroid", "serigraphie",
                       "arret_lancements", "arret_demande", "stop_process", "reprise", "chemin_accentue",
-                      "chemin_non_latin", "chemin_unc", "sortie_redirigee", "fenetre", "fenetre_carte"):
+                      "chemin_non_latin", "chemin_unc", "sortie_redirigee", "fenetre", "fenetre_carte",
+                      "mode_placement", "mode_serigraphie"):
             self.assertIn(f'Nom = "{essai}"', texte)
         ps = shutil.which("powershell")
         if not ps:
@@ -446,7 +447,7 @@ class TestStatique(unittest.TestCase):
                             os.path.join(ICI, "essais_fumee.ps1"), "-Simuler"], capture_output=True, timeout=120)
         sortie = r.stdout.decode("utf-8", errors="replace")
         self.assertEqual(r.returncode, 0, sortie + r.stderr.decode("utf-8", errors="replace"))
-        self.assertIn("16 essais.", sortie)
+        self.assertIn("18 essais.", sortie)
         self.assertEqual(r.stderr.strip(), b"")
 
 

@@ -107,9 +107,11 @@ impl<'a> Chaine<'a> {
             r.modifier(&maj_rudy, false);
         }
         let extra0 = self.extra;
+        let tx = Instant::now();
         if v.iter().any(|x| self.concerne_extra[x.0]) {
             self.extra = self.m.cout_extra(&self.etat);
         }
+        self.prof[1] += tx.elapsed().as_secs_f64();
         let rterm = self.rudy.as_ref().map(|r| r.lambda * r.pen).unwrap_or(0.0);
         let d = self.hp_tot + dh + rterm + self.extra + self.pression - avant;
         let ok = !forcer_rejet && (d <= 0.0 || (temp > 0.0 && self.rng.f64() < (-d / temp).exp()));
@@ -802,6 +804,10 @@ pub fn chaine_campagne(m: &Modele, depart: &Etat, graine: u64, p: &ParamCampagne
     let best = b2;
     let (t0, acc_init) = (s1.0, s1.1);
     let (paliers, rechauffes, mouvements) = (s1.2 + s2.2, s1.3 + s2.3, s1.4 + s2.4);
+    if std::env::var_os("PLACEUR_PROFIL").is_some() {
+        journal(format!("  profil du recuit : legaliser {:.1} s, cout_extra et pression {:.1} s, essais (mode routeur) {:.1} s, total {:.1} s",
+            ch.prof[0], ch.prof[1], ch.prof[2], t_start.elapsed().as_secs_f64()));
+    }
     ResCampagne { etat: best.1, cout: best.0, cout_depart, t0, acc_initiale_mesuree: acc_init, paliers, rechauffes, mouvements, temps: t_start.elapsed().as_secs_f64(), exploration, noeuds_exploration }
 }
 
@@ -863,6 +869,9 @@ fn recuire(ch: &mut Chaine, groupes: &[Vec<usize>], budget: usize, acc_cible: f6
             ch.rt.route_tout(&e, 4);
         }
         let c = ch.cout();
+        if rayon::current_thread_index().map_or(true, |i| i == 0) {
+            crate::suivi::noter(ch.m, &ch.etat, nom, c, None, false);
+        }
         let taux = acc as f64 / legaux.max(1) as f64;
         if acc_init < 0.0 {
             acc_init = taux;

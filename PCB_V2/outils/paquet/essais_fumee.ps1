@@ -24,6 +24,8 @@ $Essais = @(
     @{ Nom = "auto_test";          Bloquant = $true;  Texte = "placeur.exe --auto-test : moteurs, outils importables, dossier inscriptible, code 0 ; moteur retiré : « moteur absent, peut-être mis en quarantaine »" },
     @{ Nom = "chaine_kicad";       Bloquant = $true;  Texte = "chaîne complète sur la carte KiCad d'exemple (--qualite rapide --essais 2) : code 0, au moins une graine valide, .kicad_pcb produit et relu" },
     @{ Nom = "chaine_pcbdoc";      Bloquant = $true;  Texte = "chaîne complète sur la carte de démonstration .PcbDoc : code 0, carte relue par format_altium, sérigraphie « coherent » (sauté si la carte n'existe pas encore)" },
+    @{ Nom = "mode_placement";     Bloquant = $true;  Texte = "--mode-calcul placement sur la carte de démonstration (--qualite apercu --essais 1) : code 0, carte _PLACEMENT produite (sauté sans carte de démonstration)" },
+    @{ Nom = "mode_serigraphie";   Bloquant = $true;  Texte = "--mode-calcul serigraphie sur la carte de démonstration : code 0, carte _SERIGRAPHIE produite (sauté sans carte de démonstration)" },
     @{ Nom = "donnees_metroid";    Bloquant = $true;  Texte = "placeur.exe --donnees sur l'exemple METROID, une graine (seulement avec -Metroid)" },
     @{ Nom = "serigraphie";        Bloquant = $true;  Texte = "sérigraphie synthétique : moteur serigraphie sur la carte de démonstration, contrôle drc_serigraphie (sauté sans carte de démonstration)" },
     @{ Nom = "arret_lancements";   Bloquant = $true;  Texte = "fichier arret_lancements : les graines en cours finissent, code 3" },
@@ -155,6 +157,20 @@ try {
     } else {
         Noter "chaine_pcbdoc" "SAUTÉ" "carte de démonstration absente du paquet (lot B)"
         Noter "serigraphie" "SAUTÉ" "carte de démonstration absente du paquet (lot B)"
+    }
+
+    # 4 bis. modes de calcul : placement seul, sérigraphie seule
+    foreach ($m in @(@{ Nom = "mode_placement"; Mode = "placement"; Motif = "_PLACEMENT" }, @{ Nom = "mode_serigraphie"; Mode = "serigraphie"; Motif = "_SERIGRAPHIE" })) {
+        if (Test-Path -LiteralPath (Exemple-Pcbdoc)) {
+            $parent = Join-Path $Travail $m.Nom
+            New-Item -ItemType Directory -Force -Path $parent | Out-Null
+            $s = Join-Path $Travail ($m.Nom + ".txt")
+            "" | Set-Content -LiteralPath ($s + ".vide")
+            $code = Lancer $Placeur @((Citer (Exemple-Pcbdoc)), "--qualite", "apercu", "--essais", "1", "--mode-calcul", $m.Mode, "--sortie", (Citer $parent)) $s
+            $d = Dossier-Du-Calcul $s
+            $produite = $d -and @(Get-ChildItem -LiteralPath $d -Filter ("*" + $m.Motif + "*.PcbDoc") -ErrorAction SilentlyContinue).Count -gt 0
+            if ($code -eq 0 -and $produite) { Noter $m.Nom "OK" ("code 0, carte " + $m.Motif + " produite") } else { Noter $m.Nom "ÉCHEC" "code $code, carte produite : $produite" }
+        } else { Noter $m.Nom "SAUTÉ" "carte de démonstration absente du paquet" }
     }
 
     # 5. --donnees METROID

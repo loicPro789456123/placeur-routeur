@@ -38,6 +38,10 @@ pub struct Entrees<'e> {
     pub arret: Option<PathBuf>,
     /// `router --routage-initial` : routage existant chargé tel quel (post-traitement et vérification seulement)
     pub routage_initial: Option<PathBuf>,
+    /// `--suivi D` : instantanés du suivi en direct (et images du timelapse avec `--timelapse`)
+    pub suivi: Option<PathBuf>,
+    pub suivi_periode_s: f64,
+    pub timelapse: bool,
 }
 
 fn ecrire(dir: &Path, nom: &str, v: &Value) -> Result<(), String> {
@@ -157,11 +161,18 @@ impl Variante {
     }
 }
 
+/// Largeur uniforme par connexion des réseaux de puissance : 0 non, 1 sans rétrécir, 2 en égalisant (essai).
+const UNIFORMISER: u8 = 2;
+
 /// Post-traitement du routage final (lissage des marches, accord des longueurs) ; rend des lignes de journal.
 fn post_traiter(d: &mut Detail) -> (Vec<String>, bool) {
     let m = d.m;
     let mut j = Vec::new();
     let mut accord = false;
+    if UNIFORMISER != 0 {
+        let (nb, mm) = d.uniformiser_largeurs(UNIFORMISER == 2);
+        j.push(format!("  largeur uniforme par connexion : {} chaînes, {:.1} mm élargis", nb, mm));
+    }
     if m.param.finition.lissage_marches {
         let (nb, gain, dseg) = d.lisser(m.mode_routage);
         j.push(format!("  lissage ({}) : {} chaînes raccourcies, {:.1} mm de piste en moins, {} segments en moins", nom_mode(m.mode_routage), nb, gain, dseg));
@@ -212,6 +223,7 @@ pub fn executer(en: &Entrees, graine: Option<u64>, poses: Option<Vec<donnees::Po
     std::fs::create_dir_all(dir).map_err(|e| format!("dossier de sortie : {}", fichiers::texte_erreur_es(&e)))?;
     let fichier_arret = en.arret.clone();
     campagne::fixer_fichier_arret(fichier_arret.clone());
+    crate::suivi::configurer(en.suivi.clone(), en.suivi_periode_s, en.timelapse);
     let arret = move || fichier_arret.as_ref().map(|f| f.exists()).unwrap_or(false);
     let mut journal = |s: String| println!("{}", s);
     let connexions = en.connexions as f64;
@@ -286,6 +298,9 @@ pub fn executer(en: &Entrees, graine: Option<u64>, poses: Option<Vec<donnees::Po
             cx.fin("finition");
         }
     }
+    if let Some(e) = bilan.etat.as_ref() {
+        crate::suivi::noter(&m, e, "fin", choix.as_ref().and_then(|v| v.verif.cout).unwrap_or(f64::NAN), bilan.detail.as_ref(), true);
+    }
     cx.debut("verification");
     let routage = choix.as_ref().map(|v| v.routage.clone());
     let verif = choix.as_ref().map(|v| v.verif.clone());
@@ -300,12 +315,20 @@ pub fn executer(en: &Entrees, graine: Option<u64>, poses: Option<Vec<donnees::Po
     }
     cx.fin("ecriture");
     let arrete = bilan.fin == Fin::ArretDemande;
-    let (valide, cause, validite_json, cout) = match &verif {
-        Some(v) => {
+    // mode « placement seul » (campagne.arret_apres = recuit) : verdict du placement, coût du recuit
+    let placement_seul = bilan.fin == Fin::ArretApres && en.lus.parametres.campagne.arret_apres == crate::parametres::ArretApres::Recuit;
+    let controle_placement = match (&placements, placement_seul) {
+        (Some(p), true) => Some(Reference.placement(en.valeur_donnees, p, true)?),
+        _ => None,
+    };
+    let (valide, cause, validite_json, cout) = match (&verif, &controle_placement) {
+        (None, Some(cp)) => (cp.valide && !arrete, if cp.valide { "" } else { "placement invalide" }, Value::Null,
+            bilan.recuit.get("cout").and_then(Value::as_f64)),
+        (Some(v), _) => {
             let cause = if !bilan.cause.is_empty() { bilan.cause } else { v.cause };
             (v.valide && bilan.cause.is_empty() && !arrete, cause, v.verdict.clone(), v.cout)
         }
-        None => (false, if bilan.cause.is_empty() { "non route" } else { bilan.cause }, Value::Null, None),
+        (None, None) => (false, if bilan.cause.is_empty() { "non route" } else { bilan.cause }, Value::Null, None),
     };
     let echecs: Vec<String> = choix.as_ref().map(|v| v.echecs.clone()).unwrap_or_default();
     // paramètres effectifs : sans `campagne.threads` (§2.7 : le nombre de fils est dans `execution.fils`)

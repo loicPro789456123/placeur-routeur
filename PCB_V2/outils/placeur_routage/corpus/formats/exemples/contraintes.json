@@ -57,6 +57,7 @@
  "longueurs_appariees": [{"nom": "BUS_D", "reseaux": ["D0", "D1", "D2", "D3"], "tolerance_mm": 1.0}],
  "longueurs": [{"reseau": "CLK", "min_mm": 20.0, "max_mm": 40.0}],
  "mode_routage": "octogonal",
+ "mode_calcul": "conjoint",
  "eloignements": [{"type": "dure", "objets": ["U25_VOLT1.27", "U25_VOLT1.28"], "reference": ["M1"], "distance_mm": 30.0},
                   {"type": "souple", "objets": ["U10", "C19"], "reference": ["M1", "M2"], "distance_mm": 30.0, "poids_par_mm": 5.0, "marge_mm": 0.0}],
  "charges": [{"broche": "P1.1", "courant_a": 2.0}],
