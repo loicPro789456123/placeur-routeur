@@ -1,0 +1,2065 @@
+{
+ "format": "rapport/2",
+ "version": "2.0.0+eeada11",
+ "carte": "donnees_placeur_9b5b5a3",
+ "mode": "campagne",
+ "termine": true,
+ "fin": "normale",
+ "parametres": {
+  "effectifs": {
+   "format": "parametres_moteur/1",
+   "campagne": {
+    "threads": 1,
+    "chaines": 4,
+    "duree_max_s": 7200,
+    "arret_apres": "complet",
+    "seuil_abandon_echecs": 10,
+    "seuil_abandon_part": 0.005,
+    "memoire_max_mo": 0
+   },
+   "placement": {
+    "degagement_pas_fin_mm": 0.8,
+    "copier_motifs": false
+   },
+   "recuit": {
+    "mouvements_max": 100000000,
+    "alpha": 0.99,
+    "palier_par_piece": 100,
+    "acceptation_initiale": 0.85,
+    "t_fin_relative": 1e-06,
+    "rudy_capacite": 2.0,
+    "rudy_lambda": 2.0,
+    "rechauffes": 0,
+    "arret_paliers_sans_progres": 150,
+    "periode_reroutage": 3000,
+    "pas_grille_globale_mm": 0.5,
+    "affinage": {
+     "fraction_mouvements": 0.05,
+     "acceptation": 0.03,
+     "t_fin_relative": 0.01,
+     "alpha": 0.85,
+     "palier_par_piece": 25
+    }
+   },
+   "boucle": {
+    "tours": 4,
+    "mouvements_locaux": 60000,
+    "rayon_zone_mm": 3.5,
+    "poids_initial": 30,
+    "rayon_pieces_mm": 4.0,
+    "t0_facteur": 0.15,
+    "sigma_mm": 2.5,
+    "reroutage_local": false
+   },
+   "routage": {
+    "iters_negociation": 40,
+    "tours_arrachage": 4,
+    "arret_si_aggravation": false,
+    "ordre_pas_fin_d_abord": true,
+    "pas_grille_detail_mm": "auto",
+    "largeur_plancher_mm": 0.254,
+    "eventail_auto": true,
+    "eventail_pas_sortie_mm": "auto",
+    "eventail_longueur_mm": 0.3,
+    "amorce_eventail_paires": false,
+    "amorce_moyenne": false,
+    "ponts_plans": false,
+    "rayon_via_plan_mm": 6.0,
+    "fenetre_mm": 15.0,
+    "espacement": {
+     "actif": true,
+     "prox": 1.0,
+     "coude": 0.3,
+     "allongement_max": 0.15
+    },
+    "sens_par_couche": {
+     "actif": false,
+     "penalite": 0.2
+    },
+    "copier_motifs": false,
+    "global": {
+     "cout_via": 2.0,
+     "penalite_via": 2.0,
+     "penalite_debordement": 5.0,
+     "penalite_echec": 100.0,
+     "max_expansions": 250000,
+     "rayon_echappement_cellules": 8
+    }
+   },
+   "finition": {
+    "reparer_tours": 4,
+    "reparer_si_echecs_max": null,
+    "routage_complet": false,
+    "routage_complet_iters": 80,
+    "routage_complet_tours": 8,
+    "verification_reparer_tours": 2,
+    "lissage_marches": false,
+    "surfaces_puissance": {
+     "actif": false,
+     "roles": [
+      "puissance",
+      "commutation"
+     ],
+     "largeur_min_mm": 1.0
+    }
+   },
+   "conjointe": {
+    "essais": null,
+    "essais_par_piece_mobile": 6.0,
+    "plafond_s": 1800,
+    "t0": 3.0,
+    "t_fin": 0.05,
+    "sigma_mm": 1.5,
+    "poids_proximite": 1.0,
+    "periode_zone": 40,
+    "max_expansions": 200000
+   },
+   "couts": {
+    "conjointe": {
+     "longueur": 1.0,
+     "via": 1.5,
+     "retreci": 2.0,
+     "resistance_carre": 1.5,
+     "segment": 0.1,
+     "echec": 100000
+    },
+    "convertisseur": {
+     "boucle_mm2": 8,
+     "perimetre": 10,
+     "noeud": 15,
+     "courts": 10,
+     "decouplage_pilote": 10,
+     "bulk": 3,
+     "sensible": 40,
+     "distance_sensible_mm": 4
+    },
+    "decouplage": {
+     "limite_mm": 4.0,
+     "poids": 25.0
+    }
+   },
+   "roles": {
+    "signal": {
+     "priorite": 8,
+     "largeur_preferee_mm": null,
+     "largeur_preferee_pastille": false,
+     "paliers_mm": [
+      0.3,
+      0.254
+     ],
+     "facteur_via": 1,
+     "vias_doubles": false,
+     "couches": null,
+     "resistance_conjointe": false,
+     "sorties_longues": false
+    },
+    "alimentation": {
+     "priorite": 7,
+     "largeur_preferee_mm": null,
+     "largeur_preferee_pastille": false,
+     "paliers_mm": [
+      0.3,
+      0.254
+     ],
+     "facteur_via": 3,
+     "vias_doubles": false,
+     "couches": null,
+     "resistance_conjointe": false,
+     "sorties_longues": false
+    },
+    "puissance": {
+     "priorite": 1,
+     "largeur_preferee_mm": null,
+     "largeur_preferee_pastille": false,
+     "paliers_mm": [
+      1.5,
+      1.0,
+      0.5,
+      0.3
+     ],
+     "facteur_via": 3,
+     "vias_doubles": true,
+     "couches": null,
+     "resistance_conjointe": true,
+     "sorties_longues": false
+    },
+    "commutation": {
+     "priorite": 3,
+     "largeur_preferee_mm": 2.0,
+     "largeur_preferee_pastille": true,
+     "paliers_mm": [
+      1.5,
+      1.0,
+      0.5,
+      0.3,
+      0.254
+     ],
+     "facteur_via": 1,
+     "vias_doubles": true,
+     "couches": [
+      {
+       "si": "face_convertisseur",
+       "facteur": 1.0
+      },
+      {
+       "si": "externe",
+       "facteur": 1.2
+      },
+      {
+       "si": "interne",
+       "facteur": 3.0
+      }
+     ],
+     "resistance_conjointe": false,
+     "sorties_longues": true
+    },
+    "plan": {
+     "priorite": 6,
+     "descentes_mm": [
+      0.3,
+      0.254
+     ],
+     "descente_puissance_mm": [
+      0.5,
+      0.3
+     ],
+     "rayon_vias_doubles_mm": 2.5,
+     "facteur_via": 1,
+     "vias_doubles": false,
+     "couches": null,
+     "resistance_conjointe": false,
+     "sorties_longues": false
+    }
+   },
+   "sensibilites": {
+    "normale": {
+     "couches": null,
+     "proximite": 1.0,
+     "priorite_signal": null
+    },
+    "sensible": {
+     "couches": [
+      {
+       "si": "preferee_puissance",
+       "facteur": 3.0
+      },
+      {
+       "si": "adjacente_plan",
+       "facteur": 1.0
+      },
+      {
+       "si": "externe",
+       "facteur": 1.2
+      },
+      {
+       "si": "interne",
+       "facteur": 3.0
+      }
+     ],
+     "proximite": 2.0,
+     "priorite_signal": 4
+    },
+    "peu_sensible": {
+     "couches": null,
+     "proximite": 0.3,
+     "priorite_signal": null
+    }
+   },
+   "couche_preferee": {
+    "penalite_ailleurs": 1.5
+   },
+   "journal": {
+    "niveau": "normal",
+    "debug": []
+   }
+  },
+  "niveau": "normal",
+  "fichiers_ini": [],
+  "utilisateur": {
+   "carte.fichier": null,
+   "carte.contraintes": null,
+   "carte.config_convertisseurs": null,
+   "sortie.dossier": ".",
+   "sortie.ouvrir_a_la_fin": true,
+   "sortie.garder_graines": "meilleure",
+   "calcul.qualite": "normal",
+   "calcul.essais": 1,
+   "calcul.duree_max_min": 180,
+   "calcul.valides_voulues": 0,
+   "calcul.graine_depart": 3001,
+   "calcul.processeurs": 3,
+   "calcul.priorite_normale": false,
+   "pcbdoc.produire": false,
+   "pcbdoc.produire_si_invalide": true,
+   "pcbdoc.serigraphie": true,
+   "pcbdoc.vias_couture": true,
+   "contraintes.fixes": null,
+   "contraintes.liberer": null,
+   "contraintes.dessus_seulement": null,
+   "contraintes.dessous_seulement": null,
+   "contraintes.faces_par_defaut": null,
+   "contraintes.fixer_suggestions": null,
+   "contraintes.fixer_verrouilles": null,
+   "contraintes.hauteur_inconnue": null,
+   "contraintes.marge_bord_mm": null,
+   "contraintes.garde_bord_mm": null,
+   "contraintes.marge_decoupe_mm": null,
+   "contraintes.garde_decoupe_mm": null,
+   "contraintes.pas_fin_mm": null,
+   "contraintes.grille_placement_mm": null,
+   "avance.parametres_moteur": null,
+   "avance.conjointe_essais_par_piece": null,
+   "avance.boucle": null,
+   "avance.mouvements": null,
+   "avance.iters_det": null,
+   "avance.duree_max_graine_min": null,
+   "avance.fils_par_essai": 1
+  },
+  "avance": {},
+  "moteur_origines": {
+   "campagne.threads": "options"
+  }
+ },
+ "import": {
+  "composants": 359,
+  "reseaux": 259,
+  "couches": 4
+ },
+ "deduction": {},
+ "estimation": {
+  "memoire_mo": 617.0,
+  "duree_prevue_s": 7200.0,
+  "duree_max_s": 10800.0
+ },
+ "graines": [
+  {
+   "graine": 3001,
+   "dossier": "donnees_placeur_9b5b5a3_20261123-195511/technique/graine_3001",
+   "code": 0,
+   "fin": "normale",
+   "plantage": false,
+   "duree_s": 4281.208,
+   "valide_moteur": false,
+   "placement": {
+    "valide": true,
+    "violations": 0
+   },
+   "drc_strict": {
+    "valide": false,
+    "ouvertes": 3,
+    "violations": 0
+   },
+   "drc_altium": {
+    "valide": false,
+    "ouvertes": 3,
+    "violations": 0
+   },
+   "valide": false,
+   "cout_commun": 13482.269484215867,
+   "incoherence": false,
+   "etat": "terminee",
+   "texte": "",
+   "cause_moteur": "liaisons ouvertes",
+   "cout_moteur": 13482.269484215885,
+   "temps_calcul_s": 4281.145,
+   "memoire_pic_mo": 0.0,
+   "plafond_temps_atteint": false
+  },
+  {
+   "graine": 3002,
+   "dossier": "donnees_placeur_9b5b5a3_20261123-190412/technique/graine_3002",
+   "code": 0,
+   "fin": "normale",
+   "plantage": false,
+   "duree_s": 4646.465,
+   "valide_moteur": false,
+   "placement": {
+    "valide": true,
+    "violations": 0
+   },
+   "drc_strict": {
+    "valide": false,
+    "ouvertes": 5,
+    "violations": 0
+   },
+   "drc_altium": {
+    "valide": false,
+    "ouvertes": 5,
+    "violations": 0
+   },
+   "valide": false,
+   "cout_commun": 12647.671215100341,
+   "incoherence": false,
+   "etat": "terminee",
+   "texte": "",
+   "cause_moteur": "liaisons ouvertes",
+   "cout_moteur": 12647.671215100372,
+   "temps_calcul_s": 4646.411,
+   "memoire_pic_mo": 0.0,
+   "plafond_temps_atteint": false
+  },
+  {
+   "graine": 3003,
+   "dossier": "donnees_placeur_9b5b5a3_20261123-221042/technique/graine_3003",
+   "code": 0,
+   "fin": "normale",
+   "plantage": false,
+   "duree_s": 5283.378,
+   "valide_moteur": false,
+   "placement": {
+    "valide": true,
+    "violations": 0
+   },
+   "drc_strict": {
+    "valide": false,
+    "ouvertes": 2,
+    "violations": 0
+   },
+   "drc_altium": {
+    "valide": false,
+    "ouvertes": 2,
+    "violations": 0
+   },
+   "valide": false,
+   "cout_commun": 13331.366186530142,
+   "incoherence": false,
+   "etat": "terminee",
+   "texte": "",
+   "cause_moteur": "liaisons ouvertes",
+   "cout_moteur": 13331.366186530176,
+   "temps_calcul_s": 5283.265,
+   "memoire_pic_mo": 0.0,
+   "plafond_temps_atteint": false
+  },
+  {
+   "graine": 3004,
+   "dossier": "donnees_placeur_9b5b5a3_20261123-210713/technique/graine_3004",
+   "code": 0,
+   "fin": "normale",
+   "plantage": false,
+   "duree_s": 3006.015,
+   "valide_moteur": false,
+   "placement": {
+    "valide": true,
+    "violations": 0
+   },
+   "drc_strict": {
+    "valide": false,
+    "ouvertes": 1,
+    "violations": 0
+   },
+   "drc_altium": {
+    "valide": false,
+    "ouvertes": 1,
+    "violations": 0
+   },
+   "valide": false,
+   "cout_commun": 12021.151195840053,
+   "incoherence": false,
+   "etat": "terminee",
+   "texte": "",
+   "cause_moteur": "liaisons ouvertes",
+   "cout_moteur": 12021.151195840075,
+   "temps_calcul_s": 3005.953,
+   "memoire_pic_mo": 0.0,
+   "plafond_temps_atteint": false
+  },
+  {
+   "graine": 3005,
+   "dossier": "donnees_placeur_9b5b5a3_20261123-212330/technique/graine_3005",
+   "code": 0,
+   "fin": "normale",
+   "plantage": false,
+   "duree_s": 4185.789,
+   "valide_moteur": true,
+   "placement": {
+    "valide": true,
+    "violations": 0
+   },
+   "drc_strict": {
+    "valide": true,
+    "ouvertes": 0,
+    "violations": 0
+   },
+   "drc_altium": {
+    "valide": true,
+    "ouvertes": 0,
+    "violations": 0
+   },
+   "valide": true,
+   "cout_commun": 13355.345146415284,
+   "incoherence": false,
+   "etat": "terminee",
+   "texte": "",
+   "cause_moteur": "",
+   "cout_moteur": 13355.345146415313,
+   "temps_calcul_s": 4185.737,
+   "memoire_pic_mo": 0.0,
+   "plafond_temps_atteint": false
+  },
+  {
+   "graine": 3006,
+   "dossier": "donnees_placeur_9b5b5a3_20261123-213955/technique/graine_3006",
+   "code": 0,
+   "fin": "normale",
+   "plantage": false,
+   "duree_s": 5215.853,
+   "valide_moteur": false,
+   "placement": {
+    "valide": true,
+    "violations": 0
+   },
+   "drc_strict": {
+    "valide": false,
+    "ouvertes": 3,
+    "violations": 0
+   },
+   "drc_altium": {
+    "valide": false,
+    "ouvertes": 3,
+    "violations": 0
+   },
+   "valide": false,
+   "cout_commun": 13295.36636114463,
+   "incoherence": false,
+   "etat": "terminee",
+   "texte": "",
+   "cause_moteur": "liaisons ouvertes",
+   "cout_moteur": 13295.366361144668,
+   "temps_calcul_s": 5215.767,
+   "memoire_pic_mo": 0.0,
+   "plafond_temps_atteint": false
+  },
+  {
+   "graine": 3007,
+   "dossier": "donnees_placeur_9b5b5a3_20261123-215714/technique/graine_3007",
+   "code": 0,
+   "fin": "normale",
+   "plantage": false,
+   "duree_s": 8266.659,
+   "valide_moteur": false,
+   "placement": {
+    "valide": true,
+    "violations": 0
+   },
+   "drc_strict": {
+    "valide": false,
+    "ouvertes": 3,
+    "violations": 0
+   },
+   "drc_altium": {
+    "valide": false,
+    "ouvertes": 3,
+    "violations": 0
+   },
+   "valide": false,
+   "cout_commun": 13006.388774824316,
+   "incoherence": false,
+   "etat": "terminee",
+   "texte": "",
+   "cause_moteur": "liaisons ouvertes",
+   "cout_moteur": 13006.388774824343,
+   "temps_calcul_s": 8266.594,
+   "memoire_pic_mo": 0.0,
+   "plafond_temps_atteint": false
+  },
+  {
+   "graine": 3008,
+   "dossier": "donnees_placeur_9b5b5a3_20261123-224206/technique/graine_3008",
+   "code": 0,
+   "fin": "normale",
+   "plantage": false,
+   "duree_s": 2760.665,
+   "valide_moteur": true,
+   "placement": {
+    "valide": true,
+    "violations": 0
+   },
+   "drc_strict": {
+    "valide": true,
+    "ouvertes": 0,
+    "violations": 0
+   },
+   "drc_altium": {
+    "valide": true,
+    "ouvertes": 0,
+    "violations": 0
+   },
+   "valide": true,
+   "cout_commun": 13470.230921342089,
+   "incoherence": false,
+   "etat": "terminee",
+   "texte": "",
+   "cause_moteur": "",
+   "cout_moteur": 13470.23092134211,
+   "temps_calcul_s": 2760.604,
+   "memoire_pic_mo": 0.0,
+   "plafond_temps_atteint": false
+  },
+  {
+   "graine": 3009,
+   "dossier": "donnees_placeur_9b5b5a3_20261123-211812/technique/graine_3009",
+   "code": 0,
+   "fin": "abandon",
+   "plantage": false,
+   "duree_s": 7097.112,
+   "valide_moteur": false,
+   "placement": {
+    "valide": true,
+    "violations": 0
+   },
+   "drc_strict": {
+    "valide": false,
+    "ouvertes": 12,
+    "violations": 6
+   },
+   "drc_altium": {
+    "valide": false,
+    "ouvertes": 12,
+    "violations": 6
+   },
+   "valide": false,
+   "cout_commun": 13945.430807116325,
+   "incoherence": false,
+   "etat": "terminee",
+   "texte": "",
+   "cause_moteur": "routage detaille incomplet",
+   "cout_moteur": 13945.430807116367,
+   "temps_calcul_s": 7097.037,
+   "memoire_pic_mo": 0.0,
+   "plafond_temps_atteint": false
+  },
+  {
+   "graine": 3010,
+   "dossier": "donnees_placeur_9b5b5a3_20261123-221415/technique/graine_3010",
+   "code": 0,
+   "fin": "normale",
+   "plantage": false,
+   "duree_s": 2995.377,
+   "valide_moteur": false,
+   "placement": {
+    "valide": true,
+    "violations": 0
+   },
+   "drc_strict": {
+    "valide": false,
+    "ouvertes": 2,
+    "violations": 0
+   },
+   "drc_altium": {
+    "valide": false,
+    "ouvertes": 2,
+    "violations": 0
+   },
+   "valide": false,
+   "cout_commun": 11922.037432761443,
+   "incoherence": false,
+   "etat": "terminee",
+   "texte": "",
+   "cause_moteur": "liaisons ouvertes",
+   "cout_moteur": 11922.03743276146,
+   "temps_calcul_s": 2995.325,
+   "memoire_pic_mo": 0.0,
+   "plafond_temps_atteint": false
+  },
+  {
+   "graine": 3011,
+   "dossier": "donnees_placeur_9b5b5a3_20261123-202851/technique/graine_3011",
+   "code": 0,
+   "fin": "normale",
+   "plantage": false,
+   "duree_s": 8127.177,
+   "valide_moteur": false,
+   "placement": {
+    "valide": true,
+    "violations": 0
+   },
+   "drc_strict": {
+    "valide": false,
+    "ouvertes": 6,
+    "violations": 0
+   },
+   "drc_altium": {
+    "valide": false,
+    "ouvertes": 6,
+    "violations": 0
+   },
+   "valide": false,
+   "cout_commun": 14183.600852540503,
+   "incoherence": false,
+   "etat": "terminee",
+   "texte": "",
+   "cause_moteur": "liaisons ouvertes",
+   "cout_moteur": 14183.600852540552,
+   "temps_calcul_s": 8127.061,
+   "memoire_pic_mo": 0.0,
+   "plafond_temps_atteint": false
+  },
+  {
+   "graine": 3012,
+   "dossier": "donnees_placeur_9b5b5a3_20261123-222835/technique/graine_3012",
+   "code": 0,
+   "fin": "plafond_temps",
+   "plantage": false,
+   "duree_s": 12056.896,
+   "valide_moteur": false,
+   "placement": {
+    "valide": true,
+    "violations": 0
+   },
+   "drc_strict": {
+    "valide": false,
+    "ouvertes": 6,
+    "violations": 0
+   },
+   "drc_altium": {
+    "valide": false,
+    "ouvertes": 6,
+    "violations": 0
+   },
+   "valide": false,
+   "cout_commun": 13992.976809733005,
+   "incoherence": false,
+   "etat": "terminee",
+   "texte": "",
+   "cause_moteur": "liaisons ouvertes",
+   "cout_moteur": 13992.976809733062,
+   "temps_calcul_s": 12056.801,
+   "memoire_pic_mo": 0.0,
+   "plafond_temps_atteint": true
+  },
+  {
+   "graine": 3013,
+   "dossier": "donnees_placeur_9b5b5a3_20261123-220929/technique/graine_3013",
+   "code": 0,
+   "fin": "normale",
+   "plantage": false,
+   "duree_s": 8200.955,
+   "valide_moteur": false,
+   "placement": {
+    "valide": true,
+    "violations": 0
+   },
+   "drc_strict": {
+    "valide": false,
+    "ouvertes": 2,
+    "violations": 0
+   },
+   "drc_altium": {
+    "valide": false,
+    "ouvertes": 2,
+    "violations": 0
+   },
+   "valide": false,
+   "cout_commun": 13310.625735570411,
+   "incoherence": false,
+   "etat": "terminee",
+   "texte": "",
+   "cause_moteur": "liaisons ouvertes",
+   "cout_moteur": 13310.625735570457,
+   "temps_calcul_s": 8200.827,
+   "memoire_pic_mo": 0.0,
+   "plafond_temps_atteint": false
+  },
+  {
+   "graine": 3014,
+   "dossier": "donnees_placeur_9b5b5a3_20261123-231703/technique/graine_3014",
+   "code": 0,
+   "fin": "normale",
+   "plantage": false,
+   "duree_s": 13596.924,
+   "valide_moteur": false,
+   "placement": {
+    "valide": true,
+    "violations": 0
+   },
+   "drc_strict": {
+    "valide": false,
+    "ouvertes": 4,
+    "violations": 0
+   },
+   "drc_altium": {
+    "valide": false,
+    "ouvertes": 4,
+    "violations": 0
+   },
+   "valide": false,
+   "cout_commun": 13557.321053870723,
+   "incoherence": false,
+   "etat": "terminee",
+   "texte": "",
+   "cause_moteur": "liaisons ouvertes",
+   "cout_moteur": 13557.321053870737,
+   "temps_calcul_s": 13596.859,
+   "memoire_pic_mo": 0.0,
+   "plafond_temps_atteint": false
+  },
+  {
+   "graine": 3015,
+   "dossier": "donnees_placeur_9b5b5a3_20261123-224443/technique/graine_3015",
+   "code": 0,
+   "fin": "normale",
+   "plantage": false,
+   "duree_s": 1639.942,
+   "valide_moteur": true,
+   "placement": {
+    "valide": true,
+    "violations": 0
+   },
+   "drc_strict": {
+    "valide": true,
+    "ouvertes": 0,
+    "violations": 0
+   },
+   "drc_altium": {
+    "valide": true,
+    "ouvertes": 0,
+    "violations": 0
+   },
+   "valide": true,
+   "cout_commun": 11418.624770801516,
+   "incoherence": false,
+   "etat": "terminee",
+   "texte": "",
+   "cause_moteur": "",
+   "cout_moteur": 11418.624770801527,
+   "temps_calcul_s": 1639.817,
+   "memoire_pic_mo": 0.0,
+   "plafond_temps_atteint": false
+  },
+  {
+   "graine": 3016,
+   "dossier": "donnees_placeur_9b5b5a3_20261123-200107/technique/graine_3016",
+   "code": 0,
+   "fin": "normale",
+   "plantage": false,
+   "duree_s": 6580.164,
+   "valide_moteur": false,
+   "placement": {
+    "valide": true,
+    "violations": 0
+   },
+   "drc_strict": {
+    "valide": false,
+    "ouvertes": 3,
+    "violations": 0
+   },
+   "drc_altium": {
+    "valide": false,
+    "ouvertes": 3,
+    "violations": 0
+   },
+   "valide": false,
+   "cout_commun": 13048.660568822135,
+   "incoherence": false,
+   "etat": "terminee",
+   "texte": "",
+   "cause_moteur": "liaisons ouvertes",
+   "cout_moteur": 13048.660568822153,
+   "temps_calcul_s": 6580.104,
+   "memoire_pic_mo": 0.0,
+   "plafond_temps_atteint": false
+  },
+  {
+   "graine": 3017,
+   "dossier": "donnees_placeur_9b5b5a3_20261123-191801/technique/graine_3017",
+   "code": 0,
+   "fin": "normale",
+   "plantage": false,
+   "duree_s": 2195.613,
+   "valide_moteur": false,
+   "placement": {
+    "valide": true,
+    "violations": 0
+   },
+   "drc_strict": {
+    "valide": false,
+    "ouvertes": 1,
+    "violations": 0
+   },
+   "drc_altium": {
+    "valide": false,
+    "ouvertes": 1,
+    "violations": 0
+   },
+   "valide": false,
+   "cout_commun": 12049.633089265753,
+   "incoherence": false,
+   "etat": "terminee",
+   "texte": "",
+   "cause_moteur": "liaisons ouvertes",
+   "cout_moteur": 12049.633089265777,
+   "temps_calcul_s": 2195.551,
+   "memoire_pic_mo": 0.0,
+   "plafond_temps_atteint": false
+  },
+  {
+   "graine": 3018,
+   "dossier": "donnees_placeur_9b5b5a3_20261123-215512/technique/graine_3018",
+   "code": 0,
+   "fin": "normale",
+   "plantage": false,
+   "duree_s": 1643.636,
+   "valide_moteur": true,
+   "placement": {
+    "valide": true,
+    "violations": 0
+   },
+   "drc_strict": {
+    "valide": true,
+    "ouvertes": 0,
+    "violations": 0
+   },
+   "drc_altium": {
+    "valide": true,
+    "ouvertes": 0,
+    "violations": 0
+   },
+   "valide": true,
+   "cout_commun": 11904.054212617966,
+   "incoherence": false,
+   "etat": "terminee",
+   "texte": "",
+   "cause_moteur": "",
+   "cout_moteur": 11904.05421261799,
+   "temps_calcul_s": 1643.574,
+   "memoire_pic_mo": 0.0,
+   "plafond_temps_atteint": false
+  },
+  {
+   "graine": 3019,
+   "dossier": "donnees_placeur_9b5b5a3_20261123-201819/technique/graine_3019",
+   "code": 0,
+   "fin": "normale",
+   "plantage": false,
+   "duree_s": 3491.573,
+   "valide_moteur": false,
+   "placement": {
+    "valide": true,
+    "violations": 0
+   },
+   "drc_strict": {
+    "valide": false,
+    "ouvertes": 2,
+    "violations": 0
+   },
+   "drc_altium": {
+    "valide": false,
+    "ouvertes": 2,
+    "violations": 0
+   },
+   "valide": false,
+   "cout_commun": 12972.55688698778,
+   "incoherence": false,
+   "etat": "terminee",
+   "texte": "",
+   "cause_moteur": "liaisons ouvertes",
+   "cout_moteur": 12972.556886987792,
+   "temps_calcul_s": 3491.511,
+   "memoire_pic_mo": 0.0,
+   "plafond_temps_atteint": false
+  },
+  {
+   "graine": 3020,
+   "dossier": "donnees_placeur_9b5b5a3_20261123-230435/technique/graine_3020",
+   "code": 0,
+   "fin": "abandon",
+   "plantage": false,
+   "duree_s": 4852.118,
+   "valide_moteur": false,
+   "placement": {
+    "valide": true,
+    "violations": 0
+   },
+   "drc_strict": {
+    "valide": false,
+    "ouvertes": 16,
+    "violations": 0
+   },
+   "drc_altium": {
+    "valide": false,
+    "ouvertes": 16,
+    "violations": 0
+   },
+   "valide": false,
+   "cout_commun": 13583.910714349586,
+   "incoherence": false,
+   "etat": "terminee",
+   "texte": "",
+   "cause_moteur": "routage detaille incomplet",
+   "cout_moteur": 13583.910714349635,
+   "temps_calcul_s": 4852.038,
+   "memoire_pic_mo": 0.0,
+   "plafond_temps_atteint": false
+  },
+  {
+   "graine": 4001,
+   "dossier": "donnees_placeur_9b5b5a3_20261123-230724/technique/graine_4001",
+   "code": 0,
+   "fin": "normale",
+   "plantage": false,
+   "duree_s": 2785.507,
+   "valide_moteur": true,
+   "placement": {
+    "valide": true,
+    "violations": 0
+   },
+   "drc_strict": {
+    "valide": true,
+    "ouvertes": 0,
+    "violations": 0
+   },
+   "drc_altium": {
+    "valide": true,
+    "ouvertes": 0,
+    "violations": 0
+   },
+   "valide": true,
+   "cout_commun": 12966.297499468637,
+   "incoherence": false,
+   "etat": "terminee",
+   "texte": "",
+   "cause_moteur": "",
+   "cout_moteur": 12966.297499468665,
+   "temps_calcul_s": 2785.445,
+   "memoire_pic_mo": 0.0,
+   "plafond_temps_atteint": false
+  },
+  {
+   "graine": 4002,
+   "dossier": "donnees_placeur_9b5b5a3_20261123-232231/technique/graine_4002",
+   "code": 0,
+   "fin": "normale",
+   "plantage": false,
+   "duree_s": 915.306,
+   "valide_moteur": true,
+   "placement": {
+    "valide": true,
+    "violations": 0
+   },
+   "drc_strict": {
+    "valide": true,
+    "ouvertes": 0,
+    "violations": 0
+   },
+   "drc_altium": {
+    "valide": true,
+    "ouvertes": 0,
+    "violations": 0
+   },
+   "valide": true,
+   "cout_commun": 10809.07644894436,
+   "incoherence": false,
+   "etat": "terminee",
+   "texte": "",
+   "cause_moteur": "",
+   "cout_moteur": 10809.07644894438,
+   "temps_calcul_s": 915.248,
+   "memoire_pic_mo": 0.0,
+   "plafond_temps_atteint": false
+  },
+  {
+   "graine": 4003,
+   "dossier": "donnees_placeur_9b5b5a3_20261123-222924/technique/graine_4003",
+   "code": 0,
+   "fin": "normale",
+   "plantage": false,
+   "duree_s": 4606.184,
+   "valide_moteur": false,
+   "placement": {
+    "valide": true,
+    "violations": 0
+   },
+   "drc_strict": {
+    "valide": false,
+    "ouvertes": 4,
+    "violations": 0
+   },
+   "drc_altium": {
+    "valide": false,
+    "ouvertes": 4,
+    "violations": 0
+   },
+   "valide": false,
+   "cout_commun": 12691.472055530547,
+   "incoherence": false,
+   "etat": "terminee",
+   "texte": "",
+   "cause_moteur": "liaisons ouvertes",
+   "cout_moteur": 12691.472055530588,
+   "temps_calcul_s": 4606.127,
+   "memoire_pic_mo": 0.0,
+   "plafond_temps_atteint": false
+  },
+  {
+   "graine": 4004,
+   "dossier": "donnees_placeur_9b5b5a3_20261123-191141/technique/graine_4004",
+   "code": 0,
+   "fin": "normale",
+   "plantage": false,
+   "duree_s": 4597.76,
+   "valide_moteur": false,
+   "placement": {
+    "valide": true,
+    "violations": 0
+   },
+   "drc_strict": {
+    "valide": false,
+    "ouvertes": 0,
+    "violations": 1
+   },
+   "drc_altium": {
+    "valide": false,
+    "ouvertes": 0,
+    "violations": 1
+   },
+   "valide": false,
+   "cout_commun": 13050.968449841548,
+   "incoherence": false,
+   "etat": "terminee",
+   "texte": "",
+   "cause_moteur": "violations",
+   "cout_moteur": 13050.968449841579,
+   "temps_calcul_s": 4597.705,
+   "memoire_pic_mo": 0.0,
+   "plafond_temps_atteint": false
+  },
+  {
+   "graine": 4005,
+   "dossier": "donnees_placeur_9b5b5a3_20261124-011337/technique/graine_4005",
+   "code": 0,
+   "fin": "normale",
+   "plantage": false,
+   "duree_s": 3602.315,
+   "valide_moteur": true,
+   "placement": {
+    "valide": true,
+    "violations": 0
+   },
+   "drc_strict": {
+    "valide": true,
+    "ouvertes": 0,
+    "violations": 0
+   },
+   "drc_altium": {
+    "valide": true,
+    "ouvertes": 0,
+    "violations": 0
+   },
+   "valide": true,
+   "cout_commun": 13818.875326494606,
+   "incoherence": false,
+   "etat": "terminee",
+   "texte": "",
+   "cause_moteur": "",
+   "cout_moteur": 13818.875326494655,
+   "temps_calcul_s": 3602.253,
+   "memoire_pic_mo": 0.0,
+   "plafond_temps_atteint": false
+  },
+  {
+   "graine": 4006,
+   "dossier": "donnees_placeur_9b5b5a3_20261124-012211/technique/graine_4006",
+   "code": 0,
+   "fin": "normale",
+   "plantage": false,
+   "duree_s": 3553.833,
+   "valide_moteur": true,
+   "placement": {
+    "valide": true,
+    "violations": 0
+   },
+   "drc_strict": {
+    "valide": true,
+    "ouvertes": 0,
+    "violations": 0
+   },
+   "drc_altium": {
+    "valide": true,
+    "ouvertes": 0,
+    "violations": 0
+   },
+   "valide": true,
+   "cout_commun": 11344.625496970506,
+   "incoherence": false,
+   "etat": "terminee",
+   "texte": "",
+   "cause_moteur": "",
+   "cout_moteur": 11344.625496970511,
+   "temps_calcul_s": 3553.798,
+   "memoire_pic_mo": 0.0,
+   "plafond_temps_atteint": false
+  },
+  {
+   "graine": 4007,
+   "dossier": "donnees_placeur_9b5b5a3_20261124-003048/technique/graine_4007",
+   "code": 0,
+   "fin": "normale",
+   "plantage": false,
+   "duree_s": 3305.413,
+   "valide_moteur": false,
+   "placement": {
+    "valide": true,
+    "violations": 0
+   },
+   "drc_strict": {
+    "valide": false,
+    "ouvertes": 3,
+    "violations": 0
+   },
+   "drc_altium": {
+    "valide": false,
+    "ouvertes": 3,
+    "violations": 0
+   },
+   "valide": false,
+   "cout_commun": 12747.880625269236,
+   "incoherence": false,
+   "etat": "terminee",
+   "texte": "",
+   "cause_moteur": "liaisons ouvertes",
+   "cout_moteur": 12747.880625269274,
+   "temps_calcul_s": 3305.348,
+   "memoire_pic_mo": 0.0,
+   "plafond_temps_atteint": false
+  },
+  {
+   "graine": 4008,
+   "dossier": "donnees_placeur_9b5b5a3_20261124-003712/technique/graine_4008",
+   "code": 0,
+   "fin": "normale",
+   "plantage": false,
+   "duree_s": 3841.65,
+   "valide_moteur": false,
+   "placement": {
+    "valide": true,
+    "violations": 0
+   },
+   "drc_strict": {
+    "valide": false,
+    "ouvertes": 1,
+    "violations": 0
+   },
+   "drc_altium": {
+    "valide": false,
+    "ouvertes": 1,
+    "violations": 0
+   },
+   "valide": false,
+   "cout_commun": 13017.000269392976,
+   "incoherence": false,
+   "etat": "terminee",
+   "texte": "",
+   "cause_moteur": "liaisons ouvertes",
+   "cout_moteur": 13017.000269393016,
+   "temps_calcul_s": 3841.564,
+   "memoire_pic_mo": 0.0,
+   "plafond_temps_atteint": false
+  },
+  {
+   "graine": 4009,
+   "dossier": "donnees_placeur_9b5b5a3_20261124-001533/technique/graine_4009",
+   "code": 0,
+   "fin": "normale",
+   "plantage": false,
+   "duree_s": 2272.124,
+   "valide_moteur": false,
+   "placement": {
+    "valide": true,
+    "violations": 0
+   },
+   "drc_strict": {
+    "valide": false,
+    "ouvertes": 1,
+    "violations": 0
+   },
+   "drc_altium": {
+    "valide": false,
+    "ouvertes": 1,
+    "violations": 0
+   },
+   "valide": false,
+   "cout_commun": 12093.536391410811,
+   "incoherence": false,
+   "etat": "terminee",
+   "texte": "",
+   "cause_moteur": "liaisons ouvertes",
+   "cout_moteur": 12093.53639141084,
+   "temps_calcul_s": 2272.076,
+   "memoire_pic_mo": 0.0,
+   "plafond_temps_atteint": false
+  },
+  {
+   "graine": 4010,
+   "dossier": "donnees_placeur_9b5b5a3_20261124-002148/technique/graine_4010",
+   "code": 0,
+   "fin": "normale",
+   "plantage": false,
+   "duree_s": 1963.616,
+   "valide_moteur": true,
+   "placement": {
+    "valide": true,
+    "violations": 0
+   },
+   "drc_strict": {
+    "valide": true,
+    "ouvertes": 0,
+    "violations": 0
+   },
+   "drc_altium": {
+    "valide": true,
+    "ouvertes": 0,
+    "violations": 0
+   },
+   "valide": true,
+   "cout_commun": 11386.32185238853,
+   "incoherence": false,
+   "etat": "terminee",
+   "texte": "",
+   "cause_moteur": "",
+   "cout_moteur": 11386.321852388537,
+   "temps_calcul_s": 1963.559,
+   "memoire_pic_mo": 0.0,
+   "plafond_temps_atteint": false
+  },
+  {
+   "graine": 4011,
+   "dossier": "donnees_placeur_9b5b5a3_20261124-011346/technique/graine_4011",
+   "code": 0,
+   "fin": "normale",
+   "plantage": false,
+   "duree_s": 3427.969,
+   "valide_moteur": true,
+   "placement": {
+    "valide": true,
+    "violations": 0
+   },
+   "drc_strict": {
+    "valide": true,
+    "ouvertes": 0,
+    "violations": 0
+   },
+   "drc_altium": {
+    "valide": true,
+    "ouvertes": 0,
+    "violations": 0
+   },
+   "valide": true,
+   "cout_commun": 12720.067959479282,
+   "incoherence": false,
+   "etat": "terminee",
+   "texte": "",
+   "cause_moteur": "",
+   "cout_moteur": 12720.067959479296,
+   "temps_calcul_s": 3427.908,
+   "memoire_pic_mo": 0.0,
+   "plafond_temps_atteint": false
+  },
+  {
+   "graine": 4012,
+   "dossier": "donnees_placeur_9b5b5a3_20261124-012505/technique/graine_4012",
+   "code": 0,
+   "fin": "abandon",
+   "plantage": false,
+   "duree_s": 4276.294,
+   "valide_moteur": false,
+   "placement": {
+    "valide": true,
+    "violations": 0
+   },
+   "drc_strict": {
+    "valide": false,
+    "ouvertes": 13,
+    "violations": 0
+   },
+   "drc_altium": {
+    "valide": false,
+    "ouvertes": 13,
+    "violations": 0
+   },
+   "valide": false,
+   "cout_commun": 13874.726657846652,
+   "incoherence": false,
+   "etat": "terminee",
+   "texte": "",
+   "cause_moteur": "routage detaille incomplet",
+   "cout_moteur": 13874.726657846722,
+   "temps_calcul_s": 4276.24,
+   "memoire_pic_mo": 0.0,
+   "plafond_temps_atteint": false
+  },
+  {
+   "graine": 4013,
+   "dossier": "donnees_placeur_9b5b5a3_20261124-002018/technique/graine_4013",
+   "code": 0,
+   "fin": "normale",
+   "plantage": false,
+   "duree_s": 5519.187,
+   "valide_moteur": false,
+   "placement": {
+    "valide": true,
+    "violations": 0
+   },
+   "drc_strict": {
+    "valide": false,
+    "ouvertes": 5,
+    "violations": 0
+   },
+   "drc_altium": {
+    "valide": false,
+    "ouvertes": 5,
+    "violations": 0
+   },
+   "valide": false,
+   "cout_commun": 13677.15359559156,
+   "incoherence": false,
+   "etat": "terminee",
+   "texte": "",
+   "cause_moteur": "liaisons ouvertes",
+   "cout_moteur": 13677.153595591572,
+   "temps_calcul_s": 5519.047,
+   "memoire_pic_mo": 0.0,
+   "plafond_temps_atteint": false
+  },
+  {
+   "graine": 4014,
+   "dossier": "donnees_placeur_9b5b5a3_20261124-012614/technique/graine_4014",
+   "code": 0,
+   "fin": "normale",
+   "plantage": false,
+   "duree_s": 3968.394,
+   "valide_moteur": false,
+   "placement": {
+    "valide": true,
+    "violations": 0
+   },
+   "drc_strict": {
+    "valide": false,
+    "ouvertes": 3,
+    "violations": 0
+   },
+   "drc_altium": {
+    "valide": false,
+    "ouvertes": 3,
+    "violations": 0
+   },
+   "valide": false,
+   "cout_commun": 14873.791244461627,
+   "incoherence": false,
+   "etat": "terminee",
+   "texte": "",
+   "cause_moteur": "liaisons ouvertes",
+   "cout_moteur": 14873.79124446167,
+   "temps_calcul_s": 3968.311,
+   "memoire_pic_mo": 0.0,
+   "plafond_temps_atteint": false
+  },
+  {
+   "graine": 4015,
+   "dossier": "donnees_placeur_9b5b5a3_20261124-003432/technique/graine_4015",
+   "code": 0,
+   "fin": "normale",
+   "plantage": false,
+   "duree_s": 4576.281,
+   "valide_moteur": false,
+   "placement": {
+    "valide": true,
+    "violations": 0
+   },
+   "drc_strict": {
+    "valide": false,
+    "ouvertes": 5,
+    "violations": 0
+   },
+   "drc_altium": {
+    "valide": false,
+    "ouvertes": 5,
+    "violations": 0
+   },
+   "valide": false,
+   "cout_commun": 13965.582616360904,
+   "incoherence": false,
+   "etat": "terminee",
+   "texte": "",
+   "cause_moteur": "liaisons ouvertes",
+   "cout_moteur": 13965.58261636095,
+   "temps_calcul_s": 4576.256,
+   "memoire_pic_mo": 0.0,
+   "plafond_temps_atteint": false
+  },
+  {
+   "graine": 4016,
+   "dossier": "donnees_placeur_9b5b5a3_20261123-234643/technique/graine_4016",
+   "code": 0,
+   "fin": "normale",
+   "plantage": false,
+   "duree_s": 2071.641,
+   "valide_moteur": false,
+   "placement": {
+    "valide": true,
+    "violations": 0
+   },
+   "drc_strict": {
+    "valide": false,
+    "ouvertes": 1,
+    "violations": 1
+   },
+   "drc_altium": {
+    "valide": false,
+    "ouvertes": 1,
+    "violations": 1
+   },
+   "valide": false,
+   "cout_commun": 11846.80401726864,
+   "incoherence": false,
+   "etat": "terminee",
+   "texte": "",
+   "cause_moteur": "liaisons ouvertes",
+   "cout_moteur": 11846.804017268641,
+   "temps_calcul_s": 2071.579,
+   "memoire_pic_mo": 0.0,
+   "plafond_temps_atteint": false
+  },
+  {
+   "graine": 4017,
+   "dossier": "donnees_placeur_9b5b5a3_20261124-013347/technique/graine_4017",
+   "code": 0,
+   "fin": "normale",
+   "plantage": false,
+   "duree_s": 2864.889,
+   "valide_moteur": false,
+   "placement": {
+    "valide": true,
+    "violations": 0
+   },
+   "drc_strict": {
+    "valide": false,
+    "ouvertes": 3,
+    "violations": 0
+   },
+   "drc_altium": {
+    "valide": false,
+    "ouvertes": 3,
+    "violations": 0
+   },
+   "valide": false,
+   "cout_commun": 12253.460058463204,
+   "incoherence": false,
+   "etat": "terminee",
+   "texte": "",
+   "cause_moteur": "liaisons ouvertes",
+   "cout_moteur": 12253.460058463226,
+   "temps_calcul_s": 2864.827,
+   "memoire_pic_mo": 0.0,
+   "plafond_temps_atteint": false
+  },
+  {
+   "graine": 4018,
+   "dossier": "donnees_placeur_9b5b5a3_20261123-233825/technique/graine_4018",
+   "code": 0,
+   "fin": "abandon",
+   "plantage": false,
+   "duree_s": 2628.576,
+   "valide_moteur": false,
+   "placement": {
+    "valide": true,
+    "violations": 0
+   },
+   "drc_strict": {
+    "valide": false,
+    "ouvertes": 15,
+    "violations": 0
+   },
+   "drc_altium": {
+    "valide": false,
+    "ouvertes": 15,
+    "violations": 0
+   },
+   "valide": false,
+   "cout_commun": 12740.122524914947,
+   "incoherence": false,
+   "etat": "terminee",
+   "texte": "",
+   "cause_moteur": "routage detaille incomplet",
+   "cout_moteur": 12740.122524915003,
+   "temps_calcul_s": 2628.527,
+   "memoire_pic_mo": 0.0,
+   "plafond_temps_atteint": false
+  },
+  {
+   "graine": 4019,
+   "dossier": "donnees_placeur_9b5b5a3_20261123-235416/technique/graine_4019",
+   "code": 0,
+   "fin": "normale",
+   "plantage": false,
+   "duree_s": 3865.317,
+   "valide_moteur": false,
+   "placement": {
+    "valide": true,
+    "violations": 0
+   },
+   "drc_strict": {
+    "valide": false,
+    "ouvertes": 2,
+    "violations": 0
+   },
+   "drc_altium": {
+    "valide": false,
+    "ouvertes": 2,
+    "violations": 0
+   },
+   "valide": false,
+   "cout_commun": 11064.959381373828,
+   "incoherence": false,
+   "etat": "terminee",
+   "texte": "",
+   "cause_moteur": "liaisons ouvertes",
+   "cout_moteur": 11064.959381373834,
+   "temps_calcul_s": 3865.257,
+   "memoire_pic_mo": 0.0,
+   "plafond_temps_atteint": false
+  },
+  {
+   "graine": 4020,
+   "dossier": "donnees_placeur_9b5b5a3_20261123-234138/technique/graine_4020",
+   "code": 0,
+   "fin": "normale",
+   "plantage": false,
+   "duree_s": 2914.412,
+   "valide_moteur": true,
+   "placement": {
+    "valide": true,
+    "violations": 0
+   },
+   "drc_strict": {
+    "valide": true,
+    "ouvertes": 0,
+    "violations": 0
+   },
+   "drc_altium": {
+    "valide": true,
+    "ouvertes": 0,
+    "violations": 0
+   },
+   "valide": true,
+   "cout_commun": 10908.494821271883,
+   "incoherence": false,
+   "etat": "terminee",
+   "texte": "",
+   "cause_moteur": "",
+   "cout_moteur": 10908.494821271903,
+   "temps_calcul_s": 2914.335,
+   "memoire_pic_mo": 0.0,
+   "plafond_temps_atteint": false
+  }
+ ],
+ "meilleure": 4002,
+ "livrable": null,
+ "couture": null,
+ "reference_existante": null,
+ "incoherences": 0,
+ "avertissements": [
+  "donnees_placeur_9b5b5a3_20261123-222835 : graine 3012 : plafond de temps par graine atteint (7200 s)"
+ ],
+ "duree_totale_s": 13606.39,
+ "duree_cumulee_s": 178063.16,
+ "machines": [
+  "donnees_placeur_9b5b5a3_20261123-195511",
+  "donnees_placeur_9b5b5a3_20261123-190412",
+  "donnees_placeur_9b5b5a3_20261123-221042",
+  "donnees_placeur_9b5b5a3_20261123-210713",
+  "donnees_placeur_9b5b5a3_20261123-212330",
+  "donnees_placeur_9b5b5a3_20261123-213955",
+  "donnees_placeur_9b5b5a3_20261123-215714",
+  "donnees_placeur_9b5b5a3_20261123-224206",
+  "donnees_placeur_9b5b5a3_20261123-211812",
+  "donnees_placeur_9b5b5a3_20261123-221415",
+  "donnees_placeur_9b5b5a3_20261123-202851",
+  "donnees_placeur_9b5b5a3_20261123-222835",
+  "donnees_placeur_9b5b5a3_20261123-220929",
+  "donnees_placeur_9b5b5a3_20261123-231703",
+  "donnees_placeur_9b5b5a3_20261123-224443",
+  "donnees_placeur_9b5b5a3_20261123-200107",
+  "donnees_placeur_9b5b5a3_20261123-191801",
+  "donnees_placeur_9b5b5a3_20261123-215512",
+  "donnees_placeur_9b5b5a3_20261123-201819",
+  "donnees_placeur_9b5b5a3_20261123-230435",
+  "donnees_placeur_9b5b5a3_20261123-230724",
+  "donnees_placeur_9b5b5a3_20261123-232231",
+  "donnees_placeur_9b5b5a3_20261123-222924",
+  "donnees_placeur_9b5b5a3_20261123-191141",
+  "donnees_placeur_9b5b5a3_20261124-011337",
+  "donnees_placeur_9b5b5a3_20261124-012211",
+  "donnees_placeur_9b5b5a3_20261124-003048",
+  "donnees_placeur_9b5b5a3_20261124-003712",
+  "donnees_placeur_9b5b5a3_20261124-001533",
+  "donnees_placeur_9b5b5a3_20261124-002148",
+  "donnees_placeur_9b5b5a3_20261124-011346",
+  "donnees_placeur_9b5b5a3_20261124-012505",
+  "donnees_placeur_9b5b5a3_20261124-002018",
+  "donnees_placeur_9b5b5a3_20261124-012614",
+  "donnees_placeur_9b5b5a3_20261124-003432",
+  "donnees_placeur_9b5b5a3_20261123-234643",
+  "donnees_placeur_9b5b5a3_20261124-013347",
+  "donnees_placeur_9b5b5a3_20261123-233825",
+  "donnees_placeur_9b5b5a3_20261123-235416",
+  "donnees_placeur_9b5b5a3_20261123-234138"
+ ],
+ "statistiques": {
+  "graines_mesurees": 40,
+  "graines_valides": 11,
+  "taux_validite": 0.275,
+  "wilson_95": [
+   0.16108,
+   0.42835
+  ],
+  "meilleur_cout": 10809.07644894436,
+  "mediane_cout": 11904.054213,
+  "calcul_total_s": 177677.391,
+  "calcul_par_graine_valide_s": 16152.49,
+  "reference_cout": 10328.5,
+  "campagne_graines": 8,
+  "q_reference": 0.0,
+  "p_campagne": 0.0,
+  "clopper_pearson_95_bas": 0.162521,
+  "plus_de_80_pourcent": false,
+  "durees_phases": {
+   "graines": 40,
+   "phases": {
+    "boucle": {
+     "total_s": 87184.778,
+     "mediane_s": 1982.582,
+     "part": 0.490704
+    },
+    "chargement": {
+     "total_s": 0.042,
+     "mediane_s": 0.001,
+     "part": 0.0
+    },
+    "conjointe": {
+     "total_s": 29588.599,
+     "mediane_s": 693.481,
+     "part": 0.166534
+    },
+    "ecriture": {
+     "total_s": 0.17,
+     "mediane_s": 0.003,
+     "part": 1e-06
+    },
+    "finition": {
+     "total_s": 27429.144,
+     "mediane_s": 272.493,
+     "part": 0.15438
+    },
+    "placement_initial": {
+     "total_s": 0.101,
+     "mediane_s": 0.002,
+     "part": 1e-06
+    },
+    "recuit": {
+     "total_s": 15900.583,
+     "mediane_s": 381.627,
+     "part": 0.089494
+    },
+    "routage_detaille": {
+     "total_s": 17564.986,
+     "mediane_s": 339.928,
+     "part": 0.098861
+    },
+    "verification": {
+     "total_s": 4.513,
+     "mediane_s": 0.106,
+     "part": 2.5e-05
+    }
+   }
+  },
+  "duree_prevue_sur_reelle": {
+   "machines": [
+    {
+     "machine": "donnees_placeur_9b5b5a3_20261123-195511",
+     "duree_prevue_s": 7200.0,
+     "duree_reelle_s": 4290.589,
+     "rapport": 1.6781
+    },
+    {
+     "machine": "donnees_placeur_9b5b5a3_20261123-190412",
+     "duree_prevue_s": 7200.0,
+     "duree_reelle_s": 4655.906,
+     "rapport": 1.5464
+    },
+    {
+     "machine": "donnees_placeur_9b5b5a3_20261123-221042",
+     "duree_prevue_s": 7200.0,
+     "duree_reelle_s": 5292.567,
+     "rapport": 1.3604
+    },
+    {
+     "machine": "donnees_placeur_9b5b5a3_20261123-210713",
+     "duree_prevue_s": 7200.0,
+     "duree_reelle_s": 3015.316,
+     "rapport": 2.3878
+    },
+    {
+     "machine": "donnees_placeur_9b5b5a3_20261123-212330",
+     "duree_prevue_s": 7200.0,
+     "duree_reelle_s": 4195.279,
+     "rapport": 1.7162
+    },
+    {
+     "machine": "donnees_placeur_9b5b5a3_20261123-213955",
+     "duree_prevue_s": 7200.0,
+     "duree_reelle_s": 5226.895,
+     "rapport": 1.3775
+    },
+    {
+     "machine": "donnees_placeur_9b5b5a3_20261123-215714",
+     "duree_prevue_s": 7200.0,
+     "duree_reelle_s": 8276.029,
+     "rapport": 0.87
+    },
+    {
+     "machine": "donnees_placeur_9b5b5a3_20261123-224206",
+     "duree_prevue_s": 7200.0,
+     "duree_reelle_s": 2770.024,
+     "rapport": 2.5993
+    },
+    {
+     "machine": "donnees_placeur_9b5b5a3_20261123-211812",
+     "duree_prevue_s": 7200.0,
+     "duree_reelle_s": 7105.55,
+     "rapport": 1.0133
+    },
+    {
+     "machine": "donnees_placeur_9b5b5a3_20261123-221415",
+     "duree_prevue_s": 7200.0,
+     "duree_reelle_s": 3004.622,
+     "rapport": 2.3963
+    },
+    {
+     "machine": "donnees_placeur_9b5b5a3_20261123-202851",
+     "duree_prevue_s": 7200.0,
+     "duree_reelle_s": 8138.152,
+     "rapport": 0.8847
+    },
+    {
+     "machine": "donnees_placeur_9b5b5a3_20261123-222835",
+     "duree_prevue_s": 7200.0,
+     "duree_reelle_s": 12066.104,
+     "rapport": 0.5967
+    },
+    {
+     "machine": "donnees_placeur_9b5b5a3_20261123-220929",
+     "duree_prevue_s": 7200.0,
+     "duree_reelle_s": 8211.95,
+     "rapport": 0.8768
+    },
+    {
+     "machine": "donnees_placeur_9b5b5a3_20261123-231703",
+     "duree_prevue_s": 7200.0,
+     "duree_reelle_s": 13606.39,
+     "rapport": 0.5292
+    },
+    {
+     "machine": "donnees_placeur_9b5b5a3_20261123-224443",
+     "duree_prevue_s": 7200.0,
+     "duree_reelle_s": 1650.559,
+     "rapport": 4.3622
+    },
+    {
+     "machine": "donnees_placeur_9b5b5a3_20261123-200107",
+     "duree_prevue_s": 7200.0,
+     "duree_reelle_s": 6589.392,
+     "rapport": 1.0927
+    },
+    {
+     "machine": "donnees_placeur_9b5b5a3_20261123-191801",
+     "duree_prevue_s": 7200.0,
+     "duree_reelle_s": 2204.86,
+     "rapport": 3.2655
+    },
+    {
+     "machine": "donnees_placeur_9b5b5a3_20261123-215512",
+     "duree_prevue_s": 7200.0,
+     "duree_reelle_s": 1652.878,
+     "rapport": 4.356
+    },
+    {
+     "machine": "donnees_placeur_9b5b5a3_20261123-201819",
+     "duree_prevue_s": 7200.0,
+     "duree_reelle_s": 3501.023,
+     "rapport": 2.0565
+    },
+    {
+     "machine": "donnees_placeur_9b5b5a3_20261123-230435",
+     "duree_prevue_s": 7200.0,
+     "duree_reelle_s": 4861.429,
+     "rapport": 1.481
+    },
+    {
+     "machine": "donnees_placeur_9b5b5a3_20261123-230724",
+     "duree_prevue_s": 7200.0,
+     "duree_reelle_s": 2794.801,
+     "rapport": 2.5762
+    },
+    {
+     "machine": "donnees_placeur_9b5b5a3_20261123-232231",
+     "duree_prevue_s": 7200.0,
+     "duree_reelle_s": 924.533,
+     "rapport": 7.7877
+    },
+    {
+     "machine": "donnees_placeur_9b5b5a3_20261123-222924",
+     "duree_prevue_s": 7200.0,
+     "duree_reelle_s": 4615.616,
+     "rapport": 1.5599
+    },
+    {
+     "machine": "donnees_placeur_9b5b5a3_20261123-191141",
+     "duree_prevue_s": 7200.0,
+     "duree_reelle_s": 4607.247,
+     "rapport": 1.5628
+    },
+    {
+     "machine": "donnees_placeur_9b5b5a3_20261124-011337",
+     "duree_prevue_s": 7200.0,
+     "duree_reelle_s": 3611.678,
+     "rapport": 1.9935
+    },
+    {
+     "machine": "donnees_placeur_9b5b5a3_20261124-012211",
+     "duree_prevue_s": 7200.0,
+     "duree_reelle_s": 3562.875,
+     "rapport": 2.0208
+    },
+    {
+     "machine": "donnees_placeur_9b5b5a3_20261124-003048",
+     "duree_prevue_s": 7200.0,
+     "duree_reelle_s": 3314.815,
+     "rapport": 2.1721
+    },
+    {
+     "machine": "donnees_placeur_9b5b5a3_20261124-003712",
+     "duree_prevue_s": 7200.0,
+     "duree_reelle_s": 3850.832,
+     "rapport": 1.8697
+    },
+    {
+     "machine": "donnees_placeur_9b5b5a3_20261124-001533",
+     "duree_prevue_s": 7200.0,
+     "duree_reelle_s": 2281.311,
+     "rapport": 3.1561
+    },
+    {
+     "machine": "donnees_placeur_9b5b5a3_20261124-002148",
+     "duree_prevue_s": 7200.0,
+     "duree_reelle_s": 1972.789,
+     "rapport": 3.6497
+    },
+    {
+     "machine": "donnees_placeur_9b5b5a3_20261124-011346",
+     "duree_prevue_s": 7200.0,
+     "duree_reelle_s": 3437.337,
+     "rapport": 2.0946
+    },
+    {
+     "machine": "donnees_placeur_9b5b5a3_20261124-012505",
+     "duree_prevue_s": 7200.0,
+     "duree_reelle_s": 4285.775,
+     "rapport": 1.68
+    },
+    {
+     "machine": "donnees_placeur_9b5b5a3_20261124-002018",
+     "duree_prevue_s": 7200.0,
+     "duree_reelle_s": 5530.382,
+     "rapport": 1.3019
+    },
+    {
+     "machine": "donnees_placeur_9b5b5a3_20261124-012614",
+     "duree_prevue_s": 7200.0,
+     "duree_reelle_s": 3977.624,
+     "rapport": 1.8101
+    },
+    {
+     "machine": "donnees_placeur_9b5b5a3_20261124-003432",
+     "duree_prevue_s": 7200.0,
+     "duree_reelle_s": 4585.565,
+     "rapport": 1.5701
+    },
+    {
+     "machine": "donnees_placeur_9b5b5a3_20261123-234643",
+     "duree_prevue_s": 7200.0,
+     "duree_reelle_s": 2080.827,
+     "rapport": 3.4602
+    },
+    {
+     "machine": "donnees_placeur_9b5b5a3_20261124-013347",
+     "duree_prevue_s": 7200.0,
+     "duree_reelle_s": 2874.21,
+     "rapport": 2.505
+    },
+    {
+     "machine": "donnees_placeur_9b5b5a3_20261123-233825",
+     "duree_prevue_s": 7200.0,
+     "duree_reelle_s": 2637.992,
+     "rapport": 2.7293
+    },
+    {
+     "machine": "donnees_placeur_9b5b5a3_20261123-235416",
+     "duree_prevue_s": 7200.0,
+     "duree_reelle_s": 3874.545,
+     "rapport": 1.8583
+    },
+    {
+     "machine": "donnees_placeur_9b5b5a3_20261123-234138",
+     "duree_prevue_s": 7200.0,
+     "duree_reelle_s": 2926.892,
+     "rapport": 2.4599
+    }
+   ],
+   "min": 0.5292,
+   "max": 7.7877,
+   "mediane": 1.864,
+   "dans_0_5_a_2": 22
+  }
+ },
+ "comparaison": {
+  "regle": "NI(m ; 0,04)",
+  "graines_communes": 40,
+  "graines_min": 40,
+  "graines_seulement_nouveau": [],
+  "graines_seulement_reference": [
+   4021,
+   4022,
+   4023,
+   4024,
+   4025,
+   4026,
+   4027,
+   4028,
+   4029,
+   4030,
+   4031,
+   4032,
+   4033,
+   4034,
+   4035,
+   4036,
+   4037,
+   4038,
+   4039,
+   4040
+  ],
+  "appariee": false,
+  "valides_nouveau": 11,
+  "valides_reference": 21,
+  "taux_reference": 0.525,
+  "m": 6,
+  "niveau": 0.9,
+  "validite_ok": false,
+  "mediane_nouveau": 11904.054213,
+  "mediane_reference": 11141.25,
+  "marge_cout": 0.04,
+  "cout_ok": false,
+  "accepte": false
+ }
+}

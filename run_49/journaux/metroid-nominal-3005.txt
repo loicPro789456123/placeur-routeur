@@ -1,0 +1,9 @@
+placeur 2.0.0+eeada11 : calcul donnees_placeur_20261123-175248 (données donnees_placeur.json)
+moteur : placeur_routage 2.0.0+eeada11
+étalonnage de la machine : score 6662065.0
+fichiers de paramètres lus : aucun
+1 graine(s), 1 en parallèle, 1 fil(s) par essai, niveau normal ; durée prévue 7200.0 s, au plus 10800 s
+graine 3005 lancée
+graine 3005 : non valide, coût 12180.254697338349, 4 liaisons ouvertes, 2060.946 s
+aucune graine valide ; graine à terminer : 3005 ; code 1 ; 2069.063 s
+placeur.py : code 1

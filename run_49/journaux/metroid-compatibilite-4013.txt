@@ -1,0 +1,9 @@
+placeur 2.0.0+eeada11 : calcul donnees_placeur_9b5b5a3_20261124-002018 (données donnees_placeur_9b5b5a3.json)
+moteur : placeur_routage 2.0.0+eeada11
+étalonnage de la machine : score 5185137.0
+fichiers de paramètres lus : aucun
+1 graine(s), 1 en parallèle, 1 fil(s) par essai, niveau normal ; durée prévue 7200.0 s, au plus 10800 s
+graine 4013 lancée
+graine 4013 : non valide, coût 13677.15359559156, 5 liaisons ouvertes, 5519.187 s
+aucune graine valide ; graine à terminer : 4013 ; code 1 ; 5530.383 s
+placeur.py : code 1
