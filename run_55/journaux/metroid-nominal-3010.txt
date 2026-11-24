@@ -1,0 +1,9 @@
+placeur 2.0.0+4cbd281 : calcul donnees_placeur_20261124-130911 (données donnees_placeur.json)
+moteur : placeur_routage 2.0.0+4cbd281
+étalonnage de la machine : score 5128353.0
+fichiers de paramètres lus : aucun
+clés [avance] actives : parametres_moteur = %USERPROFILE%/work/placeur-routeur/placeur-routeur/PCB_V2/outils/placeur_routage/exemples/metroid_v2/recuit_0998.json
+1 graine(s), 1 en parallèle, 1 fil(s) par essai, niveau normal ; durée prévue 7203.7 s, au plus 10800 s
+graine 3010 lancée
+graine 3010 : valide, coût 13697.910335475652, 0 liaisons ouvertes, 4839.001 s
+graine retenue : 3010 (coût 13697.910335475652) ; code 0 ; 4850.084 s
