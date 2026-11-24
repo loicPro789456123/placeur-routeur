@@ -1053,7 +1053,7 @@ def _schema_verdict(dans_stats):
         "derogations": Obj({"via_dans_pastille_meme_reseau": N}),
         "avertissements": Obj({"pistes_sous_pieces_sans_piste_dessous": N, "angles_aigus": N,
                                "paires_desequilibrees": N, "regles_non_couvertes": N,
-                               "zones_plan_isolees": Fac(N), "longueurs_hors_tolerance": Fac(N)}),
+                               "zones_plan_isolees": Fac(N), "longueurs_hors_tolerance": Fac(N), "paires_non_couplees": Fac(N)}),
         "reseaux_a_router": N, "reseaux_complets": N, "marge_isolement_min_mm": Nul(NB),
         "marge_isolement_min_paire": TXT,
         "mesures": Obj({"ecart_moyen_mm": NB, "ecart_min_mm": Nul(NB), "coudes": N, "coudes_90": N,

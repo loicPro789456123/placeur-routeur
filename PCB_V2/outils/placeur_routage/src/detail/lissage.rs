@@ -247,7 +247,7 @@ impl<'a> Detail<'a> {
     }
 
     /// Chaînes de pistes du réseau entre ancrages.
-    fn chaines(&self, n: usize) -> Vec<Chaine> {
+    fn chaines(&self, n: usize, coupe_largeur: bool) -> Vec<Chaine> {
         let segs = &self.nets[n].segs;
         let mut ends: BTreeMap<(i64, i64, u8), Vec<(usize, bool)>> = BTreeMap::new();
         for (k, s) in segs.iter().enumerate() {
@@ -261,7 +261,7 @@ impl<'a> Detail<'a> {
         for (c, v) in &ends {
             let p = (c.0 as f64 / 1000.0, c.1 as f64 / 1000.0);
             let a = v.len() != 2
-                || (segs[v[0].0].w - segs[v[1].0].w).abs() > 1e-9
+                || (coupe_largeur && (segs[v[0].0].w - segs[v[1].0].w).abs() > 1e-9)
                 || v[0].0 == v[1].0
                 || self.ancre_cuivre(n, p, c.2, segs[v[0].0].w);
             ancre.insert(*c, a);
@@ -372,10 +372,22 @@ impl<'a> Detail<'a> {
     pub fn lisser(&mut self, mode: u8) -> (usize, f64, i64) {
         let (mut nb, mut gain, mut dseg) = (0usize, 0.0f64, 0i64);
         for n in 0..self.nets.len() {
+            let (a, b, c) = self.lisser_reseau(n, mode);
+            nb += a;
+            gain += b;
+            dseg += c;
+        }
+        (nb, gain, dseg)
+    }
+
+    /// Lissage d'un réseau (voir `lisser`).
+    fn lisser_reseau(&mut self, n: usize, mode: u8) -> (usize, f64, i64) {
+        let (mut nb, mut gain, mut dseg) = (0usize, 0.0f64, 0i64);
+        {
             if self.nets[n].segs.len() < 2 {
-                continue;
+                return (0, 0.0, 0);
             }
-            let chaines = self.chaines(n);
+            let chaines = self.chaines(n, true);
             let mut remplace: Vec<(Vec<usize>, Vec<SegD>)> = Vec::new();
             for ch in chaines {
                 if ch.pts.len() < 3 {
@@ -479,6 +491,70 @@ impl<'a> Detail<'a> {
             }
         }
         (nb, gain, dseg)
+    }
+
+    /// Largeur uniforme par connexion (avenant 2.2, décision 10) : sur chaque chaîne d'un réseau à plusieurs
+    /// largeurs admises (puissance, alimentation), la plus grande largeur admise qui passe sur toute la chaîne ; posée
+    /// si elle n'est pas plus étroite que le tronçon le plus large (aucun rétrécissement), ou, avec `egaliser`, si elle
+    /// supprime les étranglements sans réduire la largeur moyenne pondérée. Rend (chaînes rendues uniformes, mm élargis).
+    pub fn uniformiser_largeurs(&mut self, egaliser: bool) -> (usize, f64) {
+        let (mut nb, mut mm) = (0usize, 0.0f64);
+        for n in 0..self.nets.len() {
+            let lg_n = self.larg(n);
+            if lg_n.w.len() < 2 || self.nets[n].segs.is_empty() || self.m.nets[n].plan {
+                continue;
+            }
+            let mut remplace: Vec<(Vec<usize>, Vec<SegD>)> = Vec::new();
+            for ch in self.chaines(n, false) {
+                let segs: Vec<SegD> = ch.segs.iter().map(|&k| self.nets[n].segs[k].clone()).collect();
+                let wmax = segs.iter().map(|s| s.w).fold(0.0, f64::max);
+                let wmin = segs.iter().map(|s| s.w).fold(f64::MAX, f64::min);
+                if wmax - wmin < 1e-9 {
+                    continue;
+                }
+                let long: f64 = segs.iter().map(|s| lg((s.x1, s.y1), (s.x2, s.y2))).sum();
+                let moy: f64 = segs.iter().map(|s| s.w * lg((s.x1, s.y1), (s.x2, s.y2))).sum::<f64>() / long.max(1e-9);
+                // largeurs admises, de la plus large à la plus étroite ; la première qui passe partout
+                let mut choix = None;
+                for &w in lg_n.w.iter() {
+                    if w < wmin - 1e-9 {
+                        break;
+                    }
+                    let clr_x = (self.clr_net(n) - MARGE_ISOL - self.m.regles.isolement.defaut).max(0.0);
+                    let o = offsets(w / 2.0 - H_DEF + clr_x);
+                    if segs.iter().all(|s| s.w >= w - 1e-9 || self.seg_libre_grille(n, (s.x1, s.y1), (s.x2, s.y2), s.couche, &o)) {
+                        choix = Some(w);
+                        break;
+                    }
+                }
+                let w = match choix {
+                    Some(w) if w >= wmax - 1e-9 || (egaliser && w >= moy - 1e-9) => w,
+                    _ => continue,
+                };
+                nb += 1;
+                mm += segs.iter().filter(|s| s.w < w).map(|s| lg((s.x1, s.y1), (s.x2, s.y2))).sum::<f64>();
+                let neufs = segs.into_iter().map(|mut s| {
+                    s.w = w;
+                    s
+                }).collect();
+                remplace.push((ch.segs, neufs));
+            }
+            if !remplace.is_empty() {
+                self.remplacer_segments(n, remplace);
+            }
+        }
+        (nb, mm)
+    }
+
+    /// Segment libre au disque donné (sans marge de lissage ; grille du routeur, comme `elargir`).
+    fn seg_libre_grille(&self, n: usize, a: Pt, b: Pt, l: u8, o: &[(i32, i32)]) -> bool {
+        let key = n as u32 + 1;
+        let k = ((lg(a, b) / (P / 2.0)).ceil() as usize).max(1);
+        (0..=k).all(|t| {
+            let u = t as f64 / k as f64;
+            let nd = self.node_at(a.0 + u * (b.0 - a.0), a.1 + u * (b.1 - a.1), l) as usize;
+            self.disk_state(nd, key, o, false) == 1
+        })
     }
 
     /// Remplace des segments du réseau (indices -> nouveaux segments) et retrame le réseau.
@@ -639,7 +715,11 @@ impl<'a> Detail<'a> {
                     restants += 1;
                 }
             } else if l > mx {
-                restants += 1;
+                // longueur maximale dépassée : raccourcis de direction quelconque sur ce réseau seulement
+                self.lisser_reseau(n, MODE_LIBRE);
+                if self.longueur_pistes(n) > mx {
+                    restants += 1;
+                }
             }
         }
         (allonges, restants)
