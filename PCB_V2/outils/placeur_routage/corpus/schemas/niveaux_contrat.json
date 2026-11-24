@@ -25,9 +25,9 @@
  },
  "recuit.mouvements_max": {
   "apercu": 20000000,
-  "normal": 100000000,
+  "normal": 250000000,
   "rapide": 20000000,
-  "soigne": 100000000
+  "soigne": 250000000
  },
  "routage.iters_negociation": {
   "apercu": 30,
