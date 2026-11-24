@@ -1,0 +1,9 @@
+placeur 2.0.0+5dfebcd : calcul donnees_placeur_20261124-151523 (données donnees_placeur.json)
+moteur : placeur_routage 2.0.0+5dfebcd
+étalonnage de la machine : score 5123758.0
+fichiers de paramètres lus : aucun
+clés [avance] actives : parametres_moteur = %USERPROFILE%/work/placeur-routeur/placeur-routeur/PCB_V2/outils/placeur_routage/exemples/metroid_v2/recuit_0999.json
+1 graine(s), 1 en parallèle, 1 fil(s) par essai, niveau normal ; durée prévue 7203.7 s, au plus 10800 s
+graine 3012 lancée
+graine 3012 : valide, coût 12571.920098787472, 0 liaisons ouvertes, 5553.189 s
+graine retenue : 3012 (coût 12571.920098787472) ; code 0 ; 5564.256 s

@@ -1,0 +1,10 @@
+placeur 2.0.0+5dfebcd : calcul donnees_placeur_20261124-120621 (données donnees_placeur.json)
+moteur : placeur_routage 2.0.0+5dfebcd
+étalonnage de la machine : score 5770014.0
+fichiers de paramètres lus : aucun
+clés [avance] actives : parametres_moteur = %USERPROFILE%/work/placeur-routeur/placeur-routeur/PCB_V2/outils/placeur_routage/exemples/metroid_v2/recuit_0999.json
+1 graine(s), 1 en parallèle, 1 fil(s) par essai, niveau normal ; durée prévue 7203.7 s, au plus 10800 s
+graine 3013 lancée
+graine 3013 : non valide, coût 12540.61433000368, 4 liaisons ouvertes, 4474.62 s
+aucune graine valide ; code 1 ; 4483.861 s
+placeur.py : code 1
