@@ -1,0 +1,9 @@
+placeur 2.0.0+58aaea6 : calcul donnees_placeur_20261124-025052 (données donnees_placeur.json)
+moteur : placeur_routage 2.0.0+58aaea6
+étalonnage de la machine : score 5314667.0
+fichiers de paramètres lus : aucun
+clés [avance] actives : parametres_moteur = %USERPROFILE%/work/placeur-routeur/placeur-routeur/PCB_V2/outils/placeur_routage/exemples/metroid_v2/recuit_long.json
+1 graine(s), 1 en parallèle, 1 fil(s) par essai, niveau normal ; durée prévue 7203.7 s, au plus 10800 s
+graine 3008 lancée
+graine 3008 : valide, coût 12750.632068361838, 0 liaisons ouvertes, 4852.16 s
+graine retenue : 3008 (coût 12750.632068361838) ; code 0 ; 4862.988 s
