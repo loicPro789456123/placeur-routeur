@@ -33,6 +33,8 @@ use std::collections::BinaryHeap;
 pub const P: f64 = 0.1;
 /// Style des pistes (`Modele::mode_routage`) : 0 octogonal (45°), 1 manhattan (90° seulement), 2 libre (tout angle au lissage).
 pub const MODE_OCTOGONAL: u8 = 0;
+/// Remise de cout (part du pas) sur les noeuds du couloir d'une paire differentielle (routage couple).
+const REMISE_COULOIR: f32 = 0.5;
 /// Négociation : reroutage partiel des réseaux de plan en conflit (désactivé : mesure du 24/11/2026 sur 4005 et 3001,
 /// passe stricte 129 -> 150 s, connexions en échec 1 -> 5) ; descentes à moins de RAYON_CONFLIT_PLAN mm d'un
 /// noeud en conflit).
@@ -205,6 +207,8 @@ struct Ctx {
     mult: [f32; 3],
     /// pas diagonaux permis (faux en mode manhattan : pistes orthogonales seulement)
     diag: bool,
+    /// estampille du couloir de la paire différentielle (0 : aucun) : noeuds a l'ecart voulu du partenaire, moins chers
+    couloir: u32,
 }
 
 /// Parametres de la passe d'espacement.
@@ -277,6 +281,9 @@ pub struct Detail<'a> {
     pub emprise: Rect,
     /// cellules du cuivre du bloc (pastilles, pistes, vias, surfaces) de chaque reseau : cible de raccordement
     pub cibles_bloc: Vec<Vec<(Vec<u32>, String)>>,
+    /// couloirs des paires differentielles (estampille par noeud ; vide tant qu'aucune paire n'est routee)
+    couloir: Vec<u32>,
+    couloir_ep: u32,
     /// fenetre de la recherche courante (cellules) : boite des broches + FENETRE
     fen: [i32; 4],
     pub fenetre_mm: f64,
@@ -369,6 +376,8 @@ impl<'a> Detail<'a> {
             nonet: m.nets.len() as u32 + 1,
             emprise: m.emprise(e),
             cibles_bloc: vec![Vec::new(); m.nets.len()],
+            couloir: Vec::new(),
+            couloir_ep: 0,
             fen: [0, 0, i32::MAX, i32::MAX],
             fenetre_mm: 15.0,
             rapide: false,
@@ -1541,6 +1550,7 @@ impl<'a> Detail<'a> {
             coude: 0.0,
             mult: couche_mult(&self.m.nets[n]),
             diag: self.m.mode_routage != MODE_MANHATTAN,
+            couloir: 0,
         }
     }
 
@@ -1780,6 +1790,9 @@ impl<'a> Detail<'a> {
         let mut c = self.hist[n] + step * (lm * (ctx.w[0] / ctx.w[wi]) as f32 - 1.0);
         if (st - 1) % 2 == 1 {
             c += self.pres;
+        }
+        if ctx.couloir != 0 && self.couloir[n] == ctx.couloir {
+            c -= REMISE_COULOIR * step;
         }
         if ctx.prox > 0.0 {
             if let (Some(k2), Some(k3)) = (&self.k2, &self.k3) {
@@ -2202,8 +2215,45 @@ impl<'a> Detail<'a> {
 
     /// Route un reseau ordinaire. En mode Sonde, ne pose rien et renvoie les reseaux genants.
     fn router_net(&mut self, n: usize, mode: Mode) -> Vec<usize> {
-        let ctx = self.ctx(n, mode);
+        let mut ctx = self.ctx(n, mode);
+        ctx.couloir = self.marquer_couloir(n);
         self.router_net_ctx(n, ctx)
+    }
+
+    /// Paire différentielle : marque les noeuds a l'ecart voulu (axe a axe) des pistes deja posees du partenaire,
+    /// meme couche ; rend l'estampille (0 si le reseau n'est pas d'une paire ou si le partenaire n'est pas route).
+    fn marquer_couloir(&mut self, n: usize) -> u32 {
+        let Some(&(a, b, ecart)) = self.m.paires.iter().find(|p| p.0 == n || p.1 == n) else { return 0 };
+        let j = if a == n { b } else { a };
+        if self.nets[j].segs.is_empty() {
+            return 0;
+        }
+        if self.couloir.is_empty() {
+            self.couloir = vec![0; self.nc * NCOUCHES];
+        }
+        self.couloir_ep += 1;
+        let ep = self.couloir_ep;
+        let wn = self.larg(n).w[0];
+        let segs = self.nets[j].segs.clone();
+        for s in &segs {
+            let d = (wn + s.w) / 2.0 + ecart;
+            let tol = 0.75 * P;
+            let r = d + tol;
+            let x0 = ((s.x1.min(s.x2) - r) / P).floor().max(0.0) as usize;
+            let y0 = ((s.y1.min(s.y2) - r) / P).floor().max(0.0) as usize;
+            let x1 = (((s.x1.max(s.x2) + r) / P).ceil() as usize).min(self.nx - 1);
+            let y1 = (((s.y1.max(s.y2) + r) / P).ceil() as usize).min(self.ny - 1);
+            for iy in y0..=y1 {
+                for ix in x0..=x1 {
+                    let (x, y) = self.cxy(ix, iy);
+                    let e = dist_seg(x, y, s);
+                    if (e - d).abs() <= tol {
+                        self.couloir[s.couche as usize * self.nc + iy * self.nx + ix] = ep;
+                    }
+                }
+            }
+        }
+        ep
     }
 
     fn router_net_ctx(&mut self, n: usize, ctx: Ctx) -> Vec<usize> {
@@ -3673,6 +3723,47 @@ pub(crate) mod tests {
                 assert!((s.x1 - s.x2).abs() < 1e-6 || (s.y1 - s.y2).abs() < 1e-6, "segment diagonal en manhattan");
             }
         }
+    }
+
+    /// Part de la longueur de `a` a l'ecart voulu (bord a bord, a 50 % pres) d'une piste de `b` sur la meme couche.
+    fn part_couplee(dt: &Detail, a: usize, b: usize, ecart: f64) -> f64 {
+        let (mut tot, mut ok) = (0.0, 0.0);
+        for s in &dt.nets[a].segs {
+            let l = ((s.x2 - s.x1).powi(2) + (s.y2 - s.y1).powi(2)).sqrt();
+            let k = ((l / 0.05).ceil() as usize).max(1);
+            for t in 0..k {
+                let u = (t as f64 + 0.5) / k as f64;
+                let (x, y) = (s.x1 + u * (s.x2 - s.x1), s.y1 + u * (s.y2 - s.y1));
+                tot += l / k as f64;
+                if dt.nets[b].segs.iter().filter(|q| q.couche == s.couche).any(|q| {
+                    let e = dist_seg(x, y, q) - (s.w + q.w) / 2.0;
+                    e >= 0.5 * ecart - 1e-6 && e <= 1.5 * ecart + 0.05
+                }) {
+                    ok += l / k as f64;
+                }
+            }
+        }
+        if tot > 0.0 { ok / tot } else { 0.0 }
+    }
+
+    /// Paire differentielle : le couloir rapproche le second reseau du premier a l'ecart voulu.
+    #[test]
+    fn paire_couplee() {
+        let d = carte_croisee(1.0, 0.3, false, false);
+        let m0 = Modele::new(&d, Parametres::defaut());
+        let e = m0.etat_v3();
+        let (a, b) = (m0.nets.iter().position(|n| n.nom == "S0").unwrap(), m0.nets.iter().position(|n| n.nom == "S1").unwrap());
+        let mut d0 = Detail::new(&m0, &e);
+        d0.tout(5, 1, &esp_off(), &mut |_| {});
+        let sans = part_couplee(&d0, b, a, 0.3).max(part_couplee(&d0, a, b, 0.3));
+        let mut m1 = Modele::new(&d, Parametres::defaut());
+        m1.paires = vec![(a, b, 0.3)];
+        let mut d1 = Detail::new(&m1, &e);
+        d1.tout(5, 1, &esp_off(), &mut |_| {});
+        let avec = part_couplee(&d1, b, a, 0.3).max(part_couplee(&d1, a, b, 0.3));
+        eprintln!("couplage S0/S1 : sans couloir {:.2}, avec {:.2}", sans, avec);
+        assert_eq!(d1.total_ko(), 0);
+        assert!(avec >= sans);
     }
 
     fn router_carte(d: &crate::donnees_v1::Donnees, cache: bool) -> (serde_json::Value, usize, usize) {
