@@ -1,0 +1,8 @@
+placeur 2.0.0+45571f8 : calcul donnees_placeur_9b5b5a3_20261124-014235 (données donnees_placeur_9b5b5a3.json)
+moteur : placeur_routage 2.0.0+45571f8
+étalonnage de la machine : score 5666882.0
+fichiers de paramètres lus : aucun
+1 graine(s), 1 en parallèle, 1 fil(s) par essai, niveau normal ; durée prévue 7200.0 s, au plus 10800 s
+graine 4007 lancée
+graine 4007 : valide, coût 11452.137077482794, 0 liaisons ouvertes, 2866.342 s
+graine retenue : 4007 (coût 11452.137077482794) ; code 0 ; 2875.748 s
