@@ -471,6 +471,14 @@ pub fn construire(d: &Donnees, param: Parametres) -> Result<Adapte, String> {
     let bornees: Vec<(usize, f64, f64)> =
         d.longueurs.iter().filter_map(|l| idx(&l.reseau).map(|n| (n, l.min_mm.unwrap_or(0.0), l.max_mm.unwrap_or(f64::INFINITY)))).collect();
     m.groupes_longueur = groupes;
+    m.paires = d
+        .paires
+        .iter()
+        .filter_map(|p| match (idx(&p.positif), idx(&p.negatif)) {
+            (Some(a), Some(b)) => Some((a, b, p.ecart_mm.unwrap_or(d.regles.isolement.defaut))),
+            _ => None,
+        })
+        .collect();
     m.longueurs_bornees = bornees;
     Ok(Adapte { modele: m, avertissements: av })
 }

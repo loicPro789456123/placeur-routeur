@@ -331,6 +331,8 @@ pub struct Modele {
     pub groupes_longueur: Vec<(Vec<usize>, f64, bool)>,
     /// longueurs bornees (reseau, min, max en mm) : longueurs des donnees
     pub longueurs_bornees: Vec<(usize, f64, f64)>,
+    /// paires différentielles (positif, négatif, écart bord à bord en mm) : routage couplé
+    pub paires: Vec<(usize, usize, f64)>,
 }
 
 #[derive(Clone)]
@@ -481,6 +483,7 @@ impl Modele {
             mode_routage: 0,
             groupes_longueur: Vec::new(),
             longueurs_bornees: Vec::new(),
+            paires: Vec::new(),
         };
         m.calculer_attentes();
         m
