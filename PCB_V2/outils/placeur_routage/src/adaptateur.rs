@@ -19,7 +19,7 @@
 
 use crate::donnees::{self, Donnees, RoleCouche};
 use crate::donnees_v1 as v1;
-use crate::geom::{self, Etat, FormePad, Modele, Pose, Statut};
+use crate::geom::{self, Etat, FormePad, Modele, Pose, Statut, ZoneR};
 use crate::parametres::Parametres;
 use std::collections::{BTreeMap, HashMap};
 
@@ -228,17 +228,6 @@ pub fn construire(d: &Donnees, param: Parametres) -> Result<Adapte, String> {
             }
         }
     }
-    let interieures = d
-        .zones_routage_interdites
-        .iter()
-        .filter(|z| {
-            let b = boite(&z.points);
-            !(b[0] <= bc[0] + 1e-6 || b[1] <= bc[1] + 1e-6 || b[2] >= bc[2] - 1e-6 || b[3] >= bc[3] - 1e-6)
-        })
-        .count();
-    if interieures > 0 {
-        av.push(format!("{} zone(s) interdite(s) de routage à l'intérieur de la carte : non vues par le routeur", interieures));
-    }
     if !d.cuivre_fixe.is_empty() {
         av.push(format!("{} objet(s) de cuivre fixe : non vus par le routeur", d.cuivre_fixe.len()));
     }
@@ -436,6 +425,42 @@ pub fn construire(d: &Donnees, param: Parametres) -> Result<Adapte, String> {
     let hacheur = m.hacheur.clone();
     m.decaps.retain(|x| !hacheur.contains(&x.0));
 
+    // zones interdites de routage (carte et empreintes) : effets « pistes » et « vias », par couche ; une zone
+    // d'empreinte suit sa piece (rotation, face : l'empilage est vu en miroir quand la piece est retournee)
+    {
+        let nco = d.couches.len();
+        let rang = |nom: &str| d.couches.iter().position(|c| c.nom == nom);
+        let masque = |couches: &Vec<String>, retourne: bool| -> [bool; 3] {
+            let mut mk = [false; 3];
+            for l in 0..3 {
+                if !actives[l] {
+                    continue;
+                }
+                let Some(k) = rang(&noms[l]) else { continue };
+                let ks = if retourne { nco - 1 - k } else { k };
+                mk[l] = couches.iter().any(|c| c == "toutes" || rang(c) == Some(ks));
+            }
+            mk
+        };
+        let zone = |z: &donnees::ZoneInterdite, local: bool, bot_ref: bool| -> Option<ZoneR> {
+            let pistes = z.effets.iter().any(|e| e == "pistes");
+            let vias = z.effets.iter().any(|e| e == "vias");
+            let placement = local && z.effets.iter().any(|e| e == "placement" || e == "pastilles");
+            if (!pistes && !vias && !placement) || z.points.is_empty() {
+                return None;
+            }
+            let pts = z.points.iter().map(|p| if local { (p[0], p[1]) } else { let q = tr(p); (q[0], q[1]) }).collect();
+            Some(ZoneR { polyligne: z.polyligne, pts, largeur: z.largeur, pistes, vias, placement, masque: masque(&z.couches, false),
+                masque_ret: masque(&z.couches, true), bot_ref })
+        };
+        m.zones_carte = d.zones_routage_interdites.iter().filter_map(|z| zone(z, false, false)).collect();
+        for (i, c) in d.composants.iter().enumerate() {
+            if c.virtuel {
+                continue;
+            }
+            m.comps[i].zones = c.zones_interdites.iter().filter_map(|z| zone(z, true, c.pose_cible.dessous)).collect();
+        }
+    }
     // ------------------------------------------------------------------ pièces fixes : obstacles de placement
     let e = m.etat_v3();
     for i in 0..m.comps.len() {

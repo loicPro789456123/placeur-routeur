@@ -486,11 +486,26 @@ fn reroutage_local<'a>(base: &detail::Detail<'a>, cand: &Etat) -> detail::Detail
     }
     nets.sort();
     nets.dedup();
+    // amorces, eventails et ponts des pieces deplacees : reposes a la nouvelle position (ils restaient a l'ancienne :
+    // liaisons ouvertes et violations d'isolement au controle), leurs reseaux d'abord arraches
+    for &n in &nets {
+        if !m.nets[n].plan {
+            d.arracher(n);
+        }
+    }
+    let genes = d.reamorcer(&bouges);
+    let mut zones_amorces: Vec<(f64, f64, f64)> = Vec::new();
+    if !genes.is_empty() {
+        zones_amorces = d.zones_amorces(&bouges);
+        nets.extend(genes);
+        nets.sort();
+        nets.dedup();
+    }
     let plans: Vec<usize> = nets.iter().copied().filter(|&n| m.nets[n].plan).collect();
     nets.retain(|&n| !m.nets[n].plan);
     for g in plans {
         let mut pads = Vec::new();
-        let mut zones = Vec::new();
+        let mut zones = zones_amorces.clone();
         for &i in &bouges {
             for (k, pd) in m.comps[i].pads.iter().enumerate() {
                 if pd.net == Some(g) && !pd.th {

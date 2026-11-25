@@ -38,7 +38,7 @@ const REMISE_COULOIR: f32 = 0.5;
 /// Négociation : reroutage partiel des réseaux de plan en conflit (désactivé : mesure du 24/11/2026 sur 4005 et 3001,
 /// passe stricte 129 -> 150 s, connexions en échec 1 -> 5) ; descentes à moins de RAYON_CONFLIT_PLAN mm d'un
 /// noeud en conflit).
-const REROUTAGE_PLAN_PARTIEL: bool = false;
+const REROUTAGE_PLAN_PARTIEL: bool = true;
 const RAYON_CONFLIT_PLAN: f64 = 0.6;
 pub const MODE_MANHATTAN: u8 = 1;
 pub const MODE_LIBRE: u8 = 2;
@@ -55,6 +55,8 @@ const NONE: u32 = u32::MAX;
 const VIA_D: f32 = 1.5;
 pub const R_VIA_PLAN: f64 = 6.0;
 const RIPS_MAX: u32 = 6;
+/// Recherche epuisee en moins de noeuds que cela : la broche de depart est enfermee.
+const ENFERMEE_NOEUDS: usize = 4000;
 const HINC: f32 = 0.5;
 const DIRS: [(i32, i32); 8] = [(1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1), (0, -1), (1, -1)];
 const TURN: [f32; 5] = [0.0, 0.02, 0.4, 1e6, 1e9];
@@ -233,6 +235,9 @@ pub struct Detail<'a> {
     kp: KMap,
     kt: KMap,
     kt_who: Vec<u32>,
+    /// avant-dernier reseau (different du dernier) a avoir trame la cellule : second proprietaire possible d'une
+    /// cellule partagee (la somme des cles ne designe un proprietaire que s'il est seul)
+    kt_who2: Vec<u32>,
     k2: Option<KMap>,
     k3: Option<KMap>,
     hist: Vec<f32>,
@@ -266,12 +271,19 @@ pub struct Detail<'a> {
     pub nets: Vec<NetR>,
     pub rips: Vec<u32>,
     pub max_exp: usize,
+    /// noeuds developpes par la derniere recherche (une recherche epuisee apres peu de noeuds : depart enferme)
+    exp_dernier: usize,
     /// dernier recours autorise : via dans une pastille CMS d'un reseau de plan (GND)
     pub via_dans_pad: bool,
     /// derogations effectivement utilisees (texte)
     pub derogations: Vec<String>,
     /// amorces de sortie dans l'axe (hors grille) des pastilles a pas fin du bloc : (reseau, segments)
     pub amorces: Vec<(usize, Vec<SegD>)>,
+    /// parallele a `amorces` : piece portant l'amorce et noeuds trames (carte dure `kp`), pour la retirer quand la
+    /// piece est deplacee (`reamorcer`)
+    amorces_info: Vec<(usize, Vec<u32>)>,
+    /// trames d'amorces retirees de la sortie (antennes) mais encore posees : (piece, cle, noeuds)
+    amorces_fantomes: Vec<(usize, u32, Vec<u32>)>,
     /// broches ordinaires amorcees (pastilles inaccessibles depuis la grille, convertisseur libere) : noeud de raccord
     pub pin_extra: std::collections::BTreeMap<(usize, usize), u32>,
     pub pieces_pont: Vec<usize>,
@@ -342,6 +354,7 @@ impl<'a> Detail<'a> {
             kp: KMap::new(nn),
             kt: KMap::new(nn),
             kt_who: vec![0; nn],
+            kt_who2: vec![0; nn],
             k2: None,
             k3: None,
             hist: vec![0.0; nn],
@@ -367,9 +380,12 @@ impl<'a> Detail<'a> {
             nets: vec![NetR::default(); m.nets.len()],
             rips: vec![0; m.nets.len()],
             max_exp: 3_000_000,
+            exp_dernier: 0,
             via_dans_pad: false,
             derogations: Vec::new(),
             amorces: Vec::new(),
+            amorces_info: Vec::new(),
+            amorces_fantomes: Vec::new(),
             pin_extra: std::collections::BTreeMap::new(),
             pieces_pont: Vec::new(),
             proteger_plans: false,
@@ -409,6 +425,9 @@ impl<'a> Detail<'a> {
             }
         }
         d.poser_zone_l1(true);
+        for z in &m.zones_carte {
+            d.tramer_zone(z, &z.pts, z.masque, true);
+        }
         for i in 0..m.comps.len() {
             d.raster_pads_piece(i, true);
         }
@@ -553,6 +572,11 @@ impl<'a> Detail<'a> {
                 }
             }
         }
+        // zones interdites de l'empreinte : elles suivent la piece
+        for z in &m.comps[i].zones {
+            let (pts, masque) = m.zone_monde(z, &p);
+            self.tramer_zone(z, &pts, masque, ajout);
+        }
             // regions de cuivre d'empreinte : meme isolement que les pastilles (cle de leur reseau, sinon « sans reseau »)
         let regs = m.comps[i].regions.clone();
         for r in &regs {
@@ -581,6 +605,55 @@ impl<'a> Detail<'a> {
                                 self.kp.sub(l * nc + c, key);
                             }
                         }
+                    }
+                }
+            }
+        }
+    }
+
+    /// Trame (ajout) ou retire une zone interdite posee : pistes -> carte dure `kp` des couches touchees (cle « sans
+    /// reseau » : etrangere a tous, avec l'isolement par defaut, comme le controle) ; vias -> interdiction de via
+    /// (un via traverse toutes les couches : interdit des qu'une couche touchee l'interdit).
+    fn tramer_zone(&mut self, z: &ZoneR, pts: &[(f64, f64)], masque: [bool; 3], ajout: bool) {
+        if pts.is_empty() || !masque.iter().any(|&b| b) || !(z.pistes || z.vias) {
+            return;
+        }
+        let m = self.m;
+        let iso = m.regles.isolement.defaut + MARGE_ISOL;
+        let infl_p = iso + H_DEF + DELTA;
+        let infl_v = iso + m.regles.via.diametre / 2.0 + DIAG;
+        let infl = infl_p.max(infl_v) + z.largeur / 2.0;
+        let bx0 = pts.iter().map(|q| q.0).fold(f64::MAX, f64::min) - infl;
+        let by0 = pts.iter().map(|q| q.1).fold(f64::MAX, f64::min) - infl;
+        let bx1 = pts.iter().map(|q| q.0).fold(f64::MIN, f64::max) + infl;
+        let by1 = pts.iter().map(|q| q.1).fold(f64::MIN, f64::max) + infl;
+        if bx1 < 0.0 || by1 < 0.0 {
+            return;
+        }
+        let (ix0, iy0) = (((bx0 / P).floor().max(0.0)) as usize, ((by0 / P).floor().max(0.0)) as usize);
+        let (ix1, iy1) = (((bx1 / P).ceil().max(0.0) as usize).min(self.nx - 1), ((by1 / P).ceil().max(0.0) as usize).min(self.ny - 1));
+        let key = self.nonet;
+        for iy in iy0..=iy1 {
+            for ix in ix0..=ix1 {
+                let (x, y) = self.cxy(ix, iy);
+                let dd = z.dist(pts, x, y);
+                let c = iy * self.nx + ix;
+                if z.pistes && dd < infl_p {
+                    for l in 0..NCOUCHES {
+                        if masque[l] {
+                            if ajout {
+                                self.kp.add(l * self.nc + c, key);
+                            } else {
+                                self.kp.sub(l * self.nc + c, key);
+                            }
+                        }
+                    }
+                }
+                if z.vias && dd < infl_v {
+                    if ajout {
+                        self.novia[c] += 1;
+                    } else {
+                        self.novia[c] -= 1;
                     }
                 }
             }
@@ -887,6 +960,7 @@ impl<'a> Detail<'a> {
         }
         // les amorces eventuelles du constructeur sont deja dans le routage charge
         self.amorces.clear();
+        self.amorces_info.clear();
         let mut nb = 0;
         for n in 0..self.m.nets.len() {
             self.arracher(n);
@@ -1029,6 +1103,27 @@ impl<'a> Detail<'a> {
                     let u = t as f64 / k2 as f64;
                     let (px, py) = (s.x1 + u * (s.x2 - s.x1), s.y1 + u * (s.y2 - s.y1));
                     pire = pire.min(dist_poly(px, py, &pts) - s.w / 2.0 - req);
+                }
+            }
+        }
+        // zones interdites aux pistes (carte et empreintes posees) : isolement par defaut, comme le controle
+        {
+            let mut zs: Vec<(&ZoneR, Vec<(f64, f64)>, [bool; 3])> = m.zones_carte.iter().map(|z| (z, z.pts.clone(), z.masque)).collect();
+            for i in 0..m.comps.len() {
+                for z in &m.comps[i].zones {
+                    let (pts, mk) = m.zone_monde(z, &self.e.poses[i]);
+                    zs.push((z, pts, mk));
+                }
+            }
+            for (z, pts, mk) in zs {
+                if !z.pistes || !mk[s.couche as usize] {
+                    continue;
+                }
+                let k2 = 40;
+                for t in 0..=k2 {
+                    let u = t as f64 / k2 as f64;
+                    let (px, py) = (s.x1 + u * (s.x2 - s.x1), s.y1 + u * (s.y2 - s.y1));
+                    pire = pire.min(z.dist(&pts, px, py) - s.w / 2.0 - m.regles.isolement.defaut - MARGE_ISOL);
                 }
             }
         }
@@ -1227,13 +1322,8 @@ impl<'a> Detail<'a> {
                 let (qx, qy) = self.node_xy(nd as usize);
                 let s2 = SegD { x1: ex, y1: ey, x2: qx, y2: qy, w, couche };
                 if self.marge_segment(n, &s2) >= 0.002 - MARGE_ISOL {
-                    let mut store = Vec::new();
-                    let infl = self.clr_net(n) + H_DEF + DELTA;
-                    for sg in [&s1, &s2] {
-                        self.raster_seg(sg, infl, key, &mut store);
-                    }
-                    // le stock n'est jamais retire : l'amorce reste en place quels que soient les reroutages
-                    self.amorces.push((n, vec![s1.clone(), s2]));
+                    // l'amorce reste en place quels que soient les reroutages (retiree seulement si la piece bouge)
+                    self.poser_amorce(n, i, vec![s1.clone(), s2]);
                     return Some(nd);
                 }
             }
@@ -1246,13 +1336,18 @@ impl<'a> Detail<'a> {
     /// Convertisseur libere : broches ordinaires sans aucune cellule accessible (pastilles a pas fin de U10 / M1 / M2,
     /// pieces serrees) -> amorce comme pour le bloc.
     fn amorcer_broches(&mut self) {
+        self.amorcer_broches_de(None);
+    }
+
+    fn amorcer_broches_de(&mut self, seulement: Option<&[usize]>) {
         let m = self.m;
         if !m.bloc_libre {
             return;
         }
+        let voulu = |i: usize| seulement.map(|s| s.contains(&i)).unwrap_or(true);
         if m.param.routage.eventail_auto {
             for i in 0..m.comps.len() {
-                if m.comps[i].pas_fin {
+                if m.comps[i].pas_fin && voulu(i) {
                     self.eventail_auto(i);
                 }
             }
@@ -1270,7 +1365,7 @@ impl<'a> Detail<'a> {
             let offs_min = ctx.offs.last().unwrap().clone();
             let w = *self.larg(n).w.last().unwrap();
             for &(i, k) in &net.pins_ext.clone() {
-                if m.comps[i].pads[k].th || self.pin_extra.contains_key(&(i, k)) {
+                if m.comps[i].pads[k].th || self.pin_extra.contains_key(&(i, k)) || !voulu(i) {
                     continue;
                 }
                 let libre = self.pad_cells(i, k).iter().any(|&c| self.disk_state(c as usize, key, &offs_min, false) == 1);
@@ -1356,101 +1451,186 @@ impl<'a> Detail<'a> {
                 // isolement renforce (COMMUTATION) : sortie droite plus longue, au-dela des coudes des voisines, pour
                 // que la grille (disque elargi de la classe) trouve un couloir ; longueurs essayees dans l'ordre
                 let extras: Vec<f64> = if m.nets[n].classe == "COMMUTATION" { vec![1.2, 0.9, 1.6, 0.6, 2.0, 0.3, 0.0] } else { vec![0.0] };
-                // decalage lateral de l'axe dans la pastille (0, +-0,02, +-0,04 mm) pour l'isolement exact
-                let mut segs: Vec<SegD> = Vec::new();
-                let mut trouve = false;
-                for &ex in &extras {
-                if trouve {
-                    break;
-                }
-                let l0j = l0base + ex;
-                for &dl in &[0.0f64, 0.02, -0.02, 0.04, -0.04] {
-                    if dl.abs() > large {
-                        continue;
-                    }
-                    let (x, y) = (x0 + px * dl, y0 + py * dl);
-                    let delta = cible - (lat(k) + dl);
-                    let (x1, y1) = (x + ux * (demi + l0j), y + uy * (demi + l0j));
-                    let (x2, y2) = (x1 + ux * delta.abs() + px * delta, y1 + uy * delta.abs() + py * delta);
-                    let mut ss = vec![SegD { x1: x, y1: y, x2: x1, y2: y1, w, couche }];
-                    if delta.abs() > 1e-6 {
-                        ss.push(SegD { x1, y1, x2, y2, w, couche });
-                    }
-                    if ss.iter().all(|sg| self.marge_segment(n, sg) >= 0.002 - MARGE_ISOL) {
-                        segs = ss;
-                        trouve = true;
-                        break;
-                    }
-                    if segs.is_empty() {
-                        segs = ss;
-                    }
-                }
-                }
-                let delta = cible - lat(k);
-                if m.param.journal.debug_amorces {
-                    eprintln!("eventail {}.{} delta {:.3} marges {:?}", m.comps[i].nom, m.comps[i].pads[k].nom, delta,
-                        segs.iter().map(|sg| (self.marge_segment(n, sg) * 1000.0).round() / 1000.0).collect::<Vec<_>>());
-                }
-                if segs.iter().any(|sg| self.marge_segment(n, sg) < 0.002 - MARGE_ISOL) {
-                    continue; // repli : amorce ordinaire
-                }
+                // decalage lateral de l'axe dans la pastille (0, +-0,02, +-0,04 mm) pour l'isolement exact ; une longueur
+                // n'est retenue que si son bout se raccorde a une cellule libre (sinon la suivante est essayee : une
+                // sortie longue peut finir dans une zone sans piste ou contre une piece voisine)
                 let key = n as u32 + 1;
                 let ctx = self.ctx(n, Mode::Strict);
                 let offs_min = ctx.offs.last().unwrap().clone();
-                let (ex, ey) = (segs.last().unwrap().x2, segs.last().unwrap().y2);
-                let (ix, iy) = ((ex / P).floor() as i64, (ey / P).floor() as i64);
-                let mut cands: Vec<(f64, usize)> = Vec::new();
-                for dy in -2..=2 {
-                    for dx in -2..=2 {
-                        let (gx, gy) = (ix + dx, iy + dy);
-                        if gx < 0 || gy < 0 || gx >= self.nx as i64 || gy >= self.ny as i64 {
+                let mut pose = false;
+                'essais: for &ex in &extras {
+                    let l0j = l0base + ex;
+                    for &dl in &[0.0f64, 0.02, -0.02, 0.04, -0.04] {
+                        if dl.abs() > large {
                             continue;
                         }
-                        let (qx, qy) = self.cxy(gx as usize, gy as usize);
-                        if (qx - ex) * ux + (qy - ey) * uy < -1e-9 {
+                        let (x, y) = (x0 + px * dl, y0 + py * dl);
+                        let delta = cible - (lat(k) + dl);
+                        let (x1, y1) = (x + ux * (demi + l0j), y + uy * (demi + l0j));
+                        let (x2, y2) = (x1 + ux * delta.abs() + px * delta, y1 + uy * delta.abs() + py * delta);
+                        let mut segs = vec![SegD { x1: x, y1: y, x2: x1, y2: y1, w, couche }];
+                        if delta.abs() > 1e-6 {
+                            segs.push(SegD { x1, y1, x2, y2, w, couche });
+                        }
+                        let marges: Vec<f64> = segs.iter().map(|sg| self.marge_segment(n, sg)).collect();
+                        if m.param.journal.debug_amorces {
+                            eprintln!("eventail {}.{} longueur +{} decalage {} marges {:?}", m.comps[i].nom, m.comps[i].pads[k].nom, ex, dl,
+                                marges.iter().map(|v| (v * 1000.0).round() / 1000.0).collect::<Vec<_>>());
+                        }
+                        if marges.iter().any(|&v| v < 0.002 - MARGE_ISOL) {
                             continue;
                         }
-                        let nd = couche as usize * self.nc + gy as usize * self.nx + gx as usize;
-                        if self.disk_state(nd, key, &offs_min, false) != 1 {
-                            continue;
+                        let (ex_, ey_) = (segs.last().unwrap().x2, segs.last().unwrap().y2);
+                        let (ix, iy) = ((ex_ / P).floor() as i64, (ey_ / P).floor() as i64);
+                        let mut cands: Vec<(f64, usize)> = Vec::new();
+                        for dy in -2..=2 {
+                            for dx in -2..=2 {
+                                let (gx, gy) = (ix + dx, iy + dy);
+                                if gx < 0 || gy < 0 || gx >= self.nx as i64 || gy >= self.ny as i64 {
+                                    continue;
+                                }
+                                let (qx, qy) = self.cxy(gx as usize, gy as usize);
+                                if (qx - ex_) * ux + (qy - ey_) * uy < -1e-9 {
+                                    continue;
+                                }
+                                let nd = couche as usize * self.nc + gy as usize * self.nx + gx as usize;
+                                if self.disk_state(nd, key, &offs_min, false) != 1 {
+                                    continue;
+                                }
+                                cands.push((((qx - ex_).powi(2) + (qy - ey_).powi(2)).sqrt(), nd));
+                            }
                         }
-                        cands.push((((qx - ex).powi(2) + (qy - ey).powi(2)).sqrt(), nd));
+                        cands.sort_by(|a, b| a.0.partial_cmp(&b.0).unwrap());
+                        for (_, nd) in cands {
+                            let (qx, qy) = self.node_xy(nd);
+                            let s3 = SegD { x1: ex_, y1: ey_, x2: qx, y2: qy, w, couche };
+                            if self.marge_segment(n, &s3) >= 0.002 - MARGE_ISOL {
+                                segs.push(s3);
+                                self.poser_amorce(n, i, segs);
+                                self.pin_extra.insert((i, k), nd as u32);
+                                pose = true;
+                                break 'essais;
+                            }
+                        }
                     }
                 }
-                cands.sort_by(|a, b| a.0.partial_cmp(&b.0).unwrap());
-                for (_, nd) in cands {
-                    let (qx, qy) = self.node_xy(nd);
-                    let s3 = SegD { x1: ex, y1: ey, x2: qx, y2: qy, w, couche };
-                    if self.marge_segment(n, &s3) >= 0.002 - MARGE_ISOL {
-                        segs.push(s3);
-                        let mut store = Vec::new();
-                        let infl = self.clr_net(n) + H_DEF + DELTA;
-                        for sg in &segs {
-                            self.raster_seg(sg, infl, key, &mut store);
-                        }
-                        self.amorces.push((n, segs));
-                        self.pin_extra.insert((i, k), nd as u32);
-                        break;
-                    }
+                if !pose && m.param.journal.debug_amorces {
+                    eprintln!("eventail {}.{} : aucune sortie (repli : amorce ordinaire)", m.comps[i].nom, m.comps[i].pads[k].nom);
                 }
             }
         }
     }
 
+    /// Disques (x, y, rayon) couvrant les amorces et ponts des pieces donnees.
+    pub fn zones_amorces(&self, pieces: &[usize]) -> Vec<(f64, f64, f64)> {
+        let mut z = Vec::new();
+        for (q, (_, segs)) in self.amorces.iter().enumerate() {
+            if pieces.contains(&self.amorces_info[q].0) {
+                for s in segs {
+                    let l = ((s.x2 - s.x1).powi(2) + (s.y2 - s.y1).powi(2)).sqrt();
+                    z.push(((s.x1 + s.x2) / 2.0, (s.y1 + s.y2) / 2.0, l / 2.0 + 0.8));
+                }
+            }
+        }
+        z
+    }
+
+    /// Pose une amorce (ou un pont) : tramee dans la carte dure `kp` (cuivre fixe : jamais traversable, meme en
+    /// negociation ou en sonde, contrairement aux pistes), memorisee avec sa piece pour pouvoir etre retiree.
+    fn poser_amorce(&mut self, n: usize, piece: usize, segs: Vec<SegD>) {
+        let key = n as u32 + 1;
+        let infl = self.clr_net(n) + H_DEF + DELTA;
+        let mut store = Vec::new();
+        for s in &segs {
+            let r = infl + s.w / 2.0;
+            let x0 = (((s.x1.min(s.x2) - r) / P).floor().max(0.0)) as usize;
+            let y0 = (((s.y1.min(s.y2) - r) / P).floor().max(0.0)) as usize;
+            let x1 = ((((s.x1.max(s.x2) + r) / P).ceil()) as usize).min(self.nx - 1);
+            let y1 = ((((s.y1.max(s.y2) + r) / P).ceil()) as usize).min(self.ny - 1);
+            for iy in y0..=y1 {
+                for ix in x0..=x1 {
+                    let (x, y) = self.cxy(ix, iy);
+                    if dist_seg(x, y, s) < r {
+                        let nd = s.couche as usize * self.nc + iy * self.nx + ix;
+                        self.kp.add(nd, key);
+                        store.push(nd as u32);
+                    }
+                }
+            }
+        }
+        self.amorces.push((n, segs));
+        self.amorces_info.push((piece, store));
+    }
+
+    /// Pieces deplacees (deja a leur nouvelle pose, leurs reseaux arraches) : leurs amorces, eventails et ponts sont
+    /// retires puis reposes a la nouvelle position. Rend les reseaux dont le cuivre route recouvre une nouvelle amorce
+    /// (a arracher et rerouter par l'appelant).
+    pub fn reamorcer(&mut self, pieces: &[usize]) -> Vec<usize> {
+        let mut k = 0;
+        while k < self.amorces.len() {
+            if pieces.contains(&self.amorces_info[k].0) {
+                let (n, _) = self.amorces.remove(k);
+                let (_, store) = self.amorces_info.remove(k);
+                for nd in store {
+                    self.kp.sub(nd as usize, n as u32 + 1);
+                }
+            } else {
+                k += 1;
+            }
+        }
+        let mut k = 0;
+        while k < self.amorces_fantomes.len() {
+            if pieces.contains(&self.amorces_fantomes[k].0) {
+                let (_, key, store) = self.amorces_fantomes.remove(k);
+                for nd in store {
+                    self.kp.sub(nd as usize, key);
+                }
+            } else {
+                k += 1;
+            }
+        }
+        self.pin_extra.retain(|&(i, _), _| !pieces.contains(&i));
+        self.pieces_pont.retain(|i| !pieces.contains(i));
+        let avant = self.amorces.len();
+        self.poser_ponts_de(Some(pieces));
+        self.amorcer_broches_de(Some(pieces));
+        let mut genes = Vec::new();
+        for q in avant..self.amorces.len() {
+            let key = self.amorces[q].0 as u32 + 1;
+            for &nd in &self.amorces_info[q].1 {
+                let nd = nd as usize;
+                if !self.kt.ok(nd, key) {
+                    let o = self.kt.owner(nd).unwrap_or(self.kt_who[nd]);
+                    if o != 0 && o != key && o != self.nonet {
+                        let on = (o - 1) as usize;
+                        if !genes.contains(&on) {
+                            genes.push(on);
+                        }
+                    }
+                }
+            }
+        }
+        genes
+    }
+
     /// Ponts de cuivre entre pastilles voisines d'un meme reseau d'une meme piece de puissance (M1, M2 : broches
     /// 1-3 / 5-8 ; convertisseur libere) : piste fixe pose une fois, la broche pontee n'est plus a router.
     fn poser_ponts(&mut self) {
+        self.poser_ponts_de(None);
+    }
+
+    fn poser_ponts_de(&mut self, seulement: Option<&[usize]>) {
         let m = self.m;
         for &(n, i, k1, k2, w) in &m.ponts {
+            if seulement.map(|s| !s.contains(&i)).unwrap_or(false) {
+                continue;
+            }
             let p = self.e.poses[i];
             let (x1, y1, _, _) = m.pad_world(i, k1, &p);
             let (x2, y2, _, _) = m.pad_world(i, k2, &p);
             let couche: u8 = if p.bot { 1 } else { 0 };
             let s = SegD { x1, y1, x2, y2, w, couche };
-            let mut store = Vec::new();
-            let infl = self.clr_net(n) + H_DEF + DELTA;
-            self.raster_seg(&s, infl, n as u32 + 1, &mut store);
-            self.amorces.push((n, vec![s]));
+            self.poser_amorce(n, i, vec![s]);
             self.pieces_pont.push(i);
         }
     }
@@ -1592,7 +1772,10 @@ impl<'a> Detail<'a> {
                 if dist_seg(x, y, s) < r {
                     let n = l * self.nc + iy * self.nx + ix;
                     self.kt.add(n, key);
-                    self.kt_who[n] = key;
+                    if self.kt_who[n] != key {
+                        self.kt_who2[n] = self.kt_who[n];
+                        self.kt_who[n] = key;
+                    }
                     store.push(n as u32);
                 }
             }
@@ -1612,7 +1795,10 @@ impl<'a> Detail<'a> {
                     for l in 0..NCOUCHES {
                         let n = l * self.nc + iy * self.nx + ix;
                         self.kt.add(n, key);
-                        self.kt_who[n] = key;
+                        if self.kt_who[n] != key {
+                            self.kt_who2[n] = self.kt_who[n];
+                            self.kt_who[n] = key;
+                        }
                         store.push(n as u32);
                     }
                 }
@@ -1705,6 +1891,34 @@ impl<'a> Detail<'a> {
         self.vsm[c] = ep;
         self.vsv[c] = v;
         v
+    }
+
+    /// Test d'un via deja pose en `c` par le reseau du contexte : comme `via_state`, sans compter ce via lui-meme
+    /// dans la regle trou a trou (sinon tout via pose en recouvrement resterait « en conflit » pour toujours).
+    fn via_state_pose(&self, c: usize, ctx: &Ctx) -> u8 {
+        if self.novia[c] > 0 {
+            return 0;
+        }
+        let (x, y) = ((c % self.nx) as i32, (c / self.nx) as i32);
+        let mut autres = 0u32;
+        for &(dx, dy) in &self.offs_trou {
+            let (u, v) = (x + dx, y + dy);
+            if u >= 0 && v >= 0 && u < self.nx as i32 && v < self.ny as i32 {
+                autres += self.vias_c[v as usize * self.nx + u as usize] as u32;
+            }
+        }
+        if autres > 1 {
+            return 0;
+        }
+        let mut st = 1;
+        for l in 0..NCOUCHES {
+            let a = self.disk_state(c + l * self.nc, ctx.key, &ctx.voffs, false);
+            if a == 0 {
+                return 0;
+            }
+            st = st.max(a);
+        }
+        st
     }
 
     fn via_state(&self, c: usize, ctx: &Ctx) -> u8 {
@@ -1849,6 +2063,7 @@ impl<'a> Detail<'a> {
             self.heap.push(HI { f, n: s as u32 });
         }
         let mut exp = 0usize;
+        self.exp_dernier = 0;
         while let Some(HI { f, n }) = self.heap.pop() {
             let n = n as usize;
             let g = self.gc[n];
@@ -1885,6 +2100,7 @@ impl<'a> Detail<'a> {
                 return Some(path);
             }
             exp += 1;
+            self.exp_dernier = exp;
             if exp > self.max_exp {
                 return None;
             }
@@ -2121,6 +2337,27 @@ impl<'a> Detail<'a> {
         }
     }
 
+    /// Reseaux etrangers (autres que `key`) dont une piste couvre le noeud : le proprietaire seul, sinon les deux
+    /// derniers a avoir trame la cellule (cellule partagee).
+    #[inline]
+    fn etrangers(&self, nd: usize, key: u32, out: &mut Vec<usize>) {
+        if self.kt.ok(nd, key) {
+            return;
+        }
+        let cands = match self.kt.owner(nd) {
+            Some(o) => [o, 0],
+            None => [self.kt_who[nd], self.kt_who2[nd]],
+        };
+        for o in cands {
+            if o != 0 && o != key && o != self.nonet {
+                let on = (o - 1) as usize;
+                if !out.contains(&on) {
+                    out.push(on);
+                }
+            }
+        }
+    }
+
     pub fn arracher(&mut self, n: usize) {
         let key = n as u32 + 1;
         for v in self.nets[n].vias.clone() {
@@ -2145,18 +2382,7 @@ impl<'a> Detail<'a> {
 
     fn proprietaires(&self, path: &[u32], ctx: &Ctx, out: &mut Vec<usize>) {
         let key = ctx.key;
-        let ajoute = |m: usize, out: &mut Vec<usize>| {
-            if self.kt.ok(m, key) {
-                return;
-            }
-            let o = self.kt.owner(m).unwrap_or(self.kt_who[m]);
-            if o != key && o != self.nonet && o != 0 {
-                let on = (o - 1) as usize;
-                if !out.contains(&on) {
-                    out.push(on);
-                }
-            }
-        };
+        let ajoute = |m: usize, out: &mut Vec<usize>| self.etrangers(m, key, out);
         for (pi, &nd) in path.iter().enumerate() {
             let n = nd as usize;
             let c = n % self.nc;
@@ -2364,16 +2590,30 @@ impl<'a> Detail<'a> {
                 None => {
                     if mode != Mode::Sonde {
                         self.nets[n].ko += 1;
+                        // recherche epuisee apres peu de noeuds : la broche de depart est enfermee (cuivre fixe, pastilles
+                        // et zones autour d'elle) ; epuisee apres beaucoup, sans chemin meme en recouvrement : c'est le
+                        // cote de l'arbre qui l'est -> ses broches sont nommees aussi (zones de pression de la boucle)
+                        let enfermee = acc[p] && acc[racine] && self.exp_dernier < ENFERMEE_NOEUDS;
                         let cause = if !acc[p] {
                             "broche inaccessible (isolement des pastilles voisines, bord ou emprise du bloc)"
                         } else if !acc[racine] {
                             "aucune broche accessible pour demarrer l'arbre"
-                        } else if mode == Mode::Strict {
+                        } else if mode == Mode::Strict && !enfermee {
                             "pas de chemin libre (congestion)"
+                        } else if enfermee {
+                            "broche enfermee (aucune sortie autour d'elle)"
                         } else {
                             "pas de chemin meme en recouvrement"
                         };
                         self.nets[n].diag.push(format!("{} : {}", noms[p], cause));
+                        if acc[p] && acc[racine] && !enfermee && mode != Mode::Strict {
+                            for &q in &connected {
+                                let l = format!("{} : arbre inatteignable (broche peut-etre enfermee)", noms[q]);
+                                if !self.nets[n].diag.contains(&l) {
+                                    self.nets[n].diag.push(l);
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -2519,7 +2759,7 @@ impl<'a> Detail<'a> {
             let nd = nd as usize;
             let wi = ((fl >> 2) as usize).min(ctx.offs.len() - 1);
             let mut ko = self.disk_state(nd, ctx.key, &ctx.offs[wi], false) == 0;
-            if fl & 2 != 0 && self.via_state(nd % self.nc, &ctx) == 0 {
+            if fl & 2 != 0 && self.via_state_pose(nd % self.nc, &ctx) == 0 {
                 ko = true;
             }
             if ko {
@@ -2537,15 +2777,7 @@ impl<'a> Detail<'a> {
                     let ls: &[usize] = if fl & 2 != 0 { &[0, 1, 2] } else { std::slice::from_ref(&l) };
                     for &ll in ls {
                         let mm = ll * self.nc + cc;
-                        if !self.kt.ok(mm, ctx.key) {
-                            let o = self.kt.owner(mm).unwrap_or(self.kt_who[mm]);
-                            if o != ctx.key && o != 0 && o != self.nonet {
-                                let on = (o - 1) as usize;
-                                if !owners.contains(&on) {
-                                    owners.push(on);
-                                }
-                            }
-                        }
+                        self.etrangers(mm, ctx.key, &mut owners);
                     }
                 }
             }
@@ -2661,6 +2893,27 @@ impl<'a> Detail<'a> {
                 break;
             }
         }
+        if std::env::var("PLACEUR_DIAG").is_ok() {
+            for &n in &ordre {
+                let (c, owners) = self.conflits(n);
+                if !c.is_empty() {
+                    let (mut sx, mut sy) = (0.0, 0.0);
+                    for &nd in &c {
+                        let (x, y) = self.node_xy(nd as usize);
+                        sx += x;
+                        sy += y;
+                    }
+                    let k = c.len() as f64;
+                    eprintln!("DIAG conflit {} ({} noeuds, centre {:.1} {:.1}, couche {}) contre {:?}", self.m.nets[n].nom, c.len(), sx / k, sy / k,
+                        c[0] as usize / self.nc, owners.iter().map(|&o| self.m.nets[o].nom.clone()).collect::<Vec<_>>());
+                }
+            }
+            for n in 0..self.nets.len() {
+                if self.nets[n].ko > 0 {
+                    eprintln!("DIAG impossible {} {:?}", self.m.nets[n].nom, self.nets[n].diag);
+                }
+            }
+        }
         // passe stricte : les reseaux encore en conflit sont arraches puis reroutes sans recouvrement
         for &n in &en_conflit {
             self.arracher(n);
@@ -2673,6 +2926,13 @@ impl<'a> Detail<'a> {
             }
         }
         journal(format!("  passe stricte : {} connexions en echec ({:.0} s depuis le debut)", self.total_ko(), t0.elapsed().as_secs_f64()));
+        if std::env::var("PLACEUR_DIAG").is_ok() {
+            for n in 0..self.nets.len() {
+                if self.nets[n].ko > 0 {
+                    eprintln!("DIAG strict {} {:?}", self.m.nets[n].nom, self.nets[n].diag);
+                }
+            }
+        }
         let mut meilleur = (self.total_ko(), self.instantane());
         for tour in 0..tours {
             if crate::campagne::arret_global() {
@@ -2796,6 +3056,8 @@ impl<'a> Detail<'a> {
                     let autres: Vec<SegD> = Vec::new();
                     if !touche(bout.x2, bout.y2, bout.couche, None, &autres, &segs2) {
                         self.amorces.remove(k);
+                        let (pc, store) = self.amorces_info.remove(k);
+                        self.amorces_fantomes.push((pc, n as u32 + 1, store));
                         retire += 1;
                     } else {
                         k += 1;
@@ -3630,6 +3892,90 @@ pub(crate) mod tests {
         assert!(l > 7.0 && l < 8.1, "longueur {}", l);
         assert!(dt.nets[n].segs.iter().all(|s| (s.w - 0.3).abs() < 1e-9));
         assert!(dt.nets[n].vias.is_empty());
+    }
+
+    fn deux_pieces() -> crate::donnees_v1::Donnees {
+        donnees(vec![comp("A", 4.25, 5.25, false, vec![pad("1", "S", 0.0, 0.0, false)]), comp("B", 12.25, 5.25, false, vec![pad("1", "S", 0.0, 0.0, false)])], vec![])
+    }
+
+    fn zone_rect(x0: f64, y0: f64, x1: f64, y1: f64, pistes: bool, vias: bool, masque: [bool; 3]) -> ZoneR {
+        ZoneR { polyligne: false, pts: vec![(x0, y0), (x1, y0), (x1, y1), (x0, y1)], largeur: 0.0, pistes, vias, placement: false, masque, masque_ret: [masque[1], masque[0], masque[2]], bot_ref: false }
+    }
+
+    /// Zone interdite de la carte, propre a une couche (dessus) : mur sur toute la hauteur entre deux pastilles ; la
+    /// liaison change de couche hors de la zone, aucune piste du dessus ni aucun via n'y entre (isolement compris).
+    #[test]
+    fn zone_interdite_de_carte_par_couche() {
+        let d = deux_pieces();
+        let mut m = Modele::new(&d, Parametres::defaut());
+        m.zones_carte = vec![zone_rect(8.0, 0.0, 8.6, 10.0, true, true, [true, false, false])];
+        let e = m.etat_v3();
+        let mut dt = Detail::new(&m, &e);
+        dt.tout(5, 0, &esp_off(), &mut |_| {});
+        let n = m.nets.iter().position(|n| n.nom == "S").unwrap();
+        assert_eq!(dt.nets[n].ko, 0, "{:?}", dt.nets[n].diag);
+        assert!(dt.nets[n].vias.len() >= 2, "la liaison doit passer par une autre couche");
+        let iso = m.regles.isolement.defaut;
+        let z = &m.zones_carte[0];
+        for s in dt.nets[n].segs.iter().filter(|s| s.couche == 0) {
+            for t in 0..=50 {
+                let u = t as f64 / 50.0;
+                let dd = z.dist(&z.pts, s.x1 + u * (s.x2 - s.x1), s.y1 + u * (s.y2 - s.y1));
+                assert!(dd - s.w / 2.0 >= iso - 1e-6, "piste du dessus a {:.3} mm de la zone", dd - s.w / 2.0);
+            }
+        }
+        for v in &dt.nets[n].vias {
+            assert!(z.dist(&z.pts, v.x, v.y) - m.regles.via.diametre / 2.0 >= iso - 1e-6, "via dans la zone");
+        }
+        // meme zone limitee aux vias : la piste du dessus passe tout droit, sans via
+        let mut m2 = Modele::new(&d, Parametres::defaut());
+        m2.zones_carte = vec![zone_rect(8.0, 0.0, 8.6, 10.0, false, true, [true, false, false])];
+        let mut dt2 = Detail::new(&m2, &e);
+        dt2.tout(5, 0, &esp_off(), &mut |_| {});
+        assert_eq!(dt2.nets[n].ko, 0);
+        assert!(dt2.nets[n].vias.is_empty());
+    }
+
+    /// Zone interdite d'empreinte : elle suit la piece (rotation, face). Piece A avec une zone a sa droite (cote B) :
+    /// la piste la contourne ; piece tournee de 180 degres, la zone passe a gauche et la piste va tout droit ; piece
+    /// retournee, la zone ne touche plus que la couche du dessous.
+    #[test]
+    fn zone_interdite_d_empreinte_suit_la_piece() {
+        let d = deux_pieces();
+        let mut m = Modele::new(&d, Parametres::defaut());
+        m.comps[0].zones = vec![zone_rect(1.5, -2.0, 2.1, 2.0, true, true, [true, false, false])];
+        let e = m.etat_v3();
+        let n = m.nets.iter().position(|n| n.nom == "S").unwrap();
+        let long = |dt: &Detail| -> f64 { dt.nets[n].segs.iter().map(|s| ((s.x2 - s.x1).powi(2) + (s.y2 - s.y1).powi(2)).sqrt()).sum() };
+        let mut dt = Detail::new(&m, &e);
+        dt.tout(5, 0, &esp_off(), &mut |_| {});
+        assert_eq!(dt.nets[n].ko, 0, "{:?}", dt.nets[n].diag);
+        let iso = m.regles.isolement.defaut;
+        let (pts, mk) = m.zone_monde(&m.comps[0].zones[0], &e.poses[0]);
+        assert_eq!(mk, [true, false, false]);
+        for s in dt.nets[n].segs.iter().filter(|s| s.couche == 0) {
+            for t in 0..=50 {
+                let u = t as f64 / 50.0;
+                let dd = m.comps[0].zones[0].dist(&pts, s.x1 + u * (s.x2 - s.x1), s.y1 + u * (s.y2 - s.y1));
+                assert!(dd - s.w / 2.0 >= iso - 1e-6, "piste a {:.3} mm de la zone d'empreinte", dd - s.w / 2.0);
+            }
+        }
+        assert!(long(&dt) > 8.5 || !dt.nets[n].vias.is_empty(), "la zone doit etre contournee (longueur {})", long(&dt));
+        // piece tournee de 180 degres : la zone suit, la piste est directe
+        let mut dt2 = Detail::new(&m, &e);
+        let mut p = e.poses[0];
+        p.rot = 180;
+        dt2.deplacer(0, p);
+        let (pts2, _) = m.zone_monde(&m.comps[0].zones[0], &p);
+        assert!(pts2.iter().all(|q| q.0 < 4.25), "zone tournee : {:?}", pts2);
+        dt2.tout(5, 0, &esp_off(), &mut |_| {});
+        assert_eq!(dt2.nets[n].ko, 0);
+        assert!(long(&dt2) < 8.1 && dt2.nets[n].vias.is_empty(), "longueur {}", long(&dt2));
+        // piece retournee : l'empilage est vu en miroir (la zone du dessus devient une zone du dessous)
+        let mut pr = e.poses[0];
+        pr.bot = true;
+        let (_, mkr) = m.zone_monde(&m.comps[0].zones[0], &pr);
+        assert_eq!(mkr, [false, true, false]);
     }
 
     #[test]

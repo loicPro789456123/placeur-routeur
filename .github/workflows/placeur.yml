@@ -110,7 +110,7 @@ jobs:
         run: |
           # tests en échec en annotations (lisibles par l'API publique, sans journal)
           # GitHub ne garde que 10 annotations par étape : d'abord les noms des tests en échec, puis leurs messages
-          annoter() { { grep -E "^(FAIL|ERROR):" "$1"; grep -E "^[A-Za-z]*Error:|^AssertionError" "$1"; } | head -n 9 | sed 's/^/::error::/' ; }
+          annoter() { { grep -E "^(FAIL|ERROR):" "$1"; grep -E "^[A-Za-z_.]*(Error|Exception|Erreur[A-Za-z]*):|No module named" "$1" | grep -v "^ImportError: Failed to import test module"; } | head -n 9 | sed 's/^/::error::/' ; }
           c=0
           python -m unittest discover -s . -p "test_*.py" -v > "$RUNNER_TEMP/t1.txt" 2>&1 || { c=1; annoter "$RUNNER_TEMP/t1.txt"; }
           tail -n 5 "$RUNNER_TEMP/t1.txt"

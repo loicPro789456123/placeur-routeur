@@ -210,6 +210,45 @@ pub struct Comp {
     pub via_sous_pad: bool,
     /// regions de cuivre d'empreinte (locales) : (face relative 0 composant / 1 opposee / 2 toutes, reseau, polygone)
     pub regions: Vec<(u8, Option<usize>, Vec<(f64, f64)>)>,
+    /// zones interdites de l'empreinte (repere local) : suivent la piece (rotation, face)
+    pub zones: Vec<ZoneR>,
+}
+
+/// Zone interdite de routage (carte : repere de la carte ; empreinte : repere local de la piece). Generique : toute
+/// forme (polygone, ou polyligne epaisse), par couche, avec ses effets (pistes, vias).
+#[derive(Clone, Debug)]
+pub struct ZoneR {
+    pub polyligne: bool,
+    pub pts: Vec<(f64, f64)>,
+    pub largeur: f64,
+    pub pistes: bool,
+    pub vias: bool,
+    /// interdit aussi aux autres pieces (effets « placement » ou « pastilles ») : obstacle de placement
+    pub placement: bool,
+    /// couches de routage du moteur (0 dessus, 1 dessous, 2 interne) touchees, piece sur sa face de reference
+    pub masque: [bool; 3],
+    /// idem, piece retournee par rapport a sa face de reference (empilage vu en miroir)
+    pub masque_ret: [bool; 3],
+    /// face de reference (pose des donnees) : dessous ?
+    pub bot_ref: bool,
+}
+
+impl ZoneR {
+    /// Distance d'un point a la zone posee (points deja dans le repere de la carte) : <= 0 dedans.
+    pub fn dist(&self, pts: &[(f64, f64)], x: f64, y: f64) -> f64 {
+        if self.polyligne {
+            let mut d = f64::MAX;
+            if pts.len() == 1 {
+                d = ((x - pts[0].0).powi(2) + (y - pts[0].1).powi(2)).sqrt();
+            }
+            for k in 0..pts.len().saturating_sub(1) {
+                d = d.min(d_pt_seg(x, y, pts[k].0, pts[k].1, pts[k + 1].0, pts[k + 1].1));
+            }
+            d - self.largeur / 2.0
+        } else {
+            dist_poly(x, y, pts)
+        }
+    }
 }
 
 /// Point d'attente au bord de l'emprise du bloc : le reseau y arrive, le dernier raccord vers la pastille
@@ -323,6 +362,8 @@ pub struct Modele {
     pub via_de_a: [String; 2],
     /// pose exacte des donnees (repere des donnees, mm, degres) des pieces fixes ou virtuelles, ecrite telle quelle
     pub poses_donnees: Vec<Option<(f64, f64, f64, bool)>>,
+    /// zones interdites de routage de la carte (repere de la carte)
+    pub zones_carte: Vec<ZoneR>,
     /// derogation des donnees : via dans une pastille CMS du meme reseau (`regles.via_dans_pastille_meme_reseau`)
     pub via_dans_pad: bool,
     /// style des pistes (detail::MODE_*) : routage.mode, sinon regles.mode_routage des donnees
@@ -397,6 +438,7 @@ impl Modele {
                 pas_fin: fin.iter().any(|f| **f == c.nom),
                 via_sous_pad: d.regles.via.via_sous_cms_permis.iter().any(|f| *f == c.nom),
                 regions: Vec::new(),
+                zones: Vec::new(),
             });
         }
         let comp_idx: HashMap<String, usize> = comps.iter().enumerate().map(|(i, c)| (c.nom.clone(), i)).collect();
@@ -481,6 +523,7 @@ impl Modele {
             couches_actives: [true; 3],
             via_de_a: ["TopLayer".to_string(), "BottomLayer".to_string()],
             poses_donnees: Vec::new(),
+            zones_carte: Vec::new(),
             via_dans_pad: false,
             mode_routage: 0,
             groupes_longueur: Vec::new(),
@@ -654,6 +697,15 @@ impl Modele {
             }
         }
         n
+    }
+
+    /// Zone interdite d'une piece posee : points dans le repere de la carte et couches de routage touchees.
+    pub fn zone_monde(&self, z: &ZoneR, p: &Pose) -> (Vec<(f64, f64)>, [bool; 3]) {
+        let pts = z.pts.iter().map(|&(lx, ly)| {
+            let (dx, dy) = fwd(lx, ly, p.rot, p.bot);
+            (p.x + dx, p.y + dy)
+        }).collect();
+        (pts, if p.bot == z.bot_ref { z.masque } else { z.masque_ret })
     }
 
     /// Polygone monde d'une region et couches de cuivre concernees.
@@ -1222,14 +1274,43 @@ impl Modele {
         self.rects_rel = c;
     }
 
+    /// Marge de placement autour de la boite d'une piece. Au moins `PIECE_MARGIN` ; et, pour que le placement reste
+    /// routable, de quoi laisser un couloir d'une piste de signal entre deux pieces voisines : largeur preferee de la
+    /// classe par defaut + deux isolements + l'arrondi de la grille de routage, la moitie pour chaque piece. Deduit des
+    /// regles de la carte (rien de propre a une carte) ; sans ce couloir, des boites reduites aux pastilles se
+    /// touchent a 0,5 mm et aucune piste ne passe entre deux pieces (campagnes du 24/11 : 8/40 contre 19/40 avec des
+    /// boites plus larges de 0,27 mm).
+    pub fn marge_piece(&self) -> f64 {
+        if let Some(v) = std::env::var("PLACEUR_MARGE_PIECE").ok().and_then(|v| v.parse::<f64>().ok()) {
+            return v;
+        }
+        let w = self.regles.largeurs.get("defaut").map_or(0.3, |l| l[1].max(l[0]).min(0.5));
+        // arrondi de grille : un pas de 0,1 mm + les marges internes du tramage (0,03 mm), de chaque cote
+        let couloir = w + 2.0 * self.regles.isolement.defaut + 2.0 * 0.13;
+        PIECE_MARGIN.max(couloir / 2.0)
+    }
+
     fn rects_of_calcul(&self, i: usize, p: &Pose) -> Vec<(u8, Rect)> {
         let b = self.bbox(i, p);
         // convertisseur libere : degagement autour des boitiers a pas fin (U10, M1, M2) pour que leurs broches au pas
         // de 0,5 / 0,65 mm puissent sortir en eventail (sinon les voisins colles bouchent les sorties) ; reglage
         // placement.degagement_pas_fin_mm
-        let m = if self.bloc_libre && self.comps[i].pas_fin { PIECE_MARGIN + self.param.placement.degagement_pas_fin_mm } else { PIECE_MARGIN };
+        let mp = self.marge_piece();
+        let m = if self.bloc_libre && self.comps[i].pas_fin { mp.max(PIECE_MARGIN + self.param.placement.degagement_pas_fin_mm) } else { mp };
         let f: u8 = if p.bot { 1 } else { 0 };
         let mut out = vec![(f, [b[0] - m, b[1] - m, b[2] + m, b[3] + m])];
+        // zones de l'empreinte interdites aux autres pieces : elles suivent la piece (une face par couche externe)
+        for z in self.comps[i].zones.iter().filter(|z| z.placement) {
+            let (pts, mk) = self.zone_monde(z, p);
+            let g = z.largeur / 2.0;
+            let r = [pts.iter().map(|q| q.0).fold(f64::MAX, f64::min) - g, pts.iter().map(|q| q.1).fold(f64::MAX, f64::min) - g,
+                pts.iter().map(|q| q.0).fold(f64::MIN, f64::max) + g, pts.iter().map(|q| q.1).fold(f64::MIN, f64::max) + g];
+            for face in 0..2u8 {
+                if mk[face as usize] && !(face == f && r[0] >= b[0] - m && r[1] >= b[1] - m && r[2] <= b[2] + m && r[3] <= b[3] + m) {
+                    out.push((face, r));
+                }
+            }
+        }
         if self.comps[i].has_th {
             for k in 0..self.comps[i].pads.len() {
                 if self.comps[i].pads[k].th {
